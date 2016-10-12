@@ -7,21 +7,56 @@
 //
 
 import UIKit
+import SWRevealViewController
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var swRevealViewController: SWRevealViewController?
+    
+    override init() {
+        ApiManager.sharedInstance.apiBaseUrl = kApiBaseUrl
 
-
+        super.init()
+    }
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        UITheme.configureTheme()
+        
+        if let token = SessionManager.sharedInstance.getToken() {
+            ApiManager.sharedInstance.token = token
+            
+            let viewController = MembersViewController()
+            let navigationController = UINavigationController(rootViewController: viewController)
+            navigationController.navigationBarHidden = true
+            
+            let menuViewController = MenuViewController()
+            
+            let revealViewController = SWRevealViewController(rearViewController: menuViewController, frontViewController: navigationController)
+            
+            swRevealViewController = revealViewController
+            
+            window = UIWindow(frame: UIScreen.mainScreen().bounds)
+            
+            window?.rootViewController = swRevealViewController
+            window?.makeKeyAndVisible()
+        } else {
+            let viewController = JoinViewController()
+            let navigationController = UINavigationController(rootViewController: viewController)
+            navigationController.navigationBarHidden = true
+            
+            window = UIWindow(frame: UIScreen.mainScreen().bounds)
+            
+            window?.rootViewController = navigationController
+            window?.makeKeyAndVisible()
+        }
+        
         return true
     }
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.i
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
