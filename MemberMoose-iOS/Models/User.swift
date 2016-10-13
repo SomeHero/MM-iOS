@@ -11,23 +11,27 @@ import ObjectMapper
 
 public class User: Mappable {
     public var id: String!
-    public var firstName: String!
-    public var lastName: String!
+    public var companyName: String!
     public var emailAddress: String!
+    public var avatar: Dictionary<String, String>? = [:]
     public var subscriptions: [Subscription] =  []
     public var paymentCards: [PaymentCard] = []
     public var paymentHistory: [Transaction] = []
     //public var createdAt: NSDate!
     //public var updatedAt: NSDate?
     
+    public init(userId: String, companyName: String, emailAddress: String) {
+        self.id = userId
+        self.companyName = companyName
+        self.emailAddress = emailAddress
+    }
     public required init?(_ map: Map){
         mapping(map)
     }
     
     public func mapping(map: Map) {
-        id <- map["id"]
-        firstName <- map["first_name"]
-        lastName <- map["last_name"]
+        id <- map["_id"]
+        companyName <- map["company_name"]
         emailAddress <- map["email_address"]
         subscriptions <- map["subscriptions"]
         paymentCards <- map["payment_cards"]

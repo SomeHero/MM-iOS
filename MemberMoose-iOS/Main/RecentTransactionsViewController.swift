@@ -130,11 +130,6 @@ class RecentTransactionsViewController: UIViewController {
         emptyState.setup("No Recent Transactions.", message: "You have no recent transactions :(")
         
     }
-    func toggleMenu(sender: UIButton) {
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate, swRevealViewController = delegate.swRevealViewController {
-            swRevealViewController.revealToggleAnimated(true)
-        }
-    }
 }
 
 

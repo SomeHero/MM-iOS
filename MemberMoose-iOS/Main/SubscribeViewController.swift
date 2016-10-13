@@ -64,12 +64,6 @@ class SubscribeViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func toggleMenu(sender: UIButton) {
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate, swRevealViewController = delegate.swRevealViewController {
-            swRevealViewController.revealToggleAnimated(true)
-        }
-    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 

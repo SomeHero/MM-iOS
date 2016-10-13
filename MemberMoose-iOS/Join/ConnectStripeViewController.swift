@@ -8,8 +8,20 @@
 
 import UIKit
 import OAuthSwift
+import SWRevealViewController
 
 class ConnectStripeViewController: UIViewController {
+    private lazy var oauthswift: OAuth2Swift = {
+        let _oauth = OAuth2Swift(
+            consumerKey:    "ca_7DVAPFFiNfWjJn8L08FZ1Sa4unt0jxfF",
+            consumerSecret: "sk_test_UknG37aSTprP5EfEmqSWNGvn",
+            authorizeUrl:   "https://connect.stripe.com/oauth/authorize",
+            accessTokenUrl: "https://connect.stripe.com/oauth/token",
+            responseType:   "code"
+        )
+        
+        return _oauth
+    }()
     private lazy var skipButton: UIButton = {
         let _button = UIButton()
         _button.backgroundColor = .clearColor()
@@ -175,24 +187,47 @@ class ConnectStripeViewController: UIViewController {
         navigationController?.popViewControllerAnimated(true)
     }
     func connectStripeClicked(sender: UIButton) {
-        print("Connected Stripe")
-    }
-    func connectLaterClicked(sender: UIButton) {
-        let oauthswift = OAuth2Swift(
-            consumerKey:    "ca_7DVAPFFiNfWjJn8L08FZ1Sa4unt0jxfF",
-            consumerSecret: "",
-            authorizeUrl:   "https://connect.stripe.com/oauth/authorize",
-            responseType:   "code"
-        )
+        
         oauthswift.authorizeWithCallbackURL(
             NSURL(string: "http://membermoose-node.herokuapp.com/oauth-callback/stripe")!,
             scope: "read_write", state:"STRIPE",
             success: { credential, response, parameters in
                 print(credential.oauth_token)
+                
+                let stripeParams: [String: AnyObject] = [
+                    "scope": "read_write",
+                    "stripe_user_id": "",
+                    "stripe_publishable_key": credential.oauth_token_secret,
+                    "token_type": "bearer",
+                    "refresh_token": credential.oauth_refresh_token,
+                    "livemode": true,
+                    "access_token": credential.oauth_token
+                ]
+                let connectStripe = ConnectStripe(userId: "1234", stripeParams: stripeParams)
+                ApiManager.sharedInstance.connectStripe(connectStripe, success: { (response) in
+                    print("success")
+                }, failure: { (error, errorDictionary) in
+                    print("failed")
+                })
             },
             failure: { error in
                 print(error.localizedDescription)
             }
         )
+    }
+    func connectLaterClicked(sender: UIButton) {
+        let viewController = MembersViewController()
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.navigationBarHidden = true
+        
+        let menuViewController = MenuViewController()
+        
+        let swRevealViewController = SWRevealViewController(rearViewController: menuViewController, frontViewController: navigationController)
+        
+        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+            delegate.swRevealViewController = swRevealViewController
+            
+            delegate.window?.rootViewController?.presentViewController(swRevealViewController, animated: true, completion: nil)
+        }
     }
 }

@@ -18,6 +18,8 @@
 		424D97D91DAD195500C8B674 /* PlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D97D81DAD195500C8B674 /* PlanCell.swift */; };
 		424D97DB1DAD198B00C8B674 /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D97DA1DAD198B00C8B674 /* PlanViewModel.swift */; };
 		424D97DD1DAD233500C8B674 /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D97DC1DAD233500C8B674 /* PlanDetailViewController.swift */; };
+		425013B31DAFCA4300ED21B1 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425013B21DAFCA4300ED21B1 /* UIViewController.swift */; };
+		425013B51DAFCA8100ED21B1 /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425013B41DAFCA8100ED21B1 /* Validator.swift */; };
 		4255B3FA1DAE89A8008DECAC /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255B3F91DAE89A8008DECAC /* SessionManager.swift */; };
 		4255B3FC1DAE9AC5008DECAC /* EditProfilePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255B3FB1DAE9AC5008DECAC /* EditProfilePhotoView.swift */; };
 		4255B3FE1DAEA3BF008DECAC /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255B3FD1DAEA3BF008DECAC /* ImagePicker.swift */; };
@@ -114,6 +116,8 @@
 		424D97D81DAD195500C8B674 /* PlanCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanCell.swift; path = Main/Members/PlanCell.swift; sourceTree = "<group>"; };
 		424D97DA1DAD198B00C8B674 /* PlanViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanViewModel.swift; path = Main/Members/PlanViewModel.swift; sourceTree = "<group>"; };
 		424D97DC1DAD233500C8B674 /* PlanDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanDetailViewController.swift; path = Main/Members/PlanDetailViewController.swift; sourceTree = "<group>"; };
+		425013B21DAFCA4300ED21B1 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViewController.swift; path = Extensions/UIViewController.swift; sourceTree = "<group>"; };
+		425013B41DAFCA8100ED21B1 /* Validator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Validator.swift; path = Managers/Validator.swift; sourceTree = "<group>"; };
 		4255B3F91DAE89A8008DECAC /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SessionManager.swift; path = Managers/SessionManager.swift; sourceTree = "<group>"; };
 		4255B3FB1DAE9AC5008DECAC /* EditProfilePhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditProfilePhotoView.swift; path = Views/EditProfilePhotoView.swift; sourceTree = "<group>"; };
 		4255B3FD1DAEA3BF008DECAC /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImagePicker.swift; path = Components/ImagePicker.swift; sourceTree = "<group>"; };
@@ -425,6 +429,7 @@
 				42F08C2A1DABBDA100D5D4E3 /* ApiManager.swift */,
 				4255B3F91DAE89A8008DECAC /* SessionManager.swift */,
 				4255B3FD1DAEA3BF008DECAC /* ImagePicker.swift */,
+				425013B41DAFCA8100ED21B1 /* Validator.swift */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -434,10 +439,10 @@
 			children = (
 				42F08C2F1DAC318F00D5D4E3 /* Plan.swift */,
 				42F08C311DAC31A300D5D4E3 /* Member.swift */,
-				42F08C331DAC31B300D5D4E3 /* User.swift */,
 				42F08C3D1DAC68D000D5D4E3 /* Subscription.swift */,
 				42F08C3F1DAC693E00D5D4E3 /* PaymentCard.swift */,
 				42F08C411DAC695300D5D4E3 /* Transaction.swift */,
+				42F08C331DAC31B300D5D4E3 /* User.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -447,6 +452,7 @@
 			children = (
 				42F08C361DAC34E800D5D4E3 /* ISO8601ExtendedDateTransform.swift */,
 				4255B3FF1DAEA53D008DECAC /* UIImage.swift */,
+				425013B21DAFCA4300ED21B1 /* UIViewController.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -791,10 +797,12 @@
 				4255B4001DAEA53D008DECAC /* UIImage.swift in Sources */,
 				4268414A1DA7A80300A2BFF8 /* MainTabBarViewController.swift in Sources */,
 				426841631DA86CAF00A2BFF8 /* EmptyStateView.swift in Sources */,
+				425013B51DAFCA8100ED21B1 /* Validator.swift in Sources */,
 				4268415C1DA7EEBD00A2BFF8 /* CalculatorProcessor.swift in Sources */,
 				42F08C3E1DAC68D000D5D4E3 /* Subscription.swift in Sources */,
 				4268416A1DA86D0E00A2BFF8 /* TextDecorator.swift in Sources */,
 				4268416C1DA86D5A00A2BFF8 /* MemberViewModel.swift in Sources */,
+				425013B31DAFCA4300ED21B1 /* UIViewController.swift in Sources */,
 				429F63071DA728DC00C3F54E /* CreateFirstPlanViewController.swift in Sources */,
 				42F08C321DAC31A300D5D4E3 /* Member.swift in Sources */,
 				42F08C2D1DABC5F100D5D4E3 /* Constants.swift in Sources */,

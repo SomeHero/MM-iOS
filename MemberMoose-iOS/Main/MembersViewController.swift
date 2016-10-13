@@ -211,8 +211,11 @@ class MembersViewController: UIViewController {
         }
     }
     func setup() {
+        guard let user = SessionManager.sharedUser else {
+            return
+        }
         logo.image = UIImage(named: "RVA-Logo")
-        companyNameLabel.text = "804RVA"
+        companyNameLabel.text = user.companyName
         subHeadingLabel.text = "54 Members"
         emptyState.setup("You have no members.", message: "You have no members :(")
     }
@@ -268,11 +271,6 @@ class MembersViewController: UIViewController {
         let viewController = ProfileViewController()
 
         presentViewController(viewController, animated: true, completion: nil)
-    }
-    func toggleMenu(sender: UIButton) {
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate, swRevealViewController = delegate.swRevealViewController {
-            swRevealViewController.revealToggleAnimated(true)
-        }
     }
 }
 extension MembersViewController: MembershipNavigationDelegate {

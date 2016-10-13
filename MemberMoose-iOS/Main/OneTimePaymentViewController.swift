@@ -111,11 +111,6 @@ class OneTimePaymentViewController: UIViewController {
         }
 
     }
-    func toggleMenu(sender: UIButton) {
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate, swRevealViewController = delegate.swRevealViewController {
-            swRevealViewController.revealToggleAnimated(true)
-        }
-    }
     func setup() {
         subHeadingLabel.text = "One Time Payments"
         amountTextField.text = "$0.00"

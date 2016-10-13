@@ -24,7 +24,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         UITheme.configureTheme()
         
-        if let token = SessionManager.sharedInstance.getToken() {
+        if let token = SessionManager.sharedInstance.getToken(), user = SessionManager.getPersistedUser() {
+            SessionManager.sharedUser = user
+            SessionManager.persistUser()
+            
             ApiManager.sharedInstance.token = token
             
             let viewController = MembersViewController()
@@ -82,9 +85,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
-        print("something happened")
+        guard let url = userActivity.webpageURL else {
+            return false
+        }
         
-        return true
+        if (url.host == "membermoose-node.herokuapp.com") {
+            OAuthSwift.handleOpenURL(url)
+            
+            return true
+        }
+        
+        return false
     }
 
 }

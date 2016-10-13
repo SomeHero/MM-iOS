@@ -32,25 +32,38 @@ public struct AuthenticateUser {
 public struct CreateUser {
     let emailAddress: String
     let password: String
-    let firstName: String
-    let lastName: String
+    let companyName: String
     let avatar: UIImage?
     
-    public init(emailAddress: String, password: String, firstName: String, lastName: String, avatar: UIImage? = nil) {
+    public init(emailAddress: String, password: String, companyName: String, avatar: UIImage? = nil) {
         self.emailAddress = emailAddress
         self.password = password
-        self.firstName = firstName
-        self.lastName = lastName
+        self.companyName = companyName
         self.avatar = avatar
     }
     func parameterize() -> [String : AnyObject] {
         let parameters = [
             "email_address": emailAddress,
             "password": password,
-            "first_name": firstName,
-            "last_name": lastName
+            "company_name": companyName
         ]
 
+        return parameters
+    }
+}
+public struct ConnectStripe {
+    let userId: String
+    let stripeParams: [String: AnyObject]
+    
+    public init(userId: String, stripeParams: [String: AnyObject]) {
+        self.userId = userId
+        self.stripeParams = stripeParams
+    }
+    func parameterize() -> [String: AnyObject] {
+        let parameters = [
+            "stripe_connect": stripeParams
+        ]
+        
         return parameters
     }
 }
@@ -138,7 +151,7 @@ public class ApiManager {
             for (key, value) in params {
                 multipartFormData.appendBodyPart(data: value.dataUsingEncoding(NSUTF8StringEncoding)!, name: key)
             }
-            }, encodingCompletion: {
+            },  encodingCompletion: {
                 encodingResult in
                 
                 switch encodingResult {
@@ -161,6 +174,62 @@ public class ApiManager {
                 }
         })
     }
+    public func me(success: (response: User) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+        Alamofire.request(.GET,  apiBaseUrl + "me", parameters: nil, encoding: .JSON, headers: headers)
+            .validate()
+            .responseObject { (response: Response<User, NSError>) in
+                if let error = response.result.error {
+                    var errorResponse: [String: AnyObject]? = [:]
+                    
+                    if let data = response.data {
+                        do {
+                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                        } catch let error as NSError {
+                            failure(error: error, errorDictionary: nil)
+                        } catch let error {
+                            failure(error: error, errorDictionary: nil)
+                        }
+                        failure(error: error, errorDictionary: errorResponse)
+                    } else {
+                        failure(error: error, errorDictionary: nil)
+                    }
+                }
+                if let user = response.result.value {
+                    success(response: user)
+                } else {
+                    failure(error: nil, errorDictionary: nil)
+                }
+                
+        }
+    }
+    public func connectStripe(connectStripe: ConnectStripe, success: (response: User) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+        let params = connectStripe.parameterize()
+        
+        Alamofire.request(.POST, apiBaseUrl + "users/\(connectStripe.userId)/connect_stripe", parameters: params, encoding: .JSON)
+            .validate()
+            .responseObject { (response: Response<User, NSError>) in
+                if let error = response.result.error {
+                    var errorResponse: [String: AnyObject]? = [:]
+                    
+                    if let data = response.data {
+                        do {
+                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                        } catch let error as NSError {
+                            failure(error: error, errorDictionary: nil)
+                        } catch let error {
+                            failure(error: error, errorDictionary: nil)
+                        }
+                        failure(error: error, errorDictionary: errorResponse)
+                    } else {
+                        failure(error: error, errorDictionary: nil)
+                    }
+                }
+                if let user = response.result.value {
+                    success(response: user)
+                }
+        }
+
+    }
     public func getPlans(success: (response: [Plan]?) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
         Alamofire.request(.GET,  apiBaseUrl + "plans", parameters: nil, encoding: .JSON, headers: headers)
             .validate()
@@ -182,8 +251,8 @@ public class ApiManager {
                         failure(error: error, errorDictionary: nil)
                     }
                 }
-                if let markets = response.result.value {
-                    success(response: markets)
+                if let plans = response.result.value {
+                    success(response: plans)
                 }
         }
         

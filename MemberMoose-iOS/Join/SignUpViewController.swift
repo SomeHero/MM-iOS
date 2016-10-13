@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class SignUpViewController: UIViewController {
     var avatar: UIImage?
@@ -49,7 +50,7 @@ class SignUpViewController: UIViewController {
         _textField.configure("", label: "Company Name", placeholder: "Company Name", tag: 101)
         self.configureTextField(_textField.textField)
         
-//        _textField.textField.addTarget(self, action: #selector(ConfirmFacebookAccountViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(SignUpViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return _textField
     }()
     private lazy var emailTextField: StackViewInputField = {
@@ -59,7 +60,7 @@ class SignUpViewController: UIViewController {
         _textField.textField.autocapitalizationType = .None
         self.configureTextField(_textField.textField)
         
-        //        _textField.textField.addTarget(self, action: #selector(ConfirmFacebookAccountViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(SignUpViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return _textField
     }()
     private lazy var passwordTextField: StackViewInputField = {
@@ -70,7 +71,7 @@ class SignUpViewController: UIViewController {
         _textField.textField.secureTextEntry = true
         self.configureTextField(_textField.textField)
         
-        //        _textField.textField.addTarget(self, action: #selector(ConfirmFacebookAccountViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(SignUpViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return _textField
     }()
     private lazy var nextButton: UIButton = {
@@ -89,6 +90,7 @@ class SignUpViewController: UIViewController {
 
         view.backgroundColor = .whiteColor()
         
+        validateForm()
         // Do any additional setup after loading the view, typically from a nib.
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignUpViewController.keyboardDidAppear(_:)), name: UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignUpViewController.keyboardDidHide(_:)), name: UIKeyboardDidHideNotification, object: nil)
@@ -134,9 +136,32 @@ class SignUpViewController: UIViewController {
         navigationController?.popViewControllerAnimated(true)
     }
     func nextClicked(sender: UIButton) {
-        let viewController = CreateFirstPlanViewController()
+        guard let companyName = companyNameTextField.textField.text, emailAddress = emailTextField.textField.text, password = passwordTextField.textField.text else {
+            return
+        }
+        let createUser = CreateUser(emailAddress: emailAddress, password: password, companyName: companyName)
         
-        navigationController?.pushViewController(viewController, animated: true)
+        SVProgressHUD.show()
+        
+        ApiManager.sharedInstance.createUser(createUser, success: { (userId, token) in
+            SessionManager.sharedInstance.setToken(token)
+            
+            ApiManager.sharedInstance.me({ (response) in
+                SVProgressHUD.dismiss()
+                
+                let viewController = CreateFirstPlanViewController()
+                
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }, failure: { (error, errorDictionary) in
+                print("error occurred")
+                
+                SVProgressHUD.dismiss()
+            })
+        }) { (error, errorDictionary) in
+            print("error occurred")
+            
+            SVProgressHUD.dismiss()
+        }
     }
     func configureTextField(textField: UITextField) {
         textField.returnKeyType = .Next
@@ -164,6 +189,28 @@ class SignUpViewController: UIViewController {
             let contentInsets = UIEdgeInsetsZero
             self.scrollView.contentInset = contentInsets
             self.scrollView.scrollIndicatorInsets = contentInsets
+        }
+    }
+    func validateForm() {
+        guard let companyName = companyNameTextField.textField.text else {
+            return
+        }
+        let companyNameValid = Validator.isValidText(companyName)
+        
+        guard let emailAddress = emailTextField.textField.text else {
+            return
+        }
+        let emailAddressValid = Validator.isValidEmail(emailAddress)
+        
+        guard let password = passwordTextField.textField.text else {
+            return
+        }
+        let passwordValid = Validator.isValidText(password)
+        
+        if companyNameValid && emailAddressValid && passwordValid {
+            enableButton(nextButton)
+        } else {
+            disableButton(nextButton)
         }
     }
 }
