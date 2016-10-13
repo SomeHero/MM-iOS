@@ -118,6 +118,7 @@
 		4255B3FB1DAE9AC5008DECAC /* EditProfilePhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditProfilePhotoView.swift; path = Views/EditProfilePhotoView.swift; sourceTree = "<group>"; };
 		4255B3FD1DAEA3BF008DECAC /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImagePicker.swift; path = Components/ImagePicker.swift; sourceTree = "<group>"; };
 		4255B3FF1DAEA53D008DECAC /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIImage.swift; path = Extensions/UIImage.swift; sourceTree = "<group>"; };
+		4255B4011DAF3509008DECAC /* MemberMoose-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "MemberMoose-iOS.entitlements"; sourceTree = "<group>"; };
 		426841461DA7A3EA00A2BFF8 /* ConnectStripeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConnectStripeViewController.swift; path = Join/ConnectStripeViewController.swift; sourceTree = "<group>"; };
 		426841491DA7A80300A2BFF8 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTabBarViewController.swift; path = Main/MainTabBarViewController.swift; sourceTree = "<group>"; };
 		4268414B1DA7A8A500A2BFF8 /* RecentTransactionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecentTransactionsViewController.swift; path = Main/RecentTransactionsViewController.swift; sourceTree = "<group>"; };
@@ -249,6 +250,7 @@
 		4240B74D1DA44671000D137E /* MemberMoose-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				4255B4011DAF3509008DECAC /* MemberMoose-iOS.entitlements */,
 				426841641DA86CD400A2BFF8 /* Decorators */,
 				429F62DB1DA6DD3300C3F54E /* Design */,
 				42F08C351DAC34C700D5D4E3 /* Extensions */,
@@ -570,6 +572,12 @@
 				TargetAttributes = {
 					4240B74A1DA44671000D137E = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 5K56Y8ABUA;
+						SystemCapabilities = {
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
+						};
 					};
 					4240B75E1DA44671000D137E = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -965,6 +973,7 @@
 			baseConfigurationReference = F915A32A82E9C0B7ABD3E30C /* Pods-MemberMoose-iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "MemberMoose-iOS/MemberMoose-iOS.entitlements";
 				INFOPLIST_FILE = "MemberMoose-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -980,6 +989,7 @@
 			baseConfigurationReference = 5577DE236897F16B3B99ACE3 /* Pods-MemberMoose-iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "MemberMoose-iOS/MemberMoose-iOS.entitlements";
 				INFOPLIST_FILE = "MemberMoose-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

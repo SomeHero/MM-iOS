@@ -10,6 +10,7 @@ PODS:
   - ChameleonFramework/Default (2.1.0)
   - FontAwesome.swift (0.7.3)
   - ImagePickerSheetController (0.9.1)
+  - OAuthSwift (0.6.0)
   - ObjectMapper (1.5.0)
   - SnapKit (0.18.0)
   - SVProgressHUD (2.0.3)
@@ -24,6 +25,7 @@ DEPENDENCIES:
   - ChameleonFramework
   - FontAwesome.swift (from `https://github.com/thii/FontAwesome.swift.git`, tag `0.7.3`)
   - ImagePickerSheetController (= 0.9.1)
+  - OAuthSwift (from `https://github.com/OAuthSwift/OAuthSwift.git`, branch `swift2.3`)
   - ObjectMapper
   - SnapKit (~> 0.18.0)
   - SVProgressHUD
@@ -34,11 +36,17 @@ EXTERNAL SOURCES:
   FontAwesome.swift:
     :git: https://github.com/thii/FontAwesome.swift.git
     :tag: 0.7.3
+  OAuthSwift:
+    :branch: swift2.3
+    :git: https://github.com/OAuthSwift/OAuthSwift.git
 
 CHECKOUT OPTIONS:
   FontAwesome.swift:
     :git: https://github.com/thii/FontAwesome.swift.git
     :tag: 0.7.3
+  OAuthSwift:
+    :commit: 1733c0f70a147f0c1ed978a8d6e8be997aaac7fa
+    :git: https://github.com/OAuthSwift/OAuthSwift.git
 
 SPEC CHECKSUMS:
   Alamofire: c19a627cefd6a95f840401c49ab1f124e07f54ee
@@ -48,12 +56,13 @@ SPEC CHECKSUMS:
   ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
   FontAwesome.swift: f694fe0f667d6d3390b5919cdb0556a27b75d427
   ImagePickerSheetController: 3c58c9fee6dcf36485222358a021f6b734f997ba
+  OAuthSwift: 8895267fbd6437a52aea26541572a617c7a8c7c1
   ObjectMapper: 386645adca9d9d23b95eda43090b09d66444cf14
   SnapKit: e1f090a6d47b1dd4bd89b73f72b6746a7835ef3c
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
 
-PODFILE CHECKSUM: 65314bd886163d76692c0e7060b82d84fbdaef0b
+PODFILE CHECKSUM: 90afede82cf9c76079792ba8b809eabb0db9026c
 
 COCOAPODS: 1.1.0.rc.2
