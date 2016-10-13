@@ -17,7 +17,7 @@ target 'MemberMoose-iOS' do
   pod 'ObjectMapper'
   pod 'AlamofireObjectMapper'
   #pod 'HanekeSwift', :git => 'https://github.com/meteochu/HanekeSwift.git'
-  #pod 'Kingfisher', '~> 2.4'
+  pod 'Kingfisher', '~> 2.4'
   pod 'ImagePickerSheetController', '0.9.1'
   pod 'ALTextInputBar'
   pod 'ASImageResize'

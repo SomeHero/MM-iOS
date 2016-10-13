@@ -44,6 +44,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Kingfisher.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>OAuthSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -92,17 +97,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0E5216C107BB274CCC66755D1A74B6EC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>1088253F42C36418734CF3D95E31B8AA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>272BD36161F9F9ACD7844395B83D11DE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>293B29EC7AC7DCC4D6FB8F1381F604B1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -118,6 +123,16 @@
 			<true/>
 		</dict>
 		<key>4EFCB2A1C2BB2152F1BBA18BB8BB2732</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>573338B8A1BC2B299A5BE82C38BF4120</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6CAD3255D54F5271A55FA4553378835C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -142,17 +157,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>A14D8BA6703C474E6BC2E4686663CD68</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BB6278991ABEBE7004B6DCD7FAD2BC9D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>C5CBCAA97E951CC882334464FBDF983D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D08CF7BEBFD9AB0DE8151522F8CFDADF</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D098F1132F8DF6DB8B20AB7C5521BFF7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -162,12 +177,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DEFB391E44071442E0E35DE5277E933D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>EDA05416A46B2FB14C7EBE5878F1D725</key>
+		<key>EF580108DB4DA228C7AA87C2EA90FF5F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

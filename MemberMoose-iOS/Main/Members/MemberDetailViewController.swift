@@ -49,6 +49,10 @@ class MemberDetailViewController: UIViewController {
     }()
     private lazy var logo: UIImageView = {
         let _imageView = UIImageView()
+        _imageView.layer.cornerRadius = 80 / 2
+        _imageView.clipsToBounds = true
+        _imageView.layer.borderColor = UIColor.whiteColor().CGColor
+        _imageView.layer.borderWidth = 2.0
         
         self.containerView.addSubview(_imageView)
         
@@ -144,8 +148,16 @@ class MemberDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     func setup() {
-        logo.image = UIImage(named: "RVA-Logo")
-        companyNameLabel.text = "James Rhodes"
+        guard let user = SessionManager.sharedUser else {
+            return
+        }
+        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
+            logo.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
+                                    placeholderImage: UIImage(named: "MissingAvatar-Bull"))
+        } else {
+            logo.image = UIImage(named: "MissingAvatar-Bull")
+        }
+        companyNameLabel.text = user.companyName
         subHeadingLabel.text = "Member Since Jan 2015"
     }
     func backClicked(button: UIButton) {

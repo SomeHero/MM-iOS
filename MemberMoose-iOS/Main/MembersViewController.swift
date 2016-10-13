@@ -8,6 +8,7 @@
 
 import UIKit
 import ALTextInputBar
+import Kingfisher
 
 let textInputBar = ALTextInputBar()
 
@@ -91,7 +92,11 @@ class MembersViewController: UIViewController {
     }()
     private lazy var logo: UIImageView = {
         let _imageView = UIImageView()
-
+        _imageView.layer.cornerRadius = 80 / 2
+        _imageView.clipsToBounds = true
+        _imageView.layer.borderColor = UIColor.whiteColor().CGColor
+        _imageView.layer.borderWidth = 2.0
+        
         self.containerView.addSubview(_imageView)
         
         return _imageView
@@ -214,7 +219,12 @@ class MembersViewController: UIViewController {
         guard let user = SessionManager.sharedUser else {
             return
         }
-        logo.image = UIImage(named: "RVA-Logo")
+        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
+            logo.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
+                                          placeholderImage: UIImage(named: "MissingAvatar-Bull"))
+        } else {
+            logo.image = UIImage(named: "MissingAvatar-Bull")
+        }
         companyNameLabel.text = user.companyName
         subHeadingLabel.text = "54 Members"
         emptyState.setup("You have no members.", message: "You have no members :(")

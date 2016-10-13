@@ -33,6 +33,7 @@ public class User: Mappable {
         id <- map["_id"]
         companyName <- map["company_name"]
         emailAddress <- map["email_address"]
+        avatar <- map["avatar"]
         subscriptions <- map["subscriptions"]
         paymentCards <- map["payment_cards"]
         paymentHistory <- map["transactions"]

@@ -139,7 +139,7 @@ class SignUpViewController: UIViewController {
         guard let companyName = companyNameTextField.textField.text, emailAddress = emailTextField.textField.text, password = passwordTextField.textField.text else {
             return
         }
-        let createUser = CreateUser(emailAddress: emailAddress, password: password, companyName: companyName)
+        let createUser = CreateUser(emailAddress: emailAddress, password: password, companyName: companyName, avatar: avatar)
         
         SVProgressHUD.show()
         
@@ -148,6 +148,9 @@ class SignUpViewController: UIViewController {
             
             ApiManager.sharedInstance.me({ (response) in
                 SVProgressHUD.dismiss()
+                
+                SessionManager.sharedUser = response
+                SessionManager.persistUser()
                 
                 let viewController = CreateFirstPlanViewController()
                 
