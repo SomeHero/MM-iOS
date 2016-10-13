@@ -25,13 +25,10 @@ class JoinViewController: UIViewController {
     }()
     private lazy var logo: UIImageView = {
         let _imageView = UIImageView()
-        _imageView.layer.cornerRadius = 80 / 2
-        _imageView.clipsToBounds = true
-        _imageView.layer.borderColor = UIColor.whiteColor().CGColor
-        _imageView.layer.borderWidth = 2.0
+        _imageView.image = UIImage(named: "Logo")
+        _imageView.contentMode = .ScaleAspectFit
         
         self.containerView.addSubview(_imageView)
-        
         return _imageView
     }()
     private lazy var signUpLabel: UILabel = {
