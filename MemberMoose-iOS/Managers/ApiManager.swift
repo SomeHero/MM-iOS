@@ -205,7 +205,7 @@ public class ApiManager {
     public func connectStripe(connectStripe: ConnectStripe, success: (response: User) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
         let params = connectStripe.parameterize()
         
-        Alamofire.request(.POST, apiBaseUrl + "users/\(connectStripe.userId)/connect_stripe", parameters: params, encoding: .JSON)
+        Alamofire.request(.POST, apiBaseUrl + "users/\(connectStripe.userId)/connect_stripe", parameters: params, encoding: .JSON, headers: headers)
             .validate()
             .responseObject { (response: Response<User, NSError>) in
                 if let error = response.result.error {
@@ -230,10 +230,38 @@ public class ApiManager {
         }
 
     }
+    public func importPlans(userId: String, plansList: [String], success: (response: User) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+        let params: [String: AnyObject] = ["plans": plansList]
+        
+        Alamofire.request(.POST, apiBaseUrl + "users/\(userId)/import_plans", parameters: params, encoding: .JSON, headers: headers)
+            .validate()
+            .responseObject { (response: Response<User, NSError>) in
+                if let error = response.result.error {
+                    var errorResponse: [String: AnyObject]? = [:]
+                    
+                    if let data = response.data {
+                        do {
+                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                        } catch let error as NSError {
+                            failure(error: error, errorDictionary: nil)
+                        } catch let error {
+                            failure(error: error, errorDictionary: nil)
+                        }
+                        failure(error: error, errorDictionary: errorResponse)
+                    } else {
+                        failure(error: error, errorDictionary: nil)
+                    }
+                }
+                if let user = response.result.value {
+                    success(response: user)
+                }
+        }
+        
+    }
     public func getPlans(success: (response: [Plan]?) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
         Alamofire.request(.GET,  apiBaseUrl + "plans", parameters: nil, encoding: .JSON, headers: headers)
             .validate()
-            .responseArray(keyPath: "data") { (response: Response<[Plan], NSError>) in
+            .responseArray { (response: Response<[Plan], NSError>) in
                 if let error = response.result.error {
                     var errorResponse: [String: AnyObject]? = [:]
                     
@@ -260,7 +288,7 @@ public class ApiManager {
     public func getMembers(success: (response: [Member]?) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
         Alamofire.request(.GET,  apiBaseUrl + "members", parameters: nil, encoding: .JSON, headers: headers)
             .validate()
-            .responseArray(keyPath: "data") { (response: Response<[Member], NSError>) in
+            .responseArray { (response: Response<[Member], NSError>) in
                 if let error = response.result.error {
                     var errorResponse: [String: AnyObject]? = [:]
                     

@@ -10,9 +10,10 @@ import Foundation
 import ObjectMapper
 
 public class Member: Mappable {
-    //public var id: String!
+    public var id: String!
     public var memberId: String!
-    public var name: String?
+    public var first_name: String?
+    public var last_name: String?
     public var emailAddress: String!
     public var memberCreated: NSDate!
     public var subscriptions: [Subscription] = []
@@ -26,10 +27,12 @@ public class Member: Mappable {
     }
     
     public func mapping(map: Map) {
-        memberId <- map["id"]
-        name <- map["name"]
-        emailAddress <- map["email"]
-        memberCreated <- (map["created"], ISO8601ExtendedDateTransform())
+        id <- map["_id"]
+        memberId <- map["reference_id"]
+        first_name <- map["first_name"]
+        last_name <- map["last_name"]
+        emailAddress <- map["email_address"]
+        memberCreated <- (map["member_since"], ISO8601ExtendedDateTransform())
         //updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
     }
 }

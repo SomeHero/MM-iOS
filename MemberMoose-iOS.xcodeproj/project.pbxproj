@@ -20,6 +20,9 @@
 		424D97DD1DAD233500C8B674 /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D97DC1DAD233500C8B674 /* PlanDetailViewController.swift */; };
 		425013B31DAFCA4300ED21B1 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425013B21DAFCA4300ED21B1 /* UIViewController.swift */; };
 		425013B51DAFCA8100ED21B1 /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425013B41DAFCA8100ED21B1 /* Validator.swift */; };
+		425013B71DB080E400ED21B1 /* ImportPlansViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425013B61DB080E400ED21B1 /* ImportPlansViewController.swift */; };
+		425013BA1DB08C0D00ED21B1 /* ImportPlanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425013B91DB08C0D00ED21B1 /* ImportPlanTableViewCell.swift */; };
+		425013BC1DB08C2B00ED21B1 /* ImportPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425013BB1DB08C2B00ED21B1 /* ImportPlanViewModel.swift */; };
 		4255B3FA1DAE89A8008DECAC /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255B3F91DAE89A8008DECAC /* SessionManager.swift */; };
 		4255B3FC1DAE9AC5008DECAC /* EditProfilePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255B3FB1DAE9AC5008DECAC /* EditProfilePhotoView.swift */; };
 		4255B3FE1DAEA3BF008DECAC /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255B3FD1DAEA3BF008DECAC /* ImagePicker.swift */; };
@@ -118,6 +121,9 @@
 		424D97DC1DAD233500C8B674 /* PlanDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanDetailViewController.swift; path = Main/Members/PlanDetailViewController.swift; sourceTree = "<group>"; };
 		425013B21DAFCA4300ED21B1 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViewController.swift; path = Extensions/UIViewController.swift; sourceTree = "<group>"; };
 		425013B41DAFCA8100ED21B1 /* Validator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Validator.swift; path = Managers/Validator.swift; sourceTree = "<group>"; };
+		425013B61DB080E400ED21B1 /* ImportPlansViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImportPlansViewController.swift; path = Join/ImportPlansViewController.swift; sourceTree = "<group>"; };
+		425013B91DB08C0D00ED21B1 /* ImportPlanTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImportPlanTableViewCell.swift; path = ImportPlans/ImportPlanTableViewCell.swift; sourceTree = "<group>"; };
+		425013BB1DB08C2B00ED21B1 /* ImportPlanViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImportPlanViewModel.swift; path = ImportPlans/ImportPlanViewModel.swift; sourceTree = "<group>"; };
 		4255B3F91DAE89A8008DECAC /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SessionManager.swift; path = Managers/SessionManager.swift; sourceTree = "<group>"; };
 		4255B3FB1DAE9AC5008DECAC /* EditProfilePhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditProfilePhotoView.swift; path = Views/EditProfilePhotoView.swift; sourceTree = "<group>"; };
 		4255B3FD1DAEA3BF008DECAC /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImagePicker.swift; path = Components/ImagePicker.swift; sourceTree = "<group>"; };
@@ -299,6 +305,7 @@
 		4240B77E1DA6C8B3000D137E /* Join */ = {
 			isa = PBXGroup;
 			children = (
+				425013B81DB08BB900ED21B1 /* ImportPlans */,
 				4240B7811DA6C903000D137E /* JoinViewController.swift */,
 				429F62F91DA6E02400C3F54E /* SignUpViewController.swift */,
 				429F62FE1DA6E8E800C3F54E /* LoginViewController.swift */,
@@ -314,6 +321,16 @@
 			children = (
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		425013B81DB08BB900ED21B1 /* ImportPlans */ = {
+			isa = PBXGroup;
+			children = (
+				425013B61DB080E400ED21B1 /* ImportPlansViewController.swift */,
+				425013B91DB08C0D00ED21B1 /* ImportPlanTableViewCell.swift */,
+				425013BB1DB08C2B00ED21B1 /* ImportPlanViewModel.swift */,
+			);
+			name = ImportPlans;
 			sourceTree = "<group>";
 		};
 		426841481DA7A77A00A2BFF8 /* Main */ = {
@@ -810,6 +827,7 @@
 				429F62F21DA6DDFF00C3F54E /* UITheme.swift in Sources */,
 				426841471DA7A3EA00A2BFF8 /* ConnectStripeViewController.swift in Sources */,
 				4240B7511DA44671000D137E /* ViewController.swift in Sources */,
+				425013BC1DB08C2B00ED21B1 /* ImportPlanViewModel.swift in Sources */,
 				42F08C341DAC31B300D5D4E3 /* User.swift in Sources */,
 				4268416E1DA86DA700A2BFF8 /* MemberCell.swift in Sources */,
 				424D97D91DAD195500C8B674 /* PlanCell.swift in Sources */,
@@ -823,6 +841,7 @@
 				426841551DA7DDB900A2BFF8 /* MenuViewController.swift in Sources */,
 				429F63091DA72B6800C3F54E /* CreatePlanViewController.swift in Sources */,
 				42F08C371DAC34E800D5D4E3 /* ISO8601ExtendedDateTransform.swift in Sources */,
+				425013B71DB080E400ED21B1 /* ImportPlansViewController.swift in Sources */,
 				426841681DA86D0E00A2BFF8 /* ButtonDecorator.swift in Sources */,
 				42F08C441DAC850B00D5D4E3 /* MemberDetailViewController.swift in Sources */,
 				4268415A1DA7EEBD00A2BFF8 /* CalculatorKeyboard.swift in Sources */,
@@ -845,6 +864,7 @@
 				426841711DA875B100A2BFF8 /* RecentTransactionsCell.swift in Sources */,
 				424D97DD1DAD233500C8B674 /* PlanDetailViewController.swift in Sources */,
 				424D97DB1DAD198B00C8B674 /* PlanViewModel.swift in Sources */,
+				425013BA1DB08C0D00ED21B1 /* ImportPlanTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

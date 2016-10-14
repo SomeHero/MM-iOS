@@ -28,7 +28,7 @@ class MemberCell: UITableViewCell {
     }()
     private lazy var nameLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Small)
+        _label.font = UIFontTheme.Bold(.Small)
         _label.textColor = UIColor.flatBlackColor()
         _label.numberOfLines = 0
         
@@ -83,7 +83,7 @@ class MemberCell: UITableViewCell {
         
     }
     func setupWith(viewModel: MemberViewModel) {
-        avatarView.image = UIImage(named: "RVA-Logo")
+        avatarView.image = UIImage(named: "Avatar-Calf")
         nameLabel.text = "James Rhodes"
         emailAddressLabel.text = viewModel.emailAddress
         memberSinceLabel.text = "Member Since 11/5/2015"
@@ -107,15 +107,15 @@ class MemberCell: UITableViewCell {
         }
         emailAddressLabel.snp_updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
-            make.top.equalTo(nameLabel.snp_bottom).inset(10)
+            make.top.equalTo(nameLabel.snp_bottom)
         }
         memberSinceLabel.snp_updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
-            make.top.equalTo(emailAddressLabel.snp_bottom).inset(10)
+            make.top.equalTo(emailAddressLabel.snp_bottom)
         }
         planNameLabel.snp_updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
-            make.top.equalTo(memberSinceLabel.snp_bottom).offset(10)
+            make.top.equalTo(memberSinceLabel.snp_bottom)
             make.bottom.equalTo(containerView)
         }
         super.updateConstraints()

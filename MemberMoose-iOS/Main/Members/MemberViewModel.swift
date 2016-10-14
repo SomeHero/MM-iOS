@@ -12,16 +12,18 @@ class MemberViewModel {
     var cellID: String = "MemberCell"
     var cellClass: UITableViewCell.Type = MemberCell.self
     
+    let member: Member
     let memberId: String
     let memberName: String?
     let emailAddress: String
     let planName: String
     let memberSince: NSDate
     
-    init(member: Member) {
-        memberId = member.memberId
-        memberName = member.name
-        emailAddress = member.emailAddress
+    init(theMember: Member) {
+        member = theMember
+        memberId = theMember.id
+        memberName = ""
+        emailAddress = theMember.emailAddress
         planName = "Membermoose Prime"
         memberSince = NSDate()
     }

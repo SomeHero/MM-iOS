@@ -236,8 +236,8 @@ extension ProfileViewController : UITableViewDelegate {
         
         let viewModel = subscriptions[indexPath.item]
         
-        let viewController = MemberDetailViewController()
+        //let viewController = MemberDetailViewController()
         
-        navigationController?.pushViewController(viewController, animated: true)
+        //navigationController?.pushViewController(viewController, animated: true)
     }
 }

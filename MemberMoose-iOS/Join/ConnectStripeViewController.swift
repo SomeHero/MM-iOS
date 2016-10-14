@@ -187,7 +187,9 @@ class ConnectStripeViewController: UIViewController {
         navigationController?.popViewControllerAnimated(true)
     }
     func connectStripeClicked(sender: UIButton) {
-        
+        guard let user = SessionManager.sharedUser else {
+            return
+        }
         oauthswift.authorizeWithCallbackURL(
             NSURL(string: "http://membermoose-node.herokuapp.com/oauth-callback/stripe")!,
             scope: "read_write", state:"STRIPE",
@@ -203,9 +205,13 @@ class ConnectStripeViewController: UIViewController {
                     "livemode": true,
                     "access_token": credential.oauth_token
                 ]
-                let connectStripe = ConnectStripe(userId: "1234", stripeParams: stripeParams)
+                let connectStripe = ConnectStripe(userId: user.id, stripeParams: stripeParams)
                 ApiManager.sharedInstance.connectStripe(connectStripe, success: { (response) in
-                    print("success")
+                    SessionManager.sharedUser = response
+                    
+                    let viewController = ImportPlansViewController()
+                    
+                    self.navigationController?.pushViewController(viewController, animated: true)
                 }, failure: { (error, errorDictionary) in
                     print("failed")
                 })

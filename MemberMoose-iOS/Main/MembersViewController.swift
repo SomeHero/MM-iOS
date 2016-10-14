@@ -10,14 +10,14 @@ import UIKit
 import ALTextInputBar
 import Kingfisher
 
-let textInputBar = ALTextInputBar()
 
 class MembersViewController: UIViewController {
     private let membersCellIdentifier                  = "MemberCellIdentifier"
     private let plansCellIdentifier                  = "PlanCellIdentifier"
     private let tableCellHeight: CGFloat        = 120
     private var membershipNavigationState: MembershipNavigationState = .Members
-    
+    private let textInputBar = ALTextInputBar()
+
     var members: [MemberViewModel] = [] {
         didSet {
             tableView.reloadData()
@@ -29,7 +29,7 @@ class MembersViewController: UIViewController {
         }
     }
     private lazy var tableView: UITableView = {
-        let _tableView                  = UITableView()
+        let _tableView                  = UITableView(frame: CGRect.zero, style: .Grouped)
         _tableView.dataSource           = self
         _tableView.delegate             = self
         _tableView.backgroundColor      = UIColor.whiteColor()
@@ -150,11 +150,20 @@ class MembersViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .whiteColor()
+        
+        configureRevealControllerGestures(view)
+        configureRevealWidth()
+        
         setup()
         
         showMembers()
         
         //emptyState.alpha = 1
+    }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
     }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -237,7 +246,7 @@ class MembersViewController: UIViewController {
             
             var viewModels: [MemberViewModel] = []
             for member in response! {
-                let viewModel = MemberViewModel(member: member)
+                let viewModel = MemberViewModel(theMember: member)
                 
                 viewModels.append(viewModel)
             }
@@ -349,7 +358,7 @@ extension MembersViewController : UITableViewDelegate {
         case .Members:
             let viewModel = members[indexPath.item]
             
-            let viewController = MemberDetailViewController()
+            let viewController = MemberDetailViewController(member: viewModel.member)
             
             navigationController?.pushViewController(viewController, animated: true)
         default:

@@ -9,7 +9,7 @@
 import UIKit
 
 #if DEBUG
-let kApiBaseUrl = "http://localhost:8080/api/"
+let kApiBaseUrl = "http://192.168.1.135:8080/api/"
 //let kApiBaseUrl = "https://membermoose-node.herokuapp.com/api/"
 let kOnePX: CGFloat = 1.0 / UIScreen.mainScreen().scale
 let kStripePublishableKey = "pk_test_biSyfSYHVZjhj0lVfqep9HOA"

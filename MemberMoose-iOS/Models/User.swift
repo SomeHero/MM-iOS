@@ -14,6 +14,7 @@ public class User: Mappable {
     public var companyName: String!
     public var emailAddress: String!
     public var avatar: Dictionary<String, String>? = [:]
+    public var plans: [Plan] = []
     public var subscriptions: [Subscription] =  []
     public var paymentCards: [PaymentCard] = []
     public var paymentHistory: [Transaction] = []
@@ -34,6 +35,7 @@ public class User: Mappable {
         companyName <- map["company_name"]
         emailAddress <- map["email_address"]
         avatar <- map["avatar"]
+        plans <- map["plans"]
         subscriptions <- map["subscriptions"]
         paymentCards <- map["payment_cards"]
         paymentHistory <- map["transactions"]

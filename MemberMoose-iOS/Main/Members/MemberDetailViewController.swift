@@ -7,13 +7,17 @@
 //
 
 import UIKit
+import ALTextInputBar
+import Kingfisher
 
 class MemberDetailViewController: UIViewController {
     private var memberNavigationState: MemberNavigationState = .Message
-    
+    private let member: Member
+    private let textInputBar = ALTextInputBar()
+
     private lazy var menuButton: UIButton = {
         let _button = UIButton()
-        _button.setImage(UIImage(named:"Back"), forState: .Normal)
+        _button.setImage(UIImage(named:"Back-Reverse"), forState: .Normal)
         _button.addTarget(self, action: #selector(MemberDetailViewController.backClicked(_:)), forControlEvents: .TouchUpInside)
         
         self.view.addSubview(_button)
@@ -85,6 +89,28 @@ class MemberDetailViewController: UIViewController {
         
         return _view
     }()
+    override var inputAccessoryView: UIView? {
+        get {
+            switch memberNavigationState {
+            case .Message:
+                return textInputBar
+            default:
+                return nil
+            }
+        }
+    }
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
+    init(member: Member) {
+        self.member = member
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -148,17 +174,14 @@ class MemberDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     func setup() {
-        guard let user = SessionManager.sharedUser else {
-            return
-        }
-        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
-            logo.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
-                                    placeholderImage: UIImage(named: "MissingAvatar-Bull"))
-        } else {
-            logo.image = UIImage(named: "MissingAvatar-Bull")
-        }
-        companyNameLabel.text = user.companyName
-        subHeadingLabel.text = "Member Since Jan 2015"
+//        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
+//            logo.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
+//                                    placeholderImage: UIImage(named: "MissingAvatar-Bull"))
+//        } else {
+            logo.image = UIImage(named: "Avatar-Calf")
+        //}
+        companyNameLabel.text = member.emailAddress
+        subHeadingLabel.text = "Member Since \(member.memberCreated)"
     }
     func backClicked(button: UIButton) {
         navigationController?.popViewControllerAnimated(true)
@@ -171,14 +194,20 @@ extension MemberDetailViewController: MemberNavigationDelegate {
     func messageClicked() {
         memberNavigationState = .Message
         memberNavigation.setSelectedButton(memberNavigationState)
+        
+        reloadInputViews()
     }
     func profileClicked() {
         memberNavigationState = .Profile
         memberNavigation.setSelectedButton(memberNavigationState)
+        
+        reloadInputViews()
     }
     func chargeClicked() {
         memberNavigationState = .Charge
         memberNavigation.setSelectedButton(memberNavigationState)
+        
+        reloadInputViews()
     }
 }
 
