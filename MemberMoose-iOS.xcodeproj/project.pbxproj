@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A578C2804F6453D4F821CC2 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEFBC919E2B8F9115D64CCE /* AssetsLibrary.framework */; };
+		1A042BF7518EC606A419193D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCE8ED597FFA0FBF90028C1 /* QuartzCore.framework */; };
+		28790F6EE44EA913916FB2D4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFDDA6A1220B4260531E6A32 /* AVFoundation.framework */; };
 		2FCC09F802463F8BEEE81469 /* Pods_MemberMoose_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A19A1D3FFDA91DEA0456E431 /* Pods_MemberMoose_iOSTests.framework */; };
+		396A13AD4BAD38F102D4561D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9948E5FFC6283BE56C5EAD2C /* CoreMedia.framework */; };
 		4240B74F1DA44671000D137E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240B74E1DA44671000D137E /* AppDelegate.swift */; };
 		4240B7511DA44671000D137E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240B7501DA44671000D137E /* ViewController.swift */; };
 		4240B7561DA44671000D137E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4240B7551DA44671000D137E /* Assets.xcassets */; };
@@ -80,6 +84,10 @@
 		42F08C4B1DACAAF600D5D4E3 /* SubscriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C4A1DACAAF600D5D4E3 /* SubscriptionViewModel.swift */; };
 		601FF069A8619D22D7E8B5D3 /* Pods_MemberMoose_iOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 879A79396F8E043AEA48AA6C /* Pods_MemberMoose_iOSUITests.framework */; };
 		70517667E7304548D01886EF /* Pods_MemberMoose_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30DA34FE4B9A105A776A6CA6 /* Pods_MemberMoose_iOS.framework */; };
+		85582B4DA6C949F81CF7269F /* BuddyBuildSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDD6EAB7394A88248DEEEE88 /* BuddyBuildSDK.framework */; };
+		B385BCB7FA292B571AAF7BC3 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 893DC05089F13213B1520999 /* CoreVideo.framework */; };
+		B7B721F37A404210C528B8B2 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F32ABB8242B94DBE1742861 /* CoreTelephony.framework */; };
+		C3955831BF7777648AAC0C35 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CA5DAD2511A2251E798703F /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +110,7 @@
 /* Begin PBXFileReference section */
 		1318DB11250D091E50536A83 /* Pods-MemberMoose-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MemberMoose-iOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MemberMoose-iOSTests/Pods-MemberMoose-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		16DD0AEFCDFF0BA7F279FD5F /* Pods-MemberMoose-iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MemberMoose-iOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MemberMoose-iOSTests/Pods-MemberMoose-iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		1F32ABB8242B94DBE1742861 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		30DA34FE4B9A105A776A6CA6 /* Pods_MemberMoose_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MemberMoose_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4240B74B1DA44671000D137E /* MemberMoose-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MemberMoose-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4240B74E1DA44671000D137E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -186,10 +195,18 @@
 		42F08C4A1DACAAF600D5D4E3 /* SubscriptionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SubscriptionViewModel.swift; path = Subscriptions/SubscriptionViewModel.swift; sourceTree = "<group>"; };
 		43E7FB512EF7FCD51BE10383 /* Pods-MemberMoose-iOSUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MemberMoose-iOSUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MemberMoose-iOSUITests/Pods-MemberMoose-iOSUITests.release.xcconfig"; sourceTree = "<group>"; };
 		5577DE236897F16B3B99ACE3 /* Pods-MemberMoose-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MemberMoose-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MemberMoose-iOS/Pods-MemberMoose-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		7CA5DAD2511A2251E798703F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		7CCE8ED597FFA0FBF90028C1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		879A79396F8E043AEA48AA6C /* Pods_MemberMoose_iOSUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MemberMoose_iOSUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		893DC05089F13213B1520999 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		9948E5FFC6283BE56C5EAD2C /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		A19A1D3FFDA91DEA0456E431 /* Pods_MemberMoose_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MemberMoose_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A35795A671D7E6E4E9948BA2 /* Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		BBEFBC919E2B8F9115D64CCE /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		DFDDA6A1220B4260531E6A32 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F915A32A82E9C0B7ABD3E30C /* Pods-MemberMoose-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MemberMoose-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MemberMoose-iOS/Pods-MemberMoose-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		FB6A61074735565BB4394D16 /* Pods-MemberMoose-iOSUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MemberMoose-iOSUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MemberMoose-iOSUITests/Pods-MemberMoose-iOSUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		FDD6EAB7394A88248DEEEE88 /* BuddyBuildSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BuddyBuildSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +217,14 @@
 				429F63051DA71C7E00C3F54E /* AdSupport.framework in Frameworks */,
 				429F63031DA71AD000C3F54E /* CoreText.framework in Frameworks */,
 				70517667E7304548D01886EF /* Pods_MemberMoose_iOS.framework in Frameworks */,
+				85582B4DA6C949F81CF7269F /* BuddyBuildSDK.framework in Frameworks */,
+				0A578C2804F6453D4F821CC2 /* AssetsLibrary.framework in Frameworks */,
+				B7B721F37A404210C528B8B2 /* CoreTelephony.framework in Frameworks */,
+				C3955831BF7777648AAC0C35 /* SystemConfiguration.framework in Frameworks */,
+				1A042BF7518EC606A419193D /* QuartzCore.framework in Frameworks */,
+				28790F6EE44EA913916FB2D4 /* AVFoundation.framework in Frameworks */,
+				396A13AD4BAD38F102D4561D /* CoreMedia.framework in Frameworks */,
+				B385BCB7FA292B571AAF7BC3 /* CoreVideo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +269,7 @@
 				4240B74C1DA44671000D137E /* Products */,
 				02366958877FCEBE95C35B8D /* Pods */,
 				7BC7FB8872E77F1A86CF77A9 /* Frameworks */,
+				A35795A671D7E6E4E9948BA2 /* Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -514,6 +540,14 @@
 				30DA34FE4B9A105A776A6CA6 /* Pods_MemberMoose_iOS.framework */,
 				A19A1D3FFDA91DEA0456E431 /* Pods_MemberMoose_iOSTests.framework */,
 				879A79396F8E043AEA48AA6C /* Pods_MemberMoose_iOSUITests.framework */,
+				FDD6EAB7394A88248DEEEE88 /* BuddyBuildSDK.framework */,
+				BBEFBC919E2B8F9115D64CCE /* AssetsLibrary.framework */,
+				1F32ABB8242B94DBE1742861 /* CoreTelephony.framework */,
+				7CA5DAD2511A2251E798703F /* SystemConfiguration.framework */,
+				7CCE8ED597FFA0FBF90028C1 /* QuartzCore.framework */,
+				DFDDA6A1220B4260531E6A32 /* AVFoundation.framework */,
+				9948E5FFC6283BE56C5EAD2C /* CoreMedia.framework */,
+				893DC05089F13213B1520999 /* CoreVideo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1002,12 +1036,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "MemberMoose-iOS/MemberMoose-iOS.entitlements";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "MemberMoose-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-D\" DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1018,12 +1057,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "MemberMoose-iOS/MemberMoose-iOS.entitlements";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "MemberMoose-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-D\" RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
