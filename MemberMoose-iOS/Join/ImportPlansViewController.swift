@@ -8,6 +8,7 @@
 
 import UIKit
 import SWRevealViewController
+import SVProgressHUD
 
 class ImportPlansViewController: UIViewController {
     private let plansCellIdentifier                  = "ImportPlanCellIdentifier"
@@ -22,7 +23,7 @@ class ImportPlansViewController: UIViewController {
         let _button = UIButton()
         _button.backgroundColor = .clearColor()
         _button.setTitleColor(.grayColor(), forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Bold(.Tiny)
+        _button.titleLabel?.font = UIFontTheme.Bold( )
         
         _button.addTarget(self, action: #selector(ImportPlansViewController.skipClicked(_:)), forControlEvents: .TouchUpInside)
         
@@ -39,6 +40,14 @@ class ImportPlansViewController: UIViewController {
         self.view.addSubview(_label)
         
         return _label
+    }()
+    lazy var lineView: UIView = {
+        let lineView = UIView()
+        lineView.backgroundColor = UIColorTheme.NavBarLineView
+        
+        self.view.addSubview(lineView)
+        
+        return lineView
     }()
     private lazy var tableView: UITableView = {
         let _tableView                  = UITableView()
@@ -80,6 +89,10 @@ class ImportPlansViewController: UIViewController {
     private lazy var noThanksButton: UIButton = {
         let _button = UIButton(type: UIButtonType.Custom)
         
+        _button.backgroundColor = .clearColor()
+        _button.setTitleColor(UIColorTheme.Link, forState: .Normal)
+        _button.titleLabel?.font = UIFontTheme.Bold(.Tiny)
+        
         _button.addTarget(self, action: #selector(ImportPlansViewController.skipClicked(_:)), forControlEvents: .TouchUpInside)
         
         self.view.addSubview(_button)
@@ -102,16 +115,21 @@ class ImportPlansViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         skipButton.snp_updateConstraints { (make) in
-            make.top.equalTo(view).inset(35)
+            make.top.equalTo(view).inset(20)
             make.trailing.equalTo(view).inset(15)
         }
         titleLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(view).inset(35)
+            make.top.equalTo(view).inset(20)
             make.trailing.greaterThanOrEqualTo(skipButton.snp_trailing).inset(10)
             make.centerX.equalTo(view)
         }
+        lineView.snp_updateConstraints { (make) -> Void in
+            make.top.equalTo(titleLabel.snp_bottom).offset(20)
+            make.width.equalTo(view)
+            make.height.equalTo(kOnePX*2)
+        }
         tableView.snp_updateConstraints { (make) in
-            make.top.equalTo(titleLabel).offset(20)
+            make.top.equalTo(lineView)
             make.leading.trailing.equalTo(view)
         }
         planCountLabel.snp_updateConstraints { (make) in
@@ -121,6 +139,7 @@ class ImportPlansViewController: UIViewController {
         nextButton.snp_updateConstraints { (make) in
             make.top.equalTo(planCountLabel.snp_bottom).offset(10)
             make.centerX.equalTo(view)
+            make.height.equalTo(40)
         }
         noThanksButton.snp_updateConstraints { (make) in
             make.top.equalTo(nextButton.snp_bottom).offset(10)
@@ -129,6 +148,8 @@ class ImportPlansViewController: UIViewController {
         }
     }
     func setup() {
+        skipButton.setTitle("SKIP", forState: .Normal)
+        
         titleLabel.text = "Import from Stripe"
         setPlanCountLabel()
         noThanksButton.setTitle("No Thanks", forState: .Normal)
@@ -145,12 +166,26 @@ class ImportPlansViewController: UIViewController {
         plans = viewModels
     }
     func skipClicked(sender: UIButton) {
+        let viewController = MembersViewController()
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.navigationBarHidden = true
         
+        let menuViewController = MenuViewController()
+        
+        let swRevealViewController = SWRevealViewController(rearViewController: menuViewController, frontViewController: navigationController)
+        
+        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+            delegate.swRevealViewController = swRevealViewController
+            
+            delegate.window?.rootViewController?.presentViewController(swRevealViewController, animated: true, completion: nil)
+        }
     }
     func nextClicked(sender: UIButton) {
         guard let user = SessionManager.sharedUser else {
             return
         }
+        SVProgressHUD.show()
+        
         var plansList: [String] = []
         for viewModel in plans {
             if viewModel.selected {
@@ -159,6 +194,8 @@ class ImportPlansViewController: UIViewController {
         }
         
         ApiManager.sharedInstance.importPlans(user.id, plansList: plansList, success: { (response) in
+            SVProgressHUD.dismiss()
+            
             SessionManager.sharedUser = response
             SessionManager.persistUser()
             
@@ -176,6 +213,8 @@ class ImportPlansViewController: UIViewController {
                 delegate.window?.rootViewController?.presentViewController(swRevealViewController, animated: true, completion: nil)
             }
         }) { (error, errorDictionary) in
+            SVProgressHUD.dismiss()
+            
             print("error occurred")
         }
     }

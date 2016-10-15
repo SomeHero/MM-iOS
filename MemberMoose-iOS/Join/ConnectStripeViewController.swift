@@ -84,6 +84,42 @@ class ConnectStripeViewController: UIViewController {
         
         return lineView
     }()
+    private lazy var feature1: UILabel = {
+        let _label = UILabel()
+        _label.textColor = UIColorTheme.PrimaryFont
+        _label.textAlignment = .Center
+        _label.numberOfLines = 0
+        _label.lineBreakMode = .ByWordWrapping
+        _label.font = UIFontTheme.Regular(.Small)
+        
+        self.view.addSubview(_label)
+        
+        return _label
+    }()
+    private lazy var feature2: UILabel = {
+        let _label = UILabel()
+        _label.textColor = UIColorTheme.PrimaryFont
+        _label.textAlignment = .Center
+        _label.numberOfLines = 0
+        _label.lineBreakMode = .ByWordWrapping
+        _label.font = UIFontTheme.Regular(.Small)
+        
+        self.view.addSubview(_label)
+        
+        return _label
+    }()
+    private lazy var feature3: UILabel = {
+        let _label = UILabel()
+        _label.textColor = UIColorTheme.PrimaryFont
+        _label.textAlignment = .Center
+        _label.numberOfLines = 0
+        _label.lineBreakMode = .ByWordWrapping
+        _label.font = UIFontTheme.Regular(.Small)
+        
+        self.view.addSubview(_label)
+        
+        return _label
+    }()
     private lazy var connectWithStripe: UIButton = {
         let _button = UIButton()
         _button.backgroundColor = .clearColor()
@@ -158,8 +194,23 @@ class ConnectStripeViewController: UIViewController {
             make.width.equalTo(view).multipliedBy(0.7)
             make.height.equalTo(kOnePX*2)
         }
+        feature1.snp_updateConstraints { (make) in
+            make.top.equalTo(lineView.snp_bottom).offset(20)
+            make.centerX.equalTo(view)
+            make.width.equalTo(view).multipliedBy(0.7)
+        }
+        feature2.snp_updateConstraints { (make) in
+            make.top.equalTo(feature1.snp_bottom).offset(20)
+            make.centerX.equalTo(view)
+            make.width.equalTo(view).multipliedBy(0.7)
+        }
+        feature3.snp_updateConstraints { (make) in
+            make.top.equalTo(feature2.snp_bottom).offset(20)
+            make.centerX.equalTo(view)
+            make.width.equalTo(view).multipliedBy(0.7)
+        }
         connectWithStripe.snp_updateConstraints { (make) in
-            make.top.equalTo(lineView.snp_bottom).offset(40)
+            make.top.equalTo(feature3.snp_bottom).offset(40)
             make.centerX.equalTo(view)
             make.width.equalTo(262)
         }
@@ -180,6 +231,9 @@ class ConnectStripeViewController: UIViewController {
     func setup() {
         titleLabel.text = "Connect Stripe"
         introLabel.text = "Start accepting recurring and one-time payments with MemberMoose and Stripe."
+        feature1.text = "No monthly fees or minimums"
+        feature2.text = "Built-in fraud detection & security"
+        feature3.text = "Trusted by over 12,000 businesses"
         connectLaterButton.setTitle("I'll Connect Later", forState: .Normal)
         termOfServiceLabel.text = "By connecting your Stripe account you are agreeing to the Terms of Service"
     }

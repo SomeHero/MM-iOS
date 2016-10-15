@@ -330,11 +330,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MemberMoose-iOS/Join/ImportPlansViewController.swift"
-            timestampString = "498156119.953997"
+            timestampString = "498170590.398563"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
             landmarkName = "tableView(_:cellForRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -410,11 +410,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MemberMoose-iOS/Join/ImportPlansViewController.swift"
-            timestampString = "498157023.07998"
+            timestampString = "498170590.398563"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "179"
-            endingLineNumber = "179"
+            startingLineNumber = "218"
+            endingLineNumber = "218"
             landmarkName = "nextClicked(_:)"
             landmarkType = "5">
          </BreakpointContent>

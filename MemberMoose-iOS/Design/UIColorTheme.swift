@@ -20,6 +20,7 @@ struct UIColorTheme {
     static let NavBarForegroundColor: UIColor = UIColor(hexString: "333333")
     static let Error: UIColor = UIColor.flatRedColor()
     static let TopBackgroundColor = UIColor(hexString: "4A4A4A")
+    static let NavBarLineView = UIColor(hexString: "AAAAAA")
     
     static let PrimaryForeground: UIColor = UIColor.flatWhiteColor()
 }

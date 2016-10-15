@@ -103,7 +103,7 @@
 		1318DB11250D091E50536A83 /* Pods-MemberMoose-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MemberMoose-iOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MemberMoose-iOSTests/Pods-MemberMoose-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		16DD0AEFCDFF0BA7F279FD5F /* Pods-MemberMoose-iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MemberMoose-iOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MemberMoose-iOSTests/Pods-MemberMoose-iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		30DA34FE4B9A105A776A6CA6 /* Pods_MemberMoose_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MemberMoose_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4240B74B1DA44671000D137E /* MemberMoose-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MemberMoose-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4240B74B1DA44671000D137E /* MemberMoose.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemberMoose.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4240B74E1DA44671000D137E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4240B7501DA44671000D137E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4240B7551DA44671000D137E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -250,7 +250,7 @@
 		4240B74C1DA44671000D137E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4240B74B1DA44671000D137E /* MemberMoose-iOS.app */,
+				4240B74B1DA44671000D137E /* MemberMoose.app */,
 				4240B75F1DA44671000D137E /* MemberMoose-iOSTests.xctest */,
 				4240B76A1DA44671000D137E /* MemberMoose-iOSUITests.xctest */,
 			);
@@ -538,7 +538,7 @@
 			);
 			name = "MemberMoose-iOS";
 			productName = "MemberMoose-iOS";
-			productReference = 4240B74B1DA44671000D137E /* MemberMoose-iOS.app */;
+			productReference = 4240B74B1DA44671000D137E /* MemberMoose.app */;
 			productType = "com.apple.product-type.application";
 		};
 		4240B75E1DA44671000D137E /* MemberMoose-iOSTests */ = {
@@ -1007,7 +1007,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-D\" DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = MemberMoose;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1023,7 +1023,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-D\" RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = MemberMoose;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
