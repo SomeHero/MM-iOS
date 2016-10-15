@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         super.init()
     }
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        BuddyBuildSDK.setup()
+        
         UITheme.configureTheme()
         
         if let token = SessionManager.sharedInstance.getToken(), user = SessionManager.getPersistedUser() {
