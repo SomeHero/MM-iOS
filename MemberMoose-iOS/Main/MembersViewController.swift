@@ -43,9 +43,78 @@ class MembersViewController: UIViewController {
         _tableView.registerClass(PlanCell.self, forCellReuseIdentifier: self.plansCellIdentifier)
         
         _tableView.addSubview(self.emptyState)
+        _tableView.addSubview(self.membersEmptyState)
+        _tableView.addSubview(self.plansEmptyState)
+        _tableView.addSubview(self.messagesEmptyState)
         
         self.view.addSubview(_tableView)
         return _tableView
+    }()
+    private lazy var membersEmptyState: MembershipEmptyState = {
+        let _emptyState = MembershipEmptyState()
+        _emptyState.alpha = 0.0
+        
+        return _emptyState
+    }()
+    private lazy var createMemberButton: UIButton = {
+        let _button = UIButton()
+        _button.backgroundColor = UIColorTheme.GreenButton
+        _button.setTitleColor(.whiteColor(), forState: .Normal)
+        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
+        _button.addTarget(self, action: #selector(MembersViewController.createMemberClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.layer.cornerRadius = 25
+        _button.clipsToBounds = true
+        _button.setTitle("Add a Member", forState: .Normal)
+        
+        return _button
+    }()
+    private lazy var sharePlanButton: UIButton = {
+        let _button = UIButton()
+        _button.backgroundColor = UIColorTheme.GreenButton
+        _button.setTitleColor(.whiteColor(), forState: .Normal)
+        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
+        _button.addTarget(self, action: #selector(MembersViewController.sharePlanClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.layer.cornerRadius = 25
+        _button.clipsToBounds = true
+        _button.setTitle("Share Plan", forState: .Normal)
+        
+        return _button
+    }()
+    private lazy var plansEmptyState: MembershipEmptyState = {
+        let _emptyState = MembershipEmptyState()
+        _emptyState.alpha = 0.0
+        
+        return _emptyState
+    }()
+    private lazy var createPlanButton: UIButton = {
+        let _button = UIButton()
+        _button.backgroundColor = UIColorTheme.GreenButton
+        _button.setTitleColor(.whiteColor(), forState: .Normal)
+        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
+        _button.addTarget(self, action: #selector(MembersViewController.createMemberClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.layer.cornerRadius = 25
+        _button.clipsToBounds = true
+        _button.setTitle("Create Plan", forState: .Normal)
+        
+        return _button
+    }()
+    private lazy var importFromStripeButton: UIButton = {
+        let _button = UIButton()
+        _button.backgroundColor = UIColorTheme.GreenButton
+        _button.setTitleColor(.whiteColor(), forState: .Normal)
+        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
+        _button.addTarget(self, action: #selector(MembersViewController.sharePlanClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.layer.cornerRadius = 25
+        _button.clipsToBounds = true
+        _button.setTitle("Import from Stripe", forState: .Normal)
+        
+        return _button
+    }()
+    private lazy var messagesEmptyState: MembershipEmptyState = {
+        let _emptyState = MembershipEmptyState()
+        _emptyState.alpha = 0.0
+        
+        return _emptyState
     }()
     private lazy var emptyState: EmptyStateView = {
         let _emptyState = EmptyStateView()
@@ -221,7 +290,16 @@ class MembersViewController: UIViewController {
             make.bottom.equalTo(snp_bottomLayoutGuideTop)
         }
         emptyState.snp_updateConstraints { make in
-            make.edges.equalTo(view)
+            make.edges.equalTo(tableView)
+        }
+        membersEmptyState.snp_updateConstraints { (make) in
+            make.edges.equalTo(tableView)
+        }
+        plansEmptyState.snp_updateConstraints { (make) in
+            make.edges.equalTo(tableView)
+        }
+        messagesEmptyState.snp_updateConstraints { (make) in
+            make.edges.equalTo(tableView)
         }
     }
     func setup() {
@@ -236,44 +314,64 @@ class MembersViewController: UIViewController {
         }
         companyNameLabel.text = user.companyName
         subHeadingLabel.text = "54 Members"
+        membersEmptyState.setup("804RVA has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.")
+        membersEmptyState.addButtons([self.createMemberButton, self.sharePlanButton])
+        
+        plansEmptyState.setup("804RVA has no plans!", subHeader: "The best way to add plans to your community is to create a plan manually or import existing plans from your Stripe account.")
+        plansEmptyState.addButtons([self.createPlanButton, self.importFromStripeButton])
+        
+        messagesEmptyState.setup("It's a bit lonely in here!", subHeader: "You don’t have a members in your community and sadly can’t message anyone.  Well, the Moose would always love to here from you.  Go ahead and send us a message.")
         emptyState.setup("You have no members.", message: "You have no members :(")
     }
     func showMembers() {
         members.removeAll()
+        resetEmptyStates()
         tableView.reloadData()
         
-        ApiManager.sharedInstance.getMembers({ (response) in
-            
-            var viewModels: [MemberViewModel] = []
-            for member in response! {
-                let viewModel = MemberViewModel(theMember: member)
-                
-                viewModels.append(viewModel)
+        ApiManager.sharedInstance.getMembers({ (members) in
+            if(members!.count > 0) {
+                var viewModels: [MemberViewModel] = []
+                for member in members! {
+                    let viewModel = MemberViewModel(theMember: member)
+                    
+                    viewModels.append(viewModel)
+                }
+                self.members = viewModels
+            } else {
+                self.membersEmptyState.alpha = 1
             }
-            self.members = viewModels
         }) { (error, errorDictionary) in
             print("error")
+            
+            self.membersEmptyState.alpha = 1
         }
+        tableView.reloadData()
         
         view.becomeFirstResponder()
         reloadInputViews()
     }
     func showPlans() {
+        guard let user = SessionManager.sharedUser else {
+            return
+            
+        }
         plans.removeAll()
+        resetEmptyStates()
         tableView.reloadData()
         
-        ApiManager.sharedInstance.getPlans({ (response) in
-            
+        if(user.plans.count > 0) {
             var viewModels: [PlanViewModel] = []
-            for plan in response! {
+            for plan in user.plans {
                 let viewModel = PlanViewModel(plan: plan)
                 
                 viewModels.append(viewModel)
             }
             self.plans = viewModels
-        }) { (error, errorDictionary) in
-            print("error")
+            
+        } else {
+            self.plansEmptyState.alpha = 1
         }
+        tableView.reloadData()
         
         view.becomeFirstResponder()
         reloadInputViews()
@@ -281,7 +379,10 @@ class MembersViewController: UIViewController {
     func showMessages() {
         plans.removeAll()
         members.removeAll()
+        resetEmptyStates()
         tableView.reloadData()
+        
+        messagesEmptyState.alpha = 1
         
         view.becomeFirstResponder()
         reloadInputViews()
@@ -290,6 +391,17 @@ class MembersViewController: UIViewController {
         let viewController = ProfileViewController()
 
         presentViewController(viewController, animated: true, completion: nil)
+    }
+    private func resetEmptyStates() {
+        membersEmptyState.alpha = 0
+        plansEmptyState.alpha = 0
+        messagesEmptyState.alpha = 0
+    }
+    func createMemberClicked(button: UIButton) {
+        
+    }
+    func sharePlanClicked(button: UIButton) {
+        
     }
 }
 extension MembersViewController: MembershipNavigationDelegate {
@@ -388,7 +500,11 @@ extension MembersViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch membershipNavigationState {
         case .Members:
-            return 80
+            if members.count > 0 {
+                return 80
+            } else {
+                return 0
+            }
         case .Plans:
             return 80
         default:
@@ -528,6 +644,117 @@ class MembershipHeaderView: UIView {
     }
     func addButtonClicked(sender: UIButton) {
         
+    }
+}
+class MembershipEmptyState: UIView {
+    private lazy var containerView: UIView = {
+        let _view = UIView()
+        
+        _view.backgroundColor = .clearColor()
+        
+        self.addSubview(_view)
+        
+        return _view
+    }()
+    private lazy var logo: UIImageView = {
+        let _imageView = UIImageView()
+        _imageView.contentMode = .ScaleAspectFit
+        
+        self.containerView.addSubview(_imageView)
+        
+        return _imageView
+    }()
+    private lazy var headerLabel: UILabel = {
+        let _label = UILabel()
+        _label.textColor = UIColorTheme.Header
+        _label.textAlignment = .Center
+        _label.font = UIFontTheme.Regular(.Default)
+        _label.lineBreakMode = .ByWordWrapping
+        _label.numberOfLines = 0
+        
+        self.containerView.addSubview(_label)
+        
+        return _label
+    }()
+    private lazy var subHeadingLabel: UILabel = {
+        let _label = UILabel()
+        _label.textColor = UIColorTheme.SubHeader
+        _label.textAlignment = .Center
+        _label.font = UIFontTheme.Regular(.Tiny)
+        _label.lineBreakMode = .ByWordWrapping
+        _label.numberOfLines = 0
+        
+        self.containerView.addSubview(_label)
+        
+        return _label
+    }()
+    private lazy var buttonContainer: UIView = {
+        let _view = UIView()
+        
+        _view.backgroundColor = .clearColor()
+        
+        self.containerView.addSubview(_view)
+        
+        return _view
+    }()
+    override func updateConstraints() {
+        containerView.snp_updateConstraints { (make) in
+            make.center.equalTo(self)
+            make.edges.equalTo(self).inset(20)
+        }
+        logo.snp_updateConstraints { (make) in
+            make.top.equalTo(containerView)
+            make.centerX.equalTo(containerView)
+            make.height.width.equalTo(80)
+        }
+        headerLabel.snp_updateConstraints { (make) in
+            make.top.equalTo(logo.snp_bottom).offset(10)
+            make.leading.trailing.equalTo(containerView).inset(10)
+        }
+        subHeadingLabel.snp_updateConstraints { (make) in
+            make.top.equalTo(headerLabel.snp_bottom)
+            make.leading.trailing.equalTo(containerView).inset(40)
+        }
+        buttonContainer.snp_updateConstraints { (make) in
+            make.top.equalTo(subHeadingLabel.snp_bottom).offset(20)
+            make.leading.trailing.equalTo(containerView)
+            make.bottom.equalTo(containerView).inset(20)
+        }
+        super.updateConstraints()
+    }
+    
+    func setup(header: String, subHeader: String) {
+        logo.image = UIImage(named: "Logo-DeadMoose")
+        headerLabel.text = header
+        subHeadingLabel.text = subHeader
+    }
+    func addButtons(buttons: [UIButton]) {
+        var previousButton: UIButton?
+        
+        for button in buttons {
+            buttonContainer.addSubview(button)
+            
+            button.snp_updateConstraints { (make) in
+                make.leading.trailing.equalTo(buttonContainer).inset(40)
+                make.height.equalTo(50)
+            }
+            if let previousButton = previousButton {
+                button.snp_updateConstraints(closure: { (make) in
+                    make.top.equalTo(previousButton.snp_bottom).offset(10)
+                })
+            } else {
+                button.snp_updateConstraints(closure: { (make) in
+                    make.top.equalTo(buttonContainer)
+                })
+            }
+            
+            previousButton = button
+        }
+        if let previousButton = previousButton {
+            previousButton.snp_updateConstraints { (make) in
+                make.bottom.equalTo(buttonContainer)
+            }
+        }
     }
 }
 class MessageToolbarView: UIView {

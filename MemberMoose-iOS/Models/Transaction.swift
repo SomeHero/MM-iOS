@@ -11,9 +11,11 @@ import ObjectMapper
 
 public class Transaction: Mappable {
     public var id: String!
-    public var amount: Double!
+    public var amount: NSDecimalNumber!
     public var status: String!
     public var transactionDate: NSDate!
+    public var transactionDescription: String!
+    public var cardDescription: String!
     //public var createdAt: NSDate!
     //public var updatedAt: NSDate?
     
@@ -24,8 +26,10 @@ public class Transaction: Mappable {
     public func mapping(map: Map) {
         id <- map["id"]
         amount <- map["amount"]
-        status <- map["email_address"]
+        status <- map["status"]
         transactionDate <- (map["transaction_date"], ISO8601ExtendedDateTransform())
+        transactionDescription <- map["transaction_description"]
+        cardDescription <- map["card_description"]
         //updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
     }
 }

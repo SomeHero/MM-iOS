@@ -8,27 +8,25 @@
 
 import UIKit
 
+@objc protocol DataSourceItemProtocol {
+    func viewForHeader() -> UIView
+    func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell
+}
+@objc protocol DataSourceTableViewCellProtocol: class {
+    func setupWith(viewModel: DataSourceItemProtocol)
+}
+
 class ProfileViewController: UIViewController {
     private let cellIdentifier                  = "SubscriptionCellIdentifier"
+    private let paymentCardCellIdentifier       = "PaymentCardCellIdentifier"
+    private let paymentHistoryCellIdentifier       = "PaymentHistoryCellIdentifier"
     private let tableCellHeight: CGFloat        = 120
    
-    var subscriptions: [SubscriptionViewModel] = [] {
+    var dataSource: [[DataSourceItemProtocol]] = [] {
         didSet {
             tableView.reloadData()
         }
     }
-    private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsetsZero
-        layout.scrollDirection = .Vertical
-        layout.minimumLineSpacing = 10.0
-        
-        let collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
-        
-        self.view.addSubview(collectionView)
-        
-        return collectionView
-    }()
     private lazy var menuButton: UIButton = {
         let _button = UIButton()
         _button.setImage(UIImage(named:"Back-Reverse"), forState: .Normal)
@@ -97,17 +95,20 @@ class ProfileViewController: UIViewController {
         return _label
     }()
     private lazy var tableView: UITableView = {
-        let _tableView                  = UITableView()
+        let _tableView                  = UITableView(frame: CGRect.zero, style: .Grouped)
         _tableView.dataSource           = self
         _tableView.delegate             = self
-        _tableView.backgroundColor      = UIColor.flatWhiteColor()
+        _tableView.backgroundColor      = UIColor.whiteColor()
         _tableView.alwaysBounceVertical = true
         _tableView.separatorInset       = UIEdgeInsetsZero
         _tableView.layoutMargins        = UIEdgeInsetsZero
         _tableView.tableFooterView      = UIView()
         _tableView.rowHeight            = self.tableCellHeight
+        _tableView.contentInset         = UIEdgeInsetsZero
         
         _tableView.registerClass(SubscriptionCell.self, forCellReuseIdentifier: self.cellIdentifier)
+        _tableView.registerClass(PaymentCardTableViewCell.self, forCellReuseIdentifier: self.paymentCardCellIdentifier)
+        _tableView.registerClass(PaymentHistoryTableViewCell.self, forCellReuseIdentifier: self.paymentHistoryCellIdentifier)
         _tableView.addSubview(self.emptyState)
         
         self.view.addSubview(_tableView)
@@ -129,10 +130,7 @@ class ProfileViewController: UIViewController {
         let image = UIImage(named: "Back")
         let backButton = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(ProfileViewController.backClicked(_:)))
         
-        var viewModels: [SubscriptionViewModel] = []
-        let viewModel = SubscriptionViewModel(planName: "Membermoose Prime", planAmount: "$30.00/monthly", status: "Active")
-        viewModels.append(viewModel)
-        subscriptions = viewModels
+        buildDataSet()
         
         navigationItem.leftBarButtonItem = backButton
         
@@ -208,22 +206,47 @@ class ProfileViewController: UIViewController {
     func showProfile(button: UIButton) {
         
     }
+    func buildDataSet() {
+        var subscriptionViewModels: [SubscriptionViewModel] = []
+        let subscriptionViewModel = SubscriptionViewModel(planName: "Membermoose Prime", planAmount: "$30.00/monthly", status: "Active")
+        subscriptionViewModels.append(subscriptionViewModel)
+        
+        dataSource.append(subscriptionViewModels)
+        
+        var paymentCardViewModels: [PaymentCardViewModel] = []
+        let paymentCardViewModel = PaymentCardViewModel(nameOnCard: "James Rhodes", cardDescription: "Discover Ending in 4242", cardExpiration: "Expiration: 4/2020")
+        paymentCardViewModels.append(paymentCardViewModel)
+        
+        dataSource.append(paymentCardViewModels)
+        
+        var paymentHistoryViewModels: [PaymentHistoryViewModel] = []
+        paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+        paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+        paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+        paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+        paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+        paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+        
+        dataSource.append(paymentHistoryViewModels)
+    }
 
 }
 extension ProfileViewController : UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return dataSource.count
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return subscriptions.count
+        let dataItems = dataSource[section]
+        
+        return dataItems.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let viewModel = subscriptions[indexPath.item]
+        let dataItems = dataSource[indexPath.section]
+        let viewModel = dataItems[indexPath.item]
         let cell = viewModel.dequeueAndConfigure(tableView, indexPath: indexPath)
         
-        cell.setupWith(viewModel)
         cell.layoutIfNeeded()
         
         return cell
@@ -232,12 +255,30 @@ extension ProfileViewController : UITableViewDataSource {
 
 extension ProfileViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        let dataItems = dataSource[indexPath.section]
+        let viewModel = dataItems[indexPath.item]
         
-        let viewModel = subscriptions[indexPath.item]
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         //let viewController = MemberDetailViewController()
         
         //navigationController?.pushViewController(viewController, animated: true)
+    }
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let dataItems = dataSource[section]
+        
+        if dataItems.count > 0 {
+            let view = dataItems[0]
+        
+            return view.viewForHeader()
+        }
+        
+        return nil
+    }
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50;
+    }
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat.min
     }
 }
