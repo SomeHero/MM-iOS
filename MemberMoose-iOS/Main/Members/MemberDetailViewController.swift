@@ -187,7 +187,7 @@ class MemberDetailViewController: UIViewController {
         navigationController?.popViewControllerAnimated(true)
     }
     func showProfile(button: UIButton) {
-        let viewController = ProfileViewController(user: user)
+        let viewController = ProfileViewController(user: user, profileType: .calf)
  
         presentViewController(viewController, animated: true, completion: nil)
     }

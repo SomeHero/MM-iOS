@@ -13,8 +13,8 @@ import SWRevealViewController
 class ConnectStripeViewController: UIViewController {
     private lazy var oauthswift: OAuth2Swift = {
         let _oauth = OAuth2Swift(
-            consumerKey:    "ca_7DVAPFFiNfWjJn8L08FZ1Sa4unt0jxfF",
-            consumerSecret: "sk_test_UknG37aSTprP5EfEmqSWNGvn",
+            consumerKey:    kStripeConnectClientId,
+            consumerSecret: kStripeSecretKey,
             authorizeUrl:   "https://connect.stripe.com/oauth/authorize",
             accessTokenUrl: "https://connect.stripe.com/oauth/token",
             responseType:   "code"

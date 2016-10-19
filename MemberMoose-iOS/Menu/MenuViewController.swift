@@ -12,7 +12,8 @@ import SWRevealViewController
 class MenuViewController: UIViewController {
     private let menuItemCellIdentifier          = "MenuItemCellIdentifier"
     private let tableCellHeight: CGFloat        = 120
-    private let menuItems = ["Home", "Profile", "Coupon Codes", "Notifications", "Connect Stripe", "Reports"]
+    private let menuItems = ["Home", "Coupon Codes", "Notifications", "Connect Stripe", "Reports"]
+    private var menuItemViewModels: [MenuItemViewModel] = []
     
     private lazy var tableView: UITableView = {
         let _tableView                  = UITableView()
@@ -25,7 +26,7 @@ class MenuViewController: UIViewController {
         _tableView.tableFooterView      = UIView()
         _tableView.estimatedRowHeight   = self.tableCellHeight
         
-        //_tableView.registerClass(MenuViewController.self, forCellReuseIdentifier: self.menuItemCellIdentifier)
+        _tableView.registerClass(MenuItemCell.self, forCellReuseIdentifier: self.menuItemCellIdentifier)
         
         self.view.addSubview(_tableView)
         return _tableView
@@ -46,6 +47,12 @@ class MenuViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .whiteColor()
+        
+        var viewModels: [MenuItemViewModel] = []
+        for menuItem in menuItems {
+            viewModels.append(MenuItemViewModel(title: menuItem))
+        }
+        menuItemViewModels = viewModels
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -93,17 +100,16 @@ extension MenuViewController : UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return menuItems.count
+        return menuItemViewModels.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(menuItemCellIdentifier)
-        if (cell == nil) {
-            cell = UITableViewCell(style:UITableViewCellStyle.Subtitle, reuseIdentifier:menuItemCellIdentifier)
-        }
-        cell!.textLabel?.text = menuItems[indexPath.row]
+        let viewModel = menuItemViewModels[indexPath.item]
+        let cell = viewModel.dequeueAndConfigure(tableView, indexPath: indexPath)
         
-        return cell!
+        cell.layoutIfNeeded()
+        
+        return cell
     }
 }
 

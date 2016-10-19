@@ -12,7 +12,8 @@ import UIKit
 //let kApiBaseUrl = "http://172.20.10.3:8080/api/"
 let kApiBaseUrl = "https://membermoose-node.herokuapp.com/api/"
 let kOnePX: CGFloat = 1.0 / UIScreen.mainScreen().scale
-let kStripePublishableKey = "pk_test_biSyfSYHVZjhj0lVfqep9HOA"
+let kStripeConnectClientId = "ca_7DVAPFFiNfWjJn8L08FZ1Sa4unt0jxfF"
+let kStripeSecretKey = "sk_test_UknG37aSTprP5EfEmqSWNGvn"
 let kGoogleTrackingId = "UA-78467459-3"
 let kCognitoPoolID = "us-east-1:0f789e2a-95db-450f-8698-322a99c2cfe1"
 let kS3BucketName = "ishopaway-staging"
@@ -20,7 +21,8 @@ let kS3ImageBaseUrl = "https://s3.amazonaws.com/ishopaway-staging/"
 #else
 let kApiBaseUrl = "https://membermoose-node.herokuapp.com/api/"
 let kOnePX: CGFloat = 1.0 / UIScreen.mainScreen().scale
-let kStripePublishableKey = "pk_test_biSyfSYHVZjhj0lVfqep9HOA"
+let kStripeConnectClientId = "ca_7DVAUfx8xLJTPOnRY3zRS9g2MEZDzFm2"
+let kStripeSecretKey = " sk_live_U361w1bbwEZNe7p9vOyrl5TC"
 let kGoogleTrackingId = "UA-78467459-3"
 let kCognitoPoolID = "us-east-1:0f789e2a-95db-450f-8698-322a99c2cfe1"
 let kS3BucketName = "ishopaway-prod"

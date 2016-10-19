@@ -9,20 +9,32 @@
 import UIKit
 
 @objc protocol DataSourceItemProtocol {
-    func viewForHeader() -> UIView
+    func viewForHeader() -> UIView?
     func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell
 }
 @objc protocol DataSourceTableViewCellProtocol: class {
     func setupWith(viewModel: DataSourceItemProtocol)
 }
-
+enum ProfileType {
+    case bull
+    case calf
+}
 class ProfileViewController: UIViewController {
     private let user: User
+    private let profileType: ProfileType
     private let cellIdentifier                  = "SubscriptionCellIdentifier"
     private let paymentCardCellIdentifier       = "PaymentCardCellIdentifier"
     private let paymentHistoryCellIdentifier       = "PaymentHistoryCellIdentifier"
     private let tableCellHeight: CGFloat        = 120
    
+    private var placeHolderAvatarImage: String {
+        switch profileType {
+        case .bull:
+            return "Avatar-Bull"
+        case .calf:
+            return "Avatar-Calf"
+        }
+    }
     var dataSource: [[DataSourceItemProtocol]] = [] {
         didSet {
             tableView.reloadData()
@@ -39,7 +51,7 @@ class ProfileViewController: UIViewController {
     }()
     private lazy var settingsButton: UIButton = {
         let _button = UIButton()
-        _button.setImage(UIImage(named:"Settings"), forState: .Normal)
+        _button.setImage(UIImage(named:"Edit"), forState: .Normal)
         _button.addTarget(self, action: #selector(ProfileViewController.showProfile(_:)), forControlEvents: .TouchUpInside)
         
         self.view.addSubview(_button)
@@ -122,8 +134,9 @@ class ProfileViewController: UIViewController {
         
         return _emptyState
     }()
-    init(user: User) {
+    init(user: User, profileType: ProfileType) {
         self.user = user
+        self.profileType = profileType
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -167,7 +180,7 @@ class ProfileViewController: UIViewController {
             make.bottom.equalTo(topBackgroundView).inset(20)
         }
         logo.snp_updateConstraints { (make) in
-            make.top.equalTo(containerView)
+            make.top.equalTo(containerView).inset(20)
             make.centerX.equalTo(containerView)
             make.height.width.equalTo(80)
         }
@@ -196,9 +209,9 @@ class ProfileViewController: UIViewController {
     func setup() {
         if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
             logo.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
-                                    placeholderImage: UIImage(named: "MissingAvatar-Bull"))
+                                    placeholderImage: UIImage(named: placeHolderAvatarImage))
         } else {
-            logo.image = UIImage(named: "MissingAvatar-Bull")
+            logo.image = UIImage(named: placeHolderAvatarImage)
         }
         companyNameLabel.text = user.companyName
         subHeadingLabel.text = "Member Since Jan 2015"

@@ -308,9 +308,9 @@ class MembersViewController: UIViewController {
         }
         if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
             logo.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
-                                          placeholderImage: UIImage(named: "MissingAvatar-Bull"))
+                                          placeholderImage: UIImage(named: "Avatar-Bull"))
         } else {
-            logo.image = UIImage(named: "MissingAvatar-Bull")
+            logo.image = UIImage(named: "Avatar-Bull")
         }
         companyNameLabel.text = user.companyName
         subHeadingLabel.text = "54 Members"
@@ -392,7 +392,7 @@ class MembersViewController: UIViewController {
         guard let user = SessionManager.sharedUser else {
             return
         }
-        let viewController = ProfileViewController(user: user)
+        let viewController = ProfileViewController(user: user, profileType: .bull)
 
         presentViewController(viewController, animated: true, completion: nil)
     }

@@ -13,6 +13,10 @@
 		2FCC09F802463F8BEEE81469 /* Pods_MemberMoose_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A19A1D3FFDA91DEA0456E431 /* Pods_MemberMoose_iOSTests.framework */; };
 		396A13AD4BAD38F102D4561D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9948E5FFC6283BE56C5EAD2C /* CoreMedia.framework */; };
 		4211D8BC1DB7288E0092F7C5 /* Membership.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8BB1DB7288E0092F7C5 /* Membership.swift */; };
+		4211D8C01DB7A96A0092F7C5 /* MenuItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8BF1DB7A96A0092F7C5 /* MenuItemViewModel.swift */; };
+		4211D8C21DB7AA3C0092F7C5 /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8C11DB7AA3C0092F7C5 /* MenuItemCell.swift */; };
+		4211D8C41DB7AF570092F7C5 /* MenuHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8C31DB7AF570092F7C5 /* MenuHeaderCell.swift */; };
+		4211D8C61DB7AF700092F7C5 /* MenuHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8C51DB7AF700092F7C5 /* MenuHeaderViewModel.swift */; };
 		42330B8F1DB3B694003BDDEC /* SharePlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */; };
 		42330B921DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */; };
 		42330B941DB3D5B5003BDDEC /* PaymentCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */; };
@@ -120,6 +124,10 @@
 		1F32ABB8242B94DBE1742861 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		30DA34FE4B9A105A776A6CA6 /* Pods_MemberMoose_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MemberMoose_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4211D8BB1DB7288E0092F7C5 /* Membership.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Membership.swift; path = Models/Membership.swift; sourceTree = "<group>"; };
+		4211D8BF1DB7A96A0092F7C5 /* MenuItemViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuItemViewModel.swift; path = "View Models/MenuItemViewModel.swift"; sourceTree = "<group>"; };
+		4211D8C11DB7AA3C0092F7C5 /* MenuItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuItemCell.swift; path = Menu/MenuItemCell.swift; sourceTree = "<group>"; };
+		4211D8C31DB7AF570092F7C5 /* MenuHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuHeaderCell.swift; path = Menu/MenuHeaderCell.swift; sourceTree = "<group>"; };
+		4211D8C51DB7AF700092F7C5 /* MenuHeaderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuHeaderViewModel.swift; path = Menu/MenuHeaderViewModel.swift; sourceTree = "<group>"; };
 		42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharePlanViewController.swift; path = Plans/SharePlanViewController.swift; sourceTree = "<group>"; };
 		42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardTableViewCell.swift; path = Profile/PaymentCardTableViewCell.swift; sourceTree = "<group>"; };
 		42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardViewModel.swift; path = Profile/PaymentCardViewModel.swift; sourceTree = "<group>"; };
@@ -274,6 +282,24 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		4211D8BD1DB7A9280092F7C5 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				4211D8C11DB7AA3C0092F7C5 /* MenuItemCell.swift */,
+				4211D8C31DB7AF570092F7C5 /* MenuHeaderCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		4211D8BE1DB7A9370092F7C5 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				4211D8BF1DB7A96A0092F7C5 /* MenuItemViewModel.swift */,
+				4211D8C51DB7AF700092F7C5 /* MenuHeaderViewModel.swift */,
+			);
+			name = ViewModels;
+			sourceTree = "<group>";
+		};
 		42330B8D1DB3B64D003BDDEC /* Plans */ = {
 			isa = PBXGroup;
 			children = (
@@ -419,6 +445,8 @@
 		426841531DA7DDA300A2BFF8 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
+				4211D8BD1DB7A9280092F7C5 /* Cells */,
+				4211D8BE1DB7A9370092F7C5 /* ViewModels */,
 				426841541DA7DDB900A2BFF8 /* MenuViewController.swift */,
 			);
 			name = Menu;
@@ -893,6 +921,7 @@
 				4255B4001DAEA53D008DECAC /* UIImage.swift in Sources */,
 				4268414A1DA7A80300A2BFF8 /* MainTabBarViewController.swift in Sources */,
 				426841631DA86CAF00A2BFF8 /* EmptyStateView.swift in Sources */,
+				4211D8C61DB7AF700092F7C5 /* MenuHeaderViewModel.swift in Sources */,
 				425013B51DAFCA8100ED21B1 /* Validator.swift in Sources */,
 				42330B9B1DB3DDC8003BDDEC /* DateFormatters.swift in Sources */,
 				4268415C1DA7EEBD00A2BFF8 /* CalculatorProcessor.swift in Sources */,
@@ -903,15 +932,18 @@
 				429F63071DA728DC00C3F54E /* CreateFirstPlanViewController.swift in Sources */,
 				42F08C321DAC31A300D5D4E3 /* Member.swift in Sources */,
 				42F08C2D1DABC5F100D5D4E3 /* Constants.swift in Sources */,
+				4211D8C41DB7AF570092F7C5 /* MenuHeaderCell.swift in Sources */,
 				4268414E1DA7A8BD00A2BFF8 /* MembersViewController.swift in Sources */,
 				429F62F21DA6DDFF00C3F54E /* UITheme.swift in Sources */,
 				426841471DA7A3EA00A2BFF8 /* ConnectStripeViewController.swift in Sources */,
+				4211D8C21DB7AA3C0092F7C5 /* MenuItemCell.swift in Sources */,
 				4240B7511DA44671000D137E /* ViewController.swift in Sources */,
 				425013BC1DB08C2B00ED21B1 /* ImportPlanViewModel.swift in Sources */,
 				4211D8BC1DB7288E0092F7C5 /* Membership.swift in Sources */,
 				42F08C341DAC31B300D5D4E3 /* User.swift in Sources */,
 				4268416E1DA86DA700A2BFF8 /* MemberCell.swift in Sources */,
 				424D97D91DAD195500C8B674 /* PlanCell.swift in Sources */,
+				4211D8C01DB7A96A0092F7C5 /* MenuItemViewModel.swift in Sources */,
 				42330B921DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift in Sources */,
 				4255B3FE1DAEA3BF008DECAC /* ImagePicker.swift in Sources */,
 				42F08C491DACAADA00D5D4E3 /* SubscriptionCell.swift in Sources */,
