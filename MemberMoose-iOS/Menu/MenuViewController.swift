@@ -10,11 +10,15 @@ import UIKit
 import SWRevealViewController
 
 class MenuViewController: UIViewController {
+    private let menuHeaderCellIdentifier        = "MenuHeaderCellIdentifier"
     private let menuItemCellIdentifier          = "MenuItemCellIdentifier"
     private let tableCellHeight: CGFloat        = 120
     private let menuItems = ["Home", "Coupon Codes", "Notifications", "Connect Stripe", "Reports"]
-    private var menuItemViewModels: [MenuItemViewModel] = []
-    
+    var dataSource: [[DataSourceItemProtocol]] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     private lazy var tableView: UITableView = {
         let _tableView                  = UITableView()
         _tableView.dataSource           = self
@@ -26,6 +30,7 @@ class MenuViewController: UIViewController {
         _tableView.tableFooterView      = UIView()
         _tableView.estimatedRowHeight   = self.tableCellHeight
         
+        _tableView.registerClass(MenuHeaderCell.self, forCellReuseIdentifier: self.menuHeaderCellIdentifier)
         _tableView.registerClass(MenuItemCell.self, forCellReuseIdentifier: self.menuItemCellIdentifier)
         
         self.view.addSubview(_tableView)
@@ -48,11 +53,17 @@ class MenuViewController: UIViewController {
 
         view.backgroundColor = .whiteColor()
         
+        guard let user = SessionManager.sharedUser else {
+            return
+        }
+        let headerViewModel = MenuHeaderViewModel(user: user)
+        dataSource.append([headerViewModel])
+        
         var viewModels: [MenuItemViewModel] = []
         for menuItem in menuItems {
             viewModels.append(MenuItemViewModel(title: menuItem))
         }
-        menuItemViewModels = viewModels
+        dataSource.append(viewModels)
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -96,15 +107,18 @@ class MenuViewController: UIViewController {
 }
 extension MenuViewController : UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return dataSource.count
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return menuItemViewModels.count
+        let dataItems = dataSource[section]
+        
+        return dataItems.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let viewModel = menuItemViewModels[indexPath.item]
+        let dataItems = dataSource[indexPath.section]
+        let viewModel = dataItems[indexPath.item]
         let cell = viewModel.dequeueAndConfigure(tableView, indexPath: indexPath)
         
         cell.layoutIfNeeded()

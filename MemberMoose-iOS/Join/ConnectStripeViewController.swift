@@ -245,7 +245,7 @@ class ConnectStripeViewController: UIViewController {
             return
         }
         oauthswift.authorizeWithCallbackURL(
-            NSURL(string: "http://membermoose-node.herokuapp.com/oauth-callback/stripe")!,
+            NSURL(string: kStripeOAuthRedirectUrl)!,
             scope: "read_write", state:"STRIPE",
             success: { credential, response, parameters in
                 print(credential.oauth_token)
