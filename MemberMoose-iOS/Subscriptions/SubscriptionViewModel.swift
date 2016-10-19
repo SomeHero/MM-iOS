@@ -18,7 +18,7 @@ class SubscriptionViewModel:DataSourceItemProtocol {
     
     init(subscription: Subscription) {
         planName = subscription.plan.name
-        planAmount = "$30.00/monthly"
+        planAmount = "\(subscription.plan.amount)/\(subscription.plan.interval)"
         status = subscription.status
     }
     init(planName: String, planAmount: String, status: String) {

@@ -156,7 +156,9 @@ public class ApiManager {
                 
                 switch encodingResult {
                 case .Success(let upload, _, _):
-                    upload.responseJSON {
+                    upload
+                        .validate()
+                        .responseJSON {
                         response in
                         
                         if let result = response.result.value {
@@ -285,10 +287,10 @@ public class ApiManager {
         }
         
     }
-    public func getMembers(success: (response: [Member]?) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+    public func getMembers(success: (response: [User]?) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
         Alamofire.request(.GET,  apiBaseUrl + "members", parameters: nil, encoding: .JSON, headers: headers)
             .validate()
-            .responseArray { (response: Response<[Member], NSError>) in
+            .responseArray { (response: Response<[User], NSError>) in
                 if let error = response.result.error {
                     var errorResponse: [String: AnyObject]? = [:]
                     
@@ -306,8 +308,8 @@ public class ApiManager {
                         failure(error: error, errorDictionary: nil)
                     }
                 }
-                if let markets = response.result.value {
-                    success(response: markets)
+                if let users = response.result.value {
+                    success(response: users)
                 }
         }
         

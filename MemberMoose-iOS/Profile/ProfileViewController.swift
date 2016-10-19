@@ -17,6 +17,7 @@ import UIKit
 }
 
 class ProfileViewController: UIViewController {
+    private let user: User
     private let cellIdentifier                  = "SubscriptionCellIdentifier"
     private let paymentCardCellIdentifier       = "PaymentCardCellIdentifier"
     private let paymentHistoryCellIdentifier       = "PaymentHistoryCellIdentifier"
@@ -121,6 +122,14 @@ class ProfileViewController: UIViewController {
         
         return _emptyState
     }()
+    init(user: User) {
+        self.user = user
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -185,9 +194,6 @@ class ProfileViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     func setup() {
-        guard let user = SessionManager.sharedUser else {
-            return
-        }
         if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
             logo.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
                                     placeholderImage: UIImage(named: "MissingAvatar-Bull"))
@@ -208,15 +214,22 @@ class ProfileViewController: UIViewController {
     }
     func buildDataSet() {
         var subscriptionViewModels: [SubscriptionViewModel] = []
-        let subscriptionViewModel = SubscriptionViewModel(planName: "Membermoose Prime", planAmount: "$30.00/monthly", status: "Active")
-        subscriptionViewModels.append(subscriptionViewModel)
-        
+        for membership in user.memberships {
+            if let subscription = membership.subscription {
+                let subscriptionViewModel = SubscriptionViewModel(subscription: subscription)
+                subscriptionViewModels.append(subscriptionViewModel)
+            }
+        }
         dataSource.append(subscriptionViewModels)
         
         var paymentCardViewModels: [PaymentCardViewModel] = []
-        let paymentCardViewModel = PaymentCardViewModel(nameOnCard: "James Rhodes", cardDescription: "Discover Ending in 4242", cardExpiration: "Expiration: 4/2020")
-        paymentCardViewModels.append(paymentCardViewModel)
-        
+        for paymentCard in user.paymentCards {
+            let paymentCardViewModel = PaymentCardViewModel(paymentCard: paymentCard)
+            
+            paymentCardViewModels.append(paymentCardViewModel)
+            
+        }
+
         dataSource.append(paymentCardViewModels)
         
         var paymentHistoryViewModels: [PaymentHistoryViewModel] = []

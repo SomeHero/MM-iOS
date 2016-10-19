@@ -9,11 +9,20 @@
 import UIKit
 
 class SharePlanViewController: UIViewController {
-
+//    private lazy var planNameLTextField: UITextField = {
+//        
+//    }()
+//    private lazy var emailAddressTextField: UITextField = {
+//        
+//    }()
+//    private lazy var phoneTextField: UITextField = {
+//        
+//    }()
+//    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        title = "Share Plan"
     }
 
     override func didReceiveMemoryWarning() {

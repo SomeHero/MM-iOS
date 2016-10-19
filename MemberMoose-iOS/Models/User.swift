@@ -11,11 +11,14 @@ import ObjectMapper
 
 public class User: Mappable {
     public var id: String!
+    public var firstName: String?
+    public var lastName: String?
     public var companyName: String!
     public var emailAddress: String!
     public var avatar: Dictionary<String, String>? = [:]
     public var plans: [Plan] = []
     public var subscriptions: [Subscription] =  []
+    public var memberships: [Membership] = []
     public var paymentCards: [PaymentCard] = []
     public var paymentHistory: [Transaction] = []
     //public var createdAt: NSDate!
@@ -32,11 +35,14 @@ public class User: Mappable {
     
     public func mapping(map: Map) {
         id <- map["_id"]
+        firstName <- map["first_name"]
+        lastName <- map["last_name"]
         companyName <- map["company_name"]
         emailAddress <- map["email_address"]
         avatar <- map["avatar"]
         plans <- map["plans"]
         subscriptions <- map["subscriptions"]
+        memberships <- map["memberships"]
         paymentCards <- map["payment_cards"]
         paymentHistory <- map["transactions"]
         //updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())

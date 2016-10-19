@@ -11,7 +11,8 @@ import ObjectMapper
 
 public class PaymentCard: Mappable {
     public var id: String!
-    public var nameOnCard: String!
+    public var nameOnCard: String?
+    public var brand: String!
     public var cardLastFour: String!
     public var expirationMonth: Int!
     public var expirationYear: Int!
@@ -24,10 +25,11 @@ public class PaymentCard: Mappable {
     
     public func mapping(map: Map) {
         id <- map["id"]
-        nameOnCard <- map["name_on_card"]
-        cardLastFour <- map["card_last_four"]
-        expirationMonth <- map["expiration_month"]
-        expirationYear <- map["expiration_year"]
+        brand <- map["brand"]
+        nameOnCard <- map["name"]
+        cardLastFour <- map["last4"]
+        expirationMonth <- map["exp_month"]
+        expirationYear <- map["exp_year"]
         //updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
     }
 }

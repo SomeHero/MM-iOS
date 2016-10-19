@@ -12,19 +12,21 @@ class MemberViewModel {
     var cellID: String = "MemberCell"
     var cellClass: UITableViewCell.Type = MemberCell.self
     
-    let member: Member
-    let memberId: String
-    let memberName: String?
+    let user: User
+    let userId: String
+    var memberName: String?
     let emailAddress: String
     let planName: String
     let memberSince: NSDate
     
-    init(theMember: Member) {
-        member = theMember
-        memberId = theMember.id
-        memberName = ""
-        emailAddress = theMember.emailAddress
-        planName = "Membermoose Prime"
+    init(user: User) {
+        self.user = user
+        userId = user.id
+        if let firstName = user.firstName, lastName = user.lastName {
+            memberName = "\(firstName) \(lastName)"
+        }
+        emailAddress = user.emailAddress
+        planName = (user.memberships.flatMap { $0.planNames } as [String]).joinWithSeparator(", ")
         memberSince = NSDate()
     }
 

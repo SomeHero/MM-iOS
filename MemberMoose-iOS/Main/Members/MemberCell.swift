@@ -84,10 +84,15 @@ class MemberCell: UITableViewCell {
     }
     func setupWith(viewModel: MemberViewModel) {
         avatarView.image = UIImage(named: "Avatar-Calf")
-        nameLabel.text = "James Rhodes"
+        if let name = viewModel.memberName {
+            nameLabel.hidden = false
+            nameLabel.text = name
+        } else {
+            nameLabel.hidden = true
+        }
         emailAddressLabel.text = viewModel.emailAddress
         memberSinceLabel.text = "Member Since 11/5/2015"
-        planNameLabel.text = "Co-working 3 Days per week"
+        planNameLabel.text = viewModel.planName
     }
     override func updateConstraints() {
         avatarView.snp_makeConstraints { (make) -> Void in

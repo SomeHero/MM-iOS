@@ -12,6 +12,7 @@
 		28790F6EE44EA913916FB2D4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFDDA6A1220B4260531E6A32 /* AVFoundation.framework */; };
 		2FCC09F802463F8BEEE81469 /* Pods_MemberMoose_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A19A1D3FFDA91DEA0456E431 /* Pods_MemberMoose_iOSTests.framework */; };
 		396A13AD4BAD38F102D4561D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9948E5FFC6283BE56C5EAD2C /* CoreMedia.framework */; };
+		4211D8BC1DB7288E0092F7C5 /* Membership.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8BB1DB7288E0092F7C5 /* Membership.swift */; };
 		42330B8F1DB3B694003BDDEC /* SharePlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */; };
 		42330B921DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */; };
 		42330B941DB3D5B5003BDDEC /* PaymentCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */; };
@@ -118,6 +119,7 @@
 		16DD0AEFCDFF0BA7F279FD5F /* Pods-MemberMoose-iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MemberMoose-iOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MemberMoose-iOSTests/Pods-MemberMoose-iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1F32ABB8242B94DBE1742861 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		30DA34FE4B9A105A776A6CA6 /* Pods_MemberMoose_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MemberMoose_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4211D8BB1DB7288E0092F7C5 /* Membership.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Membership.swift; path = Models/Membership.swift; sourceTree = "<group>"; };
 		42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharePlanViewController.swift; path = Plans/SharePlanViewController.swift; sourceTree = "<group>"; };
 		42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardTableViewCell.swift; path = Profile/PaymentCardTableViewCell.swift; sourceTree = "<group>"; };
 		42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardViewModel.swift; path = Profile/PaymentCardViewModel.swift; sourceTree = "<group>"; };
@@ -526,6 +528,7 @@
 				42F08C2F1DAC318F00D5D4E3 /* Plan.swift */,
 				42F08C311DAC31A300D5D4E3 /* Member.swift */,
 				42F08C3D1DAC68D000D5D4E3 /* Subscription.swift */,
+				4211D8BB1DB7288E0092F7C5 /* Membership.swift */,
 				42F08C3F1DAC693E00D5D4E3 /* PaymentCard.swift */,
 				42F08C411DAC695300D5D4E3 /* Transaction.swift */,
 				42F08C331DAC31B300D5D4E3 /* User.swift */,
@@ -905,6 +908,7 @@
 				426841471DA7A3EA00A2BFF8 /* ConnectStripeViewController.swift in Sources */,
 				4240B7511DA44671000D137E /* ViewController.swift in Sources */,
 				425013BC1DB08C2B00ED21B1 /* ImportPlanViewModel.swift in Sources */,
+				4211D8BC1DB7288E0092F7C5 /* Membership.swift in Sources */,
 				42F08C341DAC31B300D5D4E3 /* User.swift in Sources */,
 				4268416E1DA86DA700A2BFF8 /* MemberCell.swift in Sources */,
 				424D97D91DAD195500C8B674 /* PlanCell.swift in Sources */,

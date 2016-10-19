@@ -332,7 +332,7 @@ class MembersViewController: UIViewController {
             if(members!.count > 0) {
                 var viewModels: [MemberViewModel] = []
                 for member in members! {
-                    let viewModel = MemberViewModel(theMember: member)
+                    let viewModel = MemberViewModel(user: member)
                     
                     viewModels.append(viewModel)
                 }
@@ -351,24 +351,25 @@ class MembersViewController: UIViewController {
         reloadInputViews()
     }
     func showPlans() {
-        guard let user = SessionManager.sharedUser else {
-            return
-            
-        }
         plans.removeAll()
         resetEmptyStates()
         tableView.reloadData()
         
-        if(user.plans.count > 0) {
-            var viewModels: [PlanViewModel] = []
-            for plan in user.plans {
-                let viewModel = PlanViewModel(plan: plan)
-                
-                viewModels.append(viewModel)
+        ApiManager.sharedInstance.getPlans({ (plans) in
+            if(plans!.count > 0) {
+                var viewModels: [PlanViewModel] = []
+                for plan in plans! {
+                    let viewModel = PlanViewModel(plan: plan)
+                    
+                    viewModels.append(viewModel)
+                }
+                self.plans = viewModels
+            } else {
+                self.plansEmptyState.alpha = 1
             }
-            self.plans = viewModels
+        }) { (error, errorDictionary) in
+            print("error")
             
-        } else {
             self.plansEmptyState.alpha = 1
         }
         tableView.reloadData()
@@ -388,7 +389,10 @@ class MembersViewController: UIViewController {
         reloadInputViews()
     }
     func showProfile(sender: UIButton) {
-        let viewController = ProfileViewController()
+        guard let user = SessionManager.sharedUser else {
+            return
+        }
+        let viewController = ProfileViewController(user: user)
 
         presentViewController(viewController, animated: true, completion: nil)
     }
@@ -470,7 +474,7 @@ extension MembersViewController : UITableViewDelegate {
         case .Members:
             let viewModel = members[indexPath.item]
             
-            let viewController = MemberDetailViewController(member: viewModel.member)
+            let viewController = MemberDetailViewController(user: viewModel.user)
             
             navigationController?.pushViewController(viewController, animated: true)
         default:
@@ -501,12 +505,16 @@ extension MembersViewController : UITableViewDelegate {
         switch membershipNavigationState {
         case .Members:
             if members.count > 0 {
-                return 80
+                return 40
             } else {
                 return 0
             }
         case .Plans:
-            return 80
+            if plans.count > 0 {
+                return 40
+            } else {
+                return 0
+            }
         default:
             return 0
         }
@@ -628,15 +636,19 @@ class MembershipHeaderView: UIView {
         
         return _button
     }()
-    override func updateConstraints() {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         titleLabel.snp_updateConstraints { (make) in
-            make.top.bottom.leading.equalTo(self).inset(10)
+            make.bottom.leading.equalTo(self).inset(10)
         }
         addButton.snp_updateConstraints { (make) in
             make.leading.equalTo(titleLabel.snp_trailing).offset(10)
-            make.top.bottom.trailing.equalTo(self).inset(10)
+            make.bottom.trailing.equalTo(self).inset(10)
         }
-        super.updateConstraints()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     func setup(title: String) {
         titleLabel.text = title
@@ -697,7 +709,9 @@ class MembershipEmptyState: UIView {
         
         return _view
     }()
-    override func updateConstraints() {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
         containerView.snp_updateConstraints { (make) in
             make.center.equalTo(self)
             make.edges.equalTo(self).inset(20)
@@ -720,9 +734,10 @@ class MembershipEmptyState: UIView {
             make.leading.trailing.equalTo(containerView)
             make.bottom.equalTo(containerView).inset(20)
         }
-        super.updateConstraints()
     }
-    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     func setup(header: String, subHeader: String) {
         logo.image = UIImage(named: "Logo-DeadMoose")
         headerLabel.text = header

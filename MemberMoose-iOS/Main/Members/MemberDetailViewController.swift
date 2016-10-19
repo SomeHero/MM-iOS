@@ -12,7 +12,7 @@ import Kingfisher
 
 class MemberDetailViewController: UIViewController {
     private var memberNavigationState: MemberNavigationState = .Message
-    private let member: Member
+    private let user: User
     private let textInputBar = ALTextInputBar()
 
     private lazy var menuButton: UIButton = {
@@ -102,8 +102,8 @@ class MemberDetailViewController: UIViewController {
     override func canBecomeFirstResponder() -> Bool {
         return true
     }
-    init(member: Member) {
-        self.member = member
+    init(user: User) {
+        self.user = user
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -180,14 +180,16 @@ class MemberDetailViewController: UIViewController {
 //        } else {
             logo.image = UIImage(named: "Avatar-Calf")
         //}
-        companyNameLabel.text = member.emailAddress
-        subHeadingLabel.text = "Member Since \(member.memberCreated)"
+        companyNameLabel.text = user.emailAddress
+        subHeadingLabel.text = "Member Since ()"
     }
     func backClicked(button: UIButton) {
         navigationController?.popViewControllerAnimated(true)
     }
     func showProfile(button: UIButton) {
-        
+        let viewController = ProfileViewController(user: user)
+ 
+        presentViewController(viewController, animated: true, completion: nil)
     }
 }
 extension MemberDetailViewController: MemberNavigationDelegate {

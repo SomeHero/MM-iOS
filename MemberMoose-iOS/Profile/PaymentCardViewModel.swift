@@ -12,13 +12,15 @@ class PaymentCardViewModel:DataSourceItemProtocol {
     var cellID: String = "PaymentCardCell"
     var cellClass: UITableViewCell.Type = SubscriptionCell.self
     
-    let nameOnCard: String
+    var nameOnCard: String?
     let cardDescription: String
     let cardExpiration: String
     
     init(paymentCard: PaymentCard) {
-        nameOnCard = paymentCard.nameOnCard
-        cardDescription = "Discover ending in \(paymentCard.cardLastFour)"
+        if let name = paymentCard.nameOnCard {
+            nameOnCard = name
+        }
+        cardDescription = "\(paymentCard.brand) ending in \(paymentCard.cardLastFour)"
         cardExpiration = "Expiration: \(paymentCard.expirationMonth)/\(paymentCard.expirationYear)"
     }
     init(nameOnCard: String, cardDescription: String, cardExpiration: String) {
