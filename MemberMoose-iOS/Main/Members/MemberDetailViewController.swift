@@ -189,7 +189,10 @@ class MemberDetailViewController: UIViewController {
     func showProfile(button: UIButton) {
         let viewController = ProfileViewController(user: user, profileType: .calf)
  
-        presentViewController(viewController, animated: true, completion: nil)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.navigationBarHidden = true
+        
+        presentViewController(navigationController, animated: true, completion: nil)
     }
 }
 extension MemberDetailViewController: MemberNavigationDelegate {

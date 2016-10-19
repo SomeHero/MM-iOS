@@ -17,6 +17,8 @@
 		4211D8C21DB7AA3C0092F7C5 /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8C11DB7AA3C0092F7C5 /* MenuItemCell.swift */; };
 		4211D8C41DB7AF570092F7C5 /* MenuHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8C31DB7AF570092F7C5 /* MenuHeaderCell.swift */; };
 		4211D8C61DB7AF700092F7C5 /* MenuHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8C51DB7AF700092F7C5 /* MenuHeaderViewModel.swift */; };
+		4211D8C81DB7F0F60092F7C5 /* BullProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8C71DB7F0F60092F7C5 /* BullProfileViewController.swift */; };
+		4211D8CA1DB7FA1F0092F7C5 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8C91DB7FA1F0092F7C5 /* UserProfileViewController.swift */; };
 		42330B8F1DB3B694003BDDEC /* SharePlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */; };
 		42330B921DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */; };
 		42330B941DB3D5B5003BDDEC /* PaymentCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */; };
@@ -128,6 +130,8 @@
 		4211D8C11DB7AA3C0092F7C5 /* MenuItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuItemCell.swift; path = Menu/MenuItemCell.swift; sourceTree = "<group>"; };
 		4211D8C31DB7AF570092F7C5 /* MenuHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuHeaderCell.swift; path = Menu/MenuHeaderCell.swift; sourceTree = "<group>"; };
 		4211D8C51DB7AF700092F7C5 /* MenuHeaderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuHeaderViewModel.swift; path = Menu/MenuHeaderViewModel.swift; sourceTree = "<group>"; };
+		4211D8C71DB7F0F60092F7C5 /* BullProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BullProfileViewController.swift; path = Profile/BullProfileViewController.swift; sourceTree = "<group>"; };
+		4211D8C91DB7FA1F0092F7C5 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserProfileViewController.swift; path = Profile/UserProfileViewController.swift; sourceTree = "<group>"; };
 		42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharePlanViewController.swift; path = Plans/SharePlanViewController.swift; sourceTree = "<group>"; };
 		42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardTableViewCell.swift; path = Profile/PaymentCardTableViewCell.swift; sourceTree = "<group>"; };
 		42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardViewModel.swift; path = Profile/PaymentCardViewModel.swift; sourceTree = "<group>"; };
@@ -352,20 +356,18 @@
 		4240B74D1DA44671000D137E /* MemberMoose-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				42330B991DB3DDB8003BDDEC /* Formatters */,
-				42330B8D1DB3B64D003BDDEC /* Plans */,
 				4255B4011DAF3509008DECAC /* MemberMoose-iOS.entitlements */,
 				426841641DA86CD400A2BFF8 /* Decorators */,
 				429F62DB1DA6DD3300C3F54E /* Design */,
 				42F08C351DAC34C700D5D4E3 /* Extensions */,
+				42330B991DB3DDB8003BDDEC /* Formatters */,
 				4240B77E1DA6C8B3000D137E /* Join */,
 				426841481DA7A77A00A2BFF8 /* Main */,
 				42F08C291DABBD7E00D5D4E3 /* Managers */,
 				426841531DA7DDA300A2BFF8 /* Menu */,
 				42F08C2E1DABE1FB00D5D4E3 /* Models */,
-				42F08C461DACAA2100D5D4E3 /* PaymentMethods */,
+				42330B8D1DB3B64D003BDDEC /* Plans */,
 				42F08C381DAC5E4200D5D4E3 /* Profile */,
-				42F08C451DACAA0600D5D4E3 /* Subscriptions */,
 				42F08C471DACAA3300D5D4E3 /* Transactions */,
 				429F62FB1DA6E07300C3F54E /* Views */,
 				4240B74E1DA44671000D137E /* AppDelegate.swift */,
@@ -580,22 +582,10 @@
 				424D97D51DAD0FAB00C8B674 /* Cells */,
 				42330B901DB3D47F003BDDEC /* ViewModels */,
 				42F08C3B1DAC5EE600D5D4E3 /* ProfileViewController.swift */,
+				4211D8C71DB7F0F60092F7C5 /* BullProfileViewController.swift */,
+				4211D8C91DB7FA1F0092F7C5 /* UserProfileViewController.swift */,
 			);
 			name = Profile;
-			sourceTree = "<group>";
-		};
-		42F08C451DACAA0600D5D4E3 /* Subscriptions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Subscriptions;
-			sourceTree = "<group>";
-		};
-		42F08C461DACAA2100D5D4E3 /* PaymentMethods */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = PaymentMethods;
 			sourceTree = "<group>";
 		};
 		42F08C471DACAA3300D5D4E3 /* Transactions */ = {
@@ -961,6 +951,7 @@
 				4268415A1DA7EEBD00A2BFF8 /* CalculatorKeyboard.swift in Sources */,
 				429F62EE1DA6DDA700C3F54E /* UIFontTheme.swift in Sources */,
 				4268414C1DA7A8A500A2BFF8 /* RecentTransactionsViewController.swift in Sources */,
+				4211D8CA1DB7FA1F0092F7C5 /* UserProfileViewController.swift in Sources */,
 				42330B8F1DB3B694003BDDEC /* SharePlanViewController.swift in Sources */,
 				4240B7821DA6C903000D137E /* JoinViewController.swift in Sources */,
 				42330B981DB3D89C003BDDEC /* PaymentHistoryViewModel.swift in Sources */,
@@ -979,6 +970,7 @@
 				42F08C3C1DAC5EE600D5D4E3 /* ProfileViewController.swift in Sources */,
 				42F08C2B1DABBDA100D5D4E3 /* ApiManager.swift in Sources */,
 				42330B941DB3D5B5003BDDEC /* PaymentCardViewModel.swift in Sources */,
+				4211D8C81DB7F0F60092F7C5 /* BullProfileViewController.swift in Sources */,
 				426841711DA875B100A2BFF8 /* RecentTransactionsCell.swift in Sources */,
 				424D97DD1DAD233500C8B674 /* PlanDetailViewController.swift in Sources */,
 				424D97DB1DAD198B00C8B674 /* PlanViewModel.swift in Sources */,

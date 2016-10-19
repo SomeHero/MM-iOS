@@ -13,13 +13,17 @@ class MenuHeaderViewModel:DataSourceItemProtocol {
     var cellClass: UITableViewCell.Type = MenuItemCell.self
     
     let avatar: String
-    let name: String
+    var name: String?
     let emailAddress: String
+    var menuHeaderDelegate: MenuHeaderDelegate?
     
-    init(user: User) {
+    init(user: User, menuHeaderDelegate: MenuHeaderDelegate?) {
         self.avatar = "Avatar-Bull"
-        self.name = "Larkin Garbee"
+        if let firstName = user.firstName, lastName = user.lastName {
+            self.name = "\(firstName) \(lastName)"
+        }
         self.emailAddress = user.emailAddress
+        self.menuHeaderDelegate = menuHeaderDelegate
     }
     @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier("MenuHeaderCellIdentifier", forIndexPath: indexPath) as? MenuHeaderCell else {
@@ -27,6 +31,7 @@ class MenuHeaderViewModel:DataSourceItemProtocol {
         }
         
         cell.setupWith(self)
+        cell.delegate = menuHeaderDelegate
         
         return cell
     }

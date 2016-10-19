@@ -52,7 +52,7 @@ class ProfileViewController: UIViewController {
     private lazy var settingsButton: UIButton = {
         let _button = UIButton()
         _button.setImage(UIImage(named:"Edit"), forState: .Normal)
-        _button.addTarget(self, action: #selector(ProfileViewController.showProfile(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(ProfileViewController.editProfileClicked(_:)), forControlEvents: .TouchUpInside)
         
         self.view.addSubview(_button)
         
@@ -143,6 +143,11 @@ class ProfileViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -222,8 +227,20 @@ class ProfileViewController: UIViewController {
     func backClicked(button: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
     }
-    func showProfile(button: UIButton) {
-        
+    func editProfileClicked(button: UIButton) {
+        switch profileType {
+        case .bull:
+            let viewController = BullProfileViewController(user: user)
+            
+            navigationController?.navigationBarHidden = false
+            navigationController?.pushViewController(viewController, animated: true)
+        case .calf:
+            let viewController = UserProfileViewController(user: user, profileType: .bull)
+            viewController.delegate = self
+            
+            navigationController?.navigationBarHidden = false
+            navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     func buildDataSet() {
         var subscriptionViewModels: [SubscriptionViewModel] = []
@@ -306,5 +323,10 @@ extension ProfileViewController : UITableViewDelegate {
     }
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return CGFloat.min
+    }
+}
+extension ProfileViewController: UserProfileDelegate {
+    func didClickBack() {
+        navigationController?.popViewControllerAnimated(true)
     }
 }

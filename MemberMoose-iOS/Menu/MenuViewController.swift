@@ -56,7 +56,7 @@ class MenuViewController: UIViewController {
         guard let user = SessionManager.sharedUser else {
             return
         }
-        let headerViewModel = MenuHeaderViewModel(user: user)
+        let headerViewModel = MenuHeaderViewModel(user: user, menuHeaderDelegate: self)
         dataSource.append([headerViewModel])
         
         var viewModels: [MenuItemViewModel] = []
@@ -134,5 +134,23 @@ extension MenuViewController : UITableViewDelegate {
         if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
             delegate.swRevealViewController?.revealToggleAnimated(true)
         }
+    }
+}
+extension MenuViewController: MenuHeaderDelegate {
+    func didEditProfile() {
+        guard let user = SessionManager.sharedUser else {
+            return
+        }
+        
+        let viewController = UserProfileViewController(user: user, profileType: .bull)
+        viewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: viewController)
+        
+        presentViewController(navigationController, animated: true, completion: nil)
+    }
+}
+extension MenuViewController: UserProfileDelegate {
+    func didClickBack() {
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }

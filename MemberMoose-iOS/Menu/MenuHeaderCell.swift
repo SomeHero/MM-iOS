@@ -8,8 +8,12 @@
 
 import UIKit
 
+protocol MenuHeaderDelegate: class {
+    func didEditProfile()
+}
 class MenuHeaderCell: UITableViewCell {
-
+    weak var delegate: MenuHeaderDelegate?
+    
     private lazy var containerView: UIView = {
         let _view = UIView()
         
@@ -17,32 +21,48 @@ class MenuHeaderCell: UITableViewCell {
         
         return _view
     }()
+    private lazy var settingsButton: UIButton = {
+        let _button = UIButton()
+        _button.setImage(UIImage(named:"Edit-Grey"), forState: .Normal)
+        _button.addTarget(self, action: #selector(MenuHeaderCell.editProfileClicked(_:)), forControlEvents: .TouchUpInside)
+        
+        self.containerView.addSubview(_button)
+        
+        return _button
+    }()
     private lazy var avatarView: UIImageView = {
         let imageView = UIImageView()
-        imageView.layer.cornerRadius = 60 / 2
+        imageView.layer.cornerRadius = 50 / 2
         imageView.clipsToBounds = true
         
         self.containerView.addSubview(imageView)
         
         return imageView
     }()
+    private lazy var innerContainerView: UIView = {
+        let _view = UIView()
+        
+        self.containerView.addSubview(_view)
+        
+        return _view
+    }()
     private lazy var nameLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Default)
+        _label.font = UIFontTheme.Regular(.Small)
         _label.textColor = UIColorTheme.SecondaryFont
         _label.numberOfLines = 0
         
-        self.containerView.addSubview(_label)
+        self.innerContainerView.addSubview(_label)
         
         return _label
     }()
     private lazy var emailLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Bold(.Tiny)
+        _label.font = UIFontTheme.Bold(.XTiny)
         _label.textColor = UIColorTheme.SecondaryFont
         _label.numberOfLines = 0
         
-        self.containerView.addSubview(_label)
+        self.innerContainerView.addSubview(_label)
         
         return _label
     }()
@@ -73,18 +93,26 @@ class MenuHeaderCell: UITableViewCell {
         avatarView.snp_updateConstraints { (make) in
             make.leading.equalTo(containerView)
             make.centerY.equalTo(containerView)
-            make.height.width.equalTo(60)
+            make.height.width.equalTo(50)
+        }
+        innerContainerView.snp_updateConstraints { (make) in
+            make.leading.equalTo(avatarView.snp_trailing).offset(10)
+            make.top.bottom.equalTo(containerView).inset(20)
         }
         nameLabel.snp_updateConstraints { (make) in
-            make.leading.equalTo(avatarView.snp_trailing).offset(20)
-            make.trailing.equalTo(containerView)
-            make.top.equalTo(containerView).inset(20)
+            make.leading.trailing.equalTo(innerContainerView)
+            make.top.equalTo(innerContainerView)
         }
         emailLabel.snp_updateConstraints { (make) in
-            make.leading.equalTo(avatarView.snp_trailing).offset(20)
-            make.trailing.equalTo(containerView)
+            make.leading.trailing.equalTo(innerContainerView)
             make.top.equalTo(nameLabel.snp_bottom)
-            make.bottom.equalTo(containerView).inset(20)
+            make.bottom.equalTo(innerContainerView)
+        }
+        settingsButton.snp_updateConstraints { (make) in
+            make.leading.equalTo(innerContainerView.snp_trailing).offset(10)
+            make.trailing.equalTo(containerView).inset(10)
+            make.centerY.equalTo(containerView)
+            make.height.width.equalTo(20)
         }
         super.updateConstraints()
     }
@@ -94,8 +122,17 @@ class MenuHeaderCell: UITableViewCell {
     func setupWith(viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? MenuHeaderViewModel {
             avatarView.image = UIImage(named: viewModel.avatar)
-            nameLabel.text = viewModel.name.uppercaseString
+            if let name = viewModel.name {
+                nameLabel.hidden = false
+                nameLabel.text = name
+            } else {
+                nameLabel.hidden = true
+            }
             emailLabel.text = viewModel.emailAddress
+            delegate = viewModel.menuHeaderDelegate
         }
+    }
+    func editProfileClicked(sender: UIButton) {
+        delegate?.didEditProfile()
     }
 }

@@ -393,8 +393,10 @@ class MembersViewController: UIViewController {
             return
         }
         let viewController = ProfileViewController(user: user, profileType: .bull)
-
-        presentViewController(viewController, animated: true, completion: nil)
+        let navigationController = UINavigationController(rootViewController: viewController);
+        navigationController.navigationBarHidden = true
+        
+        presentViewController(navigationController, animated: true, completion: nil)
     }
     private func resetEmptyStates() {
         membersEmptyState.alpha = 0
