@@ -24,10 +24,12 @@ public class User: Mappable {
     //public var createdAt: NSDate!
     //public var updatedAt: NSDate?
     
-    public init(userId: String, companyName: String, emailAddress: String) {
+    public init(userId: String, companyName: String, emailAddress: String, firstName: String? = nil, lastName: String? = nil) {
         self.id = userId
         self.companyName = companyName
         self.emailAddress = emailAddress
+        self.firstName = firstName
+        self.lastName = lastName
     }
     public required init?(_ map: Map){
         mapping(map)

@@ -174,12 +174,12 @@ class MemberDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     func setup() {
-//        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
-//            logo.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
-//                                    placeholderImage: UIImage(named: "MissingAvatar-Bull"))
-//        } else {
+        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
+            logo.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
+                                    placeholderImage: UIImage(named: "Avatar-Calf"))
+        } else {
             logo.image = UIImage(named: "Avatar-Calf")
-        //}
+        }
         companyNameLabel.text = user.emailAddress
         subHeadingLabel.text = "Member Since ()"
     }

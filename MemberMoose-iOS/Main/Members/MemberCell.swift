@@ -83,7 +83,12 @@ class MemberCell: UITableViewCell {
         
     }
     func setupWith(viewModel: MemberViewModel) {
-        avatarView.image = UIImage(named: "Avatar-Calf")
+        if let avatarImageUrl = viewModel.avatarUrl {
+            avatarView.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
+                                          placeholderImage: UIImage(named: viewModel.avatar))
+        } else {
+            avatarView.image = UIImage(named: viewModel.avatar)
+        }
         if let name = viewModel.memberName {
             nameLabel.hidden = false
             nameLabel.text = name

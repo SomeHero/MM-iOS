@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 protocol UserProfileDelegate: class {
     func didClickBack()
@@ -175,35 +176,28 @@ class UserProfileViewController: UIViewController {
         delegate?.didClickBack()
     }
     func nextClicked(sender: UIButton) {
-        guard let companyName = firstNameTextField.textField.text, subDomain = lastNameTextField.textField.text else {
+        guard let firstName = firstNameTextField.textField.text, lastName = lastNameTextField.textField.text, emailAddress = emailAddressTextField.textField.text else {
             return
         }
-        //        let createUser = CreateUser(emailAddress: emailAddress, password: password, companyName: companyName, avatar: avatar)
-        //
-        //        SVProgressHUD.show()
-        //
-        //        ApiManager.sharedInstance.createUser(createUser, success: { (userId, token) in
-        //            SessionManager.sharedInstance.setToken(token)
-        //
-        //            ApiManager.sharedInstance.me({ (response) in
-        //                SVProgressHUD.dismiss()
-        //
-        //                SessionManager.sharedUser = response
-        //                SessionManager.persistUser()
-        //
-        //                let viewController = CreateFirstPlanViewController()
-        //
-        //                self.navigationController?.pushViewController(viewController, animated: true)
-        //                }, failure: { (error, errorDictionary) in
-        //                    print("error occurred")
-        //
-        //                    SVProgressHUD.dismiss()
-        //            })
-        //        }) { (error, errorDictionary) in
-        //            print("error occurred")
-        //
-        //            SVProgressHUD.dismiss()
-        //        }
+        var updateUser = UpdateUser(userId: user.id, firstName: firstName, lastName: lastName, emailAddress: emailAddress, avatar: avatar)
+        
+        SVProgressHUD.show()
+
+        ApiManager.sharedInstance.updateUser(updateUser, success: { [weak self] (response) in
+            SVProgressHUD.dismiss()
+            
+            guard let _self = self else {
+                return
+            }
+            SessionManager.sharedUser = response
+            SessionManager.persistUser()
+
+            _self.delegate?.didClickBack()
+        }) { (error, errorDictionary) in
+            print("error occurred")
+            
+            SVProgressHUD.dismiss()
+        }
     }
     func configureTextField(textField: UITextField) {
         textField.returnKeyType = .Next

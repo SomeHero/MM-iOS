@@ -56,6 +56,12 @@ class SessionManager: NSObject {
         if let avatar = user.avatar {
             userDefaults.setValue(avatar, forKey: "avatar")
         }
+        if let firstName = user.firstName {
+            userDefaults.setValue(firstName, forKey: "first_name")
+        }
+        if let lastName = user.lastName {
+            userDefaults.setValue(lastName, forKey: "last_name")
+        }
         
         userDefaults.synchronize()
     }
@@ -68,8 +74,10 @@ class SessionManager: NSObject {
         let companyName = userDefaults.stringForKey("company_name")!
         let emailAddress = userDefaults.stringForKey("email_address")!
         let avatar = userDefaults.valueForKey("avatar")
+        let firstName = userDefaults.stringForKey("first_name")
+        let lastName = userDefaults.stringForKey("last_name")
         
-        let user = User(userId: id, companyName: companyName, emailAddress: emailAddress)
+        let user = User(userId: id, companyName: companyName, emailAddress: emailAddress, firstName: firstName, lastName: lastName)
         
         if let avatar = avatar as? Dictionary<String, String> {
             user.avatar = avatar

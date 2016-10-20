@@ -13,12 +13,16 @@ class MenuHeaderViewModel:DataSourceItemProtocol {
     var cellClass: UITableViewCell.Type = MenuItemCell.self
     
     let avatar: String
+    var avatarUrl: String?
     var name: String?
     let emailAddress: String
     var menuHeaderDelegate: MenuHeaderDelegate?
     
     init(user: User, menuHeaderDelegate: MenuHeaderDelegate?) {
         self.avatar = "Avatar-Bull"
+        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
+            avatarUrl = avatarImageUrl
+        }
         if let firstName = user.firstName, lastName = user.lastName {
             self.name = "\(firstName) \(lastName)"
         }

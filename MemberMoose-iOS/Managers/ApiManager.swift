@@ -51,6 +51,34 @@ public struct CreateUser {
         return parameters
     }
 }
+public struct UpdateUser {
+    let userId: String
+    let firstName: String
+    let lastName: String
+    let emailAddress: String
+    var password: String?
+    let avatar: UIImage?
+    
+    public init(userId: String, firstName: String, lastName: String, emailAddress: String, avatar: UIImage? = nil) {
+        self.userId = userId
+        self.firstName = firstName
+        self.lastName = lastName
+        self.emailAddress = emailAddress
+        self.avatar = avatar
+    }
+    func parameterize() -> [String : AnyObject] {
+        var parameters = [
+            "first_name": firstName,
+            "last_name": lastName,
+            "email_address": emailAddress,
+            ]
+        if let password = password {
+            parameters["password"] = password
+        }
+        
+        return parameters
+    }
+}
 public struct ConnectStripe {
     let userId: String
     let stripeParams: [String: AnyObject]
@@ -176,6 +204,54 @@ public class ApiManager {
                 }
         })
     }
+    public func updateUser(updateUser: UpdateUser, success: (response: User) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+        let params = updateUser.parameterize()
+
+        Alamofire.upload(.PUT,  apiBaseUrl + "users/\(updateUser.userId)", headers: headers, multipartFormData: {
+            multipartFormData in
+            
+            if let avatar = updateUser.avatar, imageData = UIImageJPEGRepresentation(avatar, 1.0) {
+                multipartFormData.appendBodyPart(data: imageData, name: "file", fileName: "file.png", mimeType: "image/png")
+            }
+            
+            for (key, value) in params {
+                multipartFormData.appendBodyPart(data: value.dataUsingEncoding(NSUTF8StringEncoding)!, name: key)
+            }
+        },  encodingCompletion: {
+            encodingResult in
+            
+            switch encodingResult {
+            case .Success(let upload, _, _):
+                upload
+                    .validate()
+                    .responseObject { (response: Response<User, NSError>) in
+                        if let error = response.result.error {
+                            var errorResponse: [String: AnyObject]? = [:]
+                            
+                            if let data = response.data {
+                                do {
+                                    errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                                } catch let error as NSError {
+                                    failure(error: error, errorDictionary: nil)
+                                } catch let error {
+                                    failure(error: error, errorDictionary: nil)
+                                }
+                                failure(error: error, errorDictionary: errorResponse)
+                            } else {
+                                failure(error: error, errorDictionary: nil)
+                            }
+                        }
+                        if let user = response.result.value {
+                            success(response: user)
+                        } else {
+                            failure(error: nil, errorDictionary: nil)
+                        }
+                }
+            case .Failure(let encodingError):
+                print(encodingError)
+            }
+        })
+    }
     public func me(success: (response: User) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
         Alamofire.request(.GET,  apiBaseUrl + "me", parameters: nil, encoding: .JSON, headers: headers)
             .validate()
@@ -258,7 +334,6 @@ public class ApiManager {
                     success(response: user)
                 }
         }
-        
     }
     public func getPlans(success: (response: [Plan]?) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
         Alamofire.request(.GET,  apiBaseUrl + "plans", parameters: nil, encoding: .JSON, headers: headers)

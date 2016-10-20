@@ -121,7 +121,12 @@ class MenuHeaderCell: UITableViewCell {
     }
     func setupWith(viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? MenuHeaderViewModel {
-            avatarView.image = UIImage(named: viewModel.avatar)
+            if let avatarImageUrl = viewModel.avatarUrl {
+                avatarView.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
+                                                           placeholderImage: UIImage(named: viewModel.avatar))
+            } else {
+                avatarView.image = UIImage(named: viewModel.avatar)
+            }
             if let name = viewModel.name {
                 nameLabel.hidden = false
                 nameLabel.text = name

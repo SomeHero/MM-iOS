@@ -13,6 +13,8 @@ class MemberViewModel {
     var cellClass: UITableViewCell.Type = MemberCell.self
     
     let user: User
+    let avatar: String
+    var avatarUrl: String?
     let userId: String
     var memberName: String?
     let emailAddress: String
@@ -21,6 +23,10 @@ class MemberViewModel {
     
     init(user: User) {
         self.user = user
+        self.avatar = "Avatar-Calf"
+        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
+            avatarUrl = avatarImageUrl
+        }
         userId = user.id
         if let firstName = user.firstName, lastName = user.lastName {
             memberName = "\(firstName) \(lastName)"
