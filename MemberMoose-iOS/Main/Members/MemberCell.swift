@@ -82,7 +82,10 @@ class MemberCell: UITableViewCell {
         super.prepareForReuse()
         
     }
-    func setupWith(viewModel: MemberViewModel) {
+    func setupWith(viewModel: DataSourceItemProtocol) {
+        guard let viewModel = viewModel as? MemberViewModel else {
+            return
+        }
         if let avatarImageUrl = viewModel.avatarUrl {
             avatarView.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
                                           placeholderImage: UIImage(named: viewModel.avatar))

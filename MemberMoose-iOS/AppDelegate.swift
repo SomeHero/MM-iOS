@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             ApiManager.sharedInstance.token = token
             
-            let viewController = MembersViewController()
+            let viewController = ProfileViewController(user: user, profileType: .bull)
             let navigationController = UINavigationController(rootViewController: viewController)
             navigationController.navigationBarHidden = true
             

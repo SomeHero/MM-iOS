@@ -33,7 +33,10 @@ class ProfileViewController: UIViewController {
     private let paymentCardCellIdentifier       = "PaymentCardCellIdentifier"
     private let paymentHistoryCellIdentifier       = "PaymentHistoryCellIdentifier"
     private let chargeCellIdentifier            = "ChargeCellIdentifier"
+    private let memberCellIdentifier            = "MemberCellIdentifier"
+    private let planCellIdentifier              = "PlanCellIdentifier"
     private let tableCellHeight: CGFloat        = 120
+    private var membershipNavigationState: MembershipNavigationState = .Members
     private var memberNavigationState: MemberNavigationState = .Profile
     private let textInputBar = ALTextInputBar()
     weak var profileDelegate: ProfileDelegate?
@@ -100,7 +103,11 @@ class ProfileViewController: UIViewController {
     }
     private lazy var menuButton: UIButton = {
         let _button = UIButton()
-        _button.setImage(UIImage(named:"Back-Reverse"), forState: .Normal)
+        if let navigationController = self.navigationController where navigationController.viewControllers.count > 1 {
+            _button.setImage(UIImage(named:"Back-Reverse"), forState: .Normal)
+        } else {
+            _button.setImage(UIImage(named:"Menu"), forState: .Normal)
+        }
         _button.addTarget(self, action: #selector(ProfileViewController.backClicked(_:)), forControlEvents: .TouchUpInside)
         
         self.view.addSubview(_button)
@@ -135,6 +142,8 @@ class ProfileViewController: UIViewController {
         _tableView.registerClass(PaymentCardTableViewCell.self, forCellReuseIdentifier: self.paymentCardCellIdentifier)
         _tableView.registerClass(PaymentHistoryTableViewCell.self, forCellReuseIdentifier: self.paymentHistoryCellIdentifier)
         _tableView.registerClass(ChargeCell.self, forCellReuseIdentifier: self.chargeCellIdentifier)
+        _tableView.registerClass(MemberCell.self, forCellReuseIdentifier: self.memberCellIdentifier)
+        _tableView.registerClass(PlanCell.self, forCellReuseIdentifier: self.planCellIdentifier)
 
         self.view.addSubview(_tableView)
         return _tableView
@@ -180,6 +189,9 @@ class ProfileViewController: UIViewController {
         title = "Profile"
         view.backgroundColor = .whiteColor()
 
+        configureRevealControllerGestures(view)
+        configureRevealWidth()
+        
         buildDataSet()
 
         setup()
@@ -235,89 +247,131 @@ class ProfileViewController: UIViewController {
             }
         }
     }
-    func backClicked(button: UIButton) {
-        profileDelegate?.didBackClicked()
-    }
-    func editProfileClicked(button: UIButton) {
+    func backClicked(sender: UIButton) {
         switch profileType {
         case .bull:
-            let viewController = BullProfileViewController(user: user)
-            
-            navigationController?.navigationBarHidden = false
-            navigationController?.pushViewController(viewController, animated: true)
+            toggleMenu(sender)
         case .calf:
-            let viewController = UserProfileViewController(user: user, profileType: .bull)
-            viewController.delegate = self
-            
-            navigationController?.navigationBarHidden = false
-            navigationController?.pushViewController(viewController, animated: true)
+            navigationController?.popViewControllerAnimated(true)
         }
+    }
+    func editProfileClicked(button: UIButton) {
+        let viewController = UserProfileViewController(user: user, profileType: .bull)
+        viewController.delegate = self
+        
+        let navigationController = UINavigationController(rootViewController: viewController)
+
+        presentViewController(navigationController, animated: true, completion: nil)
     }
     func buildDataSet() {
         var items: [[DataSourceItemProtocol]] = []
         
         switch profileType {
         case .bull:
-            let profileHeaderViewModel = ProfileHeaderViewModel(user: user)
+            let profileHeaderViewModel = ProfileHeaderViewModel(user: user, membershipNavigationState: membershipNavigationState, membershipNavigationDelegate: self)
             
             items.append([profileHeaderViewModel])
+            
+            switch membershipNavigationState {
+            case .Members:
+                    ApiManager.sharedInstance.getMembers({ [weak self] (members) in
+                        guard let _self = self else {
+                            return
+                        }
+                        if(members!.count > 0) {
+                            var viewModels: [MemberViewModel] = []
+                            for member in members! {
+                                let viewModel = MemberViewModel(user: member)
+                                
+                                viewModels.append(viewModel)
+                            }
+                            items.append(viewModels)
+                            
+                            _self.dataSource = items
+                        }
+                    }) { (error, errorDictionary) in
+                        print("error")
+                }
+            case .Plans:
+                ApiManager.sharedInstance.getPlans({ [weak self] (plans) in
+                    guard let _self = self else {
+                        return
+                    }
+                    if(plans!.count > 0) {
+                        var viewModels: [PlanViewModel] = []
+                        for plan in plans! {
+                            let viewModel = PlanViewModel(plan: plan)
+                            
+                            viewModels.append(viewModel)
+                        }
+                        items.append(viewModels)
+                        
+                        _self.dataSource = items
+                    }
+                }) { (error, errorDictionary) in
+                    print("error")
+                }
+            case .Messages:
+                break
+            }
         case .calf:
             let calfProfileHeaderViewModel = CalfProfileHeaderViewModel(user: user, memberNavigationState: memberNavigationState, memberNavigationDelegate: self)
             
             items.append([calfProfileHeaderViewModel])
+            
+            switch memberNavigationState {
+            case .Profile:
+                var subscriptionViewModels: [SubscriptionViewModel] = []
+                for membership in user.memberships {
+                    if let subscription = membership.subscription {
+                        let subscriptionViewModel = SubscriptionViewModel(subscription: subscription)
+                        subscriptionViewModels.append(subscriptionViewModel)
+                    }
+                }
+                items.append(subscriptionViewModels)
+                
+                var paymentCardViewModels: [PaymentCardViewModel] = []
+                for paymentCard in user.paymentCards {
+                    let paymentCardViewModel = PaymentCardViewModel(paymentCard: paymentCard)
+                    
+                    paymentCardViewModels.append(paymentCardViewModel)
+                    
+                }
+                
+                items.append(paymentCardViewModels)
+                
+                var paymentHistoryViewModels: [PaymentHistoryViewModel] = []
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+                items.append(paymentHistoryViewModels)
+            case .Charge:
+                let remainingHeight = view.frame.size.height - tableView.visibleCells[0].frame.size.height
+                
+                let viewModel = ChargeViewModel(totalCellHeight: remainingHeight)
+                
+                items.append([viewModel])
+            default:
+                break
+                
+            }
         }
         
-        switch memberNavigationState {
-        case .Profile:
-            var subscriptionViewModels: [SubscriptionViewModel] = []
-            for membership in user.memberships {
-                if let subscription = membership.subscription {
-                    let subscriptionViewModel = SubscriptionViewModel(subscription: subscription)
-                    subscriptionViewModels.append(subscriptionViewModel)
-                }
-            }
-            items.append(subscriptionViewModels)
-            
-            var paymentCardViewModels: [PaymentCardViewModel] = []
-            for paymentCard in user.paymentCards {
-                let paymentCardViewModel = PaymentCardViewModel(paymentCard: paymentCard)
-                
-                paymentCardViewModels.append(paymentCardViewModel)
-                
-            }
-            
-            items.append(paymentCardViewModels)
-            
-            var paymentHistoryViewModels: [PaymentHistoryViewModel] = []
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-            items.append(paymentHistoryViewModels)
-        case .Charge:
-            let remainingHeight = view.frame.size.height - tableView.visibleCells[0].frame.size.height
-            
-            let viewModel = ChargeViewModel(totalCellHeight: remainingHeight)
-            
-            items.append([viewModel])
-        default:
-            break
-
-        }
         dataSource = items
     }
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -360,6 +414,40 @@ extension ProfileViewController : UITableViewDataSource {
 }
 
 extension ProfileViewController : UITableViewDelegate {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        let dataItems = dataSource[indexPath.section]
+        
+        switch profileType {
+        case .calf:
+            break
+        case .bull:
+            switch membershipNavigationState {
+            case .Members:
+                guard let viewModel = dataItems[indexPath.item] as? MemberViewModel else {
+                    return
+                }
+                
+                let viewController = ProfileViewController(user: viewModel.user, profileType: .calf)
+                //viewController.profileDelegate = self
+                
+                navigationController?.pushViewController(viewController, animated: true)
+                
+            //profileType = .calf
+            case .Plans:
+                guard let viewModel = dataItems[indexPath.item] as? PlanViewModel else {
+                    return
+                }
+                
+                let viewController = PlanDetailViewController()
+                
+                navigationController?.pushViewController(viewController, animated: true)
+            case .Messages:
+                break;
+            }
+        }
+    }
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let dataItems = dataSource[section]
         
@@ -388,7 +476,7 @@ extension ProfileViewController : UITableViewDelegate {
 }
 extension ProfileViewController: UserProfileDelegate {
     func didClickBack() {
-        navigationController?.popViewControllerAnimated(true)
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }
 extension ProfileViewController: MemberNavigationDelegate {
@@ -415,6 +503,38 @@ extension ProfileViewController: MemberNavigationDelegate {
     func chargeClicked() {
         memberNavigationState = .Charge
         //memberNavigation.setSelectedButton(memberNavigationState)
+        
+        handleNavHeaderScrollingWithOffset(0)
+        buildDataSet()
+        
+        view.resignFirstResponder()
+        reloadInputViews()
+    }
+}
+extension ProfileViewController: MembershipNavigationDelegate {
+    func membersClicked() {
+        membershipNavigationState = .Members
+        //membershipNavigation.setSelectedButton(membershipNavigationState)
+        
+        handleNavHeaderScrollingWithOffset(0)
+        buildDataSet()
+        
+        view.resignFirstResponder()
+        reloadInputViews()
+    }
+    func plansClicked() {
+        membershipNavigationState = .Plans
+        //membershipNavigation.setSelectedButton(membershipNavigationState)
+        
+        handleNavHeaderScrollingWithOffset(0)
+        buildDataSet()
+        
+        view.resignFirstResponder()
+        reloadInputViews()
+    }
+    func messagesClicked() {
+        membershipNavigationState = .Messages
+        //membershipNavigation.setSelectedButton(membershipNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)
         buildDataSet()

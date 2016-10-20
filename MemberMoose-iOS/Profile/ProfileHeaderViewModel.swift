@@ -15,13 +15,17 @@ class ProfileHeaderViewModel:DataSourceItemProtocol {
     let avatar: String
     var avatarImageUrl: String?
     let companyName: String?
+    let membershipNavigationState: MembershipNavigationState
+    let membershipNavigationDelegate: MembershipNavigationDelegate?
     
-    init(user: User) {
+    init(user: User, membershipNavigationState: MembershipNavigationState, membershipNavigationDelegate: MembershipNavigationDelegate? = nil) {
         self.avatar = "Avatar-Bull"
         if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
             self.avatarImageUrl = avatarImageUrl
         }
         self.companyName = user.companyName
+        self.membershipNavigationState = membershipNavigationState
+        self.membershipNavigationDelegate = membershipNavigationDelegate
     }
     @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier("ProfileHeaderCellIdentifier", forIndexPath: indexPath) as? ProfileHeaderCell else {

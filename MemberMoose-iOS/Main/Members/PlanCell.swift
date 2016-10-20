@@ -58,7 +58,11 @@ class PlanCell: UITableViewCell {
         super.prepareForReuse()
         
     }
-    func setupWith(viewModel: PlanViewModel) {
+    func setupWith(viewModel: DataSourceItemProtocol) {
+        guard let viewModel = viewModel as? PlanViewModel else {
+            return
+        }
+        
         planNameLabel.text = viewModel.planName
         planAmountLabel.text = "$150.00/monthly"
         subscribersCountLabel.text = "\(viewModel.subscribersCount) Subscribers"

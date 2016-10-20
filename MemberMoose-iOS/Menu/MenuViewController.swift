@@ -13,7 +13,7 @@ class MenuViewController: UIViewController {
     private let menuHeaderCellIdentifier        = "MenuHeaderCellIdentifier"
     private let menuItemCellIdentifier          = "MenuItemCellIdentifier"
     private let tableCellHeight: CGFloat        = 120
-    private let menuItems = ["Home", "Coupon Codes", "Notifications", "Connect Stripe", "Reports"]
+    private let menuItems = ["Home", "My Subscriptions", "Payment Card", "Payment History", "Coupon Codes", "Notifications", "Connect Stripe", "Reports"]
     var dataSource: [[DataSourceItemProtocol]] = [] {
         didSet {
             tableView.reloadData()

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PlanViewModel {
+class PlanViewModel: DataSourceItemProtocol {
     var cellID: String = "PlanCell"
     var cellClass: UITableViewCell.Type = PlanCell.self
     
@@ -24,7 +24,7 @@ class PlanViewModel {
         subscribersCount = 23
     }
     
-    func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) ->  PlanCell {
+    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) ->  UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier("PlanCellIdentifier", forIndexPath: indexPath) as? PlanCell else {
             fatalError(#function)
         }
@@ -32,5 +32,11 @@ class PlanViewModel {
         cell.setupWith(self)
         
         return cell
+    }
+    @objc func viewForHeader() -> UIView? {
+        return nil
+    }
+    @objc func heightForHeader() -> CGFloat {
+        return CGFloat.min;
     }
 }

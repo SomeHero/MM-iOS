@@ -48,6 +48,23 @@ class ProfileHeaderCell: UITableViewCell {
         
         return _label
     }()
+    private lazy var subHeadingLabel: UILabel = {
+        let _label = UILabel()
+        _label.textColor = UIColorTheme.SubHeader
+        _label.textAlignment = .Center
+        _label.font = UIFontTheme.Regular(.Tiny)
+        
+        self.containerView.addSubview(_label)
+        
+        return _label
+    }()
+    private lazy var membershipNavigation: MembershipNavigationView = {
+        let _view = MembershipNavigationView()
+        //_view.delegate = self
+        self.contentView.addSubview(_view)
+        
+        return _view
+    }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .Default, reuseIdentifier: reuseIdentifier)
         
@@ -79,6 +96,14 @@ class ProfileHeaderCell: UITableViewCell {
         headingLabel.snp_updateConstraints { (make) in
             make.top.equalTo(logo.snp_bottom).offset(20)
             make.centerX.equalTo(containerView)
+        }
+        subHeadingLabel.snp_updateConstraints { (make) in
+            make.top.equalTo(headingLabel.snp_bottom)
+            make.centerX.equalTo(containerView)
+        }
+        membershipNavigation.snp_updateConstraints { (make) in
+            make.top.equalTo(subHeadingLabel.snp_bottom).offset(20)
+            make.leading.trailing.equalTo(containerView)
             make.bottom.equalTo(containerView)
         }
         super.updateConstraints()
@@ -96,6 +121,10 @@ class ProfileHeaderCell: UITableViewCell {
             }
             headingLabel.text = viewModel.companyName
 
+            membershipNavigation.delegate = viewModel.membershipNavigationDelegate
+            membershipNavigation.setSelectedButton(viewModel.membershipNavigationState)
+            membershipNavigation.bringSubviewToFront(containerView)
+            
             setNeedsUpdateConstraints()
             updateConstraintsIfNeeded()
         }

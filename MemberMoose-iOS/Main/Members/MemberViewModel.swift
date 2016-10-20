@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MemberViewModel {
+class MemberViewModel: DataSourceItemProtocol {
     var cellID: String = "MemberCell"
     var cellClass: UITableViewCell.Type = MemberCell.self
     
@@ -36,7 +36,7 @@ class MemberViewModel {
         memberSince = NSDate()
     }
 
-    func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) ->  MemberCell {
+    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) ->  UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier("MemberCellIdentifier", forIndexPath: indexPath) as? MemberCell else {
             fatalError(#function)
         }
@@ -44,5 +44,11 @@ class MemberViewModel {
         cell.setupWith(self)
         
         return cell
+    }
+    @objc func viewForHeader() -> UIView? {
+        return nil
+    }
+    @objc func heightForHeader() -> CGFloat {
+        return CGFloat.min;
     }
 }

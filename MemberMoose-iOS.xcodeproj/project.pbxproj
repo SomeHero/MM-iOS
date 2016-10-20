@@ -27,8 +27,6 @@
 		422537131DB9135C004B33D8 /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422537121DB9135C004B33D8 /* MessagesViewModel.swift */; };
 		422537151DB91BCB004B33D8 /* ChargeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422537141DB91BCB004B33D8 /* ChargeCell.swift */; };
 		422537171DB91BDC004B33D8 /* ChargeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422537161DB91BDC004B33D8 /* ChargeViewModel.swift */; };
-		4225371B1DB940D7004B33D8 /* MembersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4225371A1DB940D7004B33D8 /* MembersViewModel.swift */; };
-		4225371D1DB940EE004B33D8 /* MembersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4225371C1DB940EE004B33D8 /* MembersCell.swift */; };
 		42330B8F1DB3B694003BDDEC /* SharePlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */; };
 		42330B921DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */; };
 		42330B941DB3D5B5003BDDEC /* PaymentCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */; };
@@ -150,8 +148,6 @@
 		422537121DB9135C004B33D8 /* MessagesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessagesViewModel.swift; path = Profile/MessagesViewModel.swift; sourceTree = "<group>"; };
 		422537141DB91BCB004B33D8 /* ChargeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChargeCell.swift; path = Profile/ChargeCell.swift; sourceTree = "<group>"; };
 		422537161DB91BDC004B33D8 /* ChargeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChargeViewModel.swift; path = Profile/ChargeViewModel.swift; sourceTree = "<group>"; };
-		4225371A1DB940D7004B33D8 /* MembersViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MembersViewModel.swift; path = Main/MembersViewModel.swift; sourceTree = "<group>"; };
-		4225371C1DB940EE004B33D8 /* MembersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MembersCell.swift; path = Main/MembersCell.swift; sourceTree = "<group>"; };
 		42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharePlanViewController.swift; path = Plans/SharePlanViewController.swift; sourceTree = "<group>"; };
 		42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardTableViewCell.swift; path = Profile/PaymentCardTableViewCell.swift; sourceTree = "<group>"; };
 		42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardViewModel.swift; path = Profile/PaymentCardViewModel.swift; sourceTree = "<group>"; };
@@ -327,7 +323,6 @@
 		422537181DB94090004B33D8 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				4225371C1DB940EE004B33D8 /* MembersCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -335,7 +330,6 @@
 		422537191DB9409F004B33D8 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				4225371A1DB940D7004B33D8 /* MembersViewModel.swift */,
 			);
 			name = ViewModels;
 			sourceTree = "<group>";
@@ -958,7 +952,6 @@
 				4268416A1DA86D0E00A2BFF8 /* TextDecorator.swift in Sources */,
 				4268416C1DA86D5A00A2BFF8 /* MemberViewModel.swift in Sources */,
 				425013B31DAFCA4300ED21B1 /* UIViewController.swift in Sources */,
-				4225371D1DB940EE004B33D8 /* MembersCell.swift in Sources */,
 				429F63071DA728DC00C3F54E /* CreateFirstPlanViewController.swift in Sources */,
 				422537171DB91BDC004B33D8 /* ChargeViewModel.swift in Sources */,
 				42F08C321DAC31A300D5D4E3 /* Member.swift in Sources */,
@@ -999,7 +992,6 @@
 				42330B8F1DB3B694003BDDEC /* SharePlanViewController.swift in Sources */,
 				4240B7821DA6C903000D137E /* JoinViewController.swift in Sources */,
 				42330B981DB3D89C003BDDEC /* PaymentHistoryViewModel.swift in Sources */,
-				4225371B1DB940D7004B33D8 /* MembersViewModel.swift in Sources */,
 				4255B3FA1DAE89A8008DECAC /* SessionManager.swift in Sources */,
 				42F08C4B1DACAAF600D5D4E3 /* SubscriptionViewModel.swift in Sources */,
 				42330B961DB3D87F003BDDEC /* PaymentHistoryTableViewCell.swift in Sources */,
