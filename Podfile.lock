@@ -14,6 +14,7 @@ PODS:
   - OAuthSwift (0.6.0)
   - ObjectMapper (1.5.0)
   - SnapKit (0.18.0)
+  - StripeDashboardUI (0.1)
   - SVProgressHUD (2.0.3)
   - SwiftyJSON (2.3.2)
   - SWRevealViewController (2.3.0)
@@ -30,6 +31,7 @@ DEPENDENCIES:
   - OAuthSwift (from `https://github.com/OAuthSwift/OAuthSwift.git`, branch `swift2.3`)
   - ObjectMapper
   - SnapKit (~> 0.18.0)
+  - StripeDashboardUI
   - SVProgressHUD
   - SwiftyJSON (~> 2.3.2)
   - SWRevealViewController (~> 2.3)
@@ -62,10 +64,11 @@ SPEC CHECKSUMS:
   OAuthSwift: 8895267fbd6437a52aea26541572a617c7a8c7c1
   ObjectMapper: 386645adca9d9d23b95eda43090b09d66444cf14
   SnapKit: e1f090a6d47b1dd4bd89b73f72b6746a7835ef3c
+  StripeDashboardUI: 6a36ff34fce3c243c3466de22543db41f1383472
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
 
-PODFILE CHECKSUM: 219aedcce5861b24cc8ac1818933f6665ca54e88
+PODFILE CHECKSUM: 5a56ef60594e4d404c589a51a8b8439b4cf20533
 
 COCOAPODS: 1.1.0.rc.2

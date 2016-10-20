@@ -60,6 +60,7 @@ class PaymentHistoryTableViewCell: UITableViewCell {
         separatorInset = UIEdgeInsetsZero
         layoutMargins = UIEdgeInsetsZero
         accessoryType = .None
+        selectionStyle = .None
         
         //selectedBackgroundView = selectedColorView
     }
@@ -75,8 +76,7 @@ class PaymentHistoryTableViewCell: UITableViewCell {
     
     override func updateConstraints() {
         containerView.snp_updateConstraints { (make) in
-            make.leading.equalTo(contentView).offset(10)
-            make.centerY.equalTo(contentView)
+            make.edges.equalTo(contentView).inset(20)
         }
         transactionDateLabel.snp_updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
@@ -90,11 +90,6 @@ class PaymentHistoryTableViewCell: UITableViewCell {
             make.leading.equalTo(containerView)
             make.top.equalTo(transactionDescriptionLabel.snp_bottom)
             make.bottom.equalTo(containerView)
-        }
-        amountLabel.snp_updateConstraints { (make) in
-            make.leading.greaterThanOrEqualTo(containerView.snp_trailing)
-            make.trailing.equalTo(contentView).inset(20)
-            make.centerY.equalTo(contentView)
         }
         super.updateConstraints()
     }

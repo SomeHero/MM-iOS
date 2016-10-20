@@ -25,6 +25,7 @@ extension UIViewController {
     }
     func toggleMenu(sender: UIButton) {
         if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate, swRevealViewController = delegate.swRevealViewController {
+            
             swRevealViewController.revealToggleAnimated(true)
         }
     }

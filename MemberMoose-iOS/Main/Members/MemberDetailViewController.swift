@@ -105,6 +105,7 @@ class MemberDetailViewController: UIViewController {
     init(user: User) {
         self.user = user
         
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -288,13 +289,13 @@ class MemberNavigationView: UIView {
         switch state {
         case .Message:
             messageButton.backgroundColor = UIColorTheme.Primary
-            messageButton.layer.cornerRadius = messageButton.frame.size.height/2
+            messageButton.layer.cornerRadius = 40/2
         case .Profile:
             profileButton.backgroundColor = UIColorTheme.Primary
-            profileButton.layer.cornerRadius = profileButton.frame.size.height/2
+            profileButton.layer.cornerRadius = 40/2
         case .Charge:
             chargeButton.backgroundColor = UIColorTheme.Primary
-            chargeButton.layer.cornerRadius = chargeButton.frame.size.height/2
+            chargeButton.layer.cornerRadius = 40/2
         }
     }
     private func clearButtonSelectedState(button: UIButton) {

@@ -43,6 +43,9 @@ class PaymentCardViewModel:DataSourceItemProtocol {
         
         return header
     }
+    @objc func heightForHeader() -> CGFloat {
+        return 50;
+    }
 }
 class PaymentCardHeaderView: UIView {
     private lazy var titleLabel: UILabel = {

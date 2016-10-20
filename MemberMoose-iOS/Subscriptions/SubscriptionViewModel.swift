@@ -41,6 +41,9 @@ class SubscriptionViewModel:DataSourceItemProtocol {
         
         return header
     }
+    @objc func heightForHeader() -> CGFloat {
+        return 50;
+    }
 }
 class SubscriptionHeaderView: UIView {
     private lazy var titleLabel: UILabel = {

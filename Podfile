@@ -22,6 +22,7 @@ target 'MemberMoose-iOS' do
   pod 'ALTextInputBar'
   pod 'ASImageResize'
   pod 'OAuthSwift', :git => 'https://github.com/OAuthSwift/OAuthSwift.git', :branch => 'swift2.3'
+  pod 'StripeDashboardUI'
   
   target 'MemberMoose-iOSTests' do
     inherit! :search_paths

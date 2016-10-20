@@ -17,7 +17,8 @@ class MembersViewController: UIViewController {
     private let tableCellHeight: CGFloat        = 120
     private var membershipNavigationState: MembershipNavigationState = .Members
     private let textInputBar = ALTextInputBar()
-
+    private var profileType: ProfileType = .bull
+    
     var members: [MemberViewModel] = [] {
         didSet {
             tableView.reloadData()
@@ -126,7 +127,7 @@ class MembersViewController: UIViewController {
     private lazy var menuButton: UIButton = {
         let _button = UIButton()
         _button.setImage(UIImage(named:"Menu"), forState: .Normal)
-        _button.addTarget(self, action: #selector(MembersViewController.toggleMenu(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(MembersViewController.menuButtonClicked(_:)), forControlEvents: .TouchUpInside)
         
         self.view.addSubview(_button)
         
@@ -388,15 +389,25 @@ class MembersViewController: UIViewController {
         view.becomeFirstResponder()
         reloadInputViews()
     }
+    func menuButtonClicked(sender: UIButton) {
+        //resignFirstResponder()
+        reloadInputViews()
+        
+        toggleMenu(sender)
+    }
     func showProfile(sender: UIButton) {
         guard let user = SessionManager.sharedUser else {
             return
         }
         let viewController = ProfileViewController(user: user, profileType: .bull)
+        viewController.profileDelegate = self
+        
         let navigationController = UINavigationController(rootViewController: viewController);
         navigationController.navigationBarHidden = true
         
         presentViewController(navigationController, animated: true, completion: nil)
+        
+        profileType = .bull
     }
     private func resetEmptyStates() {
         membersEmptyState.alpha = 0
@@ -467,7 +478,6 @@ extension MembersViewController : UITableViewDataSource {
         }
     }
 }
-
 extension MembersViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -476,9 +486,12 @@ extension MembersViewController : UITableViewDelegate {
         case .Members:
             let viewModel = members[indexPath.item]
             
-            let viewController = MemberDetailViewController(user: viewModel.user)
+            let viewController = ProfileViewController(user: viewModel.user, profileType: .calf)
+            viewController.profileDelegate = self
             
             navigationController?.pushViewController(viewController, animated: true)
+
+            profileType = .calf
         default:
             let viewModel = plans[indexPath.item]
             
@@ -520,6 +533,17 @@ extension MembersViewController : UITableViewDelegate {
         default:
             return 0
         }
+    }
+}
+extension MembersViewController: ProfileDelegate {
+    func didBackClicked() {
+        switch profileType {
+        case .calf:
+            navigationController?.popViewControllerAnimated(true)
+        case .bull:
+            dismissViewControllerAnimated(true, completion: nil)
+        }
+
     }
 }
 enum MembershipNavigationState {

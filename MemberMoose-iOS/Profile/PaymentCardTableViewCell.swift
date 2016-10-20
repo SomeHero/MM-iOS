@@ -73,6 +73,7 @@ class PaymentCardTableViewCell: UITableViewCell {
         separatorInset = UIEdgeInsetsZero
         layoutMargins = UIEdgeInsetsZero
         accessoryType = .None
+        selectionStyle = .None
         
         //selectedBackgroundView = selectedColorView
     }
@@ -88,8 +89,7 @@ class PaymentCardTableViewCell: UITableViewCell {
     
     override func updateConstraints() {
         containerView.snp_updateConstraints { (make) in
-            make.leading.trailing.equalTo(contentView).inset(10)
-            make.centerY.equalTo(contentView)
+            make.edges.equalTo(contentView).inset(20)
         }
         cardInfoView.snp_updateConstraints { (make) in
             make.top.leading.bottom.equalTo(containerView)

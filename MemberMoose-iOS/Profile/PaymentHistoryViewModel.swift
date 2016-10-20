@@ -52,6 +52,9 @@ class PaymentHistoryViewModel:DataSourceItemProtocol {
         
         return header
     }
+    @objc func heightForHeader() -> CGFloat {
+        return 50;
+    }
 }
 class PaymentHistoryHeaderView: UIView {
     private lazy var titleLabel: UILabel = {

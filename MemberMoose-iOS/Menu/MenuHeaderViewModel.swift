@@ -42,4 +42,7 @@ class MenuHeaderViewModel:DataSourceItemProtocol {
     @objc func viewForHeader() -> UIView? {
         return nil
     }
+    @objc func heightForHeader() -> CGFloat {
+        return 0;
+    }
 }

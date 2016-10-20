@@ -7,13 +7,18 @@
 //
 
 import UIKit
+import ALTextInputBar
 
 @objc protocol DataSourceItemProtocol {
     func viewForHeader() -> UIView?
+    func heightForHeader() -> CGFloat
     func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell
 }
 @objc protocol DataSourceTableViewCellProtocol: class {
     func setupWith(viewModel: DataSourceItemProtocol)
+}
+protocol ProfileDelegate: class {
+    func didBackClicked()
 }
 enum ProfileType {
     case bull
@@ -22,19 +27,72 @@ enum ProfileType {
 class ProfileViewController: UIViewController {
     private let user: User
     private let profileType: ProfileType
+    private let calfProfileCellIdentifier       = "CalfProfileHeaderCellIdentifier"
+    private let profileCellIdentifier           = "ProfileHeaderCellIdentifier"
     private let cellIdentifier                  = "SubscriptionCellIdentifier"
     private let paymentCardCellIdentifier       = "PaymentCardCellIdentifier"
     private let paymentHistoryCellIdentifier       = "PaymentHistoryCellIdentifier"
+    private let chargeCellIdentifier            = "ChargeCellIdentifier"
     private let tableCellHeight: CGFloat        = 120
-   
-    private var placeHolderAvatarImage: String {
-        switch profileType {
-        case .bull:
-            return "Avatar-Bull"
-        case .calf:
-            return "Avatar-Calf"
-        }
+    private var memberNavigationState: MemberNavigationState = .Profile
+    private let textInputBar = ALTextInputBar()
+    weak var profileDelegate: ProfileDelegate?
+    
+    private let offsetNavHeaderHeight: CGFloat = 64.0
+    private let offsetLabelHeaderHeight: CGFloat = 32.0
+    private let labelHeaderAdditionalOffset: CGFloat = 6.0
+    private let chromeAnimationDuration: NSTimeInterval = 0.2
+    private let verticalNavHeaderOffset: CGFloat = 12.0
+    private let menuButtonWidth: CGFloat = 26.0
+    private let nonNavBarMenuButtonVerticalOffset: CGFloat = 20.0;
+    private let nonNavBarMenuButtonHorizontalOffset: CGFloat = 12.0;
+    private var chromeVisible = true
+    
+    private var scrollDarkNavDelayFactor:CGFloat {
+        return 1.3
     }
+    private var parallaxHeight: CGFloat {
+        //values determined by the top padding of the title in the authed/unauth headers
+        if tableView.visibleCells.count > 0 {
+            return tableView.visibleCells[0].frame.size.height
+        }
+        
+        return 0
+    }
+    private lazy var navHeader: UIView = {
+        let _view = UIView()
+        _view.backgroundColor = UIColor.clearColor()
+        _view.clipsToBounds = true
+        
+        self.view.addSubview(_view)
+        return _view
+    }()
+    private lazy var navHeaderDarkCoverView: UIView = {
+        let _view = UIView()
+        _view.backgroundColor = UIColorTheme.Primary
+        _view.alpha = 0
+        
+        self.navHeader.addSubview(_view)
+        return _view
+    }()
+    private lazy var navHeaderLineView: UIView = {
+        let _view = UIView()
+        _view.backgroundColor = UIColor.flatWhiteColor()
+        
+        self.navHeaderDarkCoverView.addSubview(_view)
+        
+        return _view
+    }()
+    private lazy var navHeaderNameLabel: UILabel = {
+        let _label = UILabel()
+        _label.font = UIFontTheme.Bold()
+        _label.textColor = UIColor.whiteColor()
+        _label.textAlignment = .Center
+        
+        self.navHeaderDarkCoverView.addSubview(_label)
+        
+        return _label
+    }()
     var dataSource: [[DataSourceItemProtocol]] = [] {
         didSet {
             tableView.reloadData()
@@ -58,55 +116,6 @@ class ProfileViewController: UIViewController {
         
         return _button
     }()
-    private lazy var topBackgroundView: UIView = {
-        let _view = UIView()
-        
-        _view.backgroundColor = UIColorTheme.TopBackgroundColor
-        
-        self.view.addSubview(_view)
-        
-        return _view
-    }()
-    private lazy var containerView: UIView = {
-        let _view = UIView()
-        
-        _view.backgroundColor = .clearColor()
-        
-        self.topBackgroundView.addSubview(_view)
-        
-        return _view
-    }()
-    private lazy var logo: UIImageView = {
-        let _imageView = UIImageView()
-        _imageView.layer.cornerRadius = 80 / 2
-        _imageView.clipsToBounds = true
-        _imageView.layer.borderColor = UIColor.whiteColor().CGColor
-        _imageView.layer.borderWidth = 2.0
-        
-        self.containerView.addSubview(_imageView)
-        
-        return _imageView
-    }()
-    private lazy var companyNameLabel: UILabel = {
-        let _label = UILabel()
-        _label.textColor = .whiteColor()
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Default)
-        
-        self.containerView.addSubview(_label)
-        
-        return _label
-    }()
-    private lazy var subHeadingLabel: UILabel = {
-        let _label = UILabel()
-        _label.textColor = UIColorTheme.SubHeader
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Tiny)
-        
-        self.containerView.addSubview(_label)
-        
-        return _label
-    }()
     private lazy var tableView: UITableView = {
         let _tableView                  = UITableView(frame: CGRect.zero, style: .Grouped)
         _tableView.dataSource           = self
@@ -116,24 +125,38 @@ class ProfileViewController: UIViewController {
         _tableView.separatorInset       = UIEdgeInsetsZero
         _tableView.layoutMargins        = UIEdgeInsetsZero
         _tableView.tableFooterView      = UIView()
-        _tableView.rowHeight            = self.tableCellHeight
+        _tableView.estimatedRowHeight   = self.tableCellHeight
+        _tableView.rowHeight = UITableViewAutomaticDimension
         _tableView.contentInset         = UIEdgeInsetsZero
         
+        _tableView.registerClass(ProfileHeaderCell.self, forCellReuseIdentifier: self.profileCellIdentifier)
+        _tableView.registerClass(CalfProfileHeaderCell.self, forCellReuseIdentifier: self.calfProfileCellIdentifier)
         _tableView.registerClass(SubscriptionCell.self, forCellReuseIdentifier: self.cellIdentifier)
         _tableView.registerClass(PaymentCardTableViewCell.self, forCellReuseIdentifier: self.paymentCardCellIdentifier)
         _tableView.registerClass(PaymentHistoryTableViewCell.self, forCellReuseIdentifier: self.paymentHistoryCellIdentifier)
-        _tableView.addSubview(self.emptyState)
-        
+        _tableView.registerClass(ChargeCell.self, forCellReuseIdentifier: self.chargeCellIdentifier)
+
         self.view.addSubview(_tableView)
         return _tableView
     }()
-    private lazy var emptyState: EmptyStateView = {
-        let _emptyState = EmptyStateView()
-        _emptyState.alpha = 0.0
-        _emptyState.translatesAutoresizingMaskIntoConstraints = false
+    private lazy var messageToolbarView: MessageToolbarView = {
+        let _view = MessageToolbarView()
         
-        return _emptyState
+        return _view
     }()
+    override var inputAccessoryView: UIView? {
+        get {
+            switch memberNavigationState {
+            case .Message:
+                return textInputBar
+            default:
+                return nil
+            }
+        }
+    }
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
     init(user: User, profileType: ProfileType) {
         self.user = user
         self.profileType = profileType
@@ -151,25 +174,19 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        edgesForExtendedLayout = .None
+        automaticallyAdjustsScrollViewInsets = false
+        
         title = "Profile"
         view.backgroundColor = .whiteColor()
-        
-        let image = UIImage(named: "Back")
-        let backButton = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(ProfileViewController.backClicked(_:)))
-        
+
         buildDataSet()
-        
-        navigationItem.leftBarButtonItem = backButton
-        
+
         setup()
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        topBackgroundView.snp_updateConstraints { (make) in
-            make.top.equalTo(view)
-            make.leading.trailing.equalTo(view)
-        }
         menuButton.snp_updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.leading.equalTo(view).inset(15)
@@ -180,31 +197,26 @@ class ProfileViewController: UIViewController {
             make.trailing.equalTo(view).inset(15)
             make.height.width.equalTo(20)
         }
-        containerView.snp_updateConstraints { (make) in
-            make.centerX.centerY.equalTo(topBackgroundView)
-            make.bottom.equalTo(topBackgroundView).inset(20)
-        }
-        logo.snp_updateConstraints { (make) in
-            make.top.equalTo(containerView).inset(20)
-            make.centerX.equalTo(containerView)
-            make.height.width.equalTo(80)
-        }
-        companyNameLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(logo.snp_bottom).offset(20)
-            make.centerX.equalTo(containerView)
-        }
-        subHeadingLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(companyNameLabel.snp_bottom)
-            make.centerX.equalTo(containerView)
-            make.bottom.equalTo(containerView)
-        }
         tableView.snp_updateConstraints { (make) in
-            make.top.equalTo(topBackgroundView.snp_bottom)
-            make.leading.trailing.equalTo(view)
-            make.bottom.equalTo(snp_bottomLayoutGuideTop)
-        }
-        emptyState.snp_updateConstraints { make in
             make.edges.equalTo(view)
+        }
+        navHeader.snp_updateConstraints { (make) in
+            make.top.equalTo(self.view)
+            make.leading.trailing.equalTo(self.view)
+            make.height.equalTo(offsetNavHeaderHeight)
+        }
+        navHeaderDarkCoverView.snp_updateConstraints { (make) in
+            make.edges.equalTo(self.navHeader)
+        }
+        navHeaderNameLabel.snp_updateConstraints { (make) in
+            make.centerX.equalTo(self.navHeader)
+            make.centerY.equalTo(self.navHeader).offset(verticalNavHeaderOffset)
+            make.leading.trailing.equalTo(self.navHeader).inset(10*2+menuButtonWidth)
+        }
+        navHeaderLineView.snp_updateConstraints { (make) in
+            make.leading.trailing.equalTo(self.navHeader)
+            make.height.equalTo(kOnePX*2)
+            make.bottom.equalTo(self.navHeader.snp_bottom)
         }
     }
     override func didReceiveMemoryWarning() {
@@ -212,20 +224,19 @@ class ProfileViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     func setup() {
-        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
-            logo.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
-                                    placeholderImage: UIImage(named: placeHolderAvatarImage))
-        } else {
-            logo.image = UIImage(named: placeHolderAvatarImage)
+        switch profileType {
+        case .bull:
+            navHeaderNameLabel.text = user.companyName
+        case .calf:
+            if let firstName = user.firstName, lastName = user.lastName {
+                navHeaderNameLabel.text = "\(firstName) \(lastName)"
+            } else {
+                navHeaderNameLabel.text = user.emailAddress
+            }
         }
-        companyNameLabel.text = user.companyName
-        subHeadingLabel.text = "Member Since Jan 2015"
-        
-        emptyState.setup("No Subscriptions.", message: "No Subscriptions")
-        
     }
     func backClicked(button: UIButton) {
-        dismissViewControllerAnimated(true, completion: nil)
+        profileDelegate?.didBackClicked()
     }
     func editProfileClicked(button: UIButton) {
         switch profileType {
@@ -243,34 +254,86 @@ class ProfileViewController: UIViewController {
         }
     }
     func buildDataSet() {
-        var subscriptionViewModels: [SubscriptionViewModel] = []
-        for membership in user.memberships {
-            if let subscription = membership.subscription {
-                let subscriptionViewModel = SubscriptionViewModel(subscription: subscription)
-                subscriptionViewModels.append(subscriptionViewModel)
+        var items: [[DataSourceItemProtocol]] = []
+        
+        switch profileType {
+        case .bull:
+            let profileHeaderViewModel = ProfileHeaderViewModel(user: user)
+            
+            items.append([profileHeaderViewModel])
+        case .calf:
+            let calfProfileHeaderViewModel = CalfProfileHeaderViewModel(user: user, memberNavigationState: memberNavigationState, memberNavigationDelegate: self)
+            
+            items.append([calfProfileHeaderViewModel])
+        }
+        
+        switch memberNavigationState {
+        case .Profile:
+            var subscriptionViewModels: [SubscriptionViewModel] = []
+            for membership in user.memberships {
+                if let subscription = membership.subscription {
+                    let subscriptionViewModel = SubscriptionViewModel(subscription: subscription)
+                    subscriptionViewModels.append(subscriptionViewModel)
+                }
             }
-        }
-        dataSource.append(subscriptionViewModels)
-        
-        var paymentCardViewModels: [PaymentCardViewModel] = []
-        for paymentCard in user.paymentCards {
-            let paymentCardViewModel = PaymentCardViewModel(paymentCard: paymentCard)
+            items.append(subscriptionViewModels)
             
-            paymentCardViewModels.append(paymentCardViewModel)
+            var paymentCardViewModels: [PaymentCardViewModel] = []
+            for paymentCard in user.paymentCards {
+                let paymentCardViewModel = PaymentCardViewModel(paymentCard: paymentCard)
+                
+                paymentCardViewModels.append(paymentCardViewModel)
+                
+            }
             
-        }
+            items.append(paymentCardViewModels)
+            
+            var paymentHistoryViewModels: [PaymentHistoryViewModel] = []
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
+            items.append(paymentHistoryViewModels)
+        case .Charge:
+            let remainingHeight = view.frame.size.height - tableView.visibleCells[0].frame.size.height
+            
+            let viewModel = ChargeViewModel(totalCellHeight: remainingHeight)
+            
+            items.append([viewModel])
+        default:
+            break
 
-        dataSource.append(paymentCardViewModels)
-        
-        var paymentHistoryViewModels: [PaymentHistoryViewModel] = []
-        paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-        paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-        paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-        paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-        paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-        paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-        
-        dataSource.append(paymentHistoryViewModels)
+        }
+        dataSource = items
+    }
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let yOffset = scrollView.contentOffset.y
+        handleNavHeaderScrollingWithOffset(yOffset)
+    }
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
+    func handleNavHeaderScrollingWithOffset(yOffset: CGFloat) {
+        if chromeVisible {
+            navHeaderDarkCoverView.alpha = min(1.0, (yOffset * scrollDarkNavDelayFactor - parallaxHeight + offsetLabelHeaderHeight) *  0.01)
+            
+            let labelTransform = CATransform3DMakeTranslation(0, max(0.0, parallaxHeight - yOffset + labelHeaderAdditionalOffset), 0)
+            navHeaderNameLabel.layer.transform = labelTransform
+        }
     }
 
 }
@@ -297,16 +360,6 @@ extension ProfileViewController : UITableViewDataSource {
 }
 
 extension ProfileViewController : UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let dataItems = dataSource[indexPath.section]
-        let viewModel = dataItems[indexPath.item]
-        
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
-        //let viewController = MemberDetailViewController()
-        
-        //navigationController?.pushViewController(viewController, animated: true)
-    }
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let dataItems = dataSource[section]
         
@@ -319,7 +372,15 @@ extension ProfileViewController : UITableViewDelegate {
         return nil
     }
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50;
+        let dataItems = dataSource[section]
+        
+        if dataItems.count > 0 {
+            let view = dataItems[0]
+            
+            return view.heightForHeader()
+        }
+        
+        return 0
     }
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return CGFloat.min
@@ -328,5 +389,37 @@ extension ProfileViewController : UITableViewDelegate {
 extension ProfileViewController: UserProfileDelegate {
     func didClickBack() {
         navigationController?.popViewControllerAnimated(true)
+    }
+}
+extension ProfileViewController: MemberNavigationDelegate {
+    func messageClicked() {
+        memberNavigationState = .Message
+        //memberNavigation.setSelectedButton(memberNavigationState)
+        
+        handleNavHeaderScrollingWithOffset(0)
+        buildDataSet()
+        
+        view.becomeFirstResponder()
+        reloadInputViews()
+    }
+    func profileClicked() {
+        memberNavigationState = .Profile
+        //memberNavigation.setSelectedButton(memberNavigationState)
+        
+        handleNavHeaderScrollingWithOffset(0)
+        buildDataSet()
+        
+        view.resignFirstResponder()
+        reloadInputViews()
+    }
+    func chargeClicked() {
+        memberNavigationState = .Charge
+        //memberNavigation.setSelectedButton(memberNavigationState)
+        
+        handleNavHeaderScrollingWithOffset(0)
+        buildDataSet()
+        
+        view.resignFirstResponder()
+        reloadInputViews()
     }
 }

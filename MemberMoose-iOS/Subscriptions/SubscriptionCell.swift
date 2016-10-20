@@ -82,6 +82,7 @@ class SubscriptionCell: UITableViewCell {
         separatorInset = UIEdgeInsetsZero
         layoutMargins = UIEdgeInsetsZero
         accessoryType = .None
+        selectionStyle = .None
         
         //selectedBackgroundView = selectedColorView
     }
@@ -97,8 +98,7 @@ class SubscriptionCell: UITableViewCell {
 
     override func updateConstraints() {
         containerView.snp_updateConstraints { (make) in
-            make.leading.trailing.equalTo(contentView).offset(10)
-            make.centerY.equalTo(contentView)
+            make.edges.equalTo(contentView).inset(20)
         }
         planNameLabel.snp_updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)

@@ -19,6 +19,16 @@
 		4211D8C61DB7AF700092F7C5 /* MenuHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8C51DB7AF700092F7C5 /* MenuHeaderViewModel.swift */; };
 		4211D8C81DB7F0F60092F7C5 /* BullProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8C71DB7F0F60092F7C5 /* BullProfileViewController.swift */; };
 		4211D8CA1DB7FA1F0092F7C5 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8C91DB7FA1F0092F7C5 /* UserProfileViewController.swift */; };
+		4211D8CC1DB866500092F7C5 /* ProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8CB1DB866500092F7C5 /* ProfileHeaderCell.swift */; };
+		4211D8CE1DB8674D0092F7C5 /* ProfileHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8CD1DB8674D0092F7C5 /* ProfileHeaderViewModel.swift */; };
+		4225370D1DB90187004B33D8 /* CalfProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4225370C1DB90187004B33D8 /* CalfProfileHeaderCell.swift */; };
+		4225370F1DB901A0004B33D8 /* CalfProfileHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4225370E1DB901A0004B33D8 /* CalfProfileHeaderViewModel.swift */; };
+		422537111DB91347004B33D8 /* MessagesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422537101DB91347004B33D8 /* MessagesCell.swift */; };
+		422537131DB9135C004B33D8 /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422537121DB9135C004B33D8 /* MessagesViewModel.swift */; };
+		422537151DB91BCB004B33D8 /* ChargeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422537141DB91BCB004B33D8 /* ChargeCell.swift */; };
+		422537171DB91BDC004B33D8 /* ChargeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422537161DB91BDC004B33D8 /* ChargeViewModel.swift */; };
+		4225371B1DB940D7004B33D8 /* MembersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4225371A1DB940D7004B33D8 /* MembersViewModel.swift */; };
+		4225371D1DB940EE004B33D8 /* MembersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4225371C1DB940EE004B33D8 /* MembersCell.swift */; };
 		42330B8F1DB3B694003BDDEC /* SharePlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */; };
 		42330B921DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */; };
 		42330B941DB3D5B5003BDDEC /* PaymentCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */; };
@@ -132,6 +142,16 @@
 		4211D8C51DB7AF700092F7C5 /* MenuHeaderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuHeaderViewModel.swift; path = Menu/MenuHeaderViewModel.swift; sourceTree = "<group>"; };
 		4211D8C71DB7F0F60092F7C5 /* BullProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BullProfileViewController.swift; path = Profile/BullProfileViewController.swift; sourceTree = "<group>"; };
 		4211D8C91DB7FA1F0092F7C5 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserProfileViewController.swift; path = Profile/UserProfileViewController.swift; sourceTree = "<group>"; };
+		4211D8CB1DB866500092F7C5 /* ProfileHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileHeaderCell.swift; path = Profile/ProfileHeaderCell.swift; sourceTree = "<group>"; };
+		4211D8CD1DB8674D0092F7C5 /* ProfileHeaderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileHeaderViewModel.swift; path = Profile/ProfileHeaderViewModel.swift; sourceTree = "<group>"; };
+		4225370C1DB90187004B33D8 /* CalfProfileHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalfProfileHeaderCell.swift; path = Profile/CalfProfileHeaderCell.swift; sourceTree = "<group>"; };
+		4225370E1DB901A0004B33D8 /* CalfProfileHeaderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalfProfileHeaderViewModel.swift; path = Profile/CalfProfileHeaderViewModel.swift; sourceTree = "<group>"; };
+		422537101DB91347004B33D8 /* MessagesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessagesCell.swift; path = Profile/MessagesCell.swift; sourceTree = "<group>"; };
+		422537121DB9135C004B33D8 /* MessagesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessagesViewModel.swift; path = Profile/MessagesViewModel.swift; sourceTree = "<group>"; };
+		422537141DB91BCB004B33D8 /* ChargeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChargeCell.swift; path = Profile/ChargeCell.swift; sourceTree = "<group>"; };
+		422537161DB91BDC004B33D8 /* ChargeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChargeViewModel.swift; path = Profile/ChargeViewModel.swift; sourceTree = "<group>"; };
+		4225371A1DB940D7004B33D8 /* MembersViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MembersViewModel.swift; path = Main/MembersViewModel.swift; sourceTree = "<group>"; };
+		4225371C1DB940EE004B33D8 /* MembersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MembersCell.swift; path = Main/MembersCell.swift; sourceTree = "<group>"; };
 		42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharePlanViewController.swift; path = Plans/SharePlanViewController.swift; sourceTree = "<group>"; };
 		42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardTableViewCell.swift; path = Profile/PaymentCardTableViewCell.swift; sourceTree = "<group>"; };
 		42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardViewModel.swift; path = Profile/PaymentCardViewModel.swift; sourceTree = "<group>"; };
@@ -304,6 +324,22 @@
 			name = ViewModels;
 			sourceTree = "<group>";
 		};
+		422537181DB94090004B33D8 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				4225371C1DB940EE004B33D8 /* MembersCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		422537191DB9409F004B33D8 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				4225371A1DB940D7004B33D8 /* MembersViewModel.swift */,
+			);
+			name = ViewModels;
+			sourceTree = "<group>";
+		};
 		42330B8D1DB3B64D003BDDEC /* Plans */ = {
 			isa = PBXGroup;
 			children = (
@@ -318,6 +354,10 @@
 				42F08C4A1DACAAF600D5D4E3 /* SubscriptionViewModel.swift */,
 				42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */,
 				42330B971DB3D89C003BDDEC /* PaymentHistoryViewModel.swift */,
+				4211D8CD1DB8674D0092F7C5 /* ProfileHeaderViewModel.swift */,
+				4225370E1DB901A0004B33D8 /* CalfProfileHeaderViewModel.swift */,
+				422537121DB9135C004B33D8 /* MessagesViewModel.swift */,
+				422537161DB91BDC004B33D8 /* ChargeViewModel.swift */,
 			);
 			name = ViewModels;
 			sourceTree = "<group>";
@@ -368,7 +408,6 @@
 				42F08C2E1DABE1FB00D5D4E3 /* Models */,
 				42330B8D1DB3B64D003BDDEC /* Plans */,
 				42F08C381DAC5E4200D5D4E3 /* Profile */,
-				42F08C471DACAA3300D5D4E3 /* Transactions */,
 				429F62FB1DA6E07300C3F54E /* Views */,
 				4240B74E1DA44671000D137E /* AppDelegate.swift */,
 				4240B7501DA44671000D137E /* ViewController.swift */,
@@ -418,6 +457,10 @@
 				42F08C481DACAADA00D5D4E3 /* SubscriptionCell.swift */,
 				42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */,
 				42330B951DB3D87F003BDDEC /* PaymentHistoryTableViewCell.swift */,
+				4211D8CB1DB866500092F7C5 /* ProfileHeaderCell.swift */,
+				4225370C1DB90187004B33D8 /* CalfProfileHeaderCell.swift */,
+				422537101DB91347004B33D8 /* MessagesCell.swift */,
+				422537141DB91BCB004B33D8 /* ChargeCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -435,6 +478,8 @@
 		426841481DA7A77A00A2BFF8 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				422537181DB94090004B33D8 /* Cells */,
+				422537191DB9409F004B33D8 /* ViewModels */,
 				4268416F1DA8757D00A2BFF8 /* RecentTransactions */,
 				4268415F1DA86BC600A2BFF8 /* Members */,
 				426841491DA7A80300A2BFF8 /* MainTabBarViewController.swift */,
@@ -586,13 +631,6 @@
 				4211D8C91DB7FA1F0092F7C5 /* UserProfileViewController.swift */,
 			);
 			name = Profile;
-			sourceTree = "<group>";
-		};
-		42F08C471DACAA3300D5D4E3 /* Transactions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Transactions;
 			sourceTree = "<group>";
 		};
 		7BC7FB8872E77F1A86CF77A9 /* Frameworks */ = {
@@ -910,6 +948,7 @@
 				426841521DA7A8FC00A2BFF8 /* SubscribeViewController.swift in Sources */,
 				4255B4001DAEA53D008DECAC /* UIImage.swift in Sources */,
 				4268414A1DA7A80300A2BFF8 /* MainTabBarViewController.swift in Sources */,
+				4225370D1DB90187004B33D8 /* CalfProfileHeaderCell.swift in Sources */,
 				426841631DA86CAF00A2BFF8 /* EmptyStateView.swift in Sources */,
 				4211D8C61DB7AF700092F7C5 /* MenuHeaderViewModel.swift in Sources */,
 				425013B51DAFCA8100ED21B1 /* Validator.swift in Sources */,
@@ -919,9 +958,12 @@
 				4268416A1DA86D0E00A2BFF8 /* TextDecorator.swift in Sources */,
 				4268416C1DA86D5A00A2BFF8 /* MemberViewModel.swift in Sources */,
 				425013B31DAFCA4300ED21B1 /* UIViewController.swift in Sources */,
+				4225371D1DB940EE004B33D8 /* MembersCell.swift in Sources */,
 				429F63071DA728DC00C3F54E /* CreateFirstPlanViewController.swift in Sources */,
+				422537171DB91BDC004B33D8 /* ChargeViewModel.swift in Sources */,
 				42F08C321DAC31A300D5D4E3 /* Member.swift in Sources */,
 				42F08C2D1DABC5F100D5D4E3 /* Constants.swift in Sources */,
+				4211D8CE1DB8674D0092F7C5 /* ProfileHeaderViewModel.swift in Sources */,
 				4211D8C41DB7AF570092F7C5 /* MenuHeaderCell.swift in Sources */,
 				4268414E1DA7A8BD00A2BFF8 /* MembersViewController.swift in Sources */,
 				429F62F21DA6DDFF00C3F54E /* UITheme.swift in Sources */,
@@ -940,6 +982,7 @@
 				429F62FA1DA6E02400C3F54E /* SignUpViewController.swift in Sources */,
 				429F62FD1DA6E08700C3F54E /* ProfilePhotoView.swift in Sources */,
 				426841691DA86D0E00A2BFF8 /* KeyboardDecorator.swift in Sources */,
+				4211D8CC1DB866500092F7C5 /* ProfileHeaderCell.swift in Sources */,
 				429F62EC1DA6DD8800C3F54E /* UIColorTheme.swift in Sources */,
 				426841501DA7A8D400A2BFF8 /* OneTimePaymentViewController.swift in Sources */,
 				426841551DA7DDB900A2BFF8 /* MenuViewController.swift in Sources */,
@@ -951,22 +994,27 @@
 				4268415A1DA7EEBD00A2BFF8 /* CalculatorKeyboard.swift in Sources */,
 				429F62EE1DA6DDA700C3F54E /* UIFontTheme.swift in Sources */,
 				4268414C1DA7A8A500A2BFF8 /* RecentTransactionsViewController.swift in Sources */,
+				422537151DB91BCB004B33D8 /* ChargeCell.swift in Sources */,
 				4211D8CA1DB7FA1F0092F7C5 /* UserProfileViewController.swift in Sources */,
 				42330B8F1DB3B694003BDDEC /* SharePlanViewController.swift in Sources */,
 				4240B7821DA6C903000D137E /* JoinViewController.swift in Sources */,
 				42330B981DB3D89C003BDDEC /* PaymentHistoryViewModel.swift in Sources */,
+				4225371B1DB940D7004B33D8 /* MembersViewModel.swift in Sources */,
 				4255B3FA1DAE89A8008DECAC /* SessionManager.swift in Sources */,
 				42F08C4B1DACAAF600D5D4E3 /* SubscriptionViewModel.swift in Sources */,
 				42330B961DB3D87F003BDDEC /* PaymentHistoryTableViewCell.swift in Sources */,
+				4225370F1DB901A0004B33D8 /* CalfProfileHeaderViewModel.swift in Sources */,
 				4240B74F1DA44671000D137E /* AppDelegate.swift in Sources */,
 				42F08C301DAC318F00D5D4E3 /* Plan.swift in Sources */,
 				429F63011DA719F500C3F54E /* StackViewInputField.swift in Sources */,
 				4255B3FC1DAE9AC5008DECAC /* EditProfilePhotoView.swift in Sources */,
 				42F08C401DAC693E00D5D4E3 /* PaymentCard.swift in Sources */,
+				422537131DB9135C004B33D8 /* MessagesViewModel.swift in Sources */,
 				426841731DA875CB00A2BFF8 /* RecentTransactionViewModel.swift in Sources */,
 				42F08C421DAC695300D5D4E3 /* Transaction.swift in Sources */,
 				429F62FF1DA6E8E800C3F54E /* LoginViewController.swift in Sources */,
 				429F62F01DA6DDD900C3F54E /* UIScreenType.swift in Sources */,
+				422537111DB91347004B33D8 /* MessagesCell.swift in Sources */,
 				42F08C3C1DAC5EE600D5D4E3 /* ProfileViewController.swift in Sources */,
 				42F08C2B1DABBDA100D5D4E3 /* ApiManager.swift in Sources */,
 				42330B941DB3D5B5003BDDEC /* PaymentCardViewModel.swift in Sources */,
