@@ -517,13 +517,13 @@ class MembershipNavigationView: UIView {
         switch state {
         case .Members:
             membersButton.backgroundColor = UIColorTheme.Primary
-            membersButton.layer.cornerRadius = membersButton.frame.size.height/2
+            membersButton.layer.cornerRadius = 40/2
         case .Plans:
             plansButton.backgroundColor = UIColorTheme.Primary
-            plansButton.layer.cornerRadius = plansButton.frame.size.height/2
+            plansButton.layer.cornerRadius = 40/2
         case .Messages:
             messagesButton.backgroundColor = UIColorTheme.Primary
-            messagesButton.layer.cornerRadius = messagesButton.frame.size.height/2
+            messagesButton.layer.cornerRadius = 40/2
         }
     }
     private func clearButtonSelectedState(button: UIButton) {
