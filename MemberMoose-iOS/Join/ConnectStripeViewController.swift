@@ -276,7 +276,10 @@ class ConnectStripeViewController: UIViewController {
         )
     }
     func connectLaterClicked(sender: UIButton) {
-        let viewController = MembersViewController()
+        guard let user = SessionManager.sharedUser else {
+            return
+        }
+        let viewController = ProfileViewController(user: user, profileType: .bull)
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.navigationBarHidden = true
         

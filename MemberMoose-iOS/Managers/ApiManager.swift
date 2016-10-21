@@ -153,6 +153,8 @@ public class ApiManager {
                     } else {
                         failure(error: nil, errorDictionary: nil)
                     }
+                }  else {
+                    failure(error: nil, errorDictionary: nil)
                 }
         }
     }
@@ -197,6 +199,8 @@ public class ApiManager {
                             } else {
                                 failure(error: nil, errorDictionary: nil)
                             }
+                        } else {
+                            failure(error: nil, errorDictionary: nil)
                         }
                     }
                 case .Failure(let encodingError):

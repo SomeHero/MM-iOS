@@ -35,7 +35,9 @@ class ProfileViewController: UIViewController {
     private let paymentHistoryCellIdentifier       = "PaymentHistoryCellIdentifier"
     private let chargeCellIdentifier            = "ChargeCellIdentifier"
     private let memberCellIdentifier            = "MemberCellIdentifier"
+    private let memberEmptyStateCellIdentifier  = "MemberEmptyStateCellIdentifier"
     private let planCellIdentifier              = "PlanCellIdentifier"
+    private let planEmptyStateCellIdentifier    = "PlanEmptyStateCellIdentifier"
     private let tableCellHeight: CGFloat        = 120
     private var membershipNavigationState: MembershipNavigationState = .Members
     private var memberNavigationState: MemberNavigationState = .Profile
@@ -51,6 +53,9 @@ class ProfileViewController: UIViewController {
     private let nonNavBarMenuButtonVerticalOffset: CGFloat = 20.0;
     private let nonNavBarMenuButtonHorizontalOffset: CGFloat = 12.0;
     private var chromeVisible = true
+    
+    private var hasMembers = false
+    private var hasPlans = false
     
     private var presenter: Presentr = {
         let _presenter = Presentr(presentationType: .Alert)
@@ -143,6 +148,7 @@ class ProfileViewController: UIViewController {
         _tableView.estimatedRowHeight   = self.tableCellHeight
         _tableView.rowHeight = UITableViewAutomaticDimension
         _tableView.contentInset         = UIEdgeInsetsZero
+        _tableView.separatorStyle       = .None
         
         _tableView.registerClass(ProfileHeaderCell.self, forCellReuseIdentifier: self.profileCellIdentifier)
         _tableView.registerClass(CalfProfileHeaderCell.self, forCellReuseIdentifier: self.calfProfileCellIdentifier)
@@ -151,15 +157,17 @@ class ProfileViewController: UIViewController {
         _tableView.registerClass(PaymentHistoryTableViewCell.self, forCellReuseIdentifier: self.paymentHistoryCellIdentifier)
         _tableView.registerClass(ChargeCell.self, forCellReuseIdentifier: self.chargeCellIdentifier)
         _tableView.registerClass(MemberCell.self, forCellReuseIdentifier: self.memberCellIdentifier)
+        _tableView.registerClass(MemberEmptyStateCell.self, forCellReuseIdentifier: self.memberEmptyStateCellIdentifier)
         _tableView.registerClass(PlanCell.self, forCellReuseIdentifier: self.planCellIdentifier)
-
+        _tableView.registerClass(PlanEmptyStateCell.self, forCellReuseIdentifier: self.planEmptyStateCellIdentifier)
+        
         self.view.addSubview(_tableView)
         return _tableView
     }()
     private lazy var addMemberButton: UIButton = {
         let _button = UIButton(type: UIButtonType.Custom)
         _button.backgroundColor = UIColorTheme.Primary
-        _button.setTitle("Add Member", forState: .Normal)
+        _button.setTitle("ADD MEMBER", forState: .Normal)
         _button.setTitleColor(.whiteColor(), forState: .Normal)
         _button.addTarget(self, action: #selector(ProfileViewController.addMemberClicked(_:)), forControlEvents: .TouchUpInside)
         
@@ -170,7 +178,7 @@ class ProfileViewController: UIViewController {
     private lazy var addPlanButton: UIButton = {
         let _button = UIButton(type: UIButtonType.Custom)
         _button.backgroundColor = UIColorTheme.Primary
-        _button.setTitle("Create a Plan", forState: .Normal)
+        _button.setTitle("CREATE PLAN", forState: .Normal)
         _button.setTitleColor(.whiteColor(), forState: .Normal)
         _button.addTarget(self, action: #selector(ProfileViewController.addPlanClicked(_:)), forControlEvents: .TouchUpInside)
         
@@ -283,35 +291,58 @@ class ProfileViewController: UIViewController {
         case .bull:
             switch membershipNavigationState {
             case .Members:
-                addMemberButton.snp_updateConstraints(closure: { (make) in
-                    make.bottom.equalTo(view.snp_bottom).offset(0)
-                })
-                addPlanButton.snp_updateConstraints(closure: { (make) in
+                var offset = 60
+                var tableViewOffset = 0
+                if hasMembers {
+                    offset = 0
+                    tableViewOffset = 60
+                }
+                addMemberButton.snp_updateConstraints { (make) in
+                    make.bottom.equalTo(view.snp_bottom).offset(offset)
+                }
+                addPlanButton.snp_updateConstraints { (make) in
                     make.bottom.equalTo(view.snp_bottom).offset(60)
-                })
+                }
+                tableView.snp_updateConstraints { (make) in
+                    make.bottom.equalTo(view).inset(tableViewOffset)
+                }
             case .Plans:
+                var offset = 60
+                var tableViewOffset = 0
+                if hasPlans {
+                    offset = 0
+                    tableViewOffset = 60
+                }
                 addMemberButton.snp_updateConstraints(closure: { (make) in
                     make.bottom.equalTo(view.snp_bottom).offset(60)
                 })
                 addPlanButton.snp_updateConstraints(closure: { (make) in
-                    make.bottom.equalTo(view.snp_bottom).offset(0)
+                    make.bottom.equalTo(view.snp_bottom).offset(offset)
                 })
+                tableView.snp_updateConstraints { (make) in
+                    make.bottom.equalTo(view).inset(tableViewOffset)
+                }
             default:
-                addMemberButton.snp_updateConstraints(closure: { (make) in
+                addMemberButton.snp_updateConstraints { (make) in
                     make.bottom.equalTo(view.snp_bottom).offset(60)
-                })
-                addPlanButton.snp_updateConstraints(closure: { (make) in
+                }
+                addPlanButton.snp_updateConstraints { (make) in
                     make.bottom.equalTo(view.snp_bottom).offset(60)
-                })
-                
+                }
+                tableView.snp_updateConstraints { (make) in
+                    make.bottom.equalTo(view).inset(0)
+                }
             }
         default:
-            addMemberButton.snp_updateConstraints(closure: { (make) in
+            addMemberButton.snp_updateConstraints { (make) in
                 make.bottom.equalTo(view.snp_bottom).offset(60)
-            })
-            addPlanButton.snp_updateConstraints(closure: { (make) in
+            }
+            addPlanButton.snp_updateConstraints { (make) in
                 make.bottom.equalTo(view.snp_bottom).offset(60)
-            })
+            }
+            tableView.snp_updateConstraints { (make) in
+                make.bottom.equalTo(view).inset(0)
+            }
         }
     }
     override func didReceiveMemoryWarning() {
@@ -348,6 +379,8 @@ class ProfileViewController: UIViewController {
     }
     func buildDataSet() {
         var items: [[DataSourceItemProtocol]] = []
+        hasMembers = false
+        hasPlans = false
         
         switch profileType {
         case .bull:
@@ -362,6 +395,8 @@ class ProfileViewController: UIViewController {
                             return
                         }
                         if(members!.count > 0) {
+                            _self.hasMembers = true
+                            
                             var viewModels: [MemberViewModel] = []
                             for member in members! {
                                 let viewModel = MemberViewModel(user: member)
@@ -370,6 +405,12 @@ class ProfileViewController: UIViewController {
                             }
                             items.append(viewModels)
                             
+                            _self.dataSource = items
+                        } else {
+                            var viewModels: [MemberEmptyStateViewModel] = []
+                            viewModels.append(MemberEmptyStateViewModel(logo: "Logo-DeadMoose", header: "804RVA has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.", memberEmptyStateDelegate: _self))
+                            
+                            items.append(viewModels)
                             _self.dataSource = items
                         }
                     }) { (error, errorDictionary) in
@@ -381,6 +422,8 @@ class ProfileViewController: UIViewController {
                         return
                     }
                     if(plans!.count > 0) {
+                        _self.hasPlans = true
+                        
                         var viewModels: [PlanViewModel] = []
                         for plan in plans! {
                             let viewModel = PlanViewModel(plan: plan)
@@ -389,6 +432,12 @@ class ProfileViewController: UIViewController {
                         }
                         items.append(viewModels)
                         
+                        _self.dataSource = items
+                    } else {
+                        var viewModels: [PlanEmptyStateViewModel] = []
+                        viewModels.append(PlanEmptyStateViewModel(logo: "Logo-DeadMoose", header: "804RVA has no plans!", subHeader: "The best way to add plans to your community is to create a plan manually or import existing plans from your Stripe account.", planEmptyStateDelgate: self))
+                        
+                        items.append(viewModels)
                         _self.dataSource = items
                     }
                 }) { (error, errorDictionary) in
@@ -670,5 +719,27 @@ extension ProfileViewController: CancelSubscriptionDelegate {
         }) { (error, errorDictionary) in
             print("error occurred")
         }
+    }
+}
+extension ProfileViewController: MemberEmptyStateDelegate {
+    func didCreateMember() {
+        //let viewController = MemberDetailViewController()
+        
+        //navigationController?.pushViewController(viewController, animated: true)
+    }
+    func didSharePlan() {
+        let viewController = SharePlanViewController()
+        
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+}
+extension ProfileViewController: PlanEmptyStateDelegate {
+    func didCreatePlan() {
+        let viewController = PlanDetailViewController()
+        
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    func didImportPlan() {
+        print("import plan")
     }
 }

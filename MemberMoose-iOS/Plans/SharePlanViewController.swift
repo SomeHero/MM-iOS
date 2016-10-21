@@ -23,22 +23,25 @@ class SharePlanViewController: UIViewController {
         super.viewDidLoad()
 
         title = "Share Plan"
+        
+        view.backgroundColor = .whiteColor()
+        
+        let image = UIImage(named: "Back")
+        let backButton = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(PlanDetailViewController.backClicked(_:)))
+        
+        navigationItem.leftBarButtonItem = backButton
     }
-
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func backClicked(sender: UIButton) {
+        navigationController?.popViewControllerAnimated(true)
     }
-    */
 
 }
