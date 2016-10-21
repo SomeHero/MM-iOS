@@ -44,10 +44,11 @@ class StackViewInputField: UIView {
     }()
     
     override func updateConstraints() {
+        let labelHeight = (inputLabel.text?.characters.count > 0 ? fieldHeight : 0)
         inputLabel.snp_updateConstraints { (make) in
             make.leading.trailing.equalTo(self)
             make.top.equalTo(self).inset(verticalPadding)
-            make.height.equalTo(fieldHeight)
+            make.height.equalTo(labelHeight)
         }
         textField.snp_updateConstraints { (make) -> Void in
             make.leading.equalTo(self)
@@ -80,7 +81,6 @@ class StackViewInputField: UIView {
     //func addIconOnLeftWithSize(icon: FontAwesome, sizeFontSize) {
     //textField.addIconOnLeftWithSize(icon, size: size)
     //}
-    
     func configure(text: String?, label: String? = nil, placeholder: String? = nil, tag: Int? = 0, keyboardType: UIKeyboardType? = .Default) {
         if let placeholder = placeholder {
             textField.placeholder = placeholder

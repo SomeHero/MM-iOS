@@ -42,7 +42,7 @@ class UserProfileViewController: UIViewController {
     }()
     private lazy var firstNameTextField: StackViewInputField = {
         let _textField = StackViewInputField()
-        _textField.configure("", label: "First Name", placeholder: "Enter First Name", tag: 101)
+        _textField.configure("", placeholder: "Enter First Name", tag: 101)
         self.configureTextField(_textField.textField)
         
         _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
@@ -50,7 +50,7 @@ class UserProfileViewController: UIViewController {
     }()
     private lazy var lastNameTextField: StackViewInputField = {
         let _textField = StackViewInputField()
-        _textField.configure("", label: "Last Name", placeholder: "Enter Last Name", tag: 102)
+        _textField.configure("", placeholder: "Enter Last Name", tag: 102)
         _textField.textField.autocorrectionType = .No
         _textField.textField.autocapitalizationType = .None
         self.configureTextField(_textField.textField)
@@ -60,7 +60,7 @@ class UserProfileViewController: UIViewController {
     }()
     private lazy var emailAddressTextField: StackViewInputField = {
         let _textField = StackViewInputField()
-        _textField.configure("", label: "Email Address", placeholder: "Enter Email Address", tag: 103)
+        _textField.configure("", placeholder: "Enter Email Address", tag: 103)
         _textField.textField.autocorrectionType = .No
         _textField.textField.autocapitalizationType = .None
         _textField.textField.keyboardType = .EmailAddress
@@ -71,7 +71,7 @@ class UserProfileViewController: UIViewController {
     }()
     private lazy var passwordTextField: StackViewInputField = {
         let _textField = StackViewInputField()
-        _textField.configure("", label: "Password", placeholder: "Enter Password", tag: 104)
+        _textField.configure("", placeholder: "Enter Password", tag: 104)
         _textField.textField.autocorrectionType = .No
         _textField.textField.autocapitalizationType = .None
         _textField.textField.secureTextEntry = true
@@ -82,7 +82,7 @@ class UserProfileViewController: UIViewController {
     }()
     private lazy var confirmPasswordTextField: StackViewInputField = {
         let _textField = StackViewInputField()
-        _textField.configure("", label: "ConfirmPassword", placeholder: "Enter Password Again", tag: 105)
+        _textField.configure("", placeholder: "Enter Password Again", tag: 105)
         _textField.textField.autocorrectionType = .No
         _textField.textField.autocapitalizationType = .None
         _textField.textField.secureTextEntry = true

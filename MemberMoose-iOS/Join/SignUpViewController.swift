@@ -47,7 +47,7 @@ class SignUpViewController: UIViewController {
     }()
     private lazy var companyNameTextField: StackViewInputField = {
         let _textField = StackViewInputField()
-        _textField.configure("", label: "Company Name", placeholder: "Company Name", tag: 101)
+        _textField.configure("", placeholder: "COMPANY NAME", tag: 101)
         self.configureTextField(_textField.textField)
         
         _textField.textField.addTarget(self, action: #selector(SignUpViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
@@ -55,7 +55,7 @@ class SignUpViewController: UIViewController {
     }()
     private lazy var emailTextField: StackViewInputField = {
         let _textField = StackViewInputField()
-        _textField.configure("", label: "Email", placeholder: "Email Address", tag: 102)
+        _textField.configure("", placeholder: "EMAIL", tag: 102)
         _textField.textField.autocorrectionType = .No
         _textField.textField.autocapitalizationType = .None
         self.configureTextField(_textField.textField)
@@ -65,7 +65,7 @@ class SignUpViewController: UIViewController {
     }()
     private lazy var passwordTextField: StackViewInputField = {
         let _textField = StackViewInputField()
-        _textField.configure("", label: "Password", placeholder: "Password", tag: 103)
+        _textField.configure("", placeholder: "PASSWORD", tag: 103)
         _textField.textField.autocorrectionType = .No
         _textField.textField.autocapitalizationType = .None
         _textField.textField.secureTextEntry = true

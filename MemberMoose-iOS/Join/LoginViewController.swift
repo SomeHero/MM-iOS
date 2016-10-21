@@ -57,7 +57,7 @@ class LoginViewController: UIViewController {
     }()
     private lazy var emailTextField: StackViewInputField = {
         let _textField = StackViewInputField()
-        _textField.configure("", label: "Email", placeholder: "Email Address", tag: 101)
+        _textField.configure("", placeholder: "EMAIL", tag: 101)
         _textField.textField.autocorrectionType = .No
         _textField.textField.autocapitalizationType = .None
         self.configureTextField(_textField.textField)
@@ -67,7 +67,7 @@ class LoginViewController: UIViewController {
     }()
     private lazy var passwordTextField: StackViewInputField = {
         let _textField = StackViewInputField()
-        _textField.configure("", label: "Password", placeholder: "Password", tag: 102)
+        _textField.configure("", placeholder: "PASSWORD", tag: 102)
         _textField.textField.autocorrectionType = .No
         _textField.textField.autocapitalizationType = .None
         _textField.textField.secureTextEntry = true
