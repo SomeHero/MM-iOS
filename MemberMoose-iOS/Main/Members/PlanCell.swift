@@ -38,7 +38,13 @@ class PlanCell: UITableViewCell {
         
         return _label
     }()
-
+    lazy var currencyFormatter: NSNumberFormatter = {
+        let _formatter = NSNumberFormatter()
+        _formatter.generatesDecimalNumbers = true
+        _formatter.numberStyle = .CurrencyStyle
+        
+        return _formatter
+    }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .Default, reuseIdentifier: reuseIdentifier)
         
@@ -64,7 +70,9 @@ class PlanCell: UITableViewCell {
         }
         
         planNameLabel.text = viewModel.planName
-        planAmountLabel.text = "$150.00/monthly"
+        if let planAmount = currencyFormatter.stringFromNumber(viewModel.planAmount) {
+            planAmountLabel.text = "\(planAmount)/\(viewModel.interval)"
+        }
         subscribersCountLabel.text = "\(viewModel.subscribersCount) Subscribers"
     }
     override func updateConstraints() {

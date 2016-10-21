@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class PlanDetailViewController: UIViewController {
     private lazy var scrollView: UIScrollView = {
@@ -29,7 +30,7 @@ class PlanDetailViewController: UIViewController {
         input.configure("", label: "Plan Name", placeholder: "Enter Name of Plan", tag: 100)
         self.configureTextField(input.textField)
         
-        input.textField.addTarget(self, action: #selector(PaymentCardViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        input.textField.addTarget(self, action: #selector(PlanDetailViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return input
     }()
     private lazy var planDescriptionView: StackViewInputField = {
@@ -37,7 +38,7 @@ class PlanDetailViewController: UIViewController {
         input.configure("", label: "Description of Plan (Optional)", placeholder: "Enter a Description", tag: 101)
         self.configureTextField(input.textField)
         
-        input.textField.addTarget(self, action: #selector(PaymentCardViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        input.textField.addTarget(self, action: #selector(PlanDetailViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return input
     }()
     private lazy var paymentTypeView: StackViewInputField = {
@@ -45,7 +46,7 @@ class PlanDetailViewController: UIViewController {
         input.configure("", label: "How do you want to charge customers?", placeholder: "ONE-TIME OR RECURRING", tag: 103)
         self.configureTextField(input.textField)
         
-        input.textField.addTarget(self, action: #selector(PaymentCardViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        input.textField.addTarget(self, action: #selector(PlanDetailViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return input
     }()
     private lazy var amountView: StackViewInputField = {
@@ -53,10 +54,20 @@ class PlanDetailViewController: UIViewController {
         input.configure("", label: "Amount", placeholder: "Amount to Charge", tag: 104)
         self.configureTextField(input.textField)
         
-        input.textField.addTarget(self, action: #selector(PaymentCardViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        input.textField.addTarget(self, action: #selector(PlanDetailViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return input
     }()
-    
+    private lazy var nextButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.Custom)
+        _button.setImage(UIImage(named: "RightArrow-Primary"), forState: .Normal)
+        _button.imageView?.contentMode = .ScaleAspectFit
+        
+        _button.addTarget(self, action: #selector(PlanDetailViewController.nextClicked(_:)), forControlEvents: .TouchUpInside)
+        
+        self.scrollView.addSubview(_button)
+        
+        return _button
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -91,11 +102,19 @@ class PlanDetailViewController: UIViewController {
             make.leading.trailing.equalTo(self.view).inset(20)
             make.bottom.equalTo(scrollView).inset(20)
         }
-        
+        nextButton.snp_updateConstraints { (make) in
+            make.top.equalTo(stackView.snp_bottom).offset(40)
+            make.centerX.equalTo(scrollView)
+            make.height.equalTo(40)
+        }
+
         super.viewDidLayoutSubviews()
     }
     func setup() {
         
+    }
+    func validateForm() {
+    
     }
     func configureTextField(textField: UITextField) {
         textField.returnKeyType = .Next
@@ -113,5 +132,26 @@ class PlanDetailViewController: UIViewController {
     }
     func backClicked(sender: UIButton) {
         navigationController?.popViewControllerAnimated(true)
+    }
+    func nextClicked(sender: UIButton) {
+        guard let planName = planNameView.textField.text, planDescription = planDescriptionView.textField.text, paymentType = paymentTypeView.textField.text, amountText = amountView.textField.text, amount = Double(amountText) else {
+            return
+        }
+        let createPlan = CreatePlan(name: planName, amount: amount, interval: "month", intervalCount: 1, statementDescriptor: "", trialPeriodDays: 0, statementDescription: "")
+        
+        SVProgressHUD.show()
+        
+        ApiManager.sharedInstance.createPlan(createPlan, success: { [weak self] (response) in
+            guard let _self = self else {
+                return
+            }
+            SVProgressHUD.dismiss()
+            
+            _self.navigationController?.popViewControllerAnimated(true)
+        }) { (error, errorDictionary) in
+            SVProgressHUD.dismiss()
+            
+            print("error occurred")
+        }
     }
 }

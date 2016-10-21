@@ -95,6 +95,38 @@ public struct ConnectStripe {
         return parameters
     }
 }
+public struct CreatePlan {
+    let name: String
+    let amount: Double
+    let interval: String
+    let intervalCount: Int
+    let statementDescriptor: String
+    let trialPeriodDays: Int
+    let statementDescription: String
+    
+    public init(name: String, amount:Double, interval: String, intervalCount: Int, statementDescriptor: String, trialPeriodDays: Int, statementDescription: String) {
+        self.name = name
+        self.amount = amount
+        self.interval = interval
+        self.intervalCount = intervalCount
+        self.statementDescriptor = statementDescriptor
+        self.trialPeriodDays = trialPeriodDays
+        self.statementDescription = statementDescription
+    }
+    func parameterize() -> [String: AnyObject] {
+        let parameters: [String: AnyObject] = [
+            "name": name,
+            "amount": amount,
+            "interval": interval,
+            "interval_count": intervalCount,
+            "statement_descriptor": statementDescriptor,
+            "trial_period_days": trialPeriodDays,
+            "statement_description": statementDescription
+        ]
+        
+        return parameters
+    }
+}
 public class ApiManager {
     private var kApiBaseUrl:String?
     public var apiBaseUrl: String {
@@ -418,5 +450,33 @@ public class ApiManager {
                     success()
                 }
         }
+    }
+    public func createPlan(createPlan: CreatePlan, success: (response: Plan) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+        let params = createPlan.parameterize()
+        
+        Alamofire.request(.POST, apiBaseUrl + "plans", parameters: params, encoding: .JSON, headers: headers)
+            .validate()
+            .responseObject { (response: Response<Plan, NSError>) in
+                if let error = response.result.error {
+                    var errorResponse: [String: AnyObject]? = [:]
+                    
+                    if let data = response.data {
+                        do {
+                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                        } catch let error as NSError {
+                            failure(error: error, errorDictionary: nil)
+                        } catch let error {
+                            failure(error: error, errorDictionary: nil)
+                        }
+                        failure(error: error, errorDictionary: errorResponse)
+                    } else {
+                        failure(error: error, errorDictionary: nil)
+                    }
+                }
+                if let plan = response.result.value {
+                    success(response: plan)
+                }
+        }
+        
     }
 }

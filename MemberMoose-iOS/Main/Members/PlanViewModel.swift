@@ -15,12 +15,14 @@ class PlanViewModel: DataSourceItemProtocol {
     let planId: String
     let planName: String
     let planAmount: Double
+    let interval: String
     let subscribersCount: Int
     
     init(plan: Plan) {
-        planId = plan.planId
+        planId = plan.id
         planName = plan.name
         planAmount = plan.amount
+        interval = plan.interval
         subscribersCount = 23
     }
     
