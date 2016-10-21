@@ -129,8 +129,8 @@ class BullProfileViewController: UIViewController {
         } else {
             avatarView.profilePhoto.image = UIImage(named: "Avatar-Bull")
         }
-        companyNameTextField.textField.text = user.companyName
-        subDomainTextField.textField.text = "804RVA"
+        companyNameTextField.textField.text = user.account?.companyName
+        subDomainTextField.textField.text = user.account?.subdomain
     }
     func backClicked(sender: UIButton) {
         navigationController?.popViewControllerAnimated(true)

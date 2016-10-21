@@ -352,7 +352,7 @@ class ProfileViewController: UIViewController {
     func setup() {
         switch profileType {
         case .bull:
-            navHeaderNameLabel.text = user.companyName
+            navHeaderNameLabel.text = user.account?.companyName
         case .calf:
             if let firstName = user.firstName, lastName = user.lastName {
                 navHeaderNameLabel.text = "\(firstName) \(lastName)"

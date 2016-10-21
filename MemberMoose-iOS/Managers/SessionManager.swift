@@ -50,7 +50,7 @@ class SessionManager: NSObject {
         
         userDefaults.setValuesForKeysWithDictionary([
             "id": user.id!,
-            "company_name": user.companyName,
+            //"company_name": user.companyName,
             "email_address": user.emailAddress,
             ])
         if let avatar = user.avatar {
@@ -71,13 +71,13 @@ class SessionManager: NSObject {
         guard let id = userDefaults.stringForKey("id") else {
             return nil
         }
-        let companyName = userDefaults.stringForKey("company_name")!
+        //let companyName = userDefaults.stringForKey("company_name")!
         let emailAddress = userDefaults.stringForKey("email_address")!
         let avatar = userDefaults.valueForKey("avatar")
         let firstName = userDefaults.stringForKey("first_name")
         let lastName = userDefaults.stringForKey("last_name")
         
-        let user = User(userId: id, companyName: companyName, emailAddress: emailAddress, firstName: firstName, lastName: lastName)
+        let user = User(userId: id, emailAddress: emailAddress, firstName: firstName, lastName: lastName)
         
         if let avatar = avatar as? Dictionary<String, String> {
             user.avatar = avatar

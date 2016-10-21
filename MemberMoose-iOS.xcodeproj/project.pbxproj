@@ -35,6 +35,7 @@
 		4225372A1DBA589D004B33D8 /* MemberEmptyStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422537291DBA589D004B33D8 /* MemberEmptyStateViewModel.swift */; };
 		4225372C1DBA7772004B33D8 /* PlanEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4225372B1DBA7772004B33D8 /* PlanEmptyStateCell.swift */; };
 		422537301DBA7940004B33D8 /* PlanEmptyStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4225372F1DBA7940004B33D8 /* PlanEmptyStateViewModel.swift */; };
+		422537321DBA8D64004B33D8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422537311DBA8D64004B33D8 /* Account.swift */; };
 		42330B8F1DB3B694003BDDEC /* SharePlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */; };
 		42330B921DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */; };
 		42330B941DB3D5B5003BDDEC /* PaymentCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */; };
@@ -164,6 +165,7 @@
 		422537291DBA589D004B33D8 /* MemberEmptyStateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MemberEmptyStateViewModel.swift; path = Profile/MemberEmptyStateViewModel.swift; sourceTree = "<group>"; };
 		4225372B1DBA7772004B33D8 /* PlanEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanEmptyStateCell.swift; path = Profile/PlanEmptyStateCell.swift; sourceTree = "<group>"; };
 		4225372F1DBA7940004B33D8 /* PlanEmptyStateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanEmptyStateViewModel.swift; path = Profile/PlanEmptyStateViewModel.swift; sourceTree = "<group>"; };
+		422537311DBA8D64004B33D8 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Account.swift; path = Models/Account.swift; sourceTree = "<group>"; };
 		42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharePlanViewController.swift; path = Plans/SharePlanViewController.swift; sourceTree = "<group>"; };
 		42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardTableViewCell.swift; path = Profile/PaymentCardTableViewCell.swift; sourceTree = "<group>"; };
 		42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardViewModel.swift; path = Profile/PaymentCardViewModel.swift; sourceTree = "<group>"; };
@@ -610,11 +612,12 @@
 		42F08C2E1DABE1FB00D5D4E3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				42F08C2F1DAC318F00D5D4E3 /* Plan.swift */,
+				422537311DBA8D64004B33D8 /* Account.swift */,
 				42F08C311DAC31A300D5D4E3 /* Member.swift */,
-				42F08C3D1DAC68D000D5D4E3 /* Subscription.swift */,
 				4211D8BB1DB7288E0092F7C5 /* Membership.swift */,
 				42F08C3F1DAC693E00D5D4E3 /* PaymentCard.swift */,
+				42F08C2F1DAC318F00D5D4E3 /* Plan.swift */,
+				42F08C3D1DAC68D000D5D4E3 /* Subscription.swift */,
 				42F08C411DAC695300D5D4E3 /* Transaction.swift */,
 				42F08C331DAC31B300D5D4E3 /* User.swift */,
 			);
@@ -1000,6 +1003,7 @@
 				429F62EC1DA6DD8800C3F54E /* UIColorTheme.swift in Sources */,
 				426841501DA7A8D400A2BFF8 /* OneTimePaymentViewController.swift in Sources */,
 				426841551DA7DDB900A2BFF8 /* MenuViewController.swift in Sources */,
+				422537321DBA8D64004B33D8 /* Account.swift in Sources */,
 				429F63091DA72B6800C3F54E /* CreatePlanViewController.swift in Sources */,
 				42F08C371DAC34E800D5D4E3 /* ISO8601ExtendedDateTransform.swift in Sources */,
 				425013B71DB080E400ED21B1 /* ImportPlansViewController.swift in Sources */,

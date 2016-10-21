@@ -23,7 +23,7 @@ class ProfileHeaderViewModel:DataSourceItemProtocol {
         if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
             self.avatarImageUrl = avatarImageUrl
         }
-        self.companyName = user.companyName
+        self.companyName = user.account?.companyName
         self.membershipNavigationState = membershipNavigationState
         self.membershipNavigationDelegate = membershipNavigationDelegate
     }

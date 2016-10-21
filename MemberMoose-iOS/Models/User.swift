@@ -13,9 +13,10 @@ public class User: Mappable {
     public var id: String!
     public var firstName: String?
     public var lastName: String?
-    public var companyName: String!
+    //public var companyName: String!
     public var emailAddress: String!
     public var avatar: Dictionary<String, String>? = [:]
+    public var account: Account?
     public var plans: [Plan] = []
     public var subscriptions: [Subscription] =  []
     public var memberships: [Membership] = []
@@ -24,9 +25,9 @@ public class User: Mappable {
     //public var createdAt: NSDate!
     //public var updatedAt: NSDate?
     
-    public init(userId: String, companyName: String, emailAddress: String, firstName: String? = nil, lastName: String? = nil) {
+    public init(userId: String, emailAddress: String, firstName: String? = nil, lastName: String? = nil) {
         self.id = userId
-        self.companyName = companyName
+        //self.companyName = companyName
         self.emailAddress = emailAddress
         self.firstName = firstName
         self.lastName = lastName
@@ -39,9 +40,10 @@ public class User: Mappable {
         id <- map["_id"]
         firstName <- map["first_name"]
         lastName <- map["last_name"]
-        companyName <- map["company_name"]
+        //companyName <- map["company_name"]
         emailAddress <- map["email_address"]
         avatar <- map["avatar"]
+        account <- map["account"]
         plans <- map["plans"]
         subscriptions <- map["subscriptions"]
         memberships <- map["memberships"]
