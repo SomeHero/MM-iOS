@@ -8,6 +8,9 @@
 
 import UIKit
 
+protocol PaymentCardDelegate: class {
+    func didUpdatePaymentCard(paymentCard: PaymentCard)
+}
 class PaymentCardViewModel:DataSourceItemProtocol {
     var cellID: String = "PaymentCardCell"
     var cellClass: UITableViewCell.Type = SubscriptionCell.self
@@ -15,18 +18,17 @@ class PaymentCardViewModel:DataSourceItemProtocol {
     var nameOnCard: String?
     let cardDescription: String
     let cardExpiration: String
+    private var paymentCard: PaymentCard
+    weak var paymentCardDelegate: PaymentCardDelegate?
     
-    init(paymentCard: PaymentCard) {
+    init(paymentCard: PaymentCard, paymentCardDelegate: PaymentCardDelegate? = nil) {
         if let name = paymentCard.nameOnCard {
             nameOnCard = name
         }
         cardDescription = "\(paymentCard.brand) ending in \(paymentCard.cardLastFour)"
         cardExpiration = "Expiration: \(paymentCard.expirationMonth)/\(paymentCard.expirationYear)"
-    }
-    init(nameOnCard: String, cardDescription: String, cardExpiration: String) {
-        self.nameOnCard = nameOnCard
-        self.cardDescription = cardDescription
-        self.cardExpiration = cardExpiration
+        self.paymentCard = paymentCard
+        self.paymentCardDelegate = paymentCardDelegate
     }
     @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier("PaymentCardCellIdentifier", forIndexPath: indexPath) as? PaymentCardTableViewCell else {
@@ -34,10 +36,11 @@ class PaymentCardViewModel:DataSourceItemProtocol {
         }
         
         cell.setupWith(self)
+        cell.paymentCardCellDelegate = self
         
         return cell
     }
-    @objc func viewForHeader() -> UIView {
+    @objc func viewForHeader() -> UIView? {
         let header = SubscriptionHeaderView()
         header.setup("Payment Card")
         
@@ -45,6 +48,11 @@ class PaymentCardViewModel:DataSourceItemProtocol {
     }
     @objc func heightForHeader() -> CGFloat {
         return 50;
+    }
+}
+extension PaymentCardViewModel: PaymentCardCellDelegate {
+    func didUpdateCardClicked() {
+        paymentCardDelegate?.didUpdatePaymentCard(paymentCard)
     }
 }
 class PaymentCardHeaderView: UIView {

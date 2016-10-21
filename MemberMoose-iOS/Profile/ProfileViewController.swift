@@ -8,6 +8,7 @@
 
 import UIKit
 import ALTextInputBar
+import Presentr
 
 @objc protocol DataSourceItemProtocol {
     func viewForHeader() -> UIView?
@@ -51,6 +52,13 @@ class ProfileViewController: UIViewController {
     private let nonNavBarMenuButtonHorizontalOffset: CGFloat = 12.0;
     private var chromeVisible = true
     
+    private var presenter: Presentr = {
+        let _presenter = Presentr(presentationType: .Alert)
+        _presenter.transitionType = .CoverVertical // Optional
+        _presenter.presentationType = .Popup
+        
+        return _presenter
+    }()
     private var scrollDarkNavDelayFactor:CGFloat {
         return 1.3
     }
@@ -148,6 +156,28 @@ class ProfileViewController: UIViewController {
         self.view.addSubview(_tableView)
         return _tableView
     }()
+    private lazy var addMemberButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.Custom)
+        _button.backgroundColor = UIColorTheme.Primary
+        _button.setTitle("Add Member", forState: .Normal)
+        _button.setTitleColor(.whiteColor(), forState: .Normal)
+        _button.addTarget(self, action: #selector(ProfileViewController.addMemberClicked(_:)), forControlEvents: .TouchUpInside)
+        
+        self.view.addSubview(_button)
+        
+        return _button
+    }()
+    private lazy var addPlanButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.Custom)
+        _button.backgroundColor = UIColorTheme.Primary
+        _button.setTitle("Create a Plan", forState: .Normal)
+        _button.setTitleColor(.whiteColor(), forState: .Normal)
+        _button.addTarget(self, action: #selector(ProfileViewController.addPlanClicked(_:)), forControlEvents: .TouchUpInside)
+        
+        self.view.addSubview(_button)
+        
+        return _button
+    }()
     private lazy var messageToolbarView: MessageToolbarView = {
         let _view = MessageToolbarView()
         
@@ -155,11 +185,21 @@ class ProfileViewController: UIViewController {
     }()
     override var inputAccessoryView: UIView? {
         get {
-            switch memberNavigationState {
-            case .Message:
-                return textInputBar
-            default:
-                return nil
+            switch profileType {
+            case .bull:
+                switch membershipNavigationState {
+                case .Messages:
+                    return textInputBar
+                default:
+                    return nil
+                }
+            case .calf:
+                switch memberNavigationState {
+                case .Message:
+                    return textInputBar
+                default:
+                    return nil
+                }
             }
         }
     }
@@ -228,7 +268,50 @@ class ProfileViewController: UIViewController {
         navHeaderLineView.snp_updateConstraints { (make) in
             make.leading.trailing.equalTo(self.navHeader)
             make.height.equalTo(kOnePX*2)
+           
             make.bottom.equalTo(self.navHeader.snp_bottom)
+        }
+        addMemberButton.snp_updateConstraints { (make) in
+            make.leading.trailing.equalTo(view)
+            make.height.equalTo(60)
+        }
+        addPlanButton.snp_updateConstraints { (make) in
+            make.leading.trailing.equalTo(view)
+            make.height.equalTo(60)
+        }
+        switch profileType {
+        case .bull:
+            switch membershipNavigationState {
+            case .Members:
+                addMemberButton.snp_updateConstraints(closure: { (make) in
+                    make.bottom.equalTo(view.snp_bottom).offset(0)
+                })
+                addPlanButton.snp_updateConstraints(closure: { (make) in
+                    make.bottom.equalTo(view.snp_bottom).offset(60)
+                })
+            case .Plans:
+                addMemberButton.snp_updateConstraints(closure: { (make) in
+                    make.bottom.equalTo(view.snp_bottom).offset(60)
+                })
+                addPlanButton.snp_updateConstraints(closure: { (make) in
+                    make.bottom.equalTo(view.snp_bottom).offset(0)
+                })
+            default:
+                addMemberButton.snp_updateConstraints(closure: { (make) in
+                    make.bottom.equalTo(view.snp_bottom).offset(60)
+                })
+                addPlanButton.snp_updateConstraints(closure: { (make) in
+                    make.bottom.equalTo(view.snp_bottom).offset(60)
+                })
+                
+            }
+        default:
+            addMemberButton.snp_updateConstraints(closure: { (make) in
+                make.bottom.equalTo(view.snp_bottom).offset(60)
+            })
+            addPlanButton.snp_updateConstraints(closure: { (make) in
+                make.bottom.equalTo(view.snp_bottom).offset(60)
+            })
         }
     }
     override func didReceiveMemoryWarning() {
@@ -324,7 +407,7 @@ class ProfileViewController: UIViewController {
                 var subscriptionViewModels: [SubscriptionViewModel] = []
                 for membership in user.memberships {
                     if let subscription = membership.subscription {
-                        let subscriptionViewModel = SubscriptionViewModel(subscription: subscription)
+                        let subscriptionViewModel = SubscriptionViewModel(subscription: subscription, subscriptionDelegate: self)
                         subscriptionViewModels.append(subscriptionViewModel)
                     }
                 }
@@ -332,7 +415,7 @@ class ProfileViewController: UIViewController {
                 
                 var paymentCardViewModels: [PaymentCardViewModel] = []
                 for paymentCard in user.paymentCards {
-                    let paymentCardViewModel = PaymentCardViewModel(paymentCard: paymentCard)
+                    let paymentCardViewModel = PaymentCardViewModel(paymentCard: paymentCard, paymentCardDelegate: self)
                     
                     paymentCardViewModels.append(paymentCardViewModel)
                     
@@ -389,7 +472,16 @@ class ProfileViewController: UIViewController {
             navHeaderNameLabel.layer.transform = labelTransform
         }
     }
-
+    func addPlanClicked(sender: UIButton) {
+        let viewController = PlanDetailViewController()
+        
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    func addMemberClicked(sender: UIButton) {
+        let viewController = SharePlanViewController()
+        
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 extension ProfileViewController : UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -541,5 +633,42 @@ extension ProfileViewController: MembershipNavigationDelegate {
         
         view.resignFirstResponder()
         reloadInputViews()
+    }
+}
+extension ProfileViewController: SubscriptionDelegate {
+    func didCancelSubscription(subscription: Subscription) {
+        print("cancel subscription")
+
+        let controller = CancelSubscriptionViewController(subscription: subscription)
+        controller.cancelSubscriptionDelegate = self
+        customPresentViewController(presenter, viewController: controller, animated: true, completion: nil)
+    }
+    func didChangeSubscription(subscription: Subscription) {
+        print("change subscription")
+        let viewController = ChangePlansViewController()
+        
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    func didHoldSubscription(subscription: Subscription) {
+        print("hold subscription")
+    }
+}
+extension ProfileViewController: PaymentCardDelegate {
+    func didUpdatePaymentCard(paymentCard: PaymentCard) {
+        let viewController = PaymentCardViewController(paymentMethod: paymentCard)
+        
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+}
+extension ProfileViewController: CancelSubscriptionDelegate {
+    func didClose() {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    func didConfirmCancelSubscription(subscription: Subscription) {
+        ApiManager.sharedInstance.cancelSubscription(subscription.id, success: {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }) { (error, errorDictionary) in
+            print("error occurred")
+        }
     }
 }

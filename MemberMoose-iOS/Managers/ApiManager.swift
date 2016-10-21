@@ -389,4 +389,30 @@ public class ApiManager {
         }
         
     }
+    public func cancelSubscription(subscriptionId: String, success: ()  -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+        
+        Alamofire.request(.DELETE, apiBaseUrl + "subscriptions/\(subscriptionId)", parameters: nil, encoding: .JSON, headers: headers)
+            .validate()
+            .response {  (request, response, data, error) in
+                if let error = error {
+                    var errorResponse: [String: AnyObject]? = [:]
+                    
+                    if let data = data {
+                        do {
+                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                        } catch let error as NSError {
+                            failure(error: error, errorDictionary: nil)
+                        }
+                        catch let error {
+                            failure(error: error, errorDictionary: nil)
+                        }
+                        failure(error: error, errorDictionary: errorResponse)
+                    } else {
+                        failure(error: error, errorDictionary: nil)
+                    }
+                } else {
+                    success()
+                }
+        }
+    }
 }

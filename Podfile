@@ -23,6 +23,7 @@ target 'MemberMoose-iOS' do
   pod 'ASImageResize'
   pod 'OAuthSwift', :git => 'https://github.com/OAuthSwift/OAuthSwift.git', :branch => 'swift2.3'
   pod 'StripeDashboardUI'
+  pod 'Presentr', :git => 'https://github.com/IcaliaLabs/Presentr', :tag => '0.1.8'
   
   target 'MemberMoose-iOSTests' do
     inherit! :search_paths

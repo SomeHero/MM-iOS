@@ -8,6 +8,9 @@
 
 import UIKit
 
+protocol PaymentCardCellDelegate: class {
+    func didUpdateCardClicked()
+}
 class PaymentCardTableViewCell: UITableViewCell {
     private lazy var containerView: UIView = {
         let _view = UIView()
@@ -60,12 +63,14 @@ class PaymentCardTableViewCell: UITableViewCell {
         _button.layer.borderWidth = kOnePX
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
-        //_button.addTarget(self, action: #selector(CreateFirstPlanViewController.skipClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(PaymentCardTableViewCell.updateCardClicked(_:)), forControlEvents: .TouchUpInside)
         
         self.containerView.addSubview(_button)
         
         return _button
     }()
+    weak var paymentCardCellDelegate: PaymentCardCellDelegate?
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .Default, reuseIdentifier: reuseIdentifier)
         
@@ -130,5 +135,8 @@ class PaymentCardTableViewCell: UITableViewCell {
             
             updateCardButton.setTitle("Update Card", forState: .Normal)
         }
+    }
+    func updateCardClicked(sender: UIButton) {
+        paymentCardCellDelegate?.didUpdateCardClicked()
     }
 }

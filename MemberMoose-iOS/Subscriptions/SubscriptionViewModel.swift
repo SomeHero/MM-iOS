@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol SubscriptionDelegate: class {
+    func didCancelSubscription(subscription: Subscription)
+    func didChangeSubscription(subscription: Subscription)
+    func didHoldSubscription(subscription: Subscription)
+}
 class SubscriptionViewModel:DataSourceItemProtocol {
     var cellID: String = "SubscriptionCell"
     var cellClass: UITableViewCell.Type = SubscriptionCell.self
@@ -15,16 +20,16 @@ class SubscriptionViewModel:DataSourceItemProtocol {
     let planName: String
     let planAmount: String
     let status: String
+    private let subscription: Subscription
+    weak var subscriptionDelegate: SubscriptionDelegate?
     
-    init(subscription: Subscription) {
-        planName = subscription.plan.name
-        planAmount = "\(subscription.plan.amount)/\(subscription.plan.interval)"
-        status = subscription.status
-    }
-    init(planName: String, planAmount: String, status: String) {
-        self.planName = planName
-        self.planAmount = planAmount
-        self.status = status
+    init(subscription: Subscription, subscriptionDelegate: SubscriptionDelegate? = nil) {
+        self.planName = subscription.plan.name
+        self.planAmount = "\(subscription.plan.amount)/\(subscription.plan.interval)"
+        self.status = subscription.status
+        self.subscription = subscription
+        
+        self.subscriptionDelegate = subscriptionDelegate
     }
     @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier("SubscriptionCellIdentifier", forIndexPath: indexPath) as? SubscriptionCell else {
@@ -32,10 +37,11 @@ class SubscriptionViewModel:DataSourceItemProtocol {
         }
         
         cell.setupWith(self)
+        cell.subscriptionCellDelegate = self
         
         return cell
     }
-    @objc func viewForHeader() -> UIView {
+    @objc func viewForHeader() -> UIView? {
         let header = SubscriptionHeaderView()
         header.setup("Subscriptions")
         
@@ -43,6 +49,17 @@ class SubscriptionViewModel:DataSourceItemProtocol {
     }
     @objc func heightForHeader() -> CGFloat {
         return 50;
+    }
+}
+extension SubscriptionViewModel: SubscriptionCellDelegate {
+    func didCancelSubscriptionClicked() {
+        subscriptionDelegate?.didCancelSubscription(subscription)
+    }
+    func didChangeSubscriptionClicked() {
+        subscriptionDelegate?.didChangeSubscription(subscription)
+    }
+    func didHoldSubscriptionClicked() {
+        subscriptionDelegate?.didHoldSubscription(subscription)
     }
 }
 class SubscriptionHeaderView: UIView {

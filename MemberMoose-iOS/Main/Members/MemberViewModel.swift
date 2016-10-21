@@ -17,7 +17,6 @@ class MemberViewModel: DataSourceItemProtocol {
     var avatarUrl: String?
     let userId: String
     var memberName: String?
-    let emailAddress: String
     let planName: String
     let memberSince: NSDate
     
@@ -30,8 +29,9 @@ class MemberViewModel: DataSourceItemProtocol {
         userId = user.id
         if let firstName = user.firstName, lastName = user.lastName {
             memberName = "\(firstName) \(lastName)"
+        } else {
+            memberName = user.emailAddress
         }
-        emailAddress = user.emailAddress
         planName = (user.memberships.flatMap { $0.planNames } as [String]).joinWithSeparator(", ")
         memberSince = NSDate()
     }

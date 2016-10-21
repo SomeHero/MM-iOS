@@ -22,7 +22,7 @@ public class Subscription: Mappable {
     }
     
     public func mapping(map: Map) {
-        id <- map["id"]
+        id <- map["_id"]
         plan <- map["plan"]
         status <- map["status"]
         subscriptionDate <- (map["subscription_date"], ISO8601ExtendedDateTransform())

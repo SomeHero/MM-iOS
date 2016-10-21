@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol SubscriptionCellDelegate: class {
+    func didCancelSubscriptionClicked()
+    func didChangeSubscriptionClicked()
+    func didHoldSubscriptionClicked()
+}
 class SubscriptionCell: UITableViewCell {
     
     private lazy var containerView: UIView = {
@@ -54,7 +59,7 @@ class SubscriptionCell: UITableViewCell {
         _button.layer.borderWidth = kOnePX
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
-        //_button.addTarget(self, action: #selector(CreateFirstPlanViewController.skipClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(SubscriptionCell.upgradeDowngradeClicked(_:)), forControlEvents: .TouchUpInside)
         
         self.containerView.addSubview(_button)
         
@@ -69,12 +74,14 @@ class SubscriptionCell: UITableViewCell {
         _button.layer.borderWidth = kOnePX
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
-        //_button.addTarget(self, action: #selector(CreateFirstPlanViewController.skipClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(SubscriptionCell.cancelSubscriptionClicked(_:)), forControlEvents: .TouchUpInside)
         
         self.containerView.addSubview(_button)
         
         return _button
     }()
+    weak var subscriptionCellDelegate: SubscriptionCellDelegate?
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .Default, reuseIdentifier: reuseIdentifier)
         
@@ -132,8 +139,14 @@ class SubscriptionCell: UITableViewCell {
             TextDecorator.applyTightLineHeight(toLabel: planAmountLabel)
             
             statusLabel.text = viewModel.status
-            changePlanButton.setTitle("Update/Downgrade", forState: .Normal)
+            changePlanButton.setTitle("Upgrade/Downgrade", forState: .Normal)
             cancelSubscriptionButton.setTitle("Cancel Subscription", forState: .Normal)
         }
+    }
+    func upgradeDowngradeClicked(sender: UIButton) {
+        subscriptionCellDelegate?.didChangeSubscriptionClicked()
+    }
+    func cancelSubscriptionClicked(sender: UIButton) {
+        subscriptionCellDelegate?.didCancelSubscriptionClicked() 
     }
 }

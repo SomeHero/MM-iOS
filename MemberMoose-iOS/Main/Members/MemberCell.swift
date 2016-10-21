@@ -98,7 +98,6 @@ class MemberCell: UITableViewCell {
         } else {
             nameLabel.hidden = true
         }
-        emailAddressLabel.text = viewModel.emailAddress
         memberSinceLabel.text = "Member Since 11/5/2015"
         planNameLabel.text = viewModel.planName
     }

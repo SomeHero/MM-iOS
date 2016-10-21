@@ -19,13 +19,17 @@ class PlanDetailViewController: UIViewController {
         view.backgroundColor = .whiteColor()
         
         let image = UIImage(named: "Back")
-        let backButton = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(ProfileViewController.backClicked(_:)))
+        let backButton = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(PlanDetailViewController.backClicked(_:)))
         
         navigationItem.leftBarButtonItem = backButton
         
         setup()
     }
-
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -33,5 +37,7 @@ class PlanDetailViewController: UIViewController {
     func setup() {
         
     }
-    
+    func backClicked(sender: UIButton) {
+        navigationController?.popViewControllerAnimated(true)
+    }
 }

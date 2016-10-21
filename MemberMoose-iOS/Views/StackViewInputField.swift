@@ -6,7 +6,7 @@
 //  Copyright © 2016 James Rhodes. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import SnapKit
 import FontAwesome_swift
 
@@ -15,17 +15,15 @@ private let verticalPadding: CGFloat = 6
 private let fieldHeight: CGFloat = 40
 
 class StackViewInputField: UIView {
-//    lazy var inputLabel: UILabel = {
-//        let _label = UILabel()
-//        _label.font = UIFontTheme.Regular(.Tiny)
-//        
-//        self.addSubview(_label)
-//        return _label
-//    }()
+    lazy var inputLabel: UILabel = {
+        let _label = UILabel()
+        
+        self.addSubview(_label)
+        return _label
+    }()
     lazy var textField: UITextField = {
         let field = UITextField()
         field.clearButtonMode = .WhileEditing
-        
         self.addSubview(field)
         return field
     }()
@@ -46,9 +44,14 @@ class StackViewInputField: UIView {
     }()
     
     override func updateConstraints() {
+        inputLabel.snp_updateConstraints { (make) in
+            make.leading.trailing.equalTo(self)
+            make.top.equalTo(self).inset(verticalPadding)
+            make.height.equalTo(fieldHeight)
+        }
         textField.snp_updateConstraints { (make) -> Void in
             make.leading.equalTo(self)
-            make.top.equalTo(self).inset(verticalPadding)
+            make.top.equalTo(inputLabel.snp_bottom).inset(verticalPadding)
             make.height.equalTo(fieldHeight)
         }
         checkIcon.snp_updateConstraints { (make) in
@@ -80,8 +83,9 @@ class StackViewInputField: UIView {
     
     func configure(text: String?, label: String? = nil, placeholder: String? = nil, tag: Int? = 0, keyboardType: UIKeyboardType? = .Default) {
         if let placeholder = placeholder {
-            textField.placeholder = placeholder.uppercaseString
+            textField.placeholder = placeholder
         }
+        inputLabel.text = label ?? ""
         textField.text = text ?? ""
         
         if let tag = tag {
@@ -103,3 +107,4 @@ class StackViewInputField: UIView {
         }
     }
 }
+
