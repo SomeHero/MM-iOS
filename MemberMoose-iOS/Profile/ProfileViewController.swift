@@ -30,8 +30,10 @@ class ProfileViewController: UIViewController {
     private let profileType: ProfileType
     private let calfProfileCellIdentifier       = "CalfProfileHeaderCellIdentifier"
     private let profileCellIdentifier           = "ProfileHeaderCellIdentifier"
-    private let cellIdentifier                  = "SubscriptionCellIdentifier"
+    private let subscriptionCellIdentifier                  = "SubscriptionCellIdentifier"
+    private let subscriptionEmptyStateCellIdentifier        = "SubscriptionEmptyStateCellIdentifier"
     private let paymentCardCellIdentifier       = "PaymentCardCellIdentifier"
+    private let paymentCardEmptyStateCellIdentifier       = "PaymentCardEmptyStateCellIdentifier"
     private let paymentHistoryCellIdentifier       = "PaymentHistoryCellIdentifier"
     private let chargeCellIdentifier            = "ChargeCellIdentifier"
     private let memberCellIdentifier            = "MemberCellIdentifier"
@@ -148,12 +150,14 @@ class ProfileViewController: UIViewController {
         _tableView.estimatedRowHeight   = self.tableCellHeight
         _tableView.rowHeight = UITableViewAutomaticDimension
         _tableView.contentInset         = UIEdgeInsetsZero
-        _tableView.separatorStyle       = .None
+        //_tableView.separatorStyle       = .None
         
         _tableView.registerClass(ProfileHeaderCell.self, forCellReuseIdentifier: self.profileCellIdentifier)
         _tableView.registerClass(CalfProfileHeaderCell.self, forCellReuseIdentifier: self.calfProfileCellIdentifier)
-        _tableView.registerClass(SubscriptionCell.self, forCellReuseIdentifier: self.cellIdentifier)
+        _tableView.registerClass(SubscriptionCell.self, forCellReuseIdentifier: self.subscriptionCellIdentifier)
+        _tableView.registerClass(SubscriptionEmptyStateCell.self, forCellReuseIdentifier: self.subscriptionEmptyStateCellIdentifier)
         _tableView.registerClass(PaymentCardTableViewCell.self, forCellReuseIdentifier: self.paymentCardCellIdentifier)
+        _tableView.registerClass(PaymentCardEmptyStateCell.self, forCellReuseIdentifier: self.paymentCardEmptyStateCellIdentifier)
         _tableView.registerClass(PaymentHistoryTableViewCell.self, forCellReuseIdentifier: self.paymentHistoryCellIdentifier)
         _tableView.registerClass(ChargeCell.self, forCellReuseIdentifier: self.chargeCellIdentifier)
         _tableView.registerClass(MemberCell.self, forCellReuseIdentifier: self.memberCellIdentifier)
@@ -372,10 +376,8 @@ class ProfileViewController: UIViewController {
     func editProfileClicked(button: UIButton) {
         let viewController = UserProfileViewController(user: user, profileType: .bull)
         viewController.delegate = self
-        
-        let navigationController = UINavigationController(rootViewController: viewController)
 
-        presentViewController(navigationController, animated: true, completion: nil)
+        presentViewController(viewController, animated: true, completion: nil)
     }
     func buildDataSet() {
         var items: [[DataSourceItemProtocol]] = []
@@ -453,24 +455,36 @@ class ProfileViewController: UIViewController {
             
             switch memberNavigationState {
             case .Profile:
-                var subscriptionViewModels: [SubscriptionViewModel] = []
-                for membership in user.memberships {
-                    if let subscription = membership.subscription {
-                        let subscriptionViewModel = SubscriptionViewModel(subscription: subscription, subscriptionDelegate: self)
-                        subscriptionViewModels.append(subscriptionViewModel)
+                if user.memberships.count > 0 {
+                    var subscriptionViewModels: [SubscriptionViewModel] = []
+                    for membership in user.memberships {
+                        if let subscription = membership.subscription {
+                            let subscriptionViewModel = SubscriptionViewModel(subscription: subscription, subscriptionDelegate: self)
+                            subscriptionViewModels.append(subscriptionViewModel)
+                        }
                     }
-                }
-                items.append(subscriptionViewModels)
-                
-                var paymentCardViewModels: [PaymentCardViewModel] = []
-                for paymentCard in user.paymentCards {
-                    let paymentCardViewModel = PaymentCardViewModel(paymentCard: paymentCard, paymentCardDelegate: self)
+                    items.append(subscriptionViewModels)
+                } else {
+                    var subscriptionEmptyStateViewModels: [SubscriptionEmptyStateViewModel] = []
+                    subscriptionEmptyStateViewModels.append(SubscriptionEmptyStateViewModel(header: "Not Subscribed to Any Plans"))
                     
-                    paymentCardViewModels.append(paymentCardViewModel)
-                    
+                    items.append(subscriptionEmptyStateViewModels)
                 }
                 
-                items.append(paymentCardViewModels)
+                if user.paymentCards.count > 0 {
+                    var paymentCardViewModels: [PaymentCardViewModel] = []
+                    for paymentCard in user.paymentCards {
+                        let paymentCardViewModel = PaymentCardViewModel(paymentCard: paymentCard, paymentCardDelegate: self)
+                        
+                        paymentCardViewModels.append(paymentCardViewModel)
+                    }
+                    items.append(paymentCardViewModels)
+                } else {
+                    var paymentCardEmptyStateViewModels: [PaymentCardEmptyStateViewModel] = []
+                    paymentCardEmptyStateViewModels.append(PaymentCardEmptyStateViewModel(header: "No Payment Card on File"))
+                    
+                    items.append(paymentCardEmptyStateViewModels)
+                }
                 
                 var paymentHistoryViewModels: [PaymentHistoryViewModel] = []
                 paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
@@ -723,9 +737,9 @@ extension ProfileViewController: CancelSubscriptionDelegate {
 }
 extension ProfileViewController: MemberEmptyStateDelegate {
     func didCreateMember() {
-        //let viewController = MemberDetailViewController()
+        let viewController = AddMemberViewController()
         
-        //navigationController?.pushViewController(viewController, animated: true)
+        navigationController?.pushViewController(viewController, animated: true)
     }
     func didSharePlan() {
         let viewController = SharePlanViewController()

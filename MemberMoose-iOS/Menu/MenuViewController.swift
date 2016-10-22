@@ -144,9 +144,8 @@ extension MenuViewController: MenuHeaderDelegate {
         
         let viewController = UserProfileViewController(user: user, profileType: .bull)
         viewController.delegate = self
-        let navigationController = UINavigationController(rootViewController: viewController)
         
-        presentViewController(navigationController, animated: true, completion: nil)
+        presentViewController(viewController, animated: true, completion: nil)
     }
 }
 extension MenuViewController: UserProfileDelegate {

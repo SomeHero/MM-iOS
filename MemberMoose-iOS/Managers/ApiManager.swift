@@ -127,6 +127,26 @@ public struct CreatePlan {
         return parameters
     }
 }
+public struct CreateMember {
+    let firstName: String
+    let lastName: String
+    let emailAddress: String
+    
+    public init(firstName: String, lastName: String, emailAddress: String) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.emailAddress = emailAddress
+    }
+    func parameterize() -> [String: AnyObject] {
+        let parameters: [String: AnyObject] = [
+            "first_name": firstName,
+            "last_name": lastName,
+            "email_address": emailAddress
+        ]
+        
+        return parameters
+    }
+}
 public class ApiManager {
     private var kApiBaseUrl:String?
     public var apiBaseUrl: String {
@@ -477,6 +497,32 @@ public class ApiManager {
                     success(response: plan)
                 }
         }
+    }
+    public func createMember(createMember: CreateMember, success: (response: User) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+        let params = createMember.parameterize()
         
+        Alamofire.request(.POST, apiBaseUrl + "members", parameters: params, encoding: .JSON, headers: headers)
+            .validate()
+            .responseObject { (response: Response<User, NSError>) in
+                if let error = response.result.error {
+                    var errorResponse: [String: AnyObject]? = [:]
+                    
+                    if let data = response.data {
+                        do {
+                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                        } catch let error as NSError {
+                            failure(error: error, errorDictionary: nil)
+                        } catch let error {
+                            failure(error: error, errorDictionary: nil)
+                        }
+                        failure(error: error, errorDictionary: errorResponse)
+                    } else {
+                        failure(error: error, errorDictionary: nil)
+                    }
+                }
+                if let user = response.result.value {
+                    success(response: user)
+                }
+        }
     }
 }

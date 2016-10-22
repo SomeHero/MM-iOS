@@ -8,6 +8,7 @@
 
 import UIKit
 import SVProgressHUD
+import FontAwesome_swift
 
 protocol UserProfileDelegate: class {
     func didClickBack()
@@ -23,6 +24,19 @@ class UserProfileViewController: UIViewController {
         let scroll = UIScrollView()
         self.view.addSubview(scroll)
         return scroll
+    }()
+    lazy var closeButton: UIButton = {
+        let _button = UIButton()
+        _button.titleLabel?.font = UIFont.fontAwesomeOfSize(28)
+        _button.setTitleColor(UIColorTheme.SecondaryFont, forState: .Normal)
+        _button.setTitleColor(UIColorTheme.SecondaryFont, forState: .Highlighted)
+        _button.setTitle(String.fontAwesomeIconWithName(FontAwesome.Remove), forState: .Normal)
+        _button.backgroundColor = UIColor.clearColor()
+        _button.addTarget(self, action: #selector(UserProfileViewController.closeClicked(_:)), forControlEvents: .TouchUpInside)
+        
+        self.scrollView.addSubview(_button)
+        
+        return _button
     }()
     private lazy var avatarView: EditProfilePhotoView = {
         let _photoView = EditProfilePhotoView()
@@ -116,12 +130,7 @@ class UserProfileViewController: UIViewController {
         super.viewDidLoad()
         
         title = "User Profile"
-        
-        let image = UIImage(named: "Back")
-        let backButton = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(UserProfileViewController.backClicked(_:)))
-        
-        navigationItem.leftBarButtonItem = backButton
-        
+
         view.backgroundColor = .whiteColor()
         
         setup()
@@ -150,8 +159,12 @@ class UserProfileViewController: UIViewController {
             make.edges.equalTo(view)
             make.width.equalTo(UIScreen.mainScreen().bounds.width)
         }
+        closeButton.snp_updateConstraints { (make) in
+            make.top.trailing.equalTo(view).inset(5)
+            make.width.height.equalTo(40)
+        }
         stackView.snp_updateConstraints { (make) in
-            make.top.equalTo(scrollView).inset(20)
+            make.top.equalTo(scrollView).inset(40)
             make.leading.trailing.equalTo(view).inset(20)
         }
         nextButton.snp_updateConstraints { (make) in
@@ -172,14 +185,14 @@ class UserProfileViewController: UIViewController {
         lastNameTextField.textField.text = user.lastName
         emailAddressTextField.textField.text = user.emailAddress
     }
-    func backClicked(sender: UIButton) {
+    func closeClicked(sender: UIButton) {
         delegate?.didClickBack()
     }
     func nextClicked(sender: UIButton) {
         guard let firstName = firstNameTextField.textField.text, lastName = lastNameTextField.textField.text, emailAddress = emailAddressTextField.textField.text else {
             return
         }
-        var updateUser = UpdateUser(userId: user.id, firstName: firstName, lastName: lastName, emailAddress: emailAddress, avatar: avatar)
+        let updateUser = UpdateUser(userId: user.id, firstName: firstName, lastName: lastName, emailAddress: emailAddress, avatar: avatar)
         
         SVProgressHUD.show()
 

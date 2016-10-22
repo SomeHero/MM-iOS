@@ -85,7 +85,7 @@ class StackViewInputField: UIView {
         if let placeholder = placeholder {
             textField.placeholder = placeholder
         }
-        inputLabel.text = label ?? ""
+        inputLabel.text = label?.uppercaseString ?? ""
         textField.text = text ?? ""
         
         if let tag = tag {
