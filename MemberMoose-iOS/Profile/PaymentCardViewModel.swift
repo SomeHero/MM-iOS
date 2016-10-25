@@ -60,7 +60,7 @@ class PaymentCardHeaderView: UIView {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
         _label.textAlignment = .Left
-        _label.font = UIFontTheme.Regular(.Large)
+        _label.font = UIFontTheme.Regular(.Default)
         
         self.addSubview(_label)
         

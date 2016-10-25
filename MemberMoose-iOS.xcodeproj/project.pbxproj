@@ -62,6 +62,19 @@
 		4253B6591DBBAC6100A93E98 /* SubscriptionEmptyStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253B6581DBBAC6100A93E98 /* SubscriptionEmptyStateViewModel.swift */; };
 		4253B65B1DBBB2B300A93E98 /* PaymentCardEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253B65A1DBBB2B300A93E98 /* PaymentCardEmptyStateCell.swift */; };
 		4253B65D1DBBB2CD00A93E98 /* PaymentCardEmptyStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253B65C1DBBB2CD00A93E98 /* PaymentCardEmptyStateViewModel.swift */; };
+		4253B65F1DBBCB6E00A93E98 /* PaymentHistoryEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253B65E1DBBCB6E00A93E98 /* PaymentHistoryEmptyStateCell.swift */; };
+		4253B6611DBBCE8300A93E98 /* PaymentHistoryEmptyStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253B6601DBBCE8300A93E98 /* PaymentHistoryEmptyStateViewModel.swift */; };
+		4253B6641DBBEA1F00A93E98 /* CalculatorKeyPadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253B6631DBBEA1F00A93E98 /* CalculatorKeyPadView.swift */; };
+		4253B6661DBC354A00A93E98 /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253B6651DBC354A00A93E98 /* CALayer.swift */; };
+		4253B6681DBE67A000A93E98 /* CardIOViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253B6671DBE67A000A93E98 /* CardIOViewController.swift */; };
+		4253B66A1DBE6B7F00A93E98 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4253B6691DBE6B7F00A93E98 /* Accelerate.framework */; };
+		4253B66C1DBE6B8700A93E98 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4253B66B1DBE6B8700A93E98 /* AudioToolbox.framework */; };
+		4253B66E1DBE6B9A00A93E98 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4253B66D1DBE6B9A00A93E98 /* CoreGraphics.framework */; };
+		4253B6701DBE6BA700A93E98 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4253B66F1DBE6BA700A93E98 /* Foundation.framework */; };
+		4253B6721DBE6BB200A93E98 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4253B6711DBE6BB200A93E98 /* MobileCoreServices.framework */; };
+		4253B6741DBE6BBA00A93E98 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4253B6731DBE6BBA00A93E98 /* OpenGLES.framework */; };
+		4253B6761DBE6BC800A93E98 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4253B6751DBE6BC800A93E98 /* Security.framework */; };
+		4253B6781DBE6BCE00A93E98 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4253B6771DBE6BCE00A93E98 /* UIKit.framework */; };
 		4255B3FA1DAE89A8008DECAC /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255B3F91DAE89A8008DECAC /* SessionManager.swift */; };
 		4255B3FC1DAE9AC5008DECAC /* EditProfilePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255B3FB1DAE9AC5008DECAC /* EditProfilePhotoView.swift */; };
 		4255B3FE1DAEA3BF008DECAC /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255B3FD1DAEA3BF008DECAC /* ImagePicker.swift */; };
@@ -203,6 +216,19 @@
 		4253B6581DBBAC6100A93E98 /* SubscriptionEmptyStateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SubscriptionEmptyStateViewModel.swift; path = Profile/SubscriptionEmptyStateViewModel.swift; sourceTree = "<group>"; };
 		4253B65A1DBBB2B300A93E98 /* PaymentCardEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardEmptyStateCell.swift; path = Profile/PaymentCardEmptyStateCell.swift; sourceTree = "<group>"; };
 		4253B65C1DBBB2CD00A93E98 /* PaymentCardEmptyStateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardEmptyStateViewModel.swift; path = Profile/PaymentCardEmptyStateViewModel.swift; sourceTree = "<group>"; };
+		4253B65E1DBBCB6E00A93E98 /* PaymentHistoryEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentHistoryEmptyStateCell.swift; path = Profile/PaymentHistoryEmptyStateCell.swift; sourceTree = "<group>"; };
+		4253B6601DBBCE8300A93E98 /* PaymentHistoryEmptyStateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentHistoryEmptyStateViewModel.swift; path = Profile/PaymentHistoryEmptyStateViewModel.swift; sourceTree = "<group>"; };
+		4253B6631DBBEA1F00A93E98 /* CalculatorKeyPadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalculatorKeyPadView.swift; path = Views/CalculatorKeyPadView.swift; sourceTree = "<group>"; };
+		4253B6651DBC354A00A93E98 /* CALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CALayer.swift; path = Extensions/CALayer.swift; sourceTree = "<group>"; };
+		4253B6671DBE67A000A93E98 /* CardIOViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardIOViewController.swift; path = PaymentCards/CardIOViewController.swift; sourceTree = "<group>"; };
+		4253B6691DBE6B7F00A93E98 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		4253B66B1DBE6B8700A93E98 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		4253B66D1DBE6B9A00A93E98 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		4253B66F1DBE6BA700A93E98 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		4253B6711DBE6BB200A93E98 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		4253B6731DBE6BBA00A93E98 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		4253B6751DBE6BC800A93E98 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		4253B6771DBE6BCE00A93E98 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4255B3F91DAE89A8008DECAC /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SessionManager.swift; path = Managers/SessionManager.swift; sourceTree = "<group>"; };
 		4255B3FB1DAE9AC5008DECAC /* EditProfilePhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditProfilePhotoView.swift; path = Views/EditProfilePhotoView.swift; sourceTree = "<group>"; };
 		4255B3FD1DAEA3BF008DECAC /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImagePicker.swift; path = Components/ImagePicker.swift; sourceTree = "<group>"; };
@@ -284,6 +310,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4253B6781DBE6BCE00A93E98 /* UIKit.framework in Frameworks */,
+				4253B6761DBE6BC800A93E98 /* Security.framework in Frameworks */,
+				1A042BF7518EC606A419193D /* QuartzCore.framework in Frameworks */,
+				4253B6741DBE6BBA00A93E98 /* OpenGLES.framework in Frameworks */,
+				4253B6721DBE6BB200A93E98 /* MobileCoreServices.framework in Frameworks */,
+				4253B6701DBE6BA700A93E98 /* Foundation.framework in Frameworks */,
+				4253B66E1DBE6B9A00A93E98 /* CoreGraphics.framework in Frameworks */,
+				28790F6EE44EA913916FB2D4 /* AVFoundation.framework in Frameworks */,
+				4253B66C1DBE6B8700A93E98 /* AudioToolbox.framework in Frameworks */,
+				4253B66A1DBE6B7F00A93E98 /* Accelerate.framework in Frameworks */,
 				429F63051DA71C7E00C3F54E /* AdSupport.framework in Frameworks */,
 				429F63031DA71AD000C3F54E /* CoreText.framework in Frameworks */,
 				70517667E7304548D01886EF /* Pods_MemberMoose_iOS.framework in Frameworks */,
@@ -291,8 +327,6 @@
 				0A578C2804F6453D4F821CC2 /* AssetsLibrary.framework in Frameworks */,
 				B7B721F37A404210C528B8B2 /* CoreTelephony.framework in Frameworks */,
 				C3955831BF7777648AAC0C35 /* SystemConfiguration.framework in Frameworks */,
-				1A042BF7518EC606A419193D /* QuartzCore.framework in Frameworks */,
-				28790F6EE44EA913916FB2D4 /* AVFoundation.framework in Frameworks */,
 				396A13AD4BAD38F102D4561D /* CoreMedia.framework in Frameworks */,
 				B385BCB7FA292B571AAF7BC3 /* CoreVideo.framework in Frameworks */,
 			);
@@ -352,6 +386,7 @@
 			isa = PBXGroup;
 			children = (
 				4225371F1DB96397004B33D8 /* PaymentCardViewController.swift */,
+				4253B6671DBE67A000A93E98 /* CardIOViewController.swift */,
 			);
 			name = PaymentCards;
 			sourceTree = "<group>";
@@ -378,6 +413,7 @@
 				42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */,
 				4253B65C1DBBB2CD00A93E98 /* PaymentCardEmptyStateViewModel.swift */,
 				42330B971DB3D89C003BDDEC /* PaymentHistoryViewModel.swift */,
+				4253B6601DBBCE8300A93E98 /* PaymentHistoryEmptyStateViewModel.swift */,
 				4225372F1DBA7940004B33D8 /* PlanEmptyStateViewModel.swift */,
 				424D97DA1DAD198B00C8B674 /* PlanViewModel.swift */,
 				4211D8CD1DB8674D0092F7C5 /* ProfileHeaderViewModel.swift */,
@@ -489,6 +525,7 @@
 				42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */,
 				4253B65A1DBBB2B300A93E98 /* PaymentCardEmptyStateCell.swift */,
 				42330B951DB3D87F003BDDEC /* PaymentHistoryTableViewCell.swift */,
+				4253B65E1DBBCB6E00A93E98 /* PaymentHistoryEmptyStateCell.swift */,
 				424D97D81DAD195500C8B674 /* PlanCell.swift */,
 				4225372B1DBA7772004B33D8 /* PlanEmptyStateCell.swift */,
 				4211D8CB1DB866500092F7C5 /* ProfileHeaderCell.swift */,
@@ -544,6 +581,7 @@
 				426841571DA7EEBD00A2BFF8 /* CalculatorKeyboard.swift */,
 				4268415D1DA823D600A2BFF8 /* CalculatorKeyboard.xib */,
 				426841591DA7EEBD00A2BFF8 /* CalculatorProcessor.swift */,
+				4253B6631DBBEA1F00A93E98 /* CalculatorKeyPadView.swift */,
 			);
 			name = CalculatorKeyboard;
 			sourceTree = "<group>";
@@ -653,6 +691,7 @@
 				42F08C361DAC34E800D5D4E3 /* ISO8601ExtendedDateTransform.swift */,
 				4255B3FF1DAEA53D008DECAC /* UIImage.swift */,
 				425013B21DAFCA4300ED21B1 /* UIViewController.swift */,
+				4253B6651DBC354A00A93E98 /* CALayer.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -672,6 +711,14 @@
 		7BC7FB8872E77F1A86CF77A9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4253B6771DBE6BCE00A93E98 /* UIKit.framework */,
+				4253B6751DBE6BC800A93E98 /* Security.framework */,
+				4253B6731DBE6BBA00A93E98 /* OpenGLES.framework */,
+				4253B6711DBE6BB200A93E98 /* MobileCoreServices.framework */,
+				4253B66F1DBE6BA700A93E98 /* Foundation.framework */,
+				4253B66D1DBE6B9A00A93E98 /* CoreGraphics.framework */,
+				4253B66B1DBE6B8700A93E98 /* AudioToolbox.framework */,
+				4253B6691DBE6B7F00A93E98 /* Accelerate.framework */,
 				429F63041DA71C7E00C3F54E /* AdSupport.framework */,
 				429F63021DA71AD000C3F54E /* CoreText.framework */,
 				30DA34FE4B9A105A776A6CA6 /* Pods_MemberMoose_iOS.framework */,
@@ -999,11 +1046,13 @@
 				422537301DBA7940004B33D8 /* PlanEmptyStateViewModel.swift in Sources */,
 				429F63071DA728DC00C3F54E /* CreateFirstPlanViewController.swift in Sources */,
 				422537241DB988EF004B33D8 /* ChangePlansViewController.swift in Sources */,
+				4253B6611DBBCE8300A93E98 /* PaymentHistoryEmptyStateViewModel.swift in Sources */,
 				422537171DB91BDC004B33D8 /* ChargeViewModel.swift in Sources */,
 				4253B6571DBBAC3F00A93E98 /* SubscriptionEmptyStateCell.swift in Sources */,
 				42F08C321DAC31A300D5D4E3 /* Member.swift in Sources */,
 				42F08C2D1DABC5F100D5D4E3 /* Constants.swift in Sources */,
 				4211D8CE1DB8674D0092F7C5 /* ProfileHeaderViewModel.swift in Sources */,
+				4253B6681DBE67A000A93E98 /* CardIOViewController.swift in Sources */,
 				4211D8C41DB7AF570092F7C5 /* MenuHeaderCell.swift in Sources */,
 				4268414E1DA7A8BD00A2BFF8 /* MembersViewController.swift in Sources */,
 				429F62F21DA6DDFF00C3F54E /* UITheme.swift in Sources */,
@@ -1030,6 +1079,7 @@
 				426841551DA7DDB900A2BFF8 /* MenuViewController.swift in Sources */,
 				422537321DBA8D64004B33D8 /* Account.swift in Sources */,
 				429F63091DA72B6800C3F54E /* CreatePlanViewController.swift in Sources */,
+				4253B65F1DBBCB6E00A93E98 /* PaymentHistoryEmptyStateCell.swift in Sources */,
 				42F08C371DAC34E800D5D4E3 /* ISO8601ExtendedDateTransform.swift in Sources */,
 				4253B6591DBBAC6100A93E98 /* SubscriptionEmptyStateViewModel.swift in Sources */,
 				425013B71DB080E400ED21B1 /* ImportPlansViewController.swift in Sources */,
@@ -1042,6 +1092,7 @@
 				4225372C1DBA7772004B33D8 /* PlanEmptyStateCell.swift in Sources */,
 				4253B65D1DBBB2CD00A93E98 /* PaymentCardEmptyStateViewModel.swift in Sources */,
 				422537151DB91BCB004B33D8 /* ChargeCell.swift in Sources */,
+				4253B6641DBBEA1F00A93E98 /* CalculatorKeyPadView.swift in Sources */,
 				4211D8CA1DB7FA1F0092F7C5 /* UserProfileViewController.swift in Sources */,
 				42330B8F1DB3B694003BDDEC /* SharePlanViewController.swift in Sources */,
 				4240B7821DA6C903000D137E /* JoinViewController.swift in Sources */,
@@ -1049,6 +1100,7 @@
 				4255B3FA1DAE89A8008DECAC /* SessionManager.swift in Sources */,
 				42F08C4B1DACAAF600D5D4E3 /* SubscriptionViewModel.swift in Sources */,
 				42330B961DB3D87F003BDDEC /* PaymentHistoryTableViewCell.swift in Sources */,
+				4253B6661DBC354A00A93E98 /* CALayer.swift in Sources */,
 				4253B6551DBAEF8D00A93E98 /* AddMemberViewController.swift in Sources */,
 				4225370F1DB901A0004B33D8 /* CalfProfileHeaderViewModel.swift in Sources */,
 				4240B74F1DA44671000D137E /* AppDelegate.swift in Sources */,

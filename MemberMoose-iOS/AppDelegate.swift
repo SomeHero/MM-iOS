@@ -8,7 +8,8 @@
 
 import UIKit
 import SWRevealViewController
-import OAuthSwift
+import SwiftyOAuth
+import Stripe
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var swRevealViewController: SWRevealViewController?
     
+    let stripe = Provider.Stripe(
+        clientID:     kStripeConnectClientId,
+        clientSecret: kStripeSecretKey,
+        redirectURL:  kStripeOAuthRedirectUrl
+    )
     override init() {
         ApiManager.sharedInstance.apiBaseUrl = kApiBaseUrl
 
@@ -29,6 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let token = SessionManager.sharedInstance.getToken(), user = SessionManager.getPersistedUser() {
             SessionManager.sharedUser = user
             SessionManager.persistUser()
+            Stripe.setDefaultPublishableKey(kStripePublishableKey)
             
             ApiManager.sharedInstance.token = token
             
@@ -61,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
         if (url.host == "oauth-callback") {
-            OAuthSwift.handleOpenURL(url)
+            stripe.handleURL(url, options: options)
         }
         return true
     }
@@ -86,19 +93,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-    func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
-        guard let url = userActivity.webpageURL else {
-            return false
-        }
-        
-        if (url.host == "membermoose-node.herokuapp.com") {
-            OAuthSwift.handleOpenURL(url)
-            
-            return true
-        }
-        
-        return false
-    }
+//    func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+//        guard let url = userActivity.webpageURL else {
+//            return false
+//        }
+//        
+//        if (url.host == "membermoose-node.herokuapp.com") {
+//            Provider.Stripe.handleOpenURL(url, options: nil)
+//            
+//            return true
+//        }
+//        
+//        return false
+//    }
 
 }
 

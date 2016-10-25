@@ -8,14 +8,19 @@
 
 import Foundation
 
+protocol SubscriptionEmptyStateDelegate: class {
+    func didSubscribe()
+}
 class SubscriptionEmptyStateViewModel:DataSourceItemProtocol {
     var cellID: String = "SubscriptionEmptyStateCellIdentifier"
     var cellClass: UITableViewCell.Type = SubscriptionEmptyStateCell.self
+    weak var subscriptionEmptyStateDelegate: SubscriptionEmptyStateDelegate?
     
     let header: String
     
-    init(header: String) {
+    init(header: String, subscriptionEmptyStateDelegate: SubscriptionEmptyStateDelegate? = nil) {
         self.header = header
+        self.subscriptionEmptyStateDelegate = subscriptionEmptyStateDelegate
     }
     @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as? SubscriptionEmptyStateCell else {
@@ -23,7 +28,7 @@ class SubscriptionEmptyStateViewModel:DataSourceItemProtocol {
         }
         
         cell.setupWith(self)
-        //cell.subscriptionCellDelegate = self
+        cell.subscriptionEmptyStateCellDelegate = self
         
         return cell
     }
@@ -35,5 +40,10 @@ class SubscriptionEmptyStateViewModel:DataSourceItemProtocol {
     }
     @objc func heightForHeader() -> CGFloat {
         return 50;
+    }
+}
+extension SubscriptionEmptyStateViewModel: SubscriptionEmptyStateCellDelegate {
+    func didSubscribeClicked() {
+        subscriptionEmptyStateDelegate?.didSubscribe()
     }
 }

@@ -7,20 +7,21 @@
 //
 
 import UIKit
-import OAuthSwift
+import SwiftyOAuth
 import SWRevealViewController
 
 class ConnectStripeViewController: UIViewController {
-    private lazy var oauthswift: OAuth2Swift = {
-        let _oauth = OAuth2Swift(
-            consumerKey:    kStripeConnectClientId,
-            consumerSecret: kStripeSecretKey,
-            authorizeUrl:   "https://connect.stripe.com/oauth/authorize",
-            accessTokenUrl: "https://connect.stripe.com/oauth/token",
-            responseType:   "code"
+    private lazy var provider:SwiftyOAuth.Provider = {
+        let _provider = Provider.Stripe(
+            clientID:     kStripeConnectClientId,
+            clientSecret: kStripeSecretKey,
+            redirectURL:  kStripeOAuthRedirectUrl
         )
-        
-        return _oauth
+        _provider.useWebView = true
+        _provider.state = "STRIPE"
+        _provider.scopes = ["read_write"]
+    
+        return _provider
     }()
     private lazy var skipButton: UIButton = {
         let _button = UIButton()
@@ -244,36 +245,53 @@ class ConnectStripeViewController: UIViewController {
         guard let user = SessionManager.sharedUser else {
             return
         }
-        oauthswift.authorizeWithCallbackURL(
-            NSURL(string: kStripeOAuthRedirectUrl)!,
-            scope: "read_write", state:"STRIPE",
-            success: { credential, response, parameters in
-                print(credential.oauth_token)
-                
-                let stripeParams: [String: AnyObject] = [
-                    "scope": "read_write",
-                    "stripe_user_id": "",
-                    "stripe_publishable_key": credential.oauth_token_secret,
-                    "token_type": "bearer",
-                    "refresh_token": credential.oauth_refresh_token,
-                    "livemode": true,
-                    "access_token": credential.oauth_token
-                ]
+        provider.authorize { (result: Result<Token, Error>) -> Void in
+            switch result {
+            case .Success(let token):
+                let stripeParams: [String: AnyObject] = token.dictionary
                 let connectStripe = ConnectStripe(userId: user.id, stripeParams: stripeParams)
                 ApiManager.sharedInstance.connectStripe(connectStripe, success: { (response) in
                     SessionManager.sharedUser = response
-                    
+
                     let viewController = ImportPlansViewController()
-                    
+
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }, failure: { (error, errorDictionary) in
                     print("failed")
                 })
-            },
-            failure: { error in
-                print(error.localizedDescription)
+            case .Failure(let error): print(error)
             }
-        )
+        }
+//            oauthswift.authorizeWithCallbackURL(
+//                NSURL(string: kStripeOAuthRedirectUrl)!,
+//                scope: "read_write", state:"STRIPE",
+//                success: { credential, response, parameters in
+//                    print(credential.oauth_token)
+//                    
+//                    let stripeParams: [String: AnyObject] = [
+//                        "scope": "read_write",
+//                        "stripe_user_id": "",
+//                        "stripe_publishable_key": credential.oauth_token_secret,
+//                        "token_type": "bearer",
+//                        "refresh_token": credential.oauth_refresh_token,
+//                        "livemode": true,
+//                        "access_token": credential.oauth_token
+//                    ]
+//                    let connectStripe = ConnectStripe(userId: user.id, stripeParams: stripeParams)
+//                    ApiManager.sharedInstance.connectStripe(connectStripe, success: { (response) in
+//                        SessionManager.sharedUser = response
+//                        
+//                        let viewController = ImportPlansViewController()
+//                        
+//                        self.navigationController?.pushViewController(viewController, animated: true)
+//                    }, failure: { (error, errorDictionary) in
+//                        print("failed")
+//                    })
+//                },
+//                failure: { error in
+//                    print(error.localizedDescription)
+//                }
+//            )
     }
     func connectLaterClicked(sender: UIButton) {
         guard let user = SessionManager.sharedUser else {

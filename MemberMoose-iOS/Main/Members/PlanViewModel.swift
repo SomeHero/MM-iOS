@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Money
 
 class PlanViewModel: DataSourceItemProtocol {
     var cellID: String = "PlanCell"
@@ -14,14 +15,14 @@ class PlanViewModel: DataSourceItemProtocol {
     
     let planId: String
     let planName: String
-    let planAmount: Double
+    let planAmount: String
     let interval: String
     let subscribersCount: Int
     
     init(plan: Plan) {
         planId = plan.id
         planName = plan.name
-        planAmount = plan.amount
+        planAmount = "\(USD(plan.amount/100).description)"
         interval = plan.interval
         subscribersCount = 23
     }

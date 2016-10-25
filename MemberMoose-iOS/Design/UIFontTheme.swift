@@ -22,7 +22,7 @@ struct UIFontTheme {
         case Tiny = 13
         case Small = 16
         case Default = 18
-        case Large = 21
+        case Large = 20
         case XLarge = 26
         case Huge = 30
     }

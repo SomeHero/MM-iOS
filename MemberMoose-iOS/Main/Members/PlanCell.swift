@@ -70,9 +70,7 @@ class PlanCell: UITableViewCell {
         }
         
         planNameLabel.text = viewModel.planName
-        if let planAmount = currencyFormatter.stringFromNumber(viewModel.planAmount) {
-            planAmountLabel.text = "\(planAmount)/\(viewModel.interval)"
-        }
+        planAmountLabel.text = viewModel.planAmount
         subscribersCountLabel.text = "\(viewModel.subscribersCount) Subscribers"
     }
     override func updateConstraints() {

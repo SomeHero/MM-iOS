@@ -7,10 +7,11 @@
 //
 
 import UIKit
-import StripeDashboardUI
+import Money
 
 class ChargeCell: UITableViewCell {
-
+    private var amount = USD(0.0)
+    
     private lazy var amountToolbar: UIView = {
         let _view = UIView()
 
@@ -18,15 +19,12 @@ class ChargeCell: UITableViewCell {
         
         return _view
     }()
-    private lazy var amountLabel: MoneyTextField = {
-        let _label = MoneyTextField(amount: 0, currency: "USD")
-        _label.numberColor = UIColorTheme.PrimaryFont
-        _label.currencySymbolColor = UIColorTheme.PrimaryFont
+    private lazy var amountLabel: UILabel = {
+        let _label = UILabel()
         _label.backgroundColor = .whiteColor()
-        _label.borderWidth = 0
-//        _label.textAlignment = .Right
-//        _label.font = UIFontTheme.Regular(.XLarge)
-//        
+        _label.textAlignment = .Right
+        _label.font = UIFontTheme.Regular(.XLarge)
+        
         self.amountToolbar.addSubview(_label)
         
         return _label
@@ -39,13 +37,20 @@ class ChargeCell: UITableViewCell {
         
         return lineView
     }()
-    private lazy var keyboard: CalculatorKeyboard = {
-        let _keyBoard = CalculatorKeyboard(frame: CGRect.zero)
+    private lazy var keyboard: CalculatorKeyPadView = {
+        let _keyBoard = CalculatorKeyPadView()
         _keyBoard.delegate = self
         
         self.contentView.addSubview(_keyBoard)
         
         return _keyBoard
+    }()
+    private lazy var currencyFormatter: NSNumberFormatter = {
+        let formatter = NSNumberFormatter()
+        formatter.generatesDecimalNumbers = true
+        formatter.numberStyle = .CurrencyStyle
+    
+        return formatter
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .Default, reuseIdentifier: reuseIdentifier)
@@ -95,7 +100,7 @@ class ChargeCell: UITableViewCell {
     }
     func setupWith(viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? ChargeViewModel {
-            amountLabel.amount = 0
+            amountLabel.text = "\(amount)"
             
             keyboard.snp_updateConstraints { (make) in
                 make.height.equalTo(viewModel.totalCellHeight-60-1)
@@ -104,16 +109,19 @@ class ChargeCell: UITableViewCell {
             updateConstraintsIfNeeded()
         }
     }
-    func keyClicked(sender: UIButton) {
-        amountLabel.amount = 100
+}
+extension ChargeCell: CalculatorKeyPadViewDelegate {
+    func didClickNumber(number: Int) {
+        amount = USD(amount*10) + USD(Double(number)/Double(100.0))
         
-        setNeedsUpdateConstraints()
-        updateConstraintsIfNeeded()
+        print("I'll give \(amount.description) to charity.")
+            
+        amountLabel.text = "\(amount.description)"
     }
 }
 extension ChargeCell: CalculatorDelegate {
     func calculator(calculator: CalculatorKeyboard, didChangeValue value: String) {
-        amountLabel.amount = amountLabel.amount + UInt(value)!
+        //amountLabel.text = "\(amount)"
     }
     func didContinue(calculator: CalculatorKeyboard) {
 //        if let text = valueTextField.text, value = Double(text) {

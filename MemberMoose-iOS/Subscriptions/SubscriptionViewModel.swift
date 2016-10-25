@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Money
 protocol SubscriptionDelegate: class {
     func didCancelSubscription(subscription: Subscription)
     func didChangeSubscription(subscription: Subscription)
@@ -25,7 +25,7 @@ class SubscriptionViewModel:DataSourceItemProtocol {
     
     init(subscription: Subscription, subscriptionDelegate: SubscriptionDelegate? = nil) {
         self.planName = subscription.plan.name
-        self.planAmount = "\(subscription.plan.amount)/\(subscription.plan.interval)"
+        self.planAmount = "\(USD(subscription.plan.amount/100).description)/\(subscription.plan.interval)"
         self.status = subscription.status
         self.subscription = subscription
         
@@ -67,7 +67,7 @@ class SubscriptionHeaderView: UIView {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
         _label.textAlignment = .Left
-        _label.font = UIFontTheme.Regular(.Large)
+        _label.font = UIFontTheme.Regular(.Default)
         
         self.addSubview(_label)
         

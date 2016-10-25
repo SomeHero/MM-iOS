@@ -199,7 +199,7 @@ class ImportPlansViewController: UIViewController {
             SessionManager.sharedUser = response
             SessionManager.persistUser()
             
-            let viewController = MembersViewController()
+            let viewController = ProfileViewController(user: user, profileType: .bull)
             let navigationController = UINavigationController(rootViewController: viewController)
             navigationController.navigationBarHidden = true
             

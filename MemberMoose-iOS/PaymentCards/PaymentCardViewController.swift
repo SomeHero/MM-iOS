@@ -8,14 +8,16 @@
 
 import UIKit
 import SVProgressHUD
+import Stripe
 
 private enum FieldTags: Int {
     case ExpirationMonthPicker = 105
     case ExpirationYearPicker = 107
 }
 class PaymentCardViewController: UIViewController {
+    let user: User
     var activeField: UITextField?
-    private var paymentMethod: PaymentCard
+    private var paymentMethod: PaymentCard?
     private var selectedMonth: Int?
     private var selectedYear: Int?
     
@@ -113,7 +115,8 @@ class PaymentCardViewController: UIViewController {
         
         return _picker
     }()
-    init(paymentMethod: PaymentCard) {
+    init(user: User, paymentMethod: PaymentCard? = nil) {
+        self.user = user
         self.paymentMethod = paymentMethod
         
         super.init(nibName: nil, bundle: nil)
@@ -138,20 +141,22 @@ class PaymentCardViewController: UIViewController {
         
         self.view.backgroundColor = UIColor.whiteColor()
 
-        if let nameOnCard = paymentMethod.nameOnCard {
-            nameOnCardView.textField.text = nameOnCard
-        } else {
-            if let user = SessionManager.sharedUser, firstName = user.firstName, lastName = user.lastName {
-                nameOnCardView.textField.text = "\(firstName) \(lastName)"
+        if let paymentMethod = paymentMethod {
+            if let nameOnCard = paymentMethod.nameOnCard {
+                nameOnCardView.textField.text = nameOnCard
+            } else {
+                if let user = SessionManager.sharedUser, firstName = user.firstName, lastName = user.lastName {
+                    nameOnCardView.textField.text = "\(firstName) \(lastName)"
+                }
             }
-        }
-        //cardTypeView.valueLabel.text = paymentMethod.cardType
-        //cardNumberView.textField.text = "XXXX-XXXX-XXXX-\(paymentMethod.cardLastFour)"
-        if let index = monthes.indexOf({$0 == paymentMethod.expirationMonth}) {
-            setSelectedMonth(monthes[index])
-        }
-        if let index = years.indexOf({$0 == paymentMethod.expirationYear}) {
-            setSelectedYear(years[index])
+            //cardTypeView.valueLabel.text = paymentMethod.cardType
+            //cardNumberView.textField.text = "XXXX-XXXX-XXXX-\(paymentMethod.cardLastFour)"
+            if let index = monthes.indexOf({$0 == paymentMethod.expirationMonth}) {
+                setSelectedMonth(monthes[index])
+            }
+            if let index = years.indexOf({$0 == paymentMethod.expirationYear}) {
+                setSelectedYear(years[index])
+            }
         }
         
         // Do any additional setup after loading the view, typically from a nib.
@@ -199,35 +204,42 @@ class PaymentCardViewController: UIViewController {
         
     }
     func savePaymentMethod() {
-//        guard let user = SessionManager.sharedUser else {
-//            return
-//        }
-//        guard let expirationMonth = selectedMonth, expirationYear = selectedYear else {
-//            return
-//        }
-//        SVProgressHUD.show()
-//        
-//        let updatePaymentMethod = UpdatePaymentMethod(userId: user.id, paymentMethodId: paymentMethod.id, expirationMonth: expirationMonth, expirationYear: expirationYear)
-//        
-//        ApiManager.sharedInstance.updatePaymentCard(updatePaymentMethod, success: { [weak self] (response) in
-//            SVProgressHUD.dismiss()
-//            
-//            guard let _self = self else {
-//                return
-//            }
-//            if let index = (user.paymentMethods.indexOf { $0.id == _self.paymentMethod.id }) {
-//                user.paymentMethods[index] = response
-//            }
-//            _self.navigationController?.popViewControllerAnimated(true)
-//            
-//        }) { [weak self] (error, errorDictionary) in
-//            SVProgressHUD.dismiss()
-//            
-//            guard let _self = self else {
-//                return
-//            }
-//            ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
-//        }
+        guard let cardNumber = cardNumberView.textField.text, expMonthString = expirationMonthView.textField.text, expMonth = UInt(expMonthString), expYearString = expirationYearView.textField.text, expYear = UInt(expYearString) else {
+            return
+        }
+        let stpCard = STPCardParams()
+        stpCard.number = cardNumber
+        stpCard.expMonth = expMonth
+        stpCard.expYear = expYear
+        stpCard.cvc = "111"
+
+        STPAPIClient.sharedClient().createTokenWithCard(stpCard, completion: { [weak self] (token, error) in
+            
+            guard let _self = self else {
+                return
+            }
+            if let error = error {
+                print("error occurred")
+                //ErrorHandler.presentErrorDialog(_self, error: error)
+            } else if let token = token {
+                let addPaymentCard = AddPaymentCard(userId: _self.user.id, stripeToken: token.tokenId)
+                ApiManager.sharedInstance.addPaymentCard(addPaymentCard, success: { [weak self] (response) in
+                    guard let _self = self else {
+                        return
+                    }
+                    _self.user.paymentCards.append(response)
+                    
+                    _self.navigationController?.popViewControllerAnimated(true)
+                }, failure: { [weak self] (error, errorDictionary) in
+                    guard let _self = self else {
+                        return
+                    }
+                    print("error occurred")
+                    //ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+                })
+            }
+        })
+
     }
     func setSelectedMonth(month: Int) {
         selectedMonth = month

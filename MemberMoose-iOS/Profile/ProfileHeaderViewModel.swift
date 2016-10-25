@@ -15,6 +15,7 @@ class ProfileHeaderViewModel:DataSourceItemProtocol {
     let avatar: String
     var avatarImageUrl: String?
     let companyName: String?
+    let membersCount: String?
     let membershipNavigationState: MembershipNavigationState
     let membershipNavigationDelegate: MembershipNavigationDelegate?
     
@@ -24,6 +25,7 @@ class ProfileHeaderViewModel:DataSourceItemProtocol {
             self.avatarImageUrl = avatarImageUrl
         }
         self.companyName = user.account?.companyName
+        self.membersCount = "\(user.memberCount) Members"
         self.membershipNavigationState = membershipNavigationState
         self.membershipNavigationDelegate = membershipNavigationDelegate
     }

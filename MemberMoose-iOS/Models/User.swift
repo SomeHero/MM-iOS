@@ -22,6 +22,7 @@ public class User: Mappable {
     public var memberships: [Membership] = []
     public var paymentCards: [PaymentCard] = []
     public var paymentHistory: [Transaction] = []
+    public var memberCount: Int = 0
     //public var createdAt: NSDate!
     //public var updatedAt: NSDate?
     
@@ -49,6 +50,7 @@ public class User: Mappable {
         memberships <- map["memberships"]
         paymentCards <- map["payment_cards"]
         paymentHistory <- map["transactions"]
+        memberCount <- map["member_count"]
         //updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
     }
 }

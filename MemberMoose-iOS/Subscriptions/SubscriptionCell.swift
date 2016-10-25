@@ -140,7 +140,7 @@ class SubscriptionCell: UITableViewCell {
             
             statusLabel.text = viewModel.status
             changePlanButton.setTitle("Upgrade/Downgrade", forState: .Normal)
-            cancelSubscriptionButton.setTitle("Cancel Subscription", forState: .Normal)
+            cancelSubscriptionButton.setTitle("Cancel", forState: .Normal)
         }
     }
     func upgradeDowngradeClicked(sender: UIButton) {

@@ -5,79 +5,101 @@ PODS:
     - ObjectMapper (~> 1.0)
   - ALTextInputBar (1.1.0)
   - ASImageResize (1.0.3)
+  - CardIO (5.4.1)
   - ChameleonFramework (2.1.0):
     - ChameleonFramework/Default (= 2.1.0)
   - ChameleonFramework/Default (2.1.0)
   - FontAwesome.swift (0.7.3)
   - ImagePickerSheetController (0.9.1)
   - Kingfisher (2.6.0)
-  - OAuthSwift (0.6.0)
+  - Money (1.6.1):
+    - ValueCoding
   - ObjectMapper (1.5.0)
   - Presentr (0.1.8)
   - SnapKit (0.18.0)
-  - StripeDashboardUI (0.1)
+  - Stripe (8.0.7)
   - SVProgressHUD (2.0.3)
   - SwiftyJSON (2.3.2)
+  - SwiftyOAuth (0.4.1)
   - SWRevealViewController (2.3.0)
+  - ValueCoding (1.5.0)
 
 DEPENDENCIES:
   - Alamofire (= 3.4.0)
   - AlamofireObjectMapper
   - ALTextInputBar
   - ASImageResize
+  - CardIO
   - ChameleonFramework
   - FontAwesome.swift (from `https://github.com/thii/FontAwesome.swift.git`, tag `0.7.3`)
   - ImagePickerSheetController (= 0.9.1)
   - Kingfisher (~> 2.4)
-  - OAuthSwift (from `https://github.com/OAuthSwift/OAuthSwift.git`, branch `swift2.3`)
+  - Money (from `https://github.com/danthorpe/Money`, branch `release/1.6.1`)
   - ObjectMapper
   - Presentr (from `https://github.com/IcaliaLabs/Presentr`, tag `0.1.8`)
   - SnapKit (~> 0.18.0)
-  - StripeDashboardUI
+  - Stripe
   - SVProgressHUD
   - SwiftyJSON (~> 2.3.2)
+  - SwiftyOAuth (from `https://github.com/delba/SwiftyOAuth.git`, branch `swift-2.2`)
   - SWRevealViewController (~> 2.3)
+  - ValueCoding (from `https://github.com/danthorpe/ValueCoding`, tag `1.5.0`)
 
 EXTERNAL SOURCES:
   FontAwesome.swift:
     :git: https://github.com/thii/FontAwesome.swift.git
     :tag: 0.7.3
-  OAuthSwift:
-    :branch: swift2.3
-    :git: https://github.com/OAuthSwift/OAuthSwift.git
+  Money:
+    :branch: release/1.6.1
+    :git: https://github.com/danthorpe/Money
   Presentr:
     :git: https://github.com/IcaliaLabs/Presentr
     :tag: 0.1.8
+  SwiftyOAuth:
+    :branch: swift-2.2
+    :git: https://github.com/delba/SwiftyOAuth.git
+  ValueCoding:
+    :git: https://github.com/danthorpe/ValueCoding
+    :tag: 1.5.0
 
 CHECKOUT OPTIONS:
   FontAwesome.swift:
     :git: https://github.com/thii/FontAwesome.swift.git
     :tag: 0.7.3
-  OAuthSwift:
-    :commit: 1733c0f70a147f0c1ed978a8d6e8be997aaac7fa
-    :git: https://github.com/OAuthSwift/OAuthSwift.git
+  Money:
+    :commit: fdb10423df495b8b7e745aaca3249a003de5d816
+    :git: https://github.com/danthorpe/Money
   Presentr:
     :git: https://github.com/IcaliaLabs/Presentr
     :tag: 0.1.8
+  SwiftyOAuth:
+    :commit: d670a13f5c70b7c49d2aca3f5b22fa628cffc981
+    :git: https://github.com/delba/SwiftyOAuth.git
+  ValueCoding:
+    :git: https://github.com/danthorpe/ValueCoding
+    :tag: 1.5.0
 
 SPEC CHECKSUMS:
   Alamofire: c19a627cefd6a95f840401c49ab1f124e07f54ee
   AlamofireObjectMapper: 70f97cbf45c01c48d26aa07a1a7059a60ed7411d
   ALTextInputBar: b1ee2db624abc30ce3bb9c38562d283d6f6e9033
   ASImageResize: c8ae8a2a7c57cbffbc39d756bc896f8384f0ca40
+  CardIO: 56983b39b62f495fc6dae9ad7cf875143df06443
   ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
   FontAwesome.swift: f694fe0f667d6d3390b5919cdb0556a27b75d427
   ImagePickerSheetController: 3c58c9fee6dcf36485222358a021f6b734f997ba
   Kingfisher: d84c5fd176ea86cc7b8aac65fd55feda6f70f130
-  OAuthSwift: 8895267fbd6437a52aea26541572a617c7a8c7c1
+  Money: 50cd548fee764acd586fda0773652dfa2981d29e
   ObjectMapper: 386645adca9d9d23b95eda43090b09d66444cf14
   Presentr: 0e65151d93a0c432f6884b66075b15b25a2870ef
   SnapKit: e1f090a6d47b1dd4bd89b73f72b6746a7835ef3c
-  StripeDashboardUI: 6a36ff34fce3c243c3466de22543db41f1383472
+  Stripe: 2bb9646115745d0ee8c7799e6872c57ba5dc6cc5
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
+  SwiftyOAuth: 6fa3e4fe2154a046ef6e56f02a1ab6c6d240d606
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
+  ValueCoding: c88871a90100fc1b1e982dba95a503a4ca997175
 
-PODFILE CHECKSUM: 4812104bef3776936f0ba2d38f0b581cf02bf6dc
+PODFILE CHECKSUM: 5ae5bef4d5574703211f84e71a390335d08f3047
 
 COCOAPODS: 1.1.0.rc.2

@@ -120,7 +120,7 @@ class ProfileHeaderCell: UITableViewCell {
                 logo.image = UIImage(named: viewModel.avatar)
             }
             headingLabel.text = viewModel.companyName
-
+            subHeadingLabel.text = viewModel.membersCount
             membershipNavigation.delegate = viewModel.membershipNavigationDelegate
             membershipNavigation.setSelectedButton(viewModel.membershipNavigationState)
             membershipNavigation.bringSubviewToFront(containerView)

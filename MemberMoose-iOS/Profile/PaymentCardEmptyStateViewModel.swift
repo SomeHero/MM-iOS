@@ -8,14 +8,19 @@
 
 import Foundation
 
+protocol PaymentCardEmptyStateDelegate: class {
+    func didAddPaymentCard()
+}
 class PaymentCardEmptyStateViewModel:DataSourceItemProtocol {
     var cellID: String = "PaymentCardEmptyStateCellIdentifier"
     var cellClass: UITableViewCell.Type = PaymentCardEmptyStateCell.self
+    weak var paymentCardEmptyStateDelegate: PaymentCardEmptyStateDelegate?
     
     let header: String
     
-    init(header: String) {
+    init(header: String, paymentCardEmptyStateDelegate: PaymentCardEmptyStateDelegate?) {
         self.header = header
+        self.paymentCardEmptyStateDelegate = paymentCardEmptyStateDelegate
     }
     @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as? PaymentCardEmptyStateCell else {
@@ -23,7 +28,7 @@ class PaymentCardEmptyStateViewModel:DataSourceItemProtocol {
         }
         
         cell.setupWith(self)
-        //cell.subscriptionCellDelegate = self
+        cell.paymentCardEmptyStateCellDelegate = self
         
         return cell
     }
@@ -37,4 +42,8 @@ class PaymentCardEmptyStateViewModel:DataSourceItemProtocol {
         return 50;
     }
 }
-
+extension PaymentCardEmptyStateViewModel: PaymentCardEmptyStateCellDelegate {
+    func didAddPaymentCardClicked() {
+        paymentCardEmptyStateDelegate?.didAddPaymentCard()
+    }
+}

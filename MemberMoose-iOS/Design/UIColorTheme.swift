@@ -24,6 +24,7 @@ struct UIColorTheme {
     static let TopBackgroundColor = UIColor(hexString: "4A4A4A")
     static let NavBarLineView = UIColor(hexString: "AAAAAA")
     static let GreenButton = UIColor(hexString: "22C064")
+    static let KeyboardDigitColor = UIColor(hexString: "1C1C1C")
     
     static let PrimaryForeground: UIColor = UIColor.flatWhiteColor()
 }

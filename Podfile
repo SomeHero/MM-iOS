@@ -21,10 +21,12 @@ target 'MemberMoose-iOS' do
   pod 'ImagePickerSheetController', '0.9.1'
   pod 'ALTextInputBar'
   pod 'ASImageResize'
-  pod 'OAuthSwift', :git => 'https://github.com/OAuthSwift/OAuthSwift.git', :branch => 'swift2.3'
-  pod 'StripeDashboardUI'
+  pod 'SwiftyOAuth', :git => 'https://github.com/delba/SwiftyOAuth.git', :branch => 'swift-2.2'
+  pod 'CardIO'
+  pod 'Stripe'
   pod 'Presentr', :git => 'https://github.com/IcaliaLabs/Presentr', :tag => '0.1.8'
-  
+  pod 'Money', :git => 'https://github.com/danthorpe/Money', :branch => 'release/1.6.1'
+  pod 'ValueCoding', :git => 'https://github.com/danthorpe/ValueCoding', :tag => '1.5.0'
   target 'MemberMoose-iOSTests' do
     inherit! :search_paths
     # Pods for testing

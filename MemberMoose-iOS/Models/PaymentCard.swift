@@ -19,6 +19,7 @@ public class PaymentCard: Mappable {
     //public var createdAt: NSDate!
     //public var updatedAt: NSDate?
     
+    
     public required init?(_ map: Map){
         mapping(map)
     }
