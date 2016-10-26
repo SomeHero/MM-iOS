@@ -83,7 +83,7 @@ class LoginViewController: UIViewController {
         
         _button.addTarget(self, action: #selector(LoginViewController.nextClicked(_:)), forControlEvents: .TouchUpInside)
         
-        self.view.addSubview(_button)
+        self.scrollView.addSubview(_button)
         
         return _button
     }()
@@ -131,9 +131,10 @@ class LoginViewController: UIViewController {
             make.leading.trailing.equalTo(scrollView).inset(20)
         }
         nextButton.snp_updateConstraints { (make) in
-            make.top.equalTo(stackView.snp_bottom).offset(40)
+            make.top.greaterThanOrEqualTo(stackView.snp_bottom).offset(40)
             make.centerX.equalTo(scrollView)
             make.height.equalTo(40)
+            make.bottom.equalTo(scrollView)
         }
     }
     func nextClicked(sender: UIButton) {
