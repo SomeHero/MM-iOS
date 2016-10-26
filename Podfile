@@ -27,6 +27,7 @@ target 'MemberMoose-iOS' do
   pod 'Presentr', :git => 'https://github.com/IcaliaLabs/Presentr', :tag => '0.1.8'
   pod 'Money', :git => 'https://github.com/danthorpe/Money', :branch => 'release/1.6.1'
   pod 'ValueCoding', :git => 'https://github.com/danthorpe/ValueCoding', :tag => '1.5.0'
+pod 'UIScrollView-InfiniteScroll'
   target 'MemberMoose-iOSTests' do
     inherit! :search_paths
     # Pods for testing

@@ -101,6 +101,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Stripe/Stripe.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SwiftyJSON/SwiftyJSON.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SwiftyOAuth/SwiftyOAuth.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UIScrollView-InfiniteScroll/UIScrollView_InfiniteScroll.framework"
   install_framework "$BUILT_PRODUCTS_DIR/ValueCoding/ValueCoding.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -121,5 +122,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Stripe/Stripe.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SwiftyJSON/SwiftyJSON.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SwiftyOAuth/SwiftyOAuth.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UIScrollView-InfiniteScroll/UIScrollView_InfiniteScroll.framework"
   install_framework "$BUILT_PRODUCTS_DIR/ValueCoding/ValueCoding.framework"
 fi

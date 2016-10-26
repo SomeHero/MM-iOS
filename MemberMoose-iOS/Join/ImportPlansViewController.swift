@@ -19,36 +19,6 @@ class ImportPlansViewController: UIViewController {
             tableView.reloadData()
         }
     }
-    private lazy var skipButton: UIButton = {
-        let _button = UIButton()
-        _button.backgroundColor = .clearColor()
-        _button.setTitleColor(.grayColor(), forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Bold( )
-        
-        _button.addTarget(self, action: #selector(ImportPlansViewController.skipClicked(_:)), forControlEvents: .TouchUpInside)
-        
-        self.view.addSubview(_button)
-        
-        return _button
-    }()
-    private lazy var titleLabel: UILabel = {
-        let _label = UILabel()
-        _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Small)
-        
-        self.view.addSubview(_label)
-        
-        return _label
-    }()
-    lazy var lineView: UIView = {
-        let lineView = UIView()
-        lineView.backgroundColor = UIColorTheme.NavBarLineView
-        
-        self.view.addSubview(lineView)
-        
-        return lineView
-    }()
     private lazy var tableView: UITableView = {
         let _tableView                  = UITableView()
         _tableView.dataSource           = self
@@ -102,7 +72,15 @@ class ImportPlansViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Import from Stripe"
         view.backgroundColor = .whiteColor()
+        
+        let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: self, action: nil)
+        navigationItem.leftBarButtonItem = backButton
+        
+        let skipButton = UIBarButtonItem(title: "SKIP", style: UIBarButtonItemStyle.Plain, target: self, action:  #selector(CreateFirstPlanViewController.skipClicked(_:)))
+        navigationItem.rightBarButtonItem = skipButton
+        
         setup()
         
         loadPlans()
@@ -114,22 +92,8 @@ class ImportPlansViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        skipButton.snp_updateConstraints { (make) in
-            make.top.equalTo(view).inset(20)
-            make.trailing.equalTo(view).inset(15)
-        }
-        titleLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(view).inset(20)
-            make.trailing.greaterThanOrEqualTo(skipButton.snp_trailing).inset(10)
-            make.centerX.equalTo(view)
-        }
-        lineView.snp_updateConstraints { (make) -> Void in
-            make.top.equalTo(titleLabel.snp_bottom).offset(20)
-            make.width.equalTo(view)
-            make.height.equalTo(kOnePX*2)
-        }
         tableView.snp_updateConstraints { (make) in
-            make.top.equalTo(lineView)
+            make.top.equalTo(view).inset(20)
             make.leading.trailing.equalTo(view)
         }
         planCountLabel.snp_updateConstraints { (make) in
@@ -148,9 +112,6 @@ class ImportPlansViewController: UIViewController {
         }
     }
     func setup() {
-        skipButton.setTitle("SKIP", forState: .Normal)
-        
-        titleLabel.text = "Import from Stripe"
         setPlanCountLabel()
         noThanksButton.setTitle("No Thanks", forState: .Normal)
     }

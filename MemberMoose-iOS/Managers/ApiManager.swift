@@ -453,10 +453,10 @@ public class ApiManager {
         }
         
     }
-    public func getMembers(success: (response: [User]?) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
-        Alamofire.request(.GET,  apiBaseUrl + "members", parameters: nil, encoding: .JSON, headers: headers)
+    public func getMembers(page: Int = 1, success: (response: [User]?) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+        Alamofire.request(.GET,  apiBaseUrl + "members?page=\(page)", parameters: nil, encoding: .JSON, headers: headers)
             .validate()
-            .responseArray { (response: Response<[User], NSError>) in
+            .responseArray(keyPath: "results") { (response: Response<[User], NSError>) in
                 if let error = response.result.error {
                     var errorResponse: [String: AnyObject]? = [:]
                     

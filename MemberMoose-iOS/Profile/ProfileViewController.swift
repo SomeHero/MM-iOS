@@ -63,6 +63,8 @@ class ProfileViewController: UIViewController {
     private var hasMembers = false
     private var hasPlans = false
     
+    private var pageNumber = 1
+    
     private var presenter: Presentr = {
         let _presenter = Presentr(presentationType: .Alert)
         _presenter.transitionType = .CoverVertical // Optional
@@ -249,6 +251,35 @@ class ProfileViewController: UIViewController {
         configureRevealControllerGestures(view)
         configureRevealWidth()
         
+        self.tableView.infiniteScrollIndicatorStyle = .Gray
+        
+        // Set custom indicator margin
+        self.tableView.infiniteScrollIndicatorMargin = 40
+        
+        // Add infinite scroll handler
+        self.tableView.addInfiniteScrollWithHandler { [weak self] (scrollView) -> Void in
+            guard let _self = self else {
+                return
+            }
+            _self.pageNumber += 1
+            
+            ApiManager.sharedInstance.getMembers(_self.pageNumber, success: { (members) in
+                var viewModels = _self.dataSource[1]
+                for member in members! {
+                    let viewModel = MemberViewModel(user: member)
+                    
+                    viewModels.append(viewModel)
+                }
+                _self.dataSource[1] = viewModels
+                
+                _self.tableView.reloadData()
+            }, failure: { (error, errorDictionary) in
+                print("failed")
+            })
+            
+            scrollView.finishInfiniteScroll()
+        }
+        pageNumber = 1
         buildDataSet()
 
         setup()
@@ -397,7 +428,7 @@ class ProfileViewController: UIViewController {
             
             switch membershipNavigationState {
             case .Members:
-                    ApiManager.sharedInstance.getMembers({ [weak self] (members) in
+                    ApiManager.sharedInstance.getMembers(self.pageNumber, success: { [weak self] (members) in
                         guard let _self = self else {
                             return
                         }
@@ -560,7 +591,7 @@ extension ProfileViewController : UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let dataItems = dataSource[indexPath.section]
-        let viewModel = dataItems[indexPath.item]
+        let viewModel = dataItems[indexPath.row]
         let cell = viewModel.dequeueAndConfigure(tableView, indexPath: indexPath)
         
         cell.layoutIfNeeded()
@@ -581,7 +612,7 @@ extension ProfileViewController : UITableViewDelegate {
         case .bull:
             switch membershipNavigationState {
             case .Members:
-                guard let viewModel = dataItems[indexPath.item] as? MemberViewModel else {
+                guard let viewModel = dataItems[indexPath.row] as? MemberViewModel else {
                     return
                 }
                 
@@ -592,7 +623,7 @@ extension ProfileViewController : UITableViewDelegate {
                 
             //profileType = .calf
             case .Plans:
-                guard let viewModel = dataItems[indexPath.item] as? PlanViewModel else {
+                guard let viewModel = dataItems[indexPath.row] as? PlanViewModel else {
                     return
                 }
                 
@@ -641,6 +672,7 @@ extension ProfileViewController: MemberNavigationDelegate {
         //memberNavigation.setSelectedButton(memberNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)
+        pageNumber = 1
         buildDataSet()
         
         view.becomeFirstResponder()
@@ -651,6 +683,7 @@ extension ProfileViewController: MemberNavigationDelegate {
         //memberNavigation.setSelectedButton(memberNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)
+        pageNumber = 1
         buildDataSet()
         
         view.resignFirstResponder()
@@ -661,6 +694,7 @@ extension ProfileViewController: MemberNavigationDelegate {
         //memberNavigation.setSelectedButton(memberNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)
+        pageNumber = 1
         buildDataSet()
         
         view.resignFirstResponder()
@@ -673,6 +707,7 @@ extension ProfileViewController: MembershipNavigationDelegate {
         //membershipNavigation.setSelectedButton(membershipNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)
+        pageNumber = 1
         buildDataSet()
         
         view.resignFirstResponder()
@@ -683,6 +718,7 @@ extension ProfileViewController: MembershipNavigationDelegate {
         //membershipNavigation.setSelectedButton(membershipNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)
+        pageNumber = 1
         buildDataSet()
         
         view.resignFirstResponder()
@@ -693,6 +729,7 @@ extension ProfileViewController: MembershipNavigationDelegate {
         //membershipNavigation.setSelectedButton(membershipNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)
+        pageNumber = 1
         buildDataSet()
         
         view.resignFirstResponder()

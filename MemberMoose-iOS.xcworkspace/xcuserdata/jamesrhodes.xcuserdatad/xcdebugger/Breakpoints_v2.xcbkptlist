@@ -138,7 +138,7 @@
                   moduleName = "MemberMoose"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jamesrhodes/Desktop/MemberMoose-iOS/MemberMoose-iOS/PaymentCards/PaymentCardViewController.swift"
-                  timestampString = "499187115.749384"
+                  timestampString = "499200126.076791"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "226"
@@ -153,7 +153,7 @@
                   moduleName = "MemberMoose"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jamesrhodes/Desktop/MemberMoose-iOS/MemberMoose-iOS/PaymentCards/PaymentCardViewController.swift"
-                  timestampString = "499187115.749484"
+                  timestampString = "499200126.076897"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "226"
@@ -201,77 +201,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MemberMoose-iOS/Profile/ProfileHeaderCell.swift"
-            timestampString = "499060286.137795"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "122"
-            endingLineNumber = "122"
-            landmarkName = "setupWith(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MemberMoose-iOS/Models/Plan.swift"
-            timestampString = "499071770.04334"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
-            landmarkName = "mapping(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MemberMoose-iOS/Models/User.swift"
-            timestampString = "499186859.950303"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
-            landmarkName = "persistToUserDefaults(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "MemberMoose-iOS/Profile/ProfileViewController.swift"
-            timestampString = "499188573.700076"
+            timestampString = "499199842.392954"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "818"
-            endingLineNumber = "818"
+            startingLineNumber = "855"
+            endingLineNumber = "855"
             landmarkName = "didChargeAmount(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MemberMoose-iOS/Models/User.swift"
-            timestampString = "499187115.428958"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
-            landmarkName = "mapping(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

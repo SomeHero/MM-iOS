@@ -22,6 +22,7 @@ PODS:
   - SwiftyJSON (2.3.2)
   - SwiftyOAuth (0.4.1)
   - SWRevealViewController (2.3.0)
+  - UIScrollView-InfiniteScroll (0.9.1)
   - ValueCoding (1.5.0)
 
 DEPENDENCIES:
@@ -43,6 +44,7 @@ DEPENDENCIES:
   - SwiftyJSON (~> 2.3.2)
   - SwiftyOAuth (from `https://github.com/delba/SwiftyOAuth.git`, branch `swift-2.2`)
   - SWRevealViewController (~> 2.3)
+  - UIScrollView-InfiniteScroll
   - ValueCoding (from `https://github.com/danthorpe/ValueCoding`, tag `1.5.0`)
 
 EXTERNAL SOURCES:
@@ -98,8 +100,9 @@ SPEC CHECKSUMS:
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
   SwiftyOAuth: 6fa3e4fe2154a046ef6e56f02a1ab6c6d240d606
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
+  UIScrollView-InfiniteScroll: 14e204c50ca4040467e1cbfa141dad7a18919b56
   ValueCoding: c88871a90100fc1b1e982dba95a503a4ca997175
 
-PODFILE CHECKSUM: 5ae5bef4d5574703211f84e71a390335d08f3047
+PODFILE CHECKSUM: e9d59efc755f4f08b595d84be16a97e54c0c6e3c
 
-COCOAPODS: 1.1.0.rc.2
+COCOAPODS: 1.1.1

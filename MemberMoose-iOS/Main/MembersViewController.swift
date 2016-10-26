@@ -228,7 +228,7 @@ class MembersViewController: UIViewController {
         resetEmptyStates()
         tableView.reloadData()
         
-        ApiManager.sharedInstance.getMembers({ (members) in
+        ApiManager.sharedInstance.getMembers(1, success: { (members) in
             if(members!.count > 0) {
                 var viewModels: [MemberViewModel] = []
                 for member in members! {
