@@ -394,7 +394,7 @@ extension MembersViewController : UITableViewDelegate {
         default:
             let viewModel = plans[indexPath.item]
             
-            let viewController = PlanDetailViewController()
+            let viewController = PlanDetailViewController(plan: viewModel.plan)
             
             navigationController?.pushViewController(viewController, animated: true)
         }

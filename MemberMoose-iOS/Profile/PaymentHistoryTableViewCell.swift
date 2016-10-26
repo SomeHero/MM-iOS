@@ -76,7 +76,7 @@ class PaymentHistoryTableViewCell: UITableViewCell {
     
     override func updateConstraints() {
         containerView.snp_updateConstraints { (make) in
-            make.edges.equalTo(contentView).inset(20)
+            make.top.bottom.leading.equalTo(contentView).inset(20)
         }
         transactionDateLabel.snp_updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
@@ -90,6 +90,11 @@ class PaymentHistoryTableViewCell: UITableViewCell {
             make.leading.equalTo(containerView)
             make.top.equalTo(transactionDescriptionLabel.snp_bottom)
             make.bottom.equalTo(containerView)
+        }
+        amountLabel.snp_updateConstraints { (make) in
+            make.trailing.equalTo(contentView).inset(20)
+            make.centerY.equalTo(contentView)
+            make.leading.greaterThanOrEqualTo(containerView.snp_trailing).offset(10)
         }
         super.updateConstraints()
     }

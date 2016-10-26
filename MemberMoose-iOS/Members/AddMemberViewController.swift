@@ -30,7 +30,7 @@ class AddMemberViewController: UIViewController {
         input.configure("", label: "First Name", placeholder: "Enter Member's First Name", tag: 100)
         self.configureTextField(input.textField)
         
-        input.textField.addTarget(self, action: #selector(PlanDetailViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        input.textField.addTarget(self, action: #selector(AddMemberViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return input
     }()
     private lazy var lastNameView: StackViewInputField = {
@@ -38,7 +38,7 @@ class AddMemberViewController: UIViewController {
         input.configure("", label: "Last Name", placeholder: "Enter Member's Last Name", tag: 101)
         self.configureTextField(input.textField)
         
-        input.textField.addTarget(self, action: #selector(PlanDetailViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        input.textField.addTarget(self, action: #selector(AddMemberViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return input
     }()
     private lazy var emailAddressView: StackViewInputField = {
@@ -46,7 +46,7 @@ class AddMemberViewController: UIViewController {
         input.configure("", label: "Email Address", placeholder: "Enter Member's Email Address", tag: 103)
         self.configureTextField(input.textField)
         
-        input.textField.addTarget(self, action: #selector(PlanDetailViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        input.textField.addTarget(self, action: #selector(AddMemberViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return input
     }()
     private lazy var nextButton: UIButton = {
@@ -54,7 +54,7 @@ class AddMemberViewController: UIViewController {
         _button.setImage(UIImage(named: "RightArrow-Primary"), forState: .Normal)
         _button.imageView?.contentMode = .ScaleAspectFit
         
-        _button.addTarget(self, action: #selector(PlanDetailViewController.nextClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(AddMemberViewController.nextClicked(_:)), forControlEvents: .TouchUpInside)
         
         self.scrollView.addSubview(_button)
         

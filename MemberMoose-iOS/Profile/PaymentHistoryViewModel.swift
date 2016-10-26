@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Money
 
 class PaymentHistoryViewModel:DataSourceItemProtocol {
     var cellID: String = "PaymentHistoryCell"
@@ -16,7 +17,7 @@ class PaymentHistoryViewModel:DataSourceItemProtocol {
     let transactionDescription: String
     let cardDescription: String
     let amount: String
-    let dateFormatter = DateFormatters.dateFormatterForMonthDayYear()
+    let dateFormatter = DateFormatters.timeStampDateFormatter
     
     lazy var currencyFormatter: NSNumberFormatter = {
         let _formatter = NSNumberFormatter()
@@ -25,17 +26,11 @@ class PaymentHistoryViewModel:DataSourceItemProtocol {
         
         return _formatter
     }()
-    init(transaction: Transaction) {
-        transactionDate = dateFormatter.stringFromDate(transaction.transactionDate)
-        transactionDescription = transaction.transactionDescription
-        cardDescription = transaction.cardDescription
-        amount = "$30.00"
-    }
-    init(transactionDate: NSDate, transactionDescription: String, cardDescription: String, amount: NSDecimalNumber) {
-        self.transactionDate = dateFormatter.stringFromDate(transactionDate)
-        self.transactionDescription = transactionDescription
-        self.cardDescription = cardDescription
-        self.amount = "$30.00"
+    init(charge: Charge) {
+        transactionDate = dateFormatter.stringFromDate(charge.chargeCreated)
+        transactionDescription = charge.description
+        cardDescription = charge.cardInfo
+        amount = USD(charge.amount).description
     }
     @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier("PaymentHistoryCellIdentifier", forIndexPath: indexPath) as? PaymentHistoryTableViewCell else {

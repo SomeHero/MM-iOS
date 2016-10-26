@@ -1,22 +1,19 @@
 //
-//  CalfProfileViewController.swift
+//  AccountProfileViewController.swift
 //  MemberMoose-iOS
 //
-//  Created by James Rhodes on 10/19/16.
+//  Created by James Rhodes on 10/25/16.
 //  Copyright © 2016 James Rhodes. All rights reserved.
 //
 
 import UIKit
-import SVProgressHUD
 import FontAwesome_swift
+import SVProgressHUD
 
-protocol UserProfileDelegate: class {
-    func didClickBack()
-}
-class UserProfileViewController: UIViewController {
+class AccountProfileViewController: UIViewController {
     var avatar: UIImage?
     var activeField: UITextField?
-    let user: User
+    let account: Account
     private let profileType: ProfileType
     weak var delegate: UserProfileDelegate?
     
@@ -47,62 +44,29 @@ class UserProfileViewController: UIViewController {
         return _photoView
     }()
     lazy var stackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [self.avatarView, self.firstNameTextField, self.lastNameTextField, self.emailAddressTextField, self.passwordTextField, self.confirmPasswordTextField])
+        let stack = UIStackView(arrangedSubviews: [self.avatarView, self.companyNameTextField, self.subdomainTextField])
         stack.axis = .Vertical
         stack.spacing = 40
         
         self.scrollView.addSubview(stack)
         return stack
     }()
-    private lazy var firstNameTextField: StackViewInputField = {
+    private lazy var companyNameTextField: StackViewInputField = {
         let _textField = StackViewInputField()
-        _textField.configure("", placeholder: "Enter First Name", tag: 101)
+        _textField.configure("", placeholder: "Enter Company Name", tag: 101)
         self.configureTextField(_textField.textField)
         
-        _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(AccountProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return _textField
     }()
-    private lazy var lastNameTextField: StackViewInputField = {
+    private lazy var subdomainTextField: StackViewInputField = {
         let _textField = StackViewInputField()
-        _textField.configure("", placeholder: "Enter Last Name", tag: 102)
+        _textField.configure("", placeholder: "Enter Subdomain", tag: 102)
         _textField.textField.autocorrectionType = .No
         _textField.textField.autocapitalizationType = .None
         self.configureTextField(_textField.textField)
         
-        _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
-        return _textField
-    }()
-    private lazy var emailAddressTextField: StackViewInputField = {
-        let _textField = StackViewInputField()
-        _textField.configure("", placeholder: "Enter Email Address", tag: 103)
-        _textField.textField.autocorrectionType = .No
-        _textField.textField.autocapitalizationType = .None
-        _textField.textField.keyboardType = .EmailAddress
-        self.configureTextField(_textField.textField)
-        
-        _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
-        return _textField
-    }()
-    private lazy var passwordTextField: StackViewInputField = {
-        let _textField = StackViewInputField()
-        _textField.configure("", placeholder: "Enter Password", tag: 104)
-        _textField.textField.autocorrectionType = .No
-        _textField.textField.autocapitalizationType = .None
-        _textField.textField.secureTextEntry = true
-        self.configureTextField(_textField.textField)
-        
-        _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
-        return _textField
-    }()
-    private lazy var confirmPasswordTextField: StackViewInputField = {
-        let _textField = StackViewInputField()
-        _textField.configure("", placeholder: "Enter Password Again", tag: 105)
-        _textField.textField.autocorrectionType = .No
-        _textField.textField.autocapitalizationType = .None
-        _textField.textField.secureTextEntry = true
-        self.configureTextField(_textField.textField)
-        
-        _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(AccountProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return _textField
     }()
     private lazy var nextButton: UIButton = {
@@ -116,8 +80,8 @@ class UserProfileViewController: UIViewController {
         
         return _button
     }()
-    init(user: User, profileType: ProfileType) {
-        self.user = user
+    init(account: Account, profileType: ProfileType) {
+        self.account = account
         self.profileType = profileType
         
         super.init(nibName: nil, bundle: nil)
@@ -130,7 +94,7 @@ class UserProfileViewController: UIViewController {
         super.viewDidLoad()
         
         title = "User Profile"
-
+        
         view.backgroundColor = .whiteColor()
         
         setup()
@@ -175,40 +139,37 @@ class UserProfileViewController: UIViewController {
         }
     }
     func setup() {
-        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
+        if let avatar = account.avatar, avatarImageUrl = avatar["large"] {
             avatarView.profilePhoto.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
                                                        placeholderImage: UIImage(named: "Avatar-Calf"))
         } else {
             avatarView.profilePhoto.image = UIImage(named: "Avatar-Calf")
         }
-        firstNameTextField.textField.text = user.firstName
-        lastNameTextField.textField.text = user.lastName
-        emailAddressTextField.textField.text = user.emailAddress
     }
     func closeClicked(sender: UIButton) {
         delegate?.didClickBack()
     }
     func nextClicked(sender: UIButton) {
-        guard let firstName = firstNameTextField.textField.text, lastName = lastNameTextField.textField.text, emailAddress = emailAddressTextField.textField.text else {
+        guard let companyName = companyNameTextField.textField.text else {
             return
         }
-        let updateUser = UpdateUser(userId: user.id, firstName: firstName, lastName: lastName, emailAddress: emailAddress, avatar: avatar)
-        
-        SVProgressHUD.show()
-
-        ApiManager.sharedInstance.updateUser(updateUser, success: { [weak self] (response) in
-            SVProgressHUD.dismiss()
-            
-            guard let _self = self else {
-                return
-            }
-            
-            _self.delegate?.didClickBack()
-        }) { (error, errorDictionary) in
-            print("error occurred")
-            
-            SVProgressHUD.dismiss()
-        }
+//        let updateUser = UpdateUser(userId: user.id, firstName: firstName, lastName: lastName, emailAddress: emailAddress, avatar: avatar)
+//        
+//        SVProgressHUD.show()
+//        
+//        ApiManager.sharedInstance.updateUser(updateUser, success: { [weak self] (response) in
+//            SVProgressHUD.dismiss()
+//            
+//            guard let _self = self else {
+//                return
+//            }
+//            
+//            _self.delegate?.didClickBack()
+//        }) { (error, errorDictionary) in
+//            print("error occurred")
+//            
+//            SVProgressHUD.dismiss()
+//        }
     }
     func configureTextField(textField: UITextField) {
         textField.returnKeyType = .Next
@@ -239,24 +200,19 @@ class UserProfileViewController: UIViewController {
         }
     }
     func validateForm() {
-        guard let firstName = firstNameTextField.textField.text else {
+        guard let companyName = companyNameTextField.textField.text else {
             return
         }
-        let firstNameValid = Validator.isValidText(firstName)
-        
-        guard let lastName = lastNameTextField.textField.text else {
-            return
-        }
-        let lastNameValid = Validator.isValidText(lastName)
-        
-        if firstNameValid && lastNameValid {
+        let companyNameIsValid = Validator.isValidText(companyName)
+
+        if companyNameIsValid {
             enableButton(nextButton)
         } else {
             disableButton(nextButton)
         }
     }
 }
-extension UserProfileViewController: UITextFieldDelegate {
+extension AccountProfileViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         activeField = textField
         if let toolBar = activeField?.inputAccessoryView as? UIToolbar {
@@ -265,7 +221,7 @@ extension UserProfileViewController: UITextFieldDelegate {
         return true
     }
 }
-extension UserProfileViewController : InputNavigationDelegate {
+extension AccountProfileViewController : InputNavigationDelegate {
     func keyboardDidAppear(notification: NSNotification) {
         if let info = notification.userInfo {
             if let keyboardSize = info[UIKeyboardFrameBeginUserInfoKey]?.CGRectValue.size {
@@ -316,11 +272,11 @@ extension UserProfileViewController : InputNavigationDelegate {
     
     func toggleKeyboardNavButtonsEnabled(toolBar: UIToolbar) {
         if let items = toolBar.items {
-            let isLastItem = activeField == confirmPasswordTextField.textField
+            let isLastItem = activeField == companyNameTextField.textField
             let nextButtonIndex = KeyboardDecorator.nextIndex
             items[nextButtonIndex].enabled = !isLastItem
             
-            let isFirstItem = activeField == firstNameTextField.textField
+            let isFirstItem = activeField == companyNameTextField.textField
             let previousButtonIndex = KeyboardDecorator.previousIndex
             items[previousButtonIndex].enabled = !isFirstItem
         }

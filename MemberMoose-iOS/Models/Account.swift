@@ -18,6 +18,16 @@ public class Account: Mappable {
     //public var createdAt: NSDate!
     //public var updatedAt: NSDate?
     
+    public init(userDefaults: NSUserDefaults) {
+        self.id = userDefaults.stringForKey("id")
+        self.companyName = userDefaults.stringForKey("companyName")
+        let avatar = userDefaults.valueForKey("avatar")
+        if let avatar = avatar as? Dictionary<String, String> {
+            self.avatar = avatar
+        }
+        self.subdomain = userDefaults.stringForKey("subdomain")
+        self.status = userDefaults.stringForKey("status")
+    }
     public required init?(_ map: Map){
         mapping(map)
     }
@@ -30,5 +40,18 @@ public class Account: Mappable {
         status <- map["status"]
         //createdAt <- (map["createdAt"], ISO8601ExtendedDateTransform())
         //updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
+    }
+    func persistToUserDefaults(userDefaults: NSUserDefaults) {
+        userDefaults.setValuesForKeysWithDictionary([
+            "id": id,
+            "companyName": companyName,
+            "subdomain": subdomain,
+            "status": status
+            ])
+        if let avatar = self.avatar {
+            userDefaults.setValue(avatar, forKey: "avatar")
+        }
+        
+        userDefaults.synchronize()
     }
 }

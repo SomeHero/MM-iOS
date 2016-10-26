@@ -10,6 +10,7 @@ import FontAwesome_swift
 
 protocol CalculatorKeyPadViewDelegate: class {
     func didClickNumber(number: Int)
+    func didClickSend()
 }
 class CalculatorKeyPadView: UIView {
     weak var delegate: CalculatorKeyPadViewDelegate?
@@ -140,9 +141,23 @@ class CalculatorKeyPadView: UIView {
         
         return _button
     }()
-    lazy var zeroButton: UIButton = {
+    lazy var sendButton: UIButton = {
         let _button = UIButton()
         _button.titleLabel?.font = UIFontTheme.Light(.XLarge)
+        _button.setTitleColor(UIColorTheme.KeyboardDigitColor, forState: .Normal)
+        _button.setTitleColor(UIColorTheme.PrimaryFont, forState: .Highlighted)
+        _button.backgroundColor = .whiteColor()
+        _button.addTarget(self, action: #selector(CalculatorKeyPadView.sendClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.tag = 0
+        _button.setTitle("SEND", forState: .Normal)
+        
+        self.addSubview(_button)
+        
+        return _button
+    }()
+    lazy var zeroButton: UIButton = {
+        let _button = UIButton()
+        _button.titleLabel?.font = UIFontTheme.Light(.Large)
         _button.setTitleColor(UIColorTheme.KeyboardDigitColor, forState: .Normal)
         _button.setTitleColor(UIColorTheme.PrimaryFont, forState: .Highlighted)
         _button.backgroundColor = .whiteColor()
@@ -216,7 +231,7 @@ class CalculatorKeyPadView: UIView {
         oneButton.snp_makeConstraints { (make) in
             make.top.equalTo(fourButton.snp_bottom).offset(1)
             make.left.equalTo(self)
-            make.height.equalTo(zeroButton)
+            make.height.equalTo(sendButton)
             make.width.equalTo(twoButton)
         }
         twoButton.snp_makeConstraints { (make) in
@@ -231,9 +246,15 @@ class CalculatorKeyPadView: UIView {
             make.right.equalTo(self)
             make.height.equalTo(twoButton)
         }
+        sendButton.snp_makeConstraints { (make) in
+            make.top.equalTo(oneButton.snp_bottom).offset(1)
+            make.left.equalTo(self)
+            make.width.equalTo(zeroButton)
+            make.bottom.equalTo(self)
+        }
         zeroButton.snp_makeConstraints { (make) in
             make.top.equalTo(twoButton.snp_bottom).offset(1)
-            make.left.equalTo(self)
+            make.left.equalTo(sendButton.snp_right).offset(1)
             make.bottom.equalTo(self)
         }
         decimalButton.snp_makeConstraints { (make) in
@@ -248,5 +269,8 @@ class CalculatorKeyPadView: UIView {
     }
     func numberClicked(sender: UIButton) {
         delegate?.didClickNumber(sender.tag)
+    }
+    func sendClicked(sender: UIButton) {
+        delegate?.didClickSend()
     }
 }

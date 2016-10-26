@@ -9,7 +9,7 @@
 import UIKit
 import SVProgressHUD
 
-class PlanDetailViewController: UIViewController {
+class PlanProfileViewController: UIViewController {
     private lazy var scrollView: UIScrollView = {
         let _scrollView         = UIScrollView()
         
@@ -30,7 +30,7 @@ class PlanDetailViewController: UIViewController {
         input.configure("", label: "Plan Name", placeholder: "Enter Name of Plan", tag: 100)
         self.configureTextField(input.textField)
         
-        input.textField.addTarget(self, action: #selector(PlanDetailViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        input.textField.addTarget(self, action: #selector(PlanProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return input
     }()
     private lazy var planDescriptionView: StackViewInputField = {
@@ -38,7 +38,7 @@ class PlanDetailViewController: UIViewController {
         input.configure("", label: "Description of Plan (Optional)", placeholder: "Enter a Description", tag: 101)
         self.configureTextField(input.textField)
         
-        input.textField.addTarget(self, action: #selector(PlanDetailViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        input.textField.addTarget(self, action: #selector(PlanProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return input
     }()
     private lazy var paymentTypeView: StackViewInputField = {
@@ -46,7 +46,7 @@ class PlanDetailViewController: UIViewController {
         input.configure("", label: "How do you want to charge customers?", placeholder: "ONE-TIME OR RECURRING", tag: 103)
         self.configureTextField(input.textField)
         
-        input.textField.addTarget(self, action: #selector(PlanDetailViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        input.textField.addTarget(self, action: #selector(PlanProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return input
     }()
     private lazy var amountView: StackViewInputField = {
@@ -54,7 +54,7 @@ class PlanDetailViewController: UIViewController {
         input.configure("", label: "Amount", placeholder: "Amount to Charge", tag: 104)
         self.configureTextField(input.textField)
         
-        input.textField.addTarget(self, action: #selector(PlanDetailViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        input.textField.addTarget(self, action: #selector(PlanProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return input
     }()
     private lazy var nextButton: UIButton = {
@@ -62,7 +62,7 @@ class PlanDetailViewController: UIViewController {
         _button.setImage(UIImage(named: "RightArrow-Primary"), forState: .Normal)
         _button.imageView?.contentMode = .ScaleAspectFit
         
-        _button.addTarget(self, action: #selector(PlanDetailViewController.nextClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(PlanProfileViewController.nextClicked(_:)), forControlEvents: .TouchUpInside)
         
         self.scrollView.addSubview(_button)
         

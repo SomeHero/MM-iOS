@@ -10,6 +10,8 @@ import UIKit
 import ALTextInputBar
 import Presentr
 import Stripe
+import SVProgressHUD
+import Money
 
 @objc protocol DataSourceItemProtocol {
     func viewForHeader() -> UIView?
@@ -489,34 +491,26 @@ class ProfileViewController: UIViewController {
                     items.append(paymentCardEmptyStateViewModels)
                 }
                 
-//                var paymentHistoryViewModels: [PaymentHistoryViewModel] = []
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-//                paymentHistoryViewModels.append(PaymentHistoryViewModel(transactionDate: NSDate(), transactionDescription: "Co-working 3 Day per week", cardDescription: "Discover Ending in 4242", amount: 30.00))
-                //items.append(paymentHistoryViewModels)
-                var paymentHistoryEmptyStateViewModels: [PaymentHistoryEmptyStateViewModel] = []
-                paymentHistoryEmptyStateViewModels.append(PaymentHistoryEmptyStateViewModel(header: "No Transactions"))
-                
-                items.append(paymentHistoryEmptyStateViewModels)
+                //
+                if user.charges.count > 0 {
+                    var paymentHistoryViewModels: [PaymentHistoryViewModel] = []
+                    for charge in user.charges {
+                        let paymentHistoryViewModel = PaymentHistoryViewModel(charge: charge)
+                        
+                        paymentHistoryViewModels.append(paymentHistoryViewModel)
+                    }
+                    items.append(paymentHistoryViewModels)
+                } else {
+                    var paymentHistoryEmptyStateViewModels: [PaymentHistoryEmptyStateViewModel] = []
+                    paymentHistoryEmptyStateViewModels.append(PaymentHistoryEmptyStateViewModel(header: "No Transactions"))
+                    
+                    items.append(paymentHistoryEmptyStateViewModels)
+                }
+               
             case .Charge:
                 let remainingHeight = view.frame.size.height - tableView.visibleCells[0].frame.size.height
                 
-                let viewModel = ChargeViewModel(totalCellHeight: remainingHeight)
+                let viewModel = ChargeViewModel(totalCellHeight: remainingHeight, chargeCellDelegate: self)
                 
                 items.append([viewModel])
             default:
@@ -543,7 +537,7 @@ class ProfileViewController: UIViewController {
         }
     }
     func addPlanClicked(sender: UIButton) {
-        let viewController = PlanDetailViewController()
+        let viewController = PlanProfileViewController()
         
         navigationController?.pushViewController(viewController, animated: true)
     }
@@ -602,7 +596,7 @@ extension ProfileViewController : UITableViewDelegate {
                     return
                 }
                 
-                let viewController = PlanDetailViewController()
+                let viewController = PlanProfileViewController()
                 
                 navigationController?.pushViewController(viewController, animated: true)
             case .Messages:
@@ -757,7 +751,7 @@ extension ProfileViewController: MemberEmptyStateDelegate {
 }
 extension ProfileViewController: PlanEmptyStateDelegate {
     func didCreatePlan() {
-        let viewController = PlanDetailViewController()
+        let viewController = PlanProfileViewController()
         
         navigationController?.pushViewController(viewController, animated: true)
     }
@@ -786,32 +780,58 @@ extension ProfileViewController: CardCaptureDelegate {
     }
     func didCompleteCardCapture(stpCard: STPCardParams) {
         dismissViewControllerAnimated(true, completion: {
+            SVProgressHUD.show()
             STPAPIClient.sharedClient().createTokenWithCard(stpCard, completion: { [weak self] (token, error) in
-                
                 guard let _self = self else {
                     return
                 }
                 if let error = error {
+                    SVProgressHUD.dismiss()
+                    
                     print("error occurred")
                     //ErrorHandler.presentErrorDialog(_self, error: error)
                 } else if let token = token {
                     let addPaymentCard = AddPaymentCard(userId: _self.user.id, stripeToken: token.tokenId)
                     ApiManager.sharedInstance.addPaymentCard(addPaymentCard, success: { [weak self] (response) in
+                        SVProgressHUD.dismiss()
+                    
                         guard let _self = self else {
                             return
                         }
                         _self.user.paymentCards.append(response)
                         
-                        _self.navigationController?.popViewControllerAnimated(true)
-                        }, failure: { [weak self] (error, errorDictionary) in
-                            guard let _self = self else {
-                                return
-                            }
-                            print("error occurred")
-                            //ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
-                        })
+                        _self.buildDataSet()
+                    }, failure: { [weak self] (error, errorDictionary) in
+                        guard let _self = self else {
+                            return
+                        }
+                        print("error occurred")
+                        //ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+                    })
                 }
             })
         })
+    }
+}
+extension ProfileViewController: ChargeCellDelegate {
+    func didChargeAmount(amount: USD) {
+        SVProgressHUD.show()
+        
+        let createCharge = CreateCharge(userId: user.id, amount: amount.floatValue, description: "Test Charge")
+        
+        ApiManager.sharedInstance.createCharge(createCharge, success: { [weak self] (response) in
+            SVProgressHUD.dismiss()
+            
+            guard let _self = self else {
+                return
+            }
+            _self.user.charges.append(response)
+            
+            _self.buildDataSet()
+        }) { (error, errorDictionary) in
+            SVProgressHUD.dismiss()
+            
+            print("error")
+        }
     }
 }

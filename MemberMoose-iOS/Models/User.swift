@@ -21,17 +21,23 @@ public class User: Mappable {
     public var subscriptions: [Subscription] =  []
     public var memberships: [Membership] = []
     public var paymentCards: [PaymentCard] = []
+    var charges: [Charge] = []
     public var paymentHistory: [Transaction] = []
     public var memberCount: Int = 0
     //public var createdAt: NSDate!
     //public var updatedAt: NSDate?
     
-    public init(userId: String, emailAddress: String, firstName: String? = nil, lastName: String? = nil) {
-        self.id = userId
-        //self.companyName = companyName
-        self.emailAddress = emailAddress
-        self.firstName = firstName
-        self.lastName = lastName
+    public init(userDefaults: NSUserDefaults) {
+        self.id = userDefaults.stringForKey("id")
+        self.firstName = userDefaults.stringForKey("firstName")
+        self.lastName = userDefaults.stringForKey("lastName")
+        self.emailAddress = userDefaults.stringForKey("email_address")!
+        let avatar = userDefaults.valueForKey("avatar")
+        if let avatar = avatar as? Dictionary<String, String> {
+            self.avatar = avatar
+        }
+        self.account = Account(userDefaults: userDefaults)
+        self.memberCount = userDefaults.integerForKey("member_count")
     }
     public required init?(_ map: Map){
         mapping(map)
@@ -49,8 +55,30 @@ public class User: Mappable {
         subscriptions <- map["subscriptions"]
         memberships <- map["memberships"]
         paymentCards <- map["payment_cards"]
+        charges <- map["charges"]
         paymentHistory <- map["transactions"]
         memberCount <- map["member_count"]
         //updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
+    }
+    func persistToUserDefaults(userDefaults: NSUserDefaults) {
+        userDefaults.setValuesForKeysWithDictionary([
+            "id": id,
+            "email_address": emailAddress,
+            "member_count": memberCount
+            ])
+        if let avatar = self.avatar {
+            userDefaults.setValue(avatar, forKey: "avatar")
+        }
+        if let firstName = firstName {
+            userDefaults.setValue(firstName, forKey: "first_name")
+        }
+        if let lastName = lastName {
+            userDefaults.setValue(lastName, forKey: "last_name")
+        }
+        if let account = account {
+            account.persistToUserDefaults(userDefaults)
+        }
+        
+        userDefaults.synchronize()
     }
 }

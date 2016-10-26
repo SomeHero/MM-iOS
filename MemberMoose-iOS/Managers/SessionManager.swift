@@ -48,40 +48,11 @@ class SessionManager: NSObject {
         
         let userDefaults = NSUserDefaults.standardUserDefaults()
         
-        userDefaults.setValuesForKeysWithDictionary([
-            "id": user.id!,
-            //"company_name": user.companyName,
-            "email_address": user.emailAddress,
-            ])
-        if let avatar = user.avatar {
-            userDefaults.setValue(avatar, forKey: "avatar")
-        }
-        if let firstName = user.firstName {
-            userDefaults.setValue(firstName, forKey: "first_name")
-        }
-        if let lastName = user.lastName {
-            userDefaults.setValue(lastName, forKey: "last_name")
-        }
-        
-        userDefaults.synchronize()
+        user.persistToUserDefaults(userDefaults)
     }
     static func getPersistedUser() -> User? {
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        
-        guard let id = userDefaults.stringForKey("id") else {
-            return nil
-        }
-        //let companyName = userDefaults.stringForKey("company_name")!
-        let emailAddress = userDefaults.stringForKey("email_address")!
-        let avatar = userDefaults.valueForKey("avatar")
-        let firstName = userDefaults.stringForKey("first_name")
-        let lastName = userDefaults.stringForKey("last_name")
-        
-        let user = User(userId: id, emailAddress: emailAddress, firstName: firstName, lastName: lastName)
-        
-        if let avatar = avatar as? Dictionary<String, String> {
-            user.avatar = avatar
-        }
+        let user = User(userDefaults: userDefaults)
         
         return user
     }

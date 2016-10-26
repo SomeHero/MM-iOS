@@ -13,11 +13,11 @@ class ChargeViewModel:DataSourceItemProtocol {
     var cellClass: UITableViewCell.Type = ChargeCell.self
     
     let totalCellHeight: CGFloat
-    weak var calculatorKeyboardDelgate: CalculatorKeyPadViewDelegate?
+    weak var delegate: ChargeCellDelegate?
     
-    init(totalCellHeight: CGFloat, calculatorKeyboardDelgate: CalculatorKeyPadViewDelegate? = nil) {
+    init(totalCellHeight: CGFloat, chargeCellDelegate: ChargeCellDelegate? = nil) {
         self.totalCellHeight = totalCellHeight
-        self.calculatorKeyboardDelgate = calculatorKeyboardDelgate
+        self.delegate = chargeCellDelegate
     }
     @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as? ChargeCell else {
@@ -25,7 +25,7 @@ class ChargeViewModel:DataSourceItemProtocol {
         }
         
         cell.setupWith(self)
-        //cell.calculatorKeyboardDelgate = calculatorKeyboardDelgate
+        cell.delegate = delegate
         
         return cell
     }

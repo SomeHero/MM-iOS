@@ -158,29 +158,21 @@ class ConnectStripeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        title = "Connect Stripe"
         view.backgroundColor = .whiteColor()
+        
+        let image = UIImage(named: "Back")
+        let backButton = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(PlanDetailViewController.backClicked(_:)))
+        
+        navigationItem.leftBarButtonItem = backButton
+        
         setup()
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        skipButton.snp_updateConstraints { (make) in
-            make.top.equalTo(view).inset(35)
-            make.trailing.equalTo(view).inset(15)
-        }
-        backButton.snp_updateConstraints { (make) in
-            make.top.equalTo(view).inset(35)
-            make.leading.equalTo(view).inset(15)
-            make.height.equalTo(18)
-        }
-        titleLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(view).inset(35)
-            make.leading.greaterThanOrEqualTo(backButton.snp_trailing).inset(10)
-            //make.trailing.equalTo(leading)
-            make.centerX.equalTo(view)
-        }
         memberMoosePlusStripe.snp_updateConstraints { (make) in
-            make.top.equalTo(titleLabel.snp_bottom).offset(20)
+            make.top.equalTo(view).offset(20)
             make.centerX.equalTo(view)
             make.width.equalTo(view).multipliedBy(0.7)
         }

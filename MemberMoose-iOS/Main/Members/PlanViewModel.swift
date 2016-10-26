@@ -13,6 +13,7 @@ class PlanViewModel: DataSourceItemProtocol {
     var cellID: String = "PlanCell"
     var cellClass: UITableViewCell.Type = PlanCell.self
     
+    let plan: Plan
     let planId: String
     let planName: String
     let planAmount: String
@@ -20,6 +21,7 @@ class PlanViewModel: DataSourceItemProtocol {
     let subscribersCount: Int
     
     init(plan: Plan) {
+        self.plan = plan
         planId = plan.id
         planName = plan.name
         planAmount = "\(USD(plan.amount/100).description)"

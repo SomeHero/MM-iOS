@@ -9,8 +9,12 @@
 import UIKit
 import Money
 
+protocol ChargeCellDelegate: class {
+    func didChargeAmount(amount: USD)
+}
 class ChargeCell: UITableViewCell {
     private var amount = USD(0.0)
+    weak var delegate: ChargeCellDelegate?
     
     private lazy var amountToolbar: UIView = {
         let _view = UIView()
@@ -114,19 +118,12 @@ extension ChargeCell: CalculatorKeyPadViewDelegate {
     func didClickNumber(number: Int) {
         amount = USD(amount*10) + USD(Double(number)/Double(100.0))
         
-        print("I'll give \(amount.description) to charity.")
-            
         amountLabel.text = "\(amount.description)"
     }
-}
-extension ChargeCell: CalculatorDelegate {
-    func calculator(calculator: CalculatorKeyboard, didChangeValue value: String) {
-        //amountLabel.text = "\(amount)"
-    }
-    func didContinue(calculator: CalculatorKeyboard) {
-//        if let text = valueTextField.text, value = Double(text) {
-//            calculatorOverlayDelegate?.didContinue(value)
-//        }
+    func didClickSend() {
+        delegate?.didChargeAmount(amount)
+        
+        amount = 0
     }
 }
 

@@ -163,6 +163,25 @@ public struct AddPaymentCard {
         return parameters
     }
 }
+public struct CreateCharge {
+    let userId: String
+    let amount: Double
+    let description: String
+    
+    public init(userId: String, amount: Double, description: String) {
+        self.userId = userId
+        self.amount = amount
+        self.description = description
+    }
+    func parameterize() -> [String: AnyObject] {
+        let parameters: [String: AnyObject] = [
+            "amount": amount,
+            "description": description
+        ]
+        
+        return parameters
+    }
+}
 public class ApiManager {
     private var kApiBaseUrl:String?
     public var apiBaseUrl: String {
@@ -565,6 +584,35 @@ public class ApiManager {
                 }
                 if let paymentCard = response.result.value {
                     success(response: paymentCard)
+                } else {
+                    failure(error: nil, errorDictionary: nil)
+                }
+        }
+    }
+    public func createCharge(createCharge: CreateCharge, success: (response: Charge) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+        let params = createCharge.parameterize()
+        
+        Alamofire.request(.POST, apiBaseUrl + "/users/\(createCharge.userId)/charges", parameters: params, encoding: .JSON, headers: headers)
+            .validate()
+            .responseObject { (response: Response<Charge, NSError>) in
+                if let error = response.result.error {
+                    var errorResponse: [String: AnyObject]? = [:]
+                    
+                    if let data = response.data {
+                        do {
+                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                        } catch let error as NSError {
+                            failure(error: error, errorDictionary: nil)
+                        } catch let error {
+                            failure(error: error, errorDictionary: nil)
+                        }
+                        failure(error: error, errorDictionary: errorResponse)
+                    } else {
+                        failure(error: error, errorDictionary: nil)
+                    }
+                }
+                if let charge = response.result.value {
+                    success(response: charge)
                 } else {
                     failure(error: nil, errorDictionary: nil)
                 }
