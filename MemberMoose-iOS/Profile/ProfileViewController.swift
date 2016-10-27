@@ -598,9 +598,9 @@ class ProfileViewController: UIViewController {
         }
     }
     func addPlanClicked(sender: UIButton) {
-        let viewController = PlanProfileViewController()
-        
-        navigationController?.pushViewController(viewController, animated: true)
+//        let viewController = PlanProfileViewController()
+//        
+//        navigationController?.pushViewController(viewController, animated: true)
     }
     func addMemberClicked(sender: UIButton) {
         let viewController = SharePlanViewController()
@@ -657,7 +657,7 @@ extension ProfileViewController : UITableViewDelegate {
                     return
                 }
                 
-                let viewController = PlanProfileViewController()
+                let viewController = PlanProfileViewController(plan: viewModel.plan)
                 
                 navigationController?.pushViewController(viewController, animated: true)
             case .Messages:
@@ -823,9 +823,9 @@ extension ProfileViewController: MemberEmptyStateDelegate {
 }
 extension ProfileViewController: PlanEmptyStateDelegate {
     func didCreatePlan() {
-        let viewController = PlanProfileViewController()
-        
-        navigationController?.pushViewController(viewController, animated: true)
+//        let viewController = PlanProfileViewController()
+//        
+//        navigationController?.pushViewController(viewController, animated: true)
     }
     func didImportPlan() {
         print("import plan")

@@ -197,9 +197,9 @@ class CreateFirstPlanViewController: UIViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
     func createFirstPlanClicked(sender: UIButton) {
-        let viewController = PlanProfileViewController()
-        
-        navigationController?.pushViewController(viewController, animated: true)
+//        let viewController = PlanProfileViewController()
+//        
+//        navigationController?.pushViewController(viewController, animated: true)
     }
     func skipClicked(sender: UIButton) {
         guard let user = SessionManager.sharedUser else {
