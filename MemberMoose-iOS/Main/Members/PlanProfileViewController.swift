@@ -17,6 +17,8 @@ class PlanProfileViewController: UIViewController {
     private let planDescriptionCellIdentifier   = "PlanDescriptionCellIdentifier"
     private let planFeatureCellIdentifier       = "PlanFeatureCellIdentifier"
     private let planTermsOfServiceCellIdentifier = "PlanTermsOfServiceCellIdentifier"
+    private let planSubscriberCellIdentifier    = "PlanSubscriberCellIdentifier"
+    private let planActivityCellIdentifier      = "PlanActivityCellIdentifier"
 
     private let tableCellHeight: CGFloat        = 120
     private var planNavigationState: PlanNavigationState = .Details
@@ -135,6 +137,8 @@ class PlanProfileViewController: UIViewController {
         _tableView.registerClass(PlanDescriptionCell.self, forCellReuseIdentifier: self.planDescriptionCellIdentifier)
         _tableView.registerClass(PlanFeatureCell.self, forCellReuseIdentifier: self.planFeatureCellIdentifier)
         _tableView.registerClass(PlanTermsOfServiceCell.self, forCellReuseIdentifier: self.planTermsOfServiceCellIdentifier)
+        _tableView.registerClass(PlanSubscriberCell.self, forCellReuseIdentifier: self.planSubscriberCellIdentifier)
+        _tableView.registerClass(PlanActivityCell.self, forCellReuseIdentifier: self.planActivityCellIdentifier)
         
         self.view.addSubview(_tableView)
         return _tableView
@@ -346,65 +350,79 @@ class PlanProfileViewController: UIViewController {
     }
     func buildDataSet() {
         var items: [[DataSourceItemProtocol]] = []
-
+        
         let profileHeaderViewModel = PlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
         items.append([profileHeaderViewModel])
-        
-        let planPaymentDetailsViewModel = PlanPaymentDetailsViewModel(plan: plan)
-        items.append([planPaymentDetailsViewModel])
-        
-        let planDescriptionViewModel = PlanDescriptionViewModel(plan: plan)
-        items.append([planDescriptionViewModel])
-        
-        let features = ["Meeting room for presentations, group meetings, or just additional space to work",
-                        "Storage areas are available for $15-$25/month",
-                        "Rooftop wifi garden with tables & seating during warm weather",
-                        "Excellent coffee from Blanchard's coffee",
-                        "Phone booth for step in step out privacy",
-                        "Outlets at every seat",
-                        "A variety of classes and events for professional development, education, and collaboration",
-                        "Unlimited high-speed Wi-Fi internet connection",
-                        "Clean, bright, beautiful space designed and built to encourage collaboration",
-                        "Clean, bright, beautiful space designed and built to encourage collaboration"
-                        ]
-        var featureViewModels: [PlanFeatureViewModel] = []
-        for feature in features {
-            featureViewModels.append(PlanFeatureViewModel(feature: feature))
-        }
-        items.append(featureViewModels)
-        
-        let planTermOfServiceViewModel = PlanTermsOfServiceViewModel(plan: plan)
-        items.append([planTermOfServiceViewModel])
-        
-//        switch membershipNavigationState {
-//        case .Members:
-//            ApiManager.sharedInstance.getMembers(self.pageNumber, success: { [weak self] (members) in
-//                guard let _self = self else {
-//                    return
-//                }
-//                if(members!.count > 0) {
-//                    _self.hasMembers = true
+
+        switch planNavigationState {
+        case .Details:
+            
+            let planPaymentDetailsViewModel = PlanPaymentDetailsViewModel(plan: plan)
+            items.append([planPaymentDetailsViewModel])
+            
+            let planDescriptionViewModel = PlanDescriptionViewModel(plan: plan)
+            items.append([planDescriptionViewModel])
+            
+            let features = ["Meeting room for presentations, group meetings, or just additional space to work",
+                            "Storage areas are available for $15-$25/month",
+                            "Rooftop wifi garden with tables & seating during warm weather",
+                            "Excellent coffee from Blanchard's coffee",
+                            "Phone booth for step in step out privacy",
+                            "Outlets at every seat",
+                            "A variety of classes and events for professional development, education, and collaboration",
+                            "Unlimited high-speed Wi-Fi internet connection",
+                            "Clean, bright, beautiful space designed and built to encourage collaboration",
+                            "Clean, bright, beautiful space designed and built to encourage collaboration"
+            ]
+            var featureViewModels: [PlanFeatureViewModel] = []
+            for feature in features {
+                featureViewModels.append(PlanFeatureViewModel(feature: feature))
+            }
+            items.append(featureViewModels)
+            
+            let planTermOfServiceViewModel = PlanTermsOfServiceViewModel(plan: plan)
+            items.append([planTermOfServiceViewModel])
+        case.Activity:
+            let activities = ["James Rhodes subscribed!",
+                            "James Rhodes payment failed.",
+                            "James Rhodes paid $25.00",
+                            "James Rhodes unsubscribed :9",
+            ]
+            var activityViewModels: [PlanActivityViewModel] = []
+            for activity in activities {
+                activityViewModels.append(PlanActivityViewModel(activity: activity))
+            }
+            items.append(activityViewModels)
+            
+        case .Subscribers:
+            ApiManager.sharedInstance.getMembers(self.pageNumber, success: { [weak self] (members) in
+                guard let _self = self else {
+                    return
+                }
+                if(members!.count > 0) {
+                    _self.hasMembers = true
+                    
+                    var viewModels: [PlanSubscriberViewModel] = []
+                    for member in members! {
+                        let viewModel = PlanSubscriberViewModel(user: member)
+                        
+                        viewModels.append(viewModel)
+                    }
+                    items.append(viewModels)
+                    
+                    _self.dataSource = items
+                }
+//                else {
+//                    var viewModels: [MemberEmptyStateViewModel] = []
+//                    viewModels.append(MemberEmptyStateViewModel(logo: "Logo-DeadMoose", header: "804RVA has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.", memberEmptyStateDelegate: _self))
 //                    
-//                    var viewModels: [MemberViewModel] = []
-//                    for member in members! {
-//                        let viewModel = MemberViewModel(user: member)
-//                        
-//                        viewModels.append(viewModel)
-//                    }
 //                    items.append(viewModels)
-//                    
-//                    _self.dataSource = items
-//                } else {
-////                    var viewModels: [MemberEmptyStateViewModel] = []
-////                    viewModels.append(MemberEmptyStateViewModel(logo: "Logo-DeadMoose", header: "804RVA has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.", memberEmptyStateDelegate: _self))
-////                    
-////                    items.append(viewModels)
 //                    _self.dataSource = items
 //                }
-//            }) { (error, errorDictionary) in
-//                print("error")
-//            }
-//        }
+            }) { (error, errorDictionary) in
+                print("error")
+            }
+        }
         
         dataSource = items
     }
