@@ -18,9 +18,8 @@ public class Member: Mappable {
     public var memberCreated: NSDate!
     public var subscriptions: [Subscription] = []
     public var paymentCards: [PaymentCard] = []
-    public var paymentHistory: [Transaction] = []
-    //public var createdAt: NSDate!
-    //public var updatedAt: NSDate?
+    public var createdAt: NSDate!
+    public var updatedAt: NSDate?
     
     public required init?(_ map: Map){
         mapping(map)
@@ -33,6 +32,7 @@ public class Member: Mappable {
         last_name <- map["last_name"]
         emailAddress <- map["email_address"]
         memberCreated <- (map["member_since"], ISO8601ExtendedDateTransform())
-        //updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
+        createdAt <- (map["createdAt"], ISO8601ExtendedDateTransform())
+        updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
     }
 }

@@ -16,8 +16,8 @@ public class PaymentCard: Mappable {
     public var cardLastFour: String!
     public var expirationMonth: Int!
     public var expirationYear: Int!
-    //public var createdAt: NSDate!
-    //public var updatedAt: NSDate?
+    public var createdAt: NSDate!
+    public var updatedAt: NSDate?
     
     
     public required init?(_ map: Map){
@@ -31,6 +31,7 @@ public class PaymentCard: Mappable {
         cardLastFour <- map["last4"]
         expirationMonth <- map["exp_month"]
         expirationYear <- map["exp_year"]
-        //updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
+        createdAt <- (map["createdAt"], ISO8601ExtendedDateTransform())
+        updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
     }
 }

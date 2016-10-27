@@ -22,10 +22,9 @@ public class User: Mappable {
     public var memberships: [Membership] = []
     public var paymentCards: [PaymentCard] = []
     var charges: [Charge] = []
-    public var paymentHistory: [Transaction] = []
     public var memberCount: Int = 0
-    //public var createdAt: NSDate!
-    //public var updatedAt: NSDate?
+    public var createdAt: NSDate!
+    public var updatedAt: NSDate?
     
     public init(userDefaults: NSUserDefaults) {
         self.id = userDefaults.stringForKey("id")
@@ -56,9 +55,9 @@ public class User: Mappable {
         memberships <- map["memberships"]
         paymentCards <- map["payment_cards"]
         charges <- map["charges"]
-        paymentHistory <- map["transactions"]
         memberCount <- map["member_count"]
-        //updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
+        createdAt <- (map["createdAt"], ISO8601ExtendedDateTransform())
+        updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
     }
     func persistToUserDefaults(userDefaults: NSUserDefaults) {
         userDefaults.setValuesForKeysWithDictionary([

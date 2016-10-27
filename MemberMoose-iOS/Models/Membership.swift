@@ -15,8 +15,8 @@ public class Membership: Mappable {
     public var company_name: String!
     public var subscription: Subscription?
     public var planNames: [String] = []
-    //public var createdAt: NSDate!
-    //public var updatedAt: NSDate?
+    public var createdAt: NSDate!
+    public var updatedAt: NSDate?
     
     public required init?(_ map: Map){
         mapping(map)
@@ -29,6 +29,7 @@ public class Membership: Mappable {
         subscription <- map["subscription"]
         planNames <- map["plan_names"]
         //subscriptionDate <- (map["subscription_date"], ISO8601ExtendedDateTransform())
-        //updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
+        createdAt <- (map["createdAt"], ISO8601ExtendedDateTransform())
+        updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
     }
 }

@@ -21,7 +21,7 @@ class ProfileHeaderViewModel:DataSourceItemProtocol {
     
     init(user: User, membershipNavigationState: MembershipNavigationState, membershipNavigationDelegate: MembershipNavigationDelegate? = nil) {
         self.avatar = "Avatar-Bull"
-        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
+        if let account = user.account, avatar = account.avatar, avatarImageUrl = avatar["large"] {
             self.avatarImageUrl = avatarImageUrl
         }
         self.companyName = user.account?.companyName

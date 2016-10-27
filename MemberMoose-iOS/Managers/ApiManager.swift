@@ -79,6 +79,24 @@ public struct UpdateUser {
         return parameters
     }
 }
+public struct UpdateAccount {
+    let companyName: String
+    let subdomain: String
+    let avatar: UIImage?
+    
+    public init(companyName: String, subdomain: String, avatar: UIImage? = nil) {
+        self.companyName = companyName
+        self.subdomain = subdomain
+        self.avatar = avatar
+    }
+    func parameterize() -> [String : AnyObject] {
+        let parameters = [
+            "company_name": companyName,
+            "subdomain": subdomain
+        ]
+        return parameters
+    }
+}
 public struct ConnectStripe {
     let userId: String
     let stripeParams: [String: AnyObject]
@@ -343,6 +361,54 @@ public class ApiManager {
             }
         })
     }
+    public func updateAccount(updateAccount: UpdateAccount, success: (response: Account) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+        let params = updateAccount.parameterize()
+        
+        Alamofire.upload(.PUT,  apiBaseUrl + "accounts", headers: headers, multipartFormData: {
+            multipartFormData in
+            
+            if let avatar = updateAccount.avatar, imageData = UIImageJPEGRepresentation(avatar, 1.0) {
+                multipartFormData.appendBodyPart(data: imageData, name: "file", fileName: "file.png", mimeType: "image/png")
+            }
+            
+            for (key, value) in params {
+                multipartFormData.appendBodyPart(data: value.dataUsingEncoding(NSUTF8StringEncoding)!, name: key)
+            }
+        },  encodingCompletion: {
+            encodingResult in
+            
+            switch encodingResult {
+            case .Success(let upload, _, _):
+                upload
+                    .validate()
+                    .responseObject { (response: Response<Account, NSError>) in
+                        if let error = response.result.error {
+                            var errorResponse: [String: AnyObject]? = [:]
+                            
+                            if let data = response.data {
+                                do {
+                                    errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                                } catch let error as NSError {
+                                    failure(error: error, errorDictionary: nil)
+                                } catch let error {
+                                    failure(error: error, errorDictionary: nil)
+                                }
+                                failure(error: error, errorDictionary: errorResponse)
+                            } else {
+                                failure(error: error, errorDictionary: nil)
+                            }
+                        }
+                        if let account = response.result.value {
+                            success(response: account)
+                        } else {
+                            failure(error: nil, errorDictionary: nil)
+                        }
+                }
+            case .Failure(let encodingError):
+                print(encodingError)
+            }
+        })
+    }
     public func me(success: (response: User) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
         Alamofire.request(.GET,  apiBaseUrl + "me", parameters: nil, encoding: .JSON, headers: headers)
             .validate()
@@ -426,10 +492,10 @@ public class ApiManager {
                 }
         }
     }
-    public func getPlans(success: (response: [Plan]?) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
-        Alamofire.request(.GET,  apiBaseUrl + "plans", parameters: nil, encoding: .JSON, headers: headers)
+    public func getPlans(page: Int = 1,success: (response: [Plan]?) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+        Alamofire.request(.GET,  apiBaseUrl + "plans?page=\(page)", parameters: nil, encoding: .JSON, headers: headers)
             .validate()
-            .responseArray { (response: Response<[Plan], NSError>) in
+            .responseArray(keyPath: "results") { (response: Response<[Plan], NSError>) in
                 if let error = response.result.error {
                     var errorResponse: [String: AnyObject]? = [:]
                     

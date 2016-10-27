@@ -15,8 +15,8 @@ public class Account: Mappable {
     public var avatar: Dictionary<String, String>? = [:]
     public var subdomain: String!
     public var status: String!
-    //public var createdAt: NSDate!
-    //public var updatedAt: NSDate?
+    public var createdAt: NSDate!
+    public var updatedAt: NSDate?
     
     public init(userDefaults: NSUserDefaults) {
         self.id = userDefaults.stringForKey("id")
@@ -38,8 +38,8 @@ public class Account: Mappable {
         avatar <- map["avatar"]
         subdomain <- map["subdomain"]
         status <- map["status"]
-        //createdAt <- (map["createdAt"], ISO8601ExtendedDateTransform())
-        //updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
+        createdAt <- (map["createdAt"], ISO8601ExtendedDateTransform())
+        updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
     }
     func persistToUserDefaults(userDefaults: NSUserDefaults) {
         userDefaults.setValuesForKeysWithDictionary([

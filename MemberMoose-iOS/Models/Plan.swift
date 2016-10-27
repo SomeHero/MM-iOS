@@ -24,8 +24,8 @@ public class Plan: Mappable {
     public var statementDescription: String?
     public var trialPeriodDays: Int = 0
     //public var planCreated: NSDate!
-    //public var createdAt: NSDate!
-    //public var updatedAt: NSDate?
+    public var createdAt: NSDate!
+    public var updatedAt: NSDate?
     
     public required init?(_ map: Map){
         mapping(map)
@@ -43,6 +43,7 @@ public class Plan: Mappable {
         statementDescription <- map["statement_description"]
         trialPeriodDays <- map["trial_period_days"]
         //planCreated <- (map["created"], ISO8601ExtendedDateTransform())
-        //updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
+        createdAt <- (map["createdAt"], ISO8601ExtendedDateTransform())
+        updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
     }
 }

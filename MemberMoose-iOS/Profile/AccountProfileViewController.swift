@@ -10,12 +10,15 @@ import UIKit
 import FontAwesome_swift
 import SVProgressHUD
 
+protocol AccountProfileDelegate: class {
+    func didAccountProfileClickBack()
+}
 class AccountProfileViewController: UIViewController {
     var avatar: UIImage?
     var activeField: UITextField?
     let account: Account
     private let profileType: ProfileType
-    weak var delegate: UserProfileDelegate?
+    weak var delegate: AccountProfileDelegate?
     
     private lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()
@@ -139,37 +142,40 @@ class AccountProfileViewController: UIViewController {
         }
     }
     func setup() {
+        companyNameTextField.textField.text = account.companyName
+        subdomainTextField.textField.text = account.subdomain
+        
         if let avatar = account.avatar, avatarImageUrl = avatar["large"] {
             avatarView.profilePhoto.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
-                                                       placeholderImage: UIImage(named: "Avatar-Calf"))
+                                                       placeholderImage: UIImage(named: "Bull-Calf"))
         } else {
-            avatarView.profilePhoto.image = UIImage(named: "Avatar-Calf")
+            avatarView.profilePhoto.image = UIImage(named: "Bull-Calf")
         }
     }
     func closeClicked(sender: UIButton) {
-        delegate?.didClickBack()
+        delegate?.didAccountProfileClickBack()
     }
     func nextClicked(sender: UIButton) {
         guard let companyName = companyNameTextField.textField.text else {
             return
         }
-//        let updateUser = UpdateUser(userId: user.id, firstName: firstName, lastName: lastName, emailAddress: emailAddress, avatar: avatar)
-//        
-//        SVProgressHUD.show()
-//        
-//        ApiManager.sharedInstance.updateUser(updateUser, success: { [weak self] (response) in
-//            SVProgressHUD.dismiss()
-//            
-//            guard let _self = self else {
-//                return
-//            }
-//            
-//            _self.delegate?.didClickBack()
-//        }) { (error, errorDictionary) in
-//            print("error occurred")
-//            
-//            SVProgressHUD.dismiss()
-//        }
+        let updateAccount = UpdateAccount(companyName: companyName, subdomain: account.subdomain, avatar: avatar)
+        
+        SVProgressHUD.show()
+        
+        ApiManager.sharedInstance.updateAccount(updateAccount, success: { [weak self] (account) in
+            SVProgressHUD.dismiss()
+            
+            guard let _self = self else {
+                return
+            }
+            
+            _self.delegate?.didAccountProfileClickBack()
+        }) { (error, errorDictionary) in
+            print("error occurred")
+            
+            SVProgressHUD.dismiss()
+        }
     }
     func configureTextField(textField: UITextField) {
         textField.returnKeyType = .Next

@@ -263,22 +263,41 @@ class ProfileViewController: UIViewController {
             }
             _self.pageNumber += 1
             
-            ApiManager.sharedInstance.getMembers(_self.pageNumber, success: { (members) in
-                var viewModels = _self.dataSource[1]
-                for member in members! {
-                    let viewModel = MemberViewModel(user: member)
+            switch _self.membershipNavigationState {
+            case .Members:
+                ApiManager.sharedInstance.getMembers(_self.pageNumber, success: { (members) in
+                    var viewModels = _self.dataSource[1]
+                    for member in members! {
+                        let viewModel = MemberViewModel(user: member)
+                        
+                        viewModels.append(viewModel)
+                    }
+                    _self.dataSource[1] = viewModels
                     
-                    viewModels.append(viewModel)
-                }
-                _self.dataSource[1] = viewModels
-                
-                _self.tableView.reloadData()
-            }, failure: { (error, errorDictionary) in
-                print("failed")
-            })
+                    _self.tableView.reloadData()
+                    }, failure: { (error, errorDictionary) in
+                        print("failed")
+                })
+            case .Plans:
+                ApiManager.sharedInstance.getPlans(_self.pageNumber, success: { (plans) in
+                    var viewModels = _self.dataSource[1]
+                    for plan in plans! {
+                        let viewModel = PlanViewModel(plan: plan)
+                        
+                        viewModels.append(viewModel)
+                    }
+                    _self.dataSource[1] = viewModels
+                    
+                    _self.tableView.reloadData()
+                    }, failure: { (error, errorDictionary) in
+                        print("failed")
+                })
+            case .Messages: break
+            }
             
             scrollView.finishInfiniteScroll()
         }
+        
         pageNumber = 1
         buildDataSet()
 
@@ -410,10 +429,21 @@ class ProfileViewController: UIViewController {
         }
     }
     func editProfileClicked(button: UIButton) {
-        let viewController = UserProfileViewController(user: user, profileType: .bull)
-        viewController.delegate = self
-
-        presentViewController(viewController, animated: true, completion: nil)
+        switch profileType {
+        case .bull:
+            guard let account = user.account else {
+                return
+            }
+            let viewController = AccountProfileViewController(account: account, profileType: .bull)
+            viewController.delegate = self
+            
+            presentViewController(viewController, animated: true, completion: nil)
+        case .calf:
+            let viewController = UserProfileViewController(user: user, profileType: .bull)
+            viewController.delegate = self
+            
+            presentViewController(viewController, animated: true, completion: nil)
+        }
     }
     func buildDataSet() {
         var items: [[DataSourceItemProtocol]] = []
@@ -455,7 +485,7 @@ class ProfileViewController: UIViewController {
                         print("error")
                 }
             case .Plans:
-                ApiManager.sharedInstance.getPlans({ [weak self] (plans) in
+                ApiManager.sharedInstance.getPlans(1, success: { [weak self] (plans) in
                     guard let _self = self else {
                         return
                     }
@@ -663,6 +693,11 @@ extension ProfileViewController : UITableViewDelegate {
 }
 extension ProfileViewController: UserProfileDelegate {
     func didClickBack() {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+extension ProfileViewController: AccountProfileDelegate {
+    func didAccountProfileClickBack() {
         dismissViewControllerAnimated(true, completion: nil)
     }
 }

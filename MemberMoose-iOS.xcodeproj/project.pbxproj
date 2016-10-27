@@ -129,7 +129,6 @@
 		42F08C3C1DAC5EE600D5D4E3 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C3B1DAC5EE600D5D4E3 /* ProfileViewController.swift */; };
 		42F08C3E1DAC68D000D5D4E3 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C3D1DAC68D000D5D4E3 /* Subscription.swift */; };
 		42F08C401DAC693E00D5D4E3 /* PaymentCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C3F1DAC693E00D5D4E3 /* PaymentCard.swift */; };
-		42F08C421DAC695300D5D4E3 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C411DAC695300D5D4E3 /* Transaction.swift */; };
 		42F08C441DAC850B00D5D4E3 /* MemberDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C431DAC850B00D5D4E3 /* MemberDetailViewController.swift */; };
 		42F08C491DACAADA00D5D4E3 /* SubscriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C481DACAADA00D5D4E3 /* SubscriptionCell.swift */; };
 		42F08C4B1DACAAF600D5D4E3 /* SubscriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C4A1DACAAF600D5D4E3 /* SubscriptionViewModel.swift */; };
@@ -291,7 +290,6 @@
 		42F08C3B1DAC5EE600D5D4E3 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = Profile/ProfileViewController.swift; sourceTree = "<group>"; };
 		42F08C3D1DAC68D000D5D4E3 /* Subscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Subscription.swift; path = Models/Subscription.swift; sourceTree = "<group>"; };
 		42F08C3F1DAC693E00D5D4E3 /* PaymentCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCard.swift; path = Models/PaymentCard.swift; sourceTree = "<group>"; };
-		42F08C411DAC695300D5D4E3 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Transaction.swift; path = Models/Transaction.swift; sourceTree = "<group>"; };
 		42F08C431DAC850B00D5D4E3 /* MemberDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MemberDetailViewController.swift; path = Main/Members/MemberDetailViewController.swift; sourceTree = "<group>"; };
 		42F08C481DACAADA00D5D4E3 /* SubscriptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SubscriptionCell.swift; path = Subscriptions/SubscriptionCell.swift; sourceTree = "<group>"; };
 		42F08C4A1DACAAF600D5D4E3 /* SubscriptionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SubscriptionViewModel.swift; path = Subscriptions/SubscriptionViewModel.swift; sourceTree = "<group>"; };
@@ -687,7 +685,6 @@
 				42F08C3F1DAC693E00D5D4E3 /* PaymentCard.swift */,
 				42F08C2F1DAC318F00D5D4E3 /* Plan.swift */,
 				42F08C3D1DAC68D000D5D4E3 /* Subscription.swift */,
-				42F08C411DAC695300D5D4E3 /* Transaction.swift */,
 				42F08C331DAC31B300D5D4E3 /* User.swift */,
 			);
 			name = Models;
@@ -1122,7 +1119,6 @@
 				42F08C401DAC693E00D5D4E3 /* PaymentCard.swift in Sources */,
 				422537131DB9135C004B33D8 /* MessagesViewModel.swift in Sources */,
 				426841731DA875CB00A2BFF8 /* RecentTransactionViewModel.swift in Sources */,
-				42F08C421DAC695300D5D4E3 /* Transaction.swift in Sources */,
 				429F62FF1DA6E8E800C3F54E /* LoginViewController.swift in Sources */,
 				429F62F01DA6DDD900C3F54E /* UIScreenType.swift in Sources */,
 				422537111DB91347004B33D8 /* MessagesCell.swift in Sources */,

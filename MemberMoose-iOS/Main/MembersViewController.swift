@@ -255,7 +255,7 @@ class MembersViewController: UIViewController {
         resetEmptyStates()
         tableView.reloadData()
         
-        ApiManager.sharedInstance.getPlans({ (plans) in
+        ApiManager.sharedInstance.getPlans(1, success: { (plans) in
             if(plans!.count > 0) {
                 var viewModels: [PlanViewModel] = []
                 for plan in plans! {
