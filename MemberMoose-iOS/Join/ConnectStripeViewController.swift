@@ -9,6 +9,7 @@
 import UIKit
 import SwiftyOAuth
 import SWRevealViewController
+import SVProgressHUD
 
 class ConnectStripeViewController: UIViewController {
     private lazy var provider:SwiftyOAuth.Provider = {
@@ -237,6 +238,8 @@ class ConnectStripeViewController: UIViewController {
         guard let user = SessionManager.sharedUser else {
             return
         }
+        SVProgressHUD.show()
+        
         provider.authorize { (result: Result<Token, Error>) -> Void in
             switch result {
             case .Success(let token):
@@ -248,10 +251,19 @@ class ConnectStripeViewController: UIViewController {
                     let viewController = ImportPlansViewController()
 
                     self.navigationController?.pushViewController(viewController, animated: true)
-                }, failure: { (error, errorDictionary) in
-                    print("failed")
+                }, failure: { [weak self] (error, errorDictionary) in
+                    SVProgressHUD.dismiss()
+                    
+                    guard let _self = self else {
+                        return
+                    }
+                    
+                    ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 })
-            case .Failure(let error): print(error)
+            case .Failure(let error):
+                SVProgressHUD.dismiss()
+                
+                ErrorHandler.presentErrorDialog(self, error: error, errorDictionary: nil)
             }
         }
 //            oauthswift.authorizeWithCallbackURL(

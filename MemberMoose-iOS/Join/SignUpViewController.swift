@@ -155,15 +155,23 @@ class SignUpViewController: UIViewController {
                 let viewController = CreateFirstPlanViewController()
                 
                 self.navigationController?.pushViewController(viewController, animated: true)
-            }, failure: { (error, errorDictionary) in
-                print("error occurred")
-                
+            }, failure: {[weak self] (error, errorDictionary) in
                 SVProgressHUD.dismiss()
+                
+                guard let _self = self else {
+                    return
+                }
+                
+                ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
             })
-        }) { (error, errorDictionary) in
-            print("error occurred")
-            
+        }) {[weak self] (error, errorDictionary) in
             SVProgressHUD.dismiss()
+            
+            guard let _self = self else {
+                return
+            }
+            
+            ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
         }
     }
     func configureTextField(textField: UITextField) {

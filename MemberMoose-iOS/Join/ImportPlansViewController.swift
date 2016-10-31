@@ -173,10 +173,14 @@ class ImportPlansViewController: UIViewController {
                 
                 delegate.window?.rootViewController?.presentViewController(swRevealViewController, animated: true, completion: nil)
             }
-        }) { (error, errorDictionary) in
+        }) { [weak self] (error, errorDictionary) in
             SVProgressHUD.dismiss()
             
-            print("error occurred")
+            guard let _self = self else {
+                return
+            }
+            
+            ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
         }
     }
     func setPlanCountLabel() {

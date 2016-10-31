@@ -94,6 +94,7 @@ class LoginViewController: UIViewController {
         setup()
         
         validateForm()
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignUpViewController.keyboardDidAppear(_:)), name: UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignUpViewController.keyboardDidHide(_:)), name: UIKeyboardDidHideNotification, object: nil)
     }
@@ -164,16 +165,24 @@ class LoginViewController: UIViewController {
                     
                     delegate.window?.rootViewController?.presentViewController(swRevealViewController, animated: true, completion: nil)
                 }
-            }, failure: { (error, errorDictionary) in
-                print("error occurred")
-                
+            }, failure: { [weak self] (error, errorDictionary) in
                 SVProgressHUD.dismiss()
+                
+                guard let _self = self else {
+                    return
+                }
+                
+                ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
             })
             
-        }) { (error, errorDictionary) in
-            print("error occurred")
-            
+        }) { [weak self] (error, errorDictionary) in
             SVProgressHUD.dismiss()
+            
+            guard let _self = self else {
+                return
+            }
+            
+            ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
         }
     }
     func backClicked(sender: UIButton) {

@@ -14,7 +14,7 @@ class PaymentHistoryViewModel:DataSourceItemProtocol {
     var cellClass: UITableViewCell.Type = PaymentHistoryTableViewCell.self
     
     let transactionDate: String
-    let transactionDescription: String
+    let transactionDescription: String?
     let cardDescription: String
     let amount: String
     let dateFormatter = DateFormatters.timeStampDateFormatter

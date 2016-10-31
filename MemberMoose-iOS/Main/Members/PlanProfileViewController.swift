@@ -219,8 +219,14 @@ class PlanProfileViewController: UIViewController {
                     _self.dataSource[1] = viewModels
                     
                     _self.tableView.reloadData()
-                    }, failure: { (error, errorDictionary) in
-                        print("failed")
+                    }, failure: { [weak self] (error, errorDictionary) in
+                        SVProgressHUD.dismiss()
+                        
+                        guard let _self = self else {
+                            return
+                        }
+                        
+                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 })
             case .Activity:
                 ApiManager.sharedInstance.getPlans(_self.pageNumber, success: { (plans) in
@@ -233,8 +239,14 @@ class PlanProfileViewController: UIViewController {
                     _self.dataSource[1] = viewModels
                     
                     _self.tableView.reloadData()
-                    }, failure: { (error, errorDictionary) in
-                        print("failed")
+                    }, failure: {[weak self] (error, errorDictionary) in
+                        SVProgressHUD.dismiss()
+                        
+                        guard let _self = self else {
+                            return
+                        }
+                        
+                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 })
             case .Details: break
             }
@@ -419,8 +431,14 @@ class PlanProfileViewController: UIViewController {
 //                    items.append(viewModels)
 //                    _self.dataSource = items
 //                }
-            }) { (error, errorDictionary) in
-                print("error")
+            }) { [weak self] (error, errorDictionary) in
+                SVProgressHUD.dismiss()
+                
+                guard let _self = self else {
+                    return
+                }
+                
+                ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
             }
         }
         

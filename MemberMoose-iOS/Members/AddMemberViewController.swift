@@ -140,10 +140,14 @@ class AddMemberViewController: UIViewController {
             SVProgressHUD.dismiss()
             
             _self.navigationController?.popViewControllerAnimated(true)
-        }) { (error, errorDictionary) in
+        }) { [weak self] (error, errorDictionary) in
             SVProgressHUD.dismiss()
             
-            print("error occurred")
+            guard let _self = self else {
+                return
+            }
+            
+            ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
         }
     }
 }

@@ -261,6 +261,11 @@ class ProfileViewController: UIViewController {
             guard let _self = self else {
                 return
             }
+            if _self.profileType == .calf {
+                scrollView.finishInfiniteScroll()
+                
+                return
+            }
             _self.pageNumber += 1
             
             switch _self.membershipNavigationState {
@@ -275,8 +280,14 @@ class ProfileViewController: UIViewController {
                     _self.dataSource[1] = viewModels
                     
                     _self.tableView.reloadData()
-                    }, failure: { (error, errorDictionary) in
-                        print("failed")
+                    }, failure: {[weak self] (error, errorDictionary) in
+                        SVProgressHUD.dismiss()
+                        
+                        guard let _self = self else {
+                            return
+                        }
+                        
+                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 })
             case .Plans:
                 ApiManager.sharedInstance.getPlans(_self.pageNumber, success: { (plans) in
@@ -289,8 +300,14 @@ class ProfileViewController: UIViewController {
                     _self.dataSource[1] = viewModels
                     
                     _self.tableView.reloadData()
-                    }, failure: { (error, errorDictionary) in
-                        print("failed")
+                    }, failure: { [weak self] (error, errorDictionary) in
+                        SVProgressHUD.dismiss()
+                        
+                        guard let _self = self else {
+                            return
+                        }
+                        
+                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 })
             case .Messages: break
             }
@@ -481,8 +498,14 @@ class ProfileViewController: UIViewController {
                             items.append(viewModels)
                             _self.dataSource = items
                         }
-                    }) { (error, errorDictionary) in
-                        print("error")
+                    }) { [weak self] (error, errorDictionary) in
+                        SVProgressHUD.dismiss()
+                        
+                        guard let _self = self else {
+                            return
+                        }
+                        
+                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 }
             case .Plans:
                 ApiManager.sharedInstance.getPlans(1, success: { [weak self] (plans) in
@@ -508,8 +531,14 @@ class ProfileViewController: UIViewController {
                         items.append(viewModels)
                         _self.dataSource = items
                     }
-                }) { (error, errorDictionary) in
-                    print("error")
+                }) { [weak self] (error, errorDictionary) in
+                    SVProgressHUD.dismiss()
+                    
+                    guard let _self = self else {
+                        return
+                    }
+                    
+                    ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 }
             case .Messages:
                 break
@@ -860,8 +889,7 @@ extension ProfileViewController: CardCaptureDelegate {
                 if let error = error {
                     SVProgressHUD.dismiss()
                     
-                    print("error occurred")
-                    //ErrorHandler.presentErrorDialog(_self, error: error)
+                    ErrorHandler.presentErrorDialog(_self, error: error)
                 } else if let token = token {
                     let addPaymentCard = AddPaymentCard(userId: _self.user.id, stripeToken: token.tokenId)
                     ApiManager.sharedInstance.addPaymentCard(addPaymentCard, success: { [weak self] (response) in
@@ -877,8 +905,7 @@ extension ProfileViewController: CardCaptureDelegate {
                         guard let _self = self else {
                             return
                         }
-                        print("error occurred")
-                        //ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                     })
                 }
             })
@@ -900,10 +927,14 @@ extension ProfileViewController: ChargeCellDelegate {
             _self.user.charges.append(response)
             
             _self.buildDataSet()
-        }) { (error, errorDictionary) in
+        }) { [weak self] (error, errorDictionary) in
             SVProgressHUD.dismiss()
             
-            print("error")
+            guard let _self = self else {
+                return
+            }
+            
+            ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
         }
     }
 }

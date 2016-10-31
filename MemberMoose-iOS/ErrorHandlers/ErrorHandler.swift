@@ -22,6 +22,7 @@ struct HumanReadableErrorMessage {
             return "Sorry, it doesn't look like your credentials checked out.  Please try again."
         case 1006:
             return "Sorry, we were unable to log you in.  Please try again."
+
             
         default:
             return "Sorry an error occurred.  Please try again."

@@ -219,8 +219,7 @@ class PaymentCardViewController: UIViewController {
                 return
             }
             if let error = error {
-                print("error occurred")
-                //ErrorHandler.presentErrorDialog(_self, error: error)
+                ErrorHandler.presentErrorDialog(_self, error: error)
             } else if let token = token {
                 let addPaymentCard = AddPaymentCard(userId: _self.user.id, stripeToken: token.tokenId)
                 ApiManager.sharedInstance.addPaymentCard(addPaymentCard, success: { [weak self] (response) in
@@ -234,8 +233,7 @@ class PaymentCardViewController: UIViewController {
                     guard let _self = self else {
                         return
                     }
-                    print("error occurred")
-                    //ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+                    ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 })
             }
         })

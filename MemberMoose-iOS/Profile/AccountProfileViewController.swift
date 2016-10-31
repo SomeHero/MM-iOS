@@ -171,10 +171,14 @@ class AccountProfileViewController: UIViewController {
             }
             
             _self.delegate?.didAccountProfileClickBack()
-        }) { (error, errorDictionary) in
-            print("error occurred")
-            
+        }) { [weak self] (error, errorDictionary) in
             SVProgressHUD.dismiss()
+            
+            guard let _self = self else {
+                return
+            }
+            
+            ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
         }
     }
     func configureTextField(textField: UITextField) {
