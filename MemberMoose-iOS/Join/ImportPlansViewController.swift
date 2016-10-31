@@ -13,6 +13,7 @@ import SVProgressHUD
 class ImportPlansViewController: UIViewController {
     private let plansCellIdentifier                  = "ImportPlanCellIdentifier"
     private let tableCellHeight: CGFloat        = 120
+    private let user:User
     
     var plans: [ImportPlanViewModel] = [] {
         didSet {
@@ -69,6 +70,14 @@ class ImportPlansViewController: UIViewController {
         
         return _button
     }()
+    init(user: User) {
+        self.user = user
+
+        super.init(nibName: nil, bundle: nil)
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -127,7 +136,7 @@ class ImportPlansViewController: UIViewController {
         plans = viewModels
     }
     func skipClicked(sender: UIButton) {
-        let viewController = MembersViewController()
+        let viewController = ProfileViewController(user: user, profileType: .bull)
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.navigationBarHidden = true
         
