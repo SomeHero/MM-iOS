@@ -211,13 +211,13 @@ class MembersViewController: UIViewController {
         }
     }
     func setup() {
-        guard let user = SessionManager.sharedUser else {
+        guard let user = SessionManager.sharedUser, account = user.account else {
             return
         }
-        membersEmptyState.setup("804RVA has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.")
+        membersEmptyState.setup("\(account.companyName) has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.")
         membersEmptyState.addButtons([self.createMemberButton, self.sharePlanButton])
         
-        plansEmptyState.setup("804RVA has no plans!", subHeader: "The best way to add plans to your community is to create a plan manually or import existing plans from your Stripe account.")
+        plansEmptyState.setup("\(account.companyName) has no plans!", subHeader: "The best way to add plans to your community is to create a plan manually or import existing plans from your Stripe account.")
         plansEmptyState.addButtons([self.createPlanButton, self.importFromStripeButton])
         
         messagesEmptyState.setup("It's a bit lonely in here!", subHeader: "You don’t have a members in your community and sadly can’t message anyone.  Well, the Moose would always love to here from you.  Go ahead and send us a message.")

@@ -492,8 +492,12 @@ class ProfileViewController: UIViewController {
                             
                             _self.dataSource = items
                         } else {
+                            guard let account = _self.user.account else {
+                                return
+                            }
+                            
                             var viewModels: [MemberEmptyStateViewModel] = []
-                            viewModels.append(MemberEmptyStateViewModel(logo: "Logo-DeadMoose", header: "804RVA has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.", memberEmptyStateDelegate: _self))
+                            viewModels.append(MemberEmptyStateViewModel(logo: "Logo-DeadMoose", header: "\(account.companyName) has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.", memberEmptyStateDelegate: _self))
                             
                             items.append(viewModels)
                             _self.dataSource = items
@@ -525,8 +529,11 @@ class ProfileViewController: UIViewController {
                         
                         _self.dataSource = items
                     } else {
+                        guard let account = _self.user.account else {
+                            return
+                        }
                         var viewModels: [PlanEmptyStateViewModel] = []
-                        viewModels.append(PlanEmptyStateViewModel(logo: "Logo-DeadMoose", header: "804RVA has no plans!", subHeader: "The best way to add plans to your community is to create a plan manually or import existing plans from your Stripe account.", planEmptyStateDelgate: self))
+                        viewModels.append(PlanEmptyStateViewModel(logo: "Logo-DeadMoose", header: "\(account.companyName) has no plans!", subHeader: "The best way to add plans to your community is to create a plan manually or import existing plans from your Stripe account.", planEmptyStateDelgate: self))
                         
                         items.append(viewModels)
                         _self.dataSource = items
