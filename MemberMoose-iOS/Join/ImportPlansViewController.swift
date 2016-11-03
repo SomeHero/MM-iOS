@@ -125,12 +125,12 @@ class ImportPlansViewController: UIViewController {
         noThanksButton.setTitle("No Thanks", forState: .Normal)
     }
     func loadPlans() {
-        guard let user = SessionManager.sharedUser else {
+        guard let user = SessionManager.sharedUser, account = user.account else {
             return
         }
         
         var viewModels: [ImportPlanViewModel] = []
-        for plan in user.plans {
+        for plan in account.referencePlans {
             viewModels.append(ImportPlanViewModel(plan: plan))
         }
         plans = viewModels
@@ -159,7 +159,7 @@ class ImportPlansViewController: UIViewController {
         var plansList: [String] = []
         for viewModel in plans {
             if viewModel.selected {
-                plansList.append(viewModel.plan.id)
+                plansList.append(viewModel.plan.referenceId)
             }
         }
         

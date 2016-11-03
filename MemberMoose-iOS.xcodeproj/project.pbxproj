@@ -137,6 +137,7 @@
 		429F63051DA71C7E00C3F54E /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429F63041DA71C7E00C3F54E /* AdSupport.framework */; };
 		429F63071DA728DC00C3F54E /* CreateFirstPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429F63061DA728DC00C3F54E /* CreateFirstPlanViewController.swift */; };
 		429F63091DA72B6800C3F54E /* CreatePlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429F63081DA72B6800C3F54E /* CreatePlanViewController.swift */; };
+		42DB7CC21DC82196005DC106 /* ReferencePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB7CC11DC82196005DC106 /* ReferencePlan.swift */; };
 		42F08C2B1DABBDA100D5D4E3 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C2A1DABBDA100D5D4E3 /* ApiManager.swift */; };
 		42F08C2D1DABC5F100D5D4E3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C2C1DABC5F100D5D4E3 /* Constants.swift */; };
 		42F08C301DAC318F00D5D4E3 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C2F1DAC318F00D5D4E3 /* Plan.swift */; };
@@ -315,6 +316,7 @@
 		429F63041DA71C7E00C3F54E /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		429F63061DA728DC00C3F54E /* CreateFirstPlanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreateFirstPlanViewController.swift; path = Join/CreateFirstPlanViewController.swift; sourceTree = "<group>"; };
 		429F63081DA72B6800C3F54E /* CreatePlanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreatePlanViewController.swift; path = Join/CreatePlanViewController.swift; sourceTree = "<group>"; };
+		42DB7CC11DC82196005DC106 /* ReferencePlan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReferencePlan.swift; path = Models/ReferencePlan.swift; sourceTree = "<group>"; };
 		42F08C2A1DABBDA100D5D4E3 /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ApiManager.swift; path = Managers/ApiManager.swift; sourceTree = "<group>"; };
 		42F08C2C1DABC5F100D5D4E3 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		42F08C2F1DAC318F00D5D4E3 /* Plan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Plan.swift; path = Models/Plan.swift; sourceTree = "<group>"; };
@@ -767,6 +769,7 @@
 				4211D8BB1DB7288E0092F7C5 /* Membership.swift */,
 				42F08C3F1DAC693E00D5D4E3 /* PaymentCard.swift */,
 				42F08C2F1DAC318F00D5D4E3 /* Plan.swift */,
+				42DB7CC11DC82196005DC106 /* ReferencePlan.swift */,
 				42F08C3D1DAC68D000D5D4E3 /* Subscription.swift */,
 				42F08C331DAC31B300D5D4E3 /* User.swift */,
 			);
@@ -1197,6 +1200,7 @@
 				4268414C1DA7A8A500A2BFF8 /* RecentTransactionsViewController.swift in Sources */,
 				422537221DB987DB004B33D8 /* StackViewLabelField.swift in Sources */,
 				4225372C1DBA7772004B33D8 /* PlanEmptyStateCell.swift in Sources */,
+				42DB7CC21DC82196005DC106 /* ReferencePlan.swift in Sources */,
 				4253B65D1DBBB2CD00A93E98 /* PaymentCardEmptyStateViewModel.swift in Sources */,
 				422537151DB91BCB004B33D8 /* ChargeCell.swift in Sources */,
 				4253B6641DBBEA1F00A93E98 /* CalculatorKeyPadView.swift in Sources */,

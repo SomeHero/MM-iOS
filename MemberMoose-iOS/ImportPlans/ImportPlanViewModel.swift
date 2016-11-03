@@ -12,15 +12,15 @@ class ImportPlanViewModel {
     var cellID: String = "PlanCell"
     var cellClass: UITableViewCell.Type = ImportPlanTableViewCell.self
     
-    let plan: Plan
+    let plan: ReferencePlan
     let planName: String
     let planAmount: String
     var selected: Bool
     
-    init(plan: Plan) {
+    init(plan: ReferencePlan) {
         self.plan = plan
-        self.planName = plan.name
-        self.planAmount = "\(plan.amount)"
+        self.planName = plan.planName
+        self.planAmount = "$100.00/month"
         self.selected = false
     }
     

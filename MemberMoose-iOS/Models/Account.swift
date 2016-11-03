@@ -15,6 +15,7 @@ public class Account: Mappable {
     public var avatar: Dictionary<String, String>? = [:]
     public var subdomain: String!
     public var status: String!
+    public var referencePlans: [ReferencePlan]!
     public var createdAt: NSDate!
     public var updatedAt: NSDate?
     
@@ -27,6 +28,7 @@ public class Account: Mappable {
         }
         self.subdomain = userDefaults.stringForKey("subdomain")
         self.status = userDefaults.stringForKey("status")
+        self.referencePlans = []
     }
     public required init?(_ map: Map){
         mapping(map)
@@ -38,6 +40,7 @@ public class Account: Mappable {
         avatar <- map["avatar"]
         subdomain <- map["subdomain"]
         status <- map["status"]
+        referencePlans <- map["reference_plans"]
         createdAt <- (map["createdAt"], ISO8601ExtendedDateTransform())
         updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
     }
