@@ -12,7 +12,7 @@ import UIKit
 let kApiBaseUrl = "http://localhost:8080/api/"
 //let kApiBaseUrl = "http://192.168.1.135:8080/api/"
 //let kApiBaseUrl = "https://membermoose-node.herokuapp.com/api/"
-let kOnePX: CGFloat = 1.0 / UIScreen.mainScreen().scale
+let kOnePX: CGFloat = 1.0 / UIScreen.main.scale
 let kStripeConnectClientId = "ca_7DVAPFFiNfWjJn8L08FZ1Sa4unt0jxfF"
 let kStripeSecretKey = "sk_test_UknG37aSTprP5EfEmqSWNGvn"
 let kStripePublishableKey = "pk_test_5Km0uUASqaRvRu1JTx8Iiefx"
@@ -23,7 +23,7 @@ let kS3BucketName = "membermoose-staging"
 let kS3ImageBaseUrl = "https://s3.amazonaws.com/membermoose-staging/"
 #else
 let kApiBaseUrl = "https://membermoose-node-prod.herokuapp.com/api/"
-let kOnePX: CGFloat = 1.0 / UIScreen.mainScreen().scale
+let kOnePX: CGFloat = 1.0 / UIScreen.main.scale
 let kStripeConnectClientId = "ca_7DVAUfx8xLJTPOnRY3zRS9g2MEZDzFm2"
 let kStripeSecretKey = "sk_live_U361w1bbwEZNe7p9vOyrl5TC"
 let kStripePublishableKey = "pk_live_aivTnifXScRTBnrEiWv4ufU2"

@@ -24,14 +24,14 @@ class SharePlanViewController: UIViewController {
 
         title = "Share Plan"
         
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         
         let image = UIImage(named: "Back")
-        let backButton = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(PlanDetailViewController.backClicked(_:)))
+        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(PlanDetailViewController.backClicked(_:)))
         
         navigationItem.leftBarButtonItem = backButton
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(false, animated: true)
@@ -40,8 +40,8 @@ class SharePlanViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    func backClicked(sender: UIButton) {
-        navigationController?.popViewControllerAnimated(true)
+    func backClicked(_ sender: UIButton) {
+        navigationController?.popViewController(animated: true)
     }
 
 }

@@ -26,7 +26,7 @@ public struct AuthenticateUser {
             "password": password
         ]
         
-        return parameters
+        return parameters as [String : AnyObject]
     }
 }
 public struct CreateUser {
@@ -48,7 +48,7 @@ public struct CreateUser {
             "company_name": companyName
         ]
 
-        return parameters
+        return parameters as [String : AnyObject]
     }
 }
 public struct UpdateUser {
@@ -76,7 +76,7 @@ public struct UpdateUser {
             parameters["password"] = password
         }
         
-        return parameters
+        return parameters as [String : AnyObject]
     }
 }
 public struct UpdateAccount {
@@ -94,7 +94,7 @@ public struct UpdateAccount {
             "company_name": companyName,
             "subdomain": subdomain
         ]
-        return parameters
+        return parameters as [String : AnyObject]
     }
 }
 public struct ConnectStripe {
@@ -110,7 +110,7 @@ public struct ConnectStripe {
             "stripe_connect": stripeParams
         ]
         
-        return parameters
+        return parameters as [String : AnyObject]
     }
 }
 public struct CreatePlan {
@@ -133,13 +133,13 @@ public struct CreatePlan {
     }
     func parameterize() -> [String: AnyObject] {
         let parameters: [String: AnyObject] = [
-            "name": name,
-            "amount": amount,
-            "interval": interval,
-            "interval_count": intervalCount,
-            "statement_descriptor": statementDescriptor,
-            "trial_period_days": trialPeriodDays,
-            "statement_description": statementDescription
+            "name": name as AnyObject,
+            "amount": amount as AnyObject,
+            "interval": interval as AnyObject,
+            "interval_count": intervalCount as AnyObject,
+            "statement_descriptor": statementDescriptor as AnyObject,
+            "trial_period_days": trialPeriodDays as AnyObject,
+            "statement_description": statementDescription as AnyObject
         ]
         
         return parameters
@@ -157,9 +157,9 @@ public struct CreateMember {
     }
     func parameterize() -> [String: AnyObject] {
         let parameters: [String: AnyObject] = [
-            "first_name": firstName,
-            "last_name": lastName,
-            "email_address": emailAddress
+            "first_name": firstName as AnyObject,
+            "last_name": lastName as AnyObject,
+            "email_address": emailAddress as AnyObject
         ]
         
         return parameters
@@ -175,7 +175,7 @@ public struct AddPaymentCard {
     }
     func parameterize() -> [String: AnyObject] {
         let parameters: [String: AnyObject] = [
-            "stripe_token": stripeToken
+            "stripe_token": stripeToken as AnyObject
         ]
         
         return parameters
@@ -193,16 +193,16 @@ public struct CreateCharge {
     }
     func parameterize() -> [String: AnyObject] {
         let parameters: [String: AnyObject] = [
-            "amount": amount,
-            "description": description
+            "amount": amount as AnyObject,
+            "description": description as AnyObject
         ]
         
         return parameters
     }
 }
-public class ApiManager {
-    private var kApiBaseUrl:String?
-    public var apiBaseUrl: String {
+open class ApiManager {
+    fileprivate var kApiBaseUrl:String?
+    open var apiBaseUrl: String {
         set {
             kApiBaseUrl = newValue
         }
@@ -214,12 +214,12 @@ public class ApiManager {
             }
         }
     }
-    public var token: String?
-    public static let sharedInstance = ApiManager()
+    open var token: String?
+    open static let sharedInstance = ApiManager()
     
-    private init() {}
+    fileprivate init() {}
     
-    private var headers: [String: String]? {
+    fileprivate var headers: [String: String]? {
         var headers: [String: String] = [:]
         
         if let token = token {
@@ -228,10 +228,10 @@ public class ApiManager {
         
         return headers.count > 0 ? headers : nil;
     }
-    public func authenticate(authenticateUser: AuthenticateUser, success: (userId: String, token: String) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+    open func authenticate(_ authenticateUser: AuthenticateUser, success: @escaping (_ userId: String, _ token: String) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let params = authenticateUser.parameterize()
         
-        Alamofire.request(.POST,  apiBaseUrl + "sessions", parameters: params, encoding: .JSON)
+        Alamofire.request(apiBaseUrl + "sessions", method: .post, parameters: params, encoding: JSONEncoding.default)
             .validate()
             .responseJSON { response in
                 if let error = response.result.error {
@@ -239,448 +239,456 @@ public class ApiManager {
                     
                     if let data = response.data {
                         do {
-                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:AnyObject]
                         } catch let error as NSError {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         } catch let error {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         }
-                        failure(error: error, errorDictionary: errorResponse)
+                        failure(error, errorResponse)
                     } else {
-                        failure(error: error, errorDictionary: nil)
+                        failure(error, nil)
                     }
                 }
-                if let result = response.result.value {
-                    if let userId = result["user_id"] as? String, token = result["token"] as? String {
+                if let result = response.result.value  as? [String:AnyObject] {
+                    if let userId = result["user_id"] as? String, let token = result["token"] as? String {
                         self.token = token
                         
-                        success(userId: userId, token: token)
+                        success(userId, token)
                     } else {
-                        failure(error: nil, errorDictionary: nil)
+                        failure(nil, nil)
                     }
                 }  else {
-                    failure(error: nil, errorDictionary: nil)
+                    failure(nil, nil)
                 }
         }
     }
-    public func validateUserName(emailAddress:String, success: (isValid: Bool) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
-        Alamofire.request(.GET,  apiBaseUrl + "users/\(emailAddress)", parameters: nil, encoding: .JSON, headers: headers)
+    open func validateUserName(_ emailAddress:String, success: @escaping (_ isValid: Bool) -> Void, failure: (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        let urlString = "\(apiBaseUrl)users/\(emailAddress)"
+        
+        Alamofire.request(urlString, parameters: nil, encoding: URLEncoding.default, headers: headers)
             .response { response in
-                if response.1?.statusCode == 200 {
-                    success(isValid: false)
+                if response.response?.statusCode == 200 {
+                    success(false)
                 } else {
-                    success(isValid: true)
+                    success(true)
                 }
         }
     }
-    public func createUser(createUser: CreateUser, success: (userId: String, token: String) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+    open func createUser(_ createUser: CreateUser, success: @escaping (_ userId: String, _ token: String) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let params = createUser.parameterize()
         
-        Alamofire.upload(.POST,  apiBaseUrl + "users", multipartFormData: {
-            multipartFormData in
-            
-            if let avatar = createUser.avatar, imageData = UIImageJPEGRepresentation(avatar, 1.0) {
-                multipartFormData.appendBodyPart(data: imageData, name: "file", fileName: "file.png", mimeType: "image/png")
-            }
-            
-            for (key, value) in params {
-                multipartFormData.appendBodyPart(data: value.dataUsingEncoding(NSUTF8StringEncoding)!, name: key)
-            }
-            },  encodingCompletion: {
+        Alamofire.upload(
+            multipartFormData: {
+                multipartFormData in
+                for (key, value) in params {
+                    multipartFormData.append(value.data, withName: key)
+                 }
+                if let avatar = createUser.avatar, let imageData = UIImageJPEGRepresentation(avatar, 1.0) {
+                    multipartFormData.append(imageData, withName: "file", fileName: "file.png", mimeType: "image/png")
+                }
+            },
+            to: apiBaseUrl + "users",
+            encodingCompletion: {
                 encodingResult in
                 
                 switch encodingResult {
-                case .Success(let upload, _, _):
+                case .success(let upload, _, _):
                     upload
                         .validate()
                         .responseJSON {
                         response in
                         
-                        if let result = response.result.value {
-                            if let userId = result["user_id"] as? String, token = result["token"] as? String {
+                        if let result = response.result.value  as? [String:AnyObject]  {
+                            if let userId = result["user_id"] as? String, let token = result["token"] as? String {
                                 self.token = token
                                 
-                                success(userId: userId, token: token)
+                                success(userId, token)
                             } else {
-                                failure(error: nil, errorDictionary: nil)
+                                failure(nil, nil)
                             }
                         } else {
-                            failure(error: nil, errorDictionary: nil)
+                            failure(nil, nil)
                         }
                     }
-                case .Failure(let encodingError):
+                case .failure(let encodingError):
                     print(encodingError)
                 }
         })
     }
-    public func updateUser(updateUser: UpdateUser, success: (response: User) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+    open func updateUser(_ updateUser: UpdateUser, success: @escaping (_ response: User) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let params = updateUser.parameterize()
-
-        Alamofire.upload(.PUT,  apiBaseUrl + "users/\(updateUser.userId)", headers: headers, multipartFormData: {
+        let urlString = "\(apiBaseUrl)users/\(updateUser.userId)"
+        
+        Alamofire.upload(multipartFormData: {
             multipartFormData in
             
-            if let avatar = updateUser.avatar, imageData = UIImageJPEGRepresentation(avatar, 1.0) {
-                multipartFormData.appendBodyPart(data: imageData, name: "file", fileName: "file.png", mimeType: "image/png")
-            }
-            
             for (key, value) in params {
-                multipartFormData.appendBodyPart(data: value.dataUsingEncoding(NSUTF8StringEncoding)!, name: key)
+                multipartFormData.append(value.data, withName: key)
             }
-        },  encodingCompletion: {
+            if let avatar = updateUser.avatar, let imageData = UIImageJPEGRepresentation(avatar, 1.0) {
+                multipartFormData.append(imageData, withName: "file", fileName: "file.png", mimeType: "image/png")
+            }
+        },
+        to: urlString,
+        method: .post,
+        encodingCompletion: {
             encodingResult in
             
             switch encodingResult {
-            case .Success(let upload, _, _):
+            case .success(let upload, _, _):
                 upload
                     .validate()
-                    .responseObject { (response: Response<User, NSError>) in
+                    .responseObject { (response: DataResponse<User>) in
                         if let error = response.result.error {
                             var errorResponse: [String: AnyObject]? = [:]
                             
                             if let data = response.data {
                                 do {
-                                    errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                                    errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
                                 } catch let error as NSError {
-                                    failure(error: error, errorDictionary: nil)
+                                    failure(error, nil)
                                 } catch let error {
-                                    failure(error: error, errorDictionary: nil)
+                                    failure(error, nil)
                                 }
-                                failure(error: error, errorDictionary: errorResponse)
+                                failure(error, errorResponse)
                             } else {
-                                failure(error: error, errorDictionary: nil)
+                                failure(error, nil)
                             }
                         }
                         if let user = response.result.value {
-                            success(response: user)
+                            success(user)
                         } else {
-                            failure(error: nil, errorDictionary: nil)
+                            failure(nil, nil)
                         }
                 }
-            case .Failure(let encodingError):
+            case .failure(let encodingError):
                 print(encodingError)
             }
         })
     }
-    public func updateAccount(updateAccount: UpdateAccount, success: (response: Account) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+    open func updateAccount(_ updateAccount: UpdateAccount, success: @escaping (_ response: Account) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let params = updateAccount.parameterize()
         
-        Alamofire.upload(.PUT,  apiBaseUrl + "accounts", headers: headers, multipartFormData: {
+        Alamofire.upload(multipartFormData: {
             multipartFormData in
             
-            if let avatar = updateAccount.avatar, imageData = UIImageJPEGRepresentation(avatar, 1.0) {
-                multipartFormData.appendBodyPart(data: imageData, name: "file", fileName: "file.png", mimeType: "image/png")
-            }
-            
             for (key, value) in params {
-                multipartFormData.appendBodyPart(data: value.dataUsingEncoding(NSUTF8StringEncoding)!, name: key)
+                multipartFormData.append(value.data, withName: key)
             }
-        },  encodingCompletion: {
+            if let avatar = updateAccount.avatar, let imageData = UIImageJPEGRepresentation(avatar, 1.0) {
+                multipartFormData.append(imageData, withName: "file", fileName: "file.png", mimeType: "image/png")
+            }
+        }, to: apiBaseUrl + "accounts",
+           method: .put,
+           headers: headers,
+           encodingCompletion: {
             encodingResult in
             
             switch encodingResult {
-            case .Success(let upload, _, _):
+            case .success(let upload, _, _):
                 upload
                     .validate()
-                    .responseObject { (response: Response<Account, NSError>) in
+                    .responseObject { (response: DataResponse<Account>) in
                         if let error = response.result.error {
                             var errorResponse: [String: AnyObject]? = [:]
                             
                             if let data = response.data {
                                 do {
-                                    errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                                    errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
                                 } catch let error as NSError {
-                                    failure(error: error, errorDictionary: nil)
+                                    failure(error, nil)
                                 } catch let error {
-                                    failure(error: error, errorDictionary: nil)
+                                    failure(error, nil)
                                 }
-                                failure(error: error, errorDictionary: errorResponse)
+                                failure(error, errorResponse)
                             } else {
-                                failure(error: error, errorDictionary: nil)
+                                failure(error, nil)
                             }
                         }
                         if let account = response.result.value {
-                            success(response: account)
+                            success(account)
                         } else {
-                            failure(error: nil, errorDictionary: nil)
+                            failure(nil, nil)
                         }
                 }
-            case .Failure(let encodingError):
+            case .failure(let encodingError):
                 print(encodingError)
             }
         })
     }
-    public func me(success: (response: User) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
-        Alamofire.request(.GET,  apiBaseUrl + "me", parameters: nil, encoding: .JSON, headers: headers)
+    open func me(_ success: @escaping (_ response: User) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        Alamofire.request(apiBaseUrl + "me", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseObject { (response: Response<User, NSError>) in
+            .responseObject { (response: DataResponse<User>) in
                 if let error = response.result.error {
                     var errorResponse: [String: AnyObject]? = [:]
                     
                     if let data = response.data {
                         do {
-                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
                         } catch let error as NSError {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         } catch let error {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         }
-                        failure(error: error, errorDictionary: errorResponse)
+                        failure(error, errorResponse)
                     } else {
-                        failure(error: error, errorDictionary: nil)
+                        failure(error, nil)
                     }
                 }
                 if let user = response.result.value {
-                    success(response: user)
+                    success(user)
                 } else {
-                    failure(error: nil, errorDictionary: nil)
+                    failure(nil, nil)
                 }
                 
         }
     }
-    public func connectStripe(connectStripe: ConnectStripe, success: (response: User) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+    open func connectStripe(_ connectStripe: ConnectStripe, success: @escaping (_ response: User) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let params = connectStripe.parameterize()
         
-        Alamofire.request(.POST, apiBaseUrl + "users/\(connectStripe.userId)/connect_stripe", parameters: params, encoding: .JSON, headers: headers)
+        Alamofire.request(apiBaseUrl + "users/\(connectStripe.userId)/connect_stripe", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseObject { (response: Response<User, NSError>) in
+            .responseObject { (response: DataResponse<User>) in
                 if let error = response.result.error {
                     var errorResponse: [String: AnyObject]? = [:]
                     
                     if let data = response.data {
                         do {
-                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
                         } catch let error as NSError {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         } catch let error {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         }
-                        failure(error: error, errorDictionary: errorResponse)
+                        failure(error, errorResponse)
                     } else {
-                        failure(error: error, errorDictionary: nil)
+                        failure(error, nil)
                     }
                 }
                 if let user = response.result.value {
-                    success(response: user)
+                    success(user)
                 }
         }
 
     }
-    public func importPlans(userId: String, plansList: [String], success: (response: User) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
-        let params: [String: AnyObject] = ["plans": plansList]
+    open func importPlans(_ userId: String, plansList: [String], success: @escaping (_ response: User) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        let params: [String: AnyObject] = ["plans": plansList as AnyObject]
         
-        Alamofire.request(.POST, apiBaseUrl + "users/\(userId)/import_plans", parameters: params, encoding: .JSON, headers: headers)
+        Alamofire.request(apiBaseUrl + "users/\(userId)/import_plans", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseObject { (response: Response<User, NSError>) in
+            .responseObject { (response: DataResponse<User>) in
                 if let error = response.result.error {
                     var errorResponse: [String: AnyObject]? = [:]
                     
                     if let data = response.data {
                         do {
-                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
                         } catch let error as NSError {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         } catch let error {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         }
-                        failure(error: error, errorDictionary: errorResponse)
+                        failure(error, errorResponse)
                     } else {
-                        failure(error: error, errorDictionary: nil)
+                        failure(error, nil)
                     }
                 }
                 if let user = response.result.value {
-                    success(response: user)
+                    success(user)
                 }
         }
     }
-    public func getPlans(page: Int = 1,success: (response: [Plan]?) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
-        Alamofire.request(.GET,  apiBaseUrl + "plans?page=\(page)", parameters: nil, encoding: .JSON, headers: headers)
+    open func getPlans(_ page: Int = 1,success: @escaping (_ response: [Plan]?) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        Alamofire.request(apiBaseUrl + "plans?page=\(page)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseArray(keyPath: "results") { (response: Response<[Plan], NSError>) in
+            .responseArray(keyPath: "results") { (response: DataResponse<[Plan]>) in
                 if let error = response.result.error {
                     var errorResponse: [String: AnyObject]? = [:]
                     
                     if let data = response.data {
                         do {
-                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
                         } catch let error as NSError {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         }
                         catch let error {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         }
-                        failure(error: error, errorDictionary: errorResponse)
+                        failure(error, errorResponse)
                     } else {
-                        failure(error: error, errorDictionary: nil)
+                        failure(error, nil)
                     }
                 }
                 if let plans = response.result.value {
-                    success(response: plans)
+                    success(plans)
                 }
         }
         
     }
-    public func getMembers(page: Int = 1, success: (response: [User]?) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
-        Alamofire.request(.GET,  apiBaseUrl + "members?page=\(page)", parameters: nil, encoding: .JSON, headers: headers)
+    open func getMembers(_ page: Int = 1, success: @escaping (_ response: [User]?) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        Alamofire.request(apiBaseUrl + "members?page=\(page)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseArray(keyPath: "results") { (response: Response<[User], NSError>) in
+            .responseArray(keyPath: "results") { (response: DataResponse<[User]>) in
                 if let error = response.result.error {
                     var errorResponse: [String: AnyObject]? = [:]
                     
                     if let data = response.data {
                         do {
-                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
                         } catch let error as NSError {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         }
                         catch let error {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         }
-                        failure(error: error, errorDictionary: errorResponse)
+                        failure(error, errorResponse)
                     } else {
-                        failure(error: error, errorDictionary: nil)
+                        failure(error, nil)
                     }
                 }
                 if let users = response.result.value {
-                    success(response: users)
+                    success(users)
                 }
         }
         
     }
-    public func cancelSubscription(subscriptionId: String, success: ()  -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+    open func cancelSubscription(_ subscriptionId: String, success: @escaping ()  -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         
-        Alamofire.request(.DELETE, apiBaseUrl + "subscriptions/\(subscriptionId)", parameters: nil, encoding: .JSON, headers: headers)
+        Alamofire.request(apiBaseUrl + "subscriptions/\(subscriptionId)", method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .response {  (request, response, data, error) in
-                if let error = error {
+            .response {  response in
+                if let error = response.error {
                     var errorResponse: [String: AnyObject]? = [:]
                     
-                    if let data = data {
+                    if let data = response.data {
                         do {
-                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
                         } catch let error as NSError {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         }
                         catch let error {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         }
-                        failure(error: error, errorDictionary: errorResponse)
+                        failure(error, errorResponse)
                     } else {
-                        failure(error: error, errorDictionary: nil)
+                        failure(error, nil)
                     }
                 } else {
                     success()
                 }
         }
     }
-    public func createPlan(createPlan: CreatePlan, success: (response: Plan) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+    open func createPlan(_ createPlan: CreatePlan, success: @escaping (_ response: Plan) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let params = createPlan.parameterize()
         
-        Alamofire.request(.POST, apiBaseUrl + "plans", parameters: params, encoding: .JSON, headers: headers)
+        Alamofire.request(apiBaseUrl + "plans", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseObject { (response: Response<Plan, NSError>) in
+            .responseObject { (response: DataResponse<Plan>) in
                 if let error = response.result.error {
                     var errorResponse: [String: AnyObject]? = [:]
                     
                     if let data = response.data {
                         do {
-                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
                         } catch let error as NSError {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         } catch let error {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         }
-                        failure(error: error, errorDictionary: errorResponse)
+                        failure(error, errorResponse)
                     } else {
-                        failure(error: error, errorDictionary: nil)
+                        failure(error, nil)
                     }
                 }
                 if let plan = response.result.value {
-                    success(response: plan)
+                    success(plan)
                 }
         }
     }
-    public func createMember(createMember: CreateMember, success: (response: User) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+    open func createMember(_ createMember: CreateMember, success: @escaping (_ response: User) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let params = createMember.parameterize()
         
-        Alamofire.request(.POST, apiBaseUrl + "members", parameters: params, encoding: .JSON, headers: headers)
+        Alamofire.request(apiBaseUrl + "members", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseObject { (response: Response<User, NSError>) in
+            .responseObject { (response: DataResponse<User>) in
                 if let error = response.result.error {
                     var errorResponse: [String: AnyObject]? = [:]
                     
                     if let data = response.data {
                         do {
-                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
                         } catch let error as NSError {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         } catch let error {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         }
-                        failure(error: error, errorDictionary: errorResponse)
+                        failure(error, errorResponse)
                     } else {
-                        failure(error: error, errorDictionary: nil)
+                        failure(error, nil)
                     }
                 }
                 if let user = response.result.value {
-                    success(response: user)
+                    success(user)
                 }
         }
     }
-    public func addPaymentCard(addPaymentCard: AddPaymentCard, success: (response: PaymentCard) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+    open func addPaymentCard(_ addPaymentCard: AddPaymentCard, success: @escaping (_ response: PaymentCard) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let params = addPaymentCard.parameterize()
         
-        Alamofire.request(.POST, apiBaseUrl + "/users/\(addPaymentCard.userId)/payment_cards", parameters: params, encoding: .JSON, headers: headers)
+        Alamofire.request(apiBaseUrl + "/users/\(addPaymentCard.userId)/payment_cards", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseObject { (response: Response<PaymentCard, NSError>) in
+            .responseObject { (response: DataResponse<PaymentCard>) in
                 if let error = response.result.error {
                     var errorResponse: [String: AnyObject]? = [:]
                     
                     if let data = response.data {
                         do {
-                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
                         } catch let error as NSError {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         } catch let error {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         }
-                        failure(error: error, errorDictionary: errorResponse)
+                        failure(error, errorResponse)
                     } else {
-                        failure(error: error, errorDictionary: nil)
+                        failure(error, nil)
                     }
                 }
                 if let paymentCard = response.result.value {
-                    success(response: paymentCard)
+                    success(paymentCard)
                 } else {
-                    failure(error: nil, errorDictionary: nil)
+                    failure(nil, nil)
                 }
         }
     }
-    public func createCharge(createCharge: CreateCharge, success: (response: Charge) -> Void, failure: (error: ErrorType?, errorDictionary: [String: AnyObject]?) -> Void) {
+    open func createCharge(_ createCharge: CreateCharge, success: @escaping (_ response: Charge) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let params = createCharge.parameterize()
         
-        Alamofire.request(.POST, apiBaseUrl + "/users/\(createCharge.userId)/charges", parameters: params, encoding: .JSON, headers: headers)
+        Alamofire.request(apiBaseUrl + "/users/\(createCharge.userId)/charges", method: .post,  parameters: params, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseObject { (response: Response<Charge, NSError>) in
+            .responseObject { (response: DataResponse<Charge>) in
                 if let error = response.result.error {
                     var errorResponse: [String: AnyObject]? = [:]
                     
                     if let data = response.data {
                         do {
-                            errorResponse = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
                         } catch let error as NSError {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         } catch let error {
-                            failure(error: error, errorDictionary: nil)
+                            failure(error, nil)
                         }
-                        failure(error: error, errorDictionary: errorResponse)
+                        failure(error, errorResponse)
                     } else {
-                        failure(error: error, errorDictionary: nil)
+                        failure(error, nil)
                     }
                 }
                 if let charge = response.result.value {
-                    success(response: charge)
+                    success(charge)
                 } else {
-                    failure(error: nil, errorDictionary: nil)
+                    failure(nil, nil)
                 }
         }
     }

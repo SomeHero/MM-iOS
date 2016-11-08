@@ -9,27 +9,27 @@
 import UIKit
 
 class ButtonDecorator: NSObject {
-    static func applyDefaultStyle(button: UIButton) {
+    static func applyDefaultStyle(_ button: UIButton) {
         button.backgroundColor = UIColorTheme.Primary
-        button.titleLabel?.font = UIFontTheme.Regular(.Large)
+        button.titleLabel?.font = UIFontTheme.Regular(.large)
         button.titleLabel?.textColor = UIColorTheme.PrimaryForeground
-        button.layer.borderColor = UIColor.flatBlueColor().CGColor
-        button.setTitleColor(UIColorTheme.PrimaryForeground, forState: .Normal)
-        button.setTitleColor(UIColorTheme.PrimaryForeground, forState: .Highlighted)
-        button.addTarget(self, action: #selector(ButtonDecorator.beginButtonPress(_:)), forControlEvents: .TouchDown)
-        button.addTarget(self, action: #selector(ButtonDecorator.endButtonPress(_:)), forControlEvents: [.TouchUpInside, .TouchUpOutside, .TouchDragExit, .TouchCancel])
+        button.layer.borderColor = UIColor.flatBlue().cgColor
+        button.setTitleColor(UIColorTheme.PrimaryForeground, for: UIControlState())
+        button.setTitleColor(UIColorTheme.PrimaryForeground, for: .highlighted)
+        button.addTarget(self, action: #selector(ButtonDecorator.beginButtonPress(_:)), for: .touchDown)
+        button.addTarget(self, action: #selector(ButtonDecorator.endButtonPress(_:)), for: [.touchUpInside, .touchUpOutside, .touchDragExit, .touchCancel])
     }
-    static func applyLinkStyle(button: UIButton) {
-        button.backgroundColor = UIColor.clearColor()
-        button.setTitleColor(UIColor.flatBlueColor(), forState: .Normal)
-        button.setTitleColor(UIColor.flatBlueColorDark(), forState: .Highlighted)
+    static func applyLinkStyle(_ button: UIButton) {
+        button.backgroundColor = UIColor.clear
+        button.setTitleColor(UIColor.flatBlue(), for: UIControlState())
+        button.setTitleColor(UIColor.flatBlueColorDark(), for: .highlighted)
     }
-    static func beginButtonPress(sender: UIButton) {
+    static func beginButtonPress(_ sender: UIButton) {
         sender.backgroundColor = UIColorTheme.PrimaryTransparent
     }
-    static func endButtonPress(sender: UIButton) {
-        UIView.animateWithDuration(0.25) {
+    static func endButtonPress(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.25, animations: {
             sender.backgroundColor = UIColorTheme.Primary
-        }
+        }) 
     }
 }

@@ -13,18 +13,18 @@ import FontAwesome_swift
     func gotoPreviousInput()
     func gotoNextInput()
     
-    func toggleKeyboardNavButtonsEnabled(toolBar: UIToolbar)
+    func toggleKeyboardNavButtonsEnabled(_ toolBar: UIToolbar)
 }
 
 extension InputNavigationDelegate {
-    func toggleKeyboardNavButtonsEnabled(toolBar: UIToolbar) { }
+    func toggleKeyboardNavButtonsEnabled(_ toolBar: UIToolbar) { }
 }
 
 @objc protocol PickerToolbarDelegate: class {
     func dismissKeyboard()
     
-    func keyboardDidAppear(notification: NSNotification)
-    func keyboardDidHide(notification: NSNotification)
+    func keyboardDidAppear(_ notification: Notification)
+    func keyboardDidHide(_ notification: Notification)
 }
 
 class KeyboardDecorator {
@@ -34,26 +34,26 @@ class KeyboardDecorator {
     static let keyboardToolbarHeight: CGFloat = 44
 
     
-    class func applyStandardStyling(toolbar: UIToolbar) {
-        toolbar.barTintColor = UIColor.lightGrayColor()
+    class func applyStandardStyling(_ toolbar: UIToolbar) {
+        toolbar.barTintColor = UIColor.lightGray
         toolbar.tintColor = UIColorTheme.Primary
-        toolbar.opaque = true
-        toolbar.translucent = false
+        toolbar.isOpaque = true
+        toolbar.isTranslucent = false
     }
     
-    class func getInputToolbarWithDelegate(delegate: InputNavigationDelegate) -> UIToolbar {
-        let previous = keyboardButtonWithIcon(delegate, icon: FontAwesome.ChevronLeft, action: #selector(InputNavigationDelegate.gotoPreviousInput))
-        let next = keyboardButtonWithIcon(delegate, icon: FontAwesome.ChevronRight, action: #selector(InputNavigationDelegate.gotoNextInput))
+    class func getInputToolbarWithDelegate(_ delegate: InputNavigationDelegate) -> UIToolbar {
+        let previous = keyboardButtonWithIcon(delegate, icon: FontAwesome.chevronLeft, action: #selector(InputNavigationDelegate.gotoPreviousInput))
+        let next = keyboardButtonWithIcon(delegate, icon: FontAwesome.chevronRight, action: #selector(InputNavigationDelegate.gotoNextInput))
         
         let attributes = [NSFontAttributeName : UIFontTheme.Regular()]
-        let done = UIBarButtonItem(title: "Done", style: .Done, target: delegate, action: #selector(PickerToolbarDelegate.dismissKeyboard))
-        done.setTitleTextAttributes(attributes, forState: .Normal)
+        let done = UIBarButtonItem(title: "Done", style: .done, target: delegate, action: #selector(PickerToolbarDelegate.dismissKeyboard))
+        done.setTitleTextAttributes(attributes, for: UIControlState())
         
-        let fixed = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil)
+        let fixed = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         fixed.width = fixedToolbarSpacing
-        let middle = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+        let middle = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
-        let toolBar = UIToolbar(frame: CGRectMake(0,0, UIScreen.mainScreen().bounds.width, KeyboardDecorator.keyboardToolbarHeight))
+        let toolBar = UIToolbar(frame: CGRect(x: 0,y: 0, width: UIScreen.main.bounds.width, height: KeyboardDecorator.keyboardToolbarHeight))
         applyStandardStyling(toolBar)
         
         toolBar.setItems([previous, fixed, next, middle, done], animated: true)
@@ -61,14 +61,14 @@ class KeyboardDecorator {
         return toolBar
     }
     
-    class func getStandardPickerToolbar(delegate: PickerToolbarDelegate) -> UIToolbar {
-        let attributes = [NSFontAttributeName : UIFontTheme.Regular(.Large)]
-        let done = UIBarButtonItem(title: "Done", style: .Done, target: delegate, action: #selector(PickerToolbarDelegate.dismissKeyboard))
-        done.setTitleTextAttributes(attributes, forState: .Normal)
+    class func getStandardPickerToolbar(_ delegate: PickerToolbarDelegate) -> UIToolbar {
+        let attributes = [NSFontAttributeName : UIFontTheme.Regular(.large)]
+        let done = UIBarButtonItem(title: "Done", style: .done, target: delegate, action: #selector(PickerToolbarDelegate.dismissKeyboard))
+        done.setTitleTextAttributes(attributes, for: UIControlState())
         
-        let middle = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+        let middle = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
-        let toolBar = UIToolbar(frame: CGRectMake(0,0, UIScreen.mainScreen().bounds.width, keyboardToolbarHeight))
+        let toolBar = UIToolbar(frame: CGRect(x: 0,y: 0, width: UIScreen.main.bounds.width, height: keyboardToolbarHeight))
         applyStandardStyling(toolBar)
         
         toolBar.setItems([middle, done], animated: true)
@@ -76,11 +76,11 @@ class KeyboardDecorator {
         return toolBar
     }
     
-    class func keyboardButtonWithIcon(delegate: InputNavigationDelegate, icon: FontAwesome, action: Selector) -> UIBarButtonItem {
-        let attributes = [NSFontAttributeName : UIFontTheme.Icon(.Default)]
-        let iconText = String.fontAwesomeIconWithName(icon)
-        let button = UIBarButtonItem(title: iconText, style: .Plain, target: delegate, action: action)
-        button.setTitleTextAttributes(attributes, forState: .Normal)
+    class func keyboardButtonWithIcon(_ delegate: InputNavigationDelegate, icon: FontAwesome, action: Selector) -> UIBarButtonItem {
+        let attributes = [NSFontAttributeName : UIFontTheme.Icon(.default)]
+        let iconText = String.fontAwesomeIcon(name: icon)
+        let button = UIBarButtonItem(title: iconText, style: .plain, target: delegate, action: action)
+        button.setTitleTextAttributes(attributes, for: .normal)
         
         return button
     }

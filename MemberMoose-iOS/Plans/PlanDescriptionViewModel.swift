@@ -17,8 +17,8 @@ class PlanDescriptionViewModel:DataSourceItemProtocol {
     init(plan: Plan) {
         self.description = "A membership doesn’t just mean you get to work in a collaborative and creative space, but you become part of a community of freelancers, independents, and start-ups. You’ll get access to events, extra exposure, and chances to start great conversations."
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as? PlanDescriptionCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? PlanDescriptionCell else {
             fatalError(#function)
         }
         

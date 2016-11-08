@@ -18,37 +18,37 @@ struct UIFontTheme {
         case Icon    = "FontAwesome"
     }
     enum FontSize: CGFloat {
-        case XTiny = 11
-        case Tiny = 13
-        case Small = 16
-        case Default = 18
-        case Large = 20
-        case XLarge = 26
-        case Huge = 30
+        case xTiny = 11
+        case tiny = 13
+        case small = 16
+        case `default` = 18
+        case large = 20
+        case xLarge = 26
+        case huge = 30
     }
-    static let defaultSize: FontSize = .Default
+    static let defaultSize: FontSize = .default
     
-    static func Regular(size: FontSize = defaultSize) -> UIFont {
+    static func Regular(_ size: FontSize = defaultSize) -> UIFont {
         return UIFont(name: FontName.Regular.rawValue, size: size.rawValue)!
     }
     
-    static func Bold(size: FontSize = defaultSize) -> UIFont {
+    static func Bold(_ size: FontSize = defaultSize) -> UIFont {
         return UIFont(name: FontName.Bold.rawValue, size: size.rawValue)!
     }
     
-    static func Italic(size: FontSize = defaultSize) -> UIFont {
+    static func Italic(_ size: FontSize = defaultSize) -> UIFont {
         return UIFont(name: FontName.Italic.rawValue, size: size.rawValue)!
     }
     
-    static func Light(size: FontSize = defaultSize) -> UIFont {
+    static func Light(_ size: FontSize = defaultSize) -> UIFont {
         return UIFont(name: FontName.Light.rawValue, size: size.rawValue)!
     }
     
-    static func Icon(size: FontSize = defaultSize) -> UIFont {
+    static func Icon(_ size: FontSize = defaultSize) -> UIFont {
         return UIFont(name: FontName.Icon.rawValue, size: size.rawValue)!
     }
     
-    static func newFont(name: FontName, size: FontSize = defaultSize) -> UIFont {
+    static func newFont(_ name: FontName, size: FontSize = defaultSize) -> UIFont {
         guard let font = UIFont(name: name.rawValue, size: size.cgFloatValue) else {
             fatalError("Unable to load font: \(name.rawValue)")
         }

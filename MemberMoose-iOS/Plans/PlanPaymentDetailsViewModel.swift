@@ -24,8 +24,8 @@ class PlanPaymentDetailsViewModel:DataSourceItemProtocol {
         self.recurringAmountHeader = "Recurring Amount"
         self.recurringAmount = "\(USD(plan.amount).description) \(plan.interval)"
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as? PlanPaymentDetailsCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? PlanPaymentDetailsCell else {
             fatalError(#function)
         }
         

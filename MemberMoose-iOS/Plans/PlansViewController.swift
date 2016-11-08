@@ -13,29 +13,29 @@ import ALTextInputBar
 import Kingfisher
 
 class PlanDetailViewController: UIViewController {
-    private var planNavigationState: PlanNavigationState = .Details
-    private let plan: Plan
-    private let textInputBar = ALTextInputBar()
+    fileprivate var planNavigationState: PlanNavigationState = .details
+    fileprivate let plan: Plan
+    fileprivate let textInputBar = ALTextInputBar()
     
-    private lazy var menuButton: UIButton = {
+    fileprivate lazy var menuButton: UIButton = {
         let _button = UIButton()
-        _button.setImage(UIImage(named:"Back-Reverse"), forState: .Normal)
-        _button.addTarget(self, action: #selector(PlanDetailViewController.backClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setImage(UIImage(named:"Back-Reverse"), for: UIControlState())
+        _button.addTarget(self, action: #selector(PlanDetailViewController.backClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var settingsButton: UIButton = {
+    fileprivate lazy var settingsButton: UIButton = {
         let _button = UIButton()
-        _button.setImage(UIImage(named:"Settings"), forState: .Normal)
-        _button.addTarget(self, action: #selector(PlanDetailViewController.showProfile(_:)), forControlEvents: .TouchUpInside)
+        _button.setImage(UIImage(named:"Settings"), for: UIControlState())
+        _button.addTarget(self, action: #selector(PlanDetailViewController.showProfile(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var topBackgroundView: UIView = {
+    fileprivate lazy var topBackgroundView: UIView = {
         let _view = UIView()
         
         _view.backgroundColor = UIColorTheme.TopBackgroundColor
@@ -44,47 +44,47 @@ class PlanDetailViewController: UIViewController {
         
         return _view
     }()
-    private lazy var containerView: UIView = {
+    fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
-        _view.backgroundColor = .clearColor()
+        _view.backgroundColor = .clear
         
         self.topBackgroundView.addSubview(_view)
         
         return _view
     }()
-    private lazy var logo: UIImageView = {
+    fileprivate lazy var logo: UIImageView = {
         let _imageView = UIImageView()
         _imageView.layer.cornerRadius = 80 / 2
         _imageView.clipsToBounds = true
-        _imageView.layer.borderColor = UIColor.whiteColor().CGColor
+        _imageView.layer.borderColor = UIColor.white.cgColor
         _imageView.layer.borderWidth = 2.0
         
         self.containerView.addSubview(_imageView)
         
         return _imageView
     }()
-    private lazy var companyNameLabel: UILabel = {
+    fileprivate lazy var companyNameLabel: UILabel = {
         let _label = UILabel()
-        _label.textColor = .whiteColor()
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Default)
+        _label.textColor = .white
+        _label.textAlignment = .center
+        _label.font = UIFontTheme.Regular(.default)
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var subHeadingLabel: UILabel = {
+    fileprivate lazy var subHeadingLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.SubHeader
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Tiny)
+        _label.textAlignment = .center
+        _label.font = UIFontTheme.Regular(.tiny)
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var planNavigation: PlanNavigationView = {
+    fileprivate lazy var planNavigation: PlanNavigationView = {
         let _view = PlanNavigationView()
         //_view.delegate = self
         self.topBackgroundView.addSubview(_view)
@@ -105,16 +105,16 @@ class PlanDetailViewController: UIViewController {
         super.viewDidLoad()
         
         title = "Plans"
-        view.backgroundColor = .whiteColor()
-        
+        view.backgroundColor = .white
+    
         let image = UIImage(named: "Back")
-        let backButton = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(ProfileViewController.backClicked(_:)))
+        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(ProfileViewController.backClicked(_:)))
         
         navigationItem.leftBarButtonItem = backButton
         
         setup()
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         planNavigation.setSelectedButton(planNavigationState)
@@ -122,39 +122,39 @@ class PlanDetailViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        topBackgroundView.snp_updateConstraints { (make) in
+        topBackgroundView.snp.updateConstraints { (make) in
             make.top.equalTo(view)
             make.leading.trailing.equalTo(view)
         }
-        menuButton.snp_updateConstraints { (make) in
+        menuButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.leading.equalTo(view).inset(15)
             make.height.width.equalTo(20)
         }
-        settingsButton.snp_updateConstraints { (make) in
+        settingsButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.trailing.equalTo(view).inset(15)
             make.height.width.equalTo(20)
         }
-        containerView.snp_updateConstraints { (make) in
+        containerView.snp.updateConstraints { (make) in
             make.centerX.centerY.equalTo(topBackgroundView)
         }
-        logo.snp_updateConstraints { (make) in
+        logo.snp.updateConstraints { (make) in
             make.top.equalTo(containerView)
             make.centerX.equalTo(containerView)
             make.height.width.equalTo(80)
         }
-        companyNameLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(logo.snp_bottom).offset(20)
+        companyNameLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(logo.snp.bottom).offset(20)
             make.centerX.equalTo(containerView)
         }
-        subHeadingLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(companyNameLabel.snp_bottom)
+        subHeadingLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(companyNameLabel.snp.bottom)
             make.centerX.equalTo(containerView)
             make.bottom.equalTo(containerView)
         }
-        planNavigation.snp_updateConstraints { (make) in
-            make.top.equalTo(containerView.snp_bottom).offset(20)
+        planNavigation.snp.updateConstraints { (make) in
+            make.top.equalTo(containerView.snp.bottom).offset(20)
             make.leading.trailing.equalTo(topBackgroundView).inset(20)
             make.bottom.equalTo(topBackgroundView).inset(20)
         }
@@ -173,10 +173,10 @@ class PlanDetailViewController: UIViewController {
 //        companyNameLabel.text = user.emailAddress
 //        subHeadingLabel.text = "Member Since ()"
     }
-    func backClicked(button: UIButton) {
-        navigationController?.popViewControllerAnimated(true)
+    func backClicked(_ button: UIButton) {
+        navigationController?.popViewController(animated: true)
     }
-    func showProfile(button: UIButton) {
+    func showProfile(_ button: UIButton) {
 //        let viewController = PlanProfileViewController(plan: plan, profileType: .calf)
 //        
 //        let navigationController = UINavigationController(rootViewController: viewController)

@@ -9,37 +9,37 @@
 import UIKit
 
 extension UIViewController {
-    func configureStatusBarStyle(style: UIStatusBarStyle = .LightContent, animated: Bool = true) {
-        UIApplication.sharedApplication().setStatusBarStyle(style, animated: animated)
+    func configureStatusBarStyle(_ style: UIStatusBarStyle = .lightContent, animated: Bool = true) {
+        UIApplication.shared.setStatusBarStyle(style, animated: animated)
     }
-    func configureRevealControllerGestures(view: UIView) {
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate, revealController = delegate.swRevealViewController {
+    func configureRevealControllerGestures(_ view: UIView) {
+        if let delegate = UIApplication.shared.delegate as? AppDelegate, let revealController = delegate.swRevealViewController {
             view.addGestureRecognizer(revealController.panGestureRecognizer())
             view.addGestureRecognizer(revealController.tapGestureRecognizer())
         }
     }
     func configureRevealWidth() {
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate, revealController = delegate.swRevealViewController {
-            revealController.rearViewRevealWidth = UIScreen.mainScreen().bounds.size.width * 0.85
+        if let delegate = UIApplication.shared.delegate as? AppDelegate, let revealController = delegate.swRevealViewController {
+            revealController.rearViewRevealWidth = UIScreen.main.bounds.size.width * 0.85
         }
     }
-    func toggleMenu(sender: UIButton) {
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate, swRevealViewController = delegate.swRevealViewController {
+    func toggleMenu(_ sender: UIButton) {
+        if let delegate = UIApplication.shared.delegate as? AppDelegate, let swRevealViewController = delegate.swRevealViewController {
             
-            swRevealViewController.revealToggleAnimated(true)
+            swRevealViewController.revealToggle(animated: true)
         }
     }
-    func enableButton(button: UIButton) {
-        button.enabled = true
+    func enableButton(_ button: UIButton) {
+        button.isEnabled = true
         
-        UIView.animateWithDuration(0.3, animations: {
+        UIView.animate(withDuration: 0.3, animations: {
             button.alpha = 1
         })
     }
-    func disableButton(button: UIButton, alpha: CGFloat = 0.5) {
-        button.enabled = false
+    func disableButton(_ button: UIButton, alpha: CGFloat = 0.5) {
+        button.isEnabled = false
         
-        UIView.animateWithDuration(0.3, animations: {
+        UIView.animate(withDuration: 0.3, animations: {
             button.alpha = alpha
         })
     }

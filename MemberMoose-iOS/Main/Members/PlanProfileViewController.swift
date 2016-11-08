@@ -11,45 +11,45 @@ import SVProgressHUD
 import Presentr
 
 class PlanProfileViewController: UIViewController {
-    private let plan: Plan
-    private let profileCellIdentifier           = "PlanProfileHeaderCellIdentifier"
-    private let planPaymentCellIdentifier       = "PlanPaymentDetailsCellIdentifier"
-    private let planDescriptionCellIdentifier   = "PlanDescriptionCellIdentifier"
-    private let planFeatureCellIdentifier       = "PlanFeatureCellIdentifier"
-    private let planTermsOfServiceCellIdentifier = "PlanTermsOfServiceCellIdentifier"
-    private let planSubscriberCellIdentifier    = "PlanSubscriberCellIdentifier"
-    private let planActivityCellIdentifier      = "PlanActivityCellIdentifier"
+    fileprivate let plan: Plan
+    fileprivate let profileCellIdentifier           = "PlanProfileHeaderCellIdentifier"
+    fileprivate let planPaymentCellIdentifier       = "PlanPaymentDetailsCellIdentifier"
+    fileprivate let planDescriptionCellIdentifier   = "PlanDescriptionCellIdentifier"
+    fileprivate let planFeatureCellIdentifier       = "PlanFeatureCellIdentifier"
+    fileprivate let planTermsOfServiceCellIdentifier = "PlanTermsOfServiceCellIdentifier"
+    fileprivate let planSubscriberCellIdentifier    = "PlanSubscriberCellIdentifier"
+    fileprivate let planActivityCellIdentifier      = "PlanActivityCellIdentifier"
 
-    private let tableCellHeight: CGFloat        = 120
-    private var planNavigationState: PlanNavigationState = .Details
+    fileprivate let tableCellHeight: CGFloat        = 120
+    fileprivate var planNavigationState: PlanNavigationState = .details
     weak var profileDelegate: ProfileDelegate?
     
-    private let offsetNavHeaderHeight: CGFloat = 64.0
-    private let offsetLabelHeaderHeight: CGFloat = 32.0
-    private let labelHeaderAdditionalOffset: CGFloat = 6.0
-    private let chromeAnimationDuration: NSTimeInterval = 0.2
-    private let verticalNavHeaderOffset: CGFloat = 12.0
-    private let menuButtonWidth: CGFloat = 26.0
-    private let nonNavBarMenuButtonVerticalOffset: CGFloat = 20.0;
-    private let nonNavBarMenuButtonHorizontalOffset: CGFloat = 12.0;
-    private var chromeVisible = true
+    fileprivate let offsetNavHeaderHeight: CGFloat = 64.0
+    fileprivate let offsetLabelHeaderHeight: CGFloat = 32.0
+    fileprivate let labelHeaderAdditionalOffset: CGFloat = 6.0
+    fileprivate let chromeAnimationDuration: TimeInterval = 0.2
+    fileprivate let verticalNavHeaderOffset: CGFloat = 12.0
+    fileprivate let menuButtonWidth: CGFloat = 26.0
+    fileprivate let nonNavBarMenuButtonVerticalOffset: CGFloat = 20.0;
+    fileprivate let nonNavBarMenuButtonHorizontalOffset: CGFloat = 12.0;
+    fileprivate var chromeVisible = true
     
-    private var hasMembers = false
-    private var hasPlans = false
+    fileprivate var hasMembers = false
+    fileprivate var hasPlans = false
     
-    private var pageNumber = 1
+    fileprivate var pageNumber = 1
     
-    private var presenter: Presentr = {
-        let _presenter = Presentr(presentationType: .Alert)
-        _presenter.transitionType = .CoverVertical // Optional
-        _presenter.presentationType = .Popup
+    fileprivate var presenter: Presentr = {
+        let _presenter = Presentr(presentationType: .alert)
+        _presenter.transitionType = .coverVertical // Optional
+        _presenter.presentationType = .popup
         
         return _presenter
     }()
-    private var scrollDarkNavDelayFactor:CGFloat {
+    fileprivate var scrollDarkNavDelayFactor:CGFloat {
         return 1.3
     }
-    private var parallaxHeight: CGFloat {
+    fileprivate var parallaxHeight: CGFloat {
         //values determined by the top padding of the title in the authed/unauth headers
         if tableView.visibleCells.count > 0 {
             return tableView.visibleCells[0].frame.size.height
@@ -57,15 +57,15 @@ class PlanProfileViewController: UIViewController {
         
         return 0
     }
-    private lazy var navHeader: UIView = {
+    fileprivate lazy var navHeader: UIView = {
         let _view = UIView()
-        _view.backgroundColor = UIColor.clearColor()
+        _view.backgroundColor = UIColor.clear
         _view.clipsToBounds = true
         
         self.view.addSubview(_view)
         return _view
     }()
-    private lazy var navHeaderDarkCoverView: UIView = {
+    fileprivate lazy var navHeaderDarkCoverView: UIView = {
         let _view = UIView()
         _view.backgroundColor = UIColorTheme.Primary
         _view.alpha = 0
@@ -73,19 +73,19 @@ class PlanProfileViewController: UIViewController {
         self.navHeader.addSubview(_view)
         return _view
     }()
-    private lazy var navHeaderLineView: UIView = {
+    fileprivate lazy var navHeaderLineView: UIView = {
         let _view = UIView()
-        _view.backgroundColor = UIColor.flatWhiteColor()
+        _view.backgroundColor = UIColor.flatWhite()
         
         self.navHeaderDarkCoverView.addSubview(_view)
         
         return _view
     }()
-    private lazy var navHeaderNameLabel: UILabel = {
+    fileprivate lazy var navHeaderNameLabel: UILabel = {
         let _label = UILabel()
         _label.font = UIFontTheme.Bold()
-        _label.textColor = UIColor.whiteColor()
-        _label.textAlignment = .Center
+        _label.textColor = UIColor.white
+        _label.textAlignment = .center
         
         self.navHeaderDarkCoverView.addSubview(_label)
         
@@ -96,76 +96,76 @@ class PlanProfileViewController: UIViewController {
             tableView.reloadData()
         }
     }
-    private lazy var menuButton: UIButton = {
+    fileprivate lazy var menuButton: UIButton = {
         let _button = UIButton()
-        if let navigationController = self.navigationController where navigationController.viewControllers.count > 1 {
-            _button.setImage(UIImage(named:"Back-Reverse"), forState: .Normal)
+        if let navigationController = self.navigationController , navigationController.viewControllers.count > 1 {
+            _button.setImage(UIImage(named:"Back-Reverse"), for: UIControlState())
         } else {
-            _button.setImage(UIImage(named:"Menu"), forState: .Normal)
+            _button.setImage(UIImage(named:"Menu"), for: UIControlState())
         }
-        _button.addTarget(self, action: #selector(ProfileViewController.backClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(ProfileViewController.backClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var settingsButton: UIButton = {
+    fileprivate lazy var settingsButton: UIButton = {
         let _button = UIButton()
-        _button.setImage(UIImage(named:"Edit"), forState: .Normal)
-        _button.addTarget(self, action: #selector(ProfileViewController.editProfileClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setImage(UIImage(named:"Edit"), for: UIControlState())
+        _button.addTarget(self, action: #selector(ProfileViewController.editProfileClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var tableView: UITableView = {
-        let _tableView                  = UITableView(frame: CGRect.zero, style: .Grouped)
+    fileprivate lazy var tableView: UITableView = {
+        let _tableView                  = UITableView(frame: CGRect.zero, style: .grouped)
         _tableView.dataSource           = self
         _tableView.delegate             = self
-        _tableView.backgroundColor      = UIColor.whiteColor()
+        _tableView.backgroundColor      = UIColor.white
         _tableView.alwaysBounceVertical = true
-        _tableView.separatorInset       = UIEdgeInsetsZero
-        _tableView.layoutMargins        = UIEdgeInsetsZero
+        _tableView.separatorInset       = UIEdgeInsets.zero
+        _tableView.layoutMargins        = UIEdgeInsets.zero
         _tableView.tableFooterView      = UIView()
         _tableView.estimatedRowHeight   = self.tableCellHeight
         _tableView.rowHeight = UITableViewAutomaticDimension
-        _tableView.contentInset         = UIEdgeInsetsZero
+        _tableView.contentInset         = UIEdgeInsets.zero
         //_tableView.separatorStyle       = .None
         
-        _tableView.registerClass(PlanProfileHeaderCell.self, forCellReuseIdentifier: self.profileCellIdentifier)
-        _tableView.registerClass(PlanPaymentDetailsCell.self, forCellReuseIdentifier: self.planPaymentCellIdentifier)
-        _tableView.registerClass(PlanDescriptionCell.self, forCellReuseIdentifier: self.planDescriptionCellIdentifier)
-        _tableView.registerClass(PlanFeatureCell.self, forCellReuseIdentifier: self.planFeatureCellIdentifier)
-        _tableView.registerClass(PlanTermsOfServiceCell.self, forCellReuseIdentifier: self.planTermsOfServiceCellIdentifier)
-        _tableView.registerClass(PlanSubscriberCell.self, forCellReuseIdentifier: self.planSubscriberCellIdentifier)
-        _tableView.registerClass(PlanActivityCell.self, forCellReuseIdentifier: self.planActivityCellIdentifier)
+        _tableView.register(PlanProfileHeaderCell.self, forCellReuseIdentifier: self.profileCellIdentifier)
+        _tableView.register(PlanPaymentDetailsCell.self, forCellReuseIdentifier: self.planPaymentCellIdentifier)
+        _tableView.register(PlanDescriptionCell.self, forCellReuseIdentifier: self.planDescriptionCellIdentifier)
+        _tableView.register(PlanFeatureCell.self, forCellReuseIdentifier: self.planFeatureCellIdentifier)
+        _tableView.register(PlanTermsOfServiceCell.self, forCellReuseIdentifier: self.planTermsOfServiceCellIdentifier)
+        _tableView.register(PlanSubscriberCell.self, forCellReuseIdentifier: self.planSubscriberCellIdentifier)
+        _tableView.register(PlanActivityCell.self, forCellReuseIdentifier: self.planActivityCellIdentifier)
         
         self.view.addSubview(_tableView)
         return _tableView
     }()
-    private lazy var addMemberButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.Custom)
+    fileprivate lazy var addMemberButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
         _button.backgroundColor = UIColorTheme.Primary
-        _button.setTitle("ADD MEMBER", forState: .Normal)
-        _button.setTitleColor(.whiteColor(), forState: .Normal)
-        _button.addTarget(self, action: #selector(ProfileViewController.addMemberClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setTitle("ADD MEMBER", for: UIControlState())
+        _button.setTitleColor(.white, for: UIControlState())
+        _button.addTarget(self, action: #selector(ProfileViewController.addMemberClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var addPlanButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.Custom)
+    fileprivate lazy var addPlanButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
         _button.backgroundColor = UIColorTheme.Primary
-        _button.setTitle("CREATE PLAN", forState: .Normal)
-        _button.setTitleColor(.whiteColor(), forState: .Normal)
-        _button.addTarget(self, action: #selector(ProfileViewController.addPlanClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setTitle("CREATE PLAN", for: UIControlState())
+        _button.setTitleColor(.white, for: UIControlState())
+        _button.addTarget(self, action: #selector(ProfileViewController.addPlanClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var messageToolbarView: MessageToolbarView = {
+    fileprivate lazy var messageToolbarView: MessageToolbarView = {
         let _view = MessageToolbarView()
         
         return _view
@@ -178,7 +178,7 @@ class PlanProfileViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: true)
@@ -186,29 +186,29 @@ class PlanProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = UIRectEdge()
         automaticallyAdjustsScrollViewInsets = false
         
         title = "Plan"
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         
         configureRevealControllerGestures(view)
         configureRevealWidth()
         
-        self.tableView.infiniteScrollIndicatorStyle = .Gray
+        self.tableView.infiniteScrollIndicatorStyle = .gray
         
         // Set custom indicator margin
         self.tableView.infiniteScrollIndicatorMargin = 40
         
         // Add infinite scroll handler
-        self.tableView.addInfiniteScrollWithHandler { [weak self] (scrollView) -> Void in
+        self.tableView.addInfiniteScroll { [weak self] (scrollView) -> Void in
             guard let _self = self else {
                 return
             }
             _self.pageNumber += 1
             
             switch _self.planNavigationState {
-            case .Subscribers:
+            case .subscribers:
                 ApiManager.sharedInstance.getMembers(_self.pageNumber, success: { (members) in
                     var viewModels = _self.dataSource[1]
                     for member in members! {
@@ -228,7 +228,7 @@ class PlanProfileViewController: UIViewController {
                         
                         ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 })
-            case .Activity:
+            case .activity:
                 ApiManager.sharedInstance.getPlans(_self.pageNumber, success: { (plans) in
                     var viewModels = _self.dataSource[1]
                     for plan in plans! {
@@ -248,7 +248,7 @@ class PlanProfileViewController: UIViewController {
                         
                         ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 })
-            case .Details: break
+            case .details: break
             }
             
             scrollView.finishInfiniteScroll()
@@ -262,87 +262,87 @@ class PlanProfileViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        menuButton.snp_updateConstraints { (make) in
+        menuButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.leading.equalTo(view).inset(15)
             make.height.width.equalTo(20)
         }
-        settingsButton.snp_updateConstraints { (make) in
+        settingsButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.trailing.equalTo(view).inset(15)
             make.height.width.equalTo(20)
         }
-        tableView.snp_updateConstraints { (make) in
+        tableView.snp.updateConstraints { (make) in
             make.edges.equalTo(view)
         }
-        navHeader.snp_updateConstraints { (make) in
+        navHeader.snp.updateConstraints { (make) in
             make.top.equalTo(self.view)
             make.leading.trailing.equalTo(self.view)
             make.height.equalTo(offsetNavHeaderHeight)
         }
-        navHeaderDarkCoverView.snp_updateConstraints { (make) in
+        navHeaderDarkCoverView.snp.updateConstraints { (make) in
             make.edges.equalTo(self.navHeader)
         }
-        navHeaderNameLabel.snp_updateConstraints { (make) in
+        navHeaderNameLabel.snp.updateConstraints { (make) in
             make.centerX.equalTo(self.navHeader)
             make.centerY.equalTo(self.navHeader).offset(verticalNavHeaderOffset)
             make.leading.trailing.equalTo(self.navHeader).inset(10*2+menuButtonWidth)
         }
-        navHeaderLineView.snp_updateConstraints { (make) in
+        navHeaderLineView.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(self.navHeader)
             make.height.equalTo(kOnePX*2)
             
-            make.bottom.equalTo(self.navHeader.snp_bottom)
+            make.bottom.equalTo(self.navHeader.snp.bottom)
         }
-        addMemberButton.snp_updateConstraints { (make) in
+        addMemberButton.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(view)
             make.height.equalTo(60)
         }
-        addPlanButton.snp_updateConstraints { (make) in
+        addPlanButton.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(view)
             make.height.equalTo(60)
         }
         switch planNavigationState {
-        case .Subscribers:
+        case .subscribers:
             var offset = 60
             var tableViewOffset = 0
             if hasMembers {
                 offset = 0
                 tableViewOffset = 60
             }
-            addMemberButton.snp_updateConstraints { (make) in
-                make.bottom.equalTo(view.snp_bottom).offset(offset)
+            addMemberButton.snp.updateConstraints { (make) in
+                make.bottom.equalTo(view.snp.bottom).offset(offset)
             }
-            addPlanButton.snp_updateConstraints { (make) in
-                make.bottom.equalTo(view.snp_bottom).offset(60)
+            addPlanButton.snp.updateConstraints { (make) in
+                make.bottom.equalTo(view.snp.bottom).offset(60)
             }
-            tableView.snp_updateConstraints { (make) in
+            tableView.snp.updateConstraints { (make) in
                 make.bottom.equalTo(view).inset(tableViewOffset)
             }
-        case .Details:
+        case .details:
             var offset = 60
             var tableViewOffset = 0
             if hasPlans {
                 offset = 0
                 tableViewOffset = 60
             }
-            addMemberButton.snp_updateConstraints(closure: { (make) in
-                make.bottom.equalTo(view.snp_bottom).offset(60)
+            addMemberButton.snp.updateConstraints({ (make) in
+                make.bottom.equalTo(view.snp.bottom).offset(60)
             })
-            addPlanButton.snp_updateConstraints(closure: { (make) in
-                make.bottom.equalTo(view.snp_bottom).offset(offset)
+            addPlanButton.snp.updateConstraints({ (make) in
+                make.bottom.equalTo(view.snp.bottom).offset(offset)
             })
-            tableView.snp_updateConstraints { (make) in
+            tableView.snp.updateConstraints { (make) in
                 make.bottom.equalTo(view).inset(tableViewOffset)
             }
         default:
-            addMemberButton.snp_updateConstraints { (make) in
-                make.bottom.equalTo(view.snp_bottom).offset(60)
+            addMemberButton.snp.updateConstraints { (make) in
+                make.bottom.equalTo(view.snp.bottom).offset(60)
             }
-            addPlanButton.snp_updateConstraints { (make) in
-                make.bottom.equalTo(view.snp_bottom).offset(60)
+            addPlanButton.snp.updateConstraints { (make) in
+                make.bottom.equalTo(view.snp.bottom).offset(60)
             }
-            tableView.snp_updateConstraints { (make) in
+            tableView.snp.updateConstraints { (make) in
                 make.bottom.equalTo(view).inset(0)
             }
         }
@@ -354,10 +354,10 @@ class PlanProfileViewController: UIViewController {
     func setup() {
         navHeaderNameLabel.text = plan.name
     }
-    func backClicked(sender: UIButton) {
-        navigationController?.popViewControllerAnimated(true)
+    func backClicked(_ sender: UIButton) {
+        navigationController?.popViewController(animated: true)
     }
-    func editProfileClicked(button: UIButton) {
+    func editProfileClicked(_ button: UIButton) {
 
     }
     func buildDataSet() {
@@ -367,7 +367,7 @@ class PlanProfileViewController: UIViewController {
         items.append([profileHeaderViewModel])
 
         switch planNavigationState {
-        case .Details:
+        case .details:
             
             let planPaymentDetailsViewModel = PlanPaymentDetailsViewModel(plan: plan)
             items.append([planPaymentDetailsViewModel])
@@ -394,7 +394,7 @@ class PlanProfileViewController: UIViewController {
             
             let planTermOfServiceViewModel = PlanTermsOfServiceViewModel(plan: plan)
             items.append([planTermOfServiceViewModel])
-        case.Activity:
+        case.activity:
             let activities = ["James Rhodes subscribed!",
                             "James Rhodes payment failed.",
                             "James Rhodes paid $25.00",
@@ -406,7 +406,7 @@ class PlanProfileViewController: UIViewController {
             }
             items.append(activityViewModels)
             
-        case .Subscribers:
+        case .subscribers:
             ApiManager.sharedInstance.getMembers(self.pageNumber, success: { [weak self] (members) in
                 guard let _self = self else {
                     return
@@ -444,14 +444,14 @@ class PlanProfileViewController: UIViewController {
         
         dataSource = items
     }
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y
         handleNavHeaderScrollingWithOffset(yOffset)
     }
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
-    func handleNavHeaderScrollingWithOffset(yOffset: CGFloat) {
+    func handleNavHeaderScrollingWithOffset(_ yOffset: CGFloat) {
         if chromeVisible {
             navHeaderDarkCoverView.alpha = min(1.0, (yOffset * scrollDarkNavDelayFactor - parallaxHeight + offsetLabelHeaderHeight) *  0.01)
             
@@ -459,31 +459,31 @@ class PlanProfileViewController: UIViewController {
             navHeaderNameLabel.layer.transform = labelTransform
         }
     }
-    func addPlanClicked(sender: UIButton) {
+    func addPlanClicked(_ sender: UIButton) {
         let viewController = PlanProfileViewController(plan: plan)
         
         navigationController?.pushViewController(viewController, animated: true)
     }
-    func addMemberClicked(sender: UIButton) {
+    func addMemberClicked(_ sender: UIButton) {
         let viewController = SharePlanViewController()
         
         navigationController?.pushViewController(viewController, animated: true)
     }
 }
 extension PlanProfileViewController : UITableViewDataSource {
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return dataSource.count
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let dataItems = dataSource[section]
         
         return dataItems.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let dataItems = dataSource[indexPath.section]
-        let viewModel = dataItems[indexPath.row]
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let dataItems = dataSource[(indexPath as NSIndexPath).section]
+        let viewModel = dataItems[(indexPath as NSIndexPath).row]
         let cell = viewModel.dequeueAndConfigure(tableView, indexPath: indexPath)
         
         cell.layoutIfNeeded()
@@ -493,14 +493,14 @@ extension PlanProfileViewController : UITableViewDataSource {
 }
 
 extension PlanProfileViewController : UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
-        let dataItems = dataSource[indexPath.section]
+        let dataItems = dataSource[(indexPath as NSIndexPath).section]
         
         switch planNavigationState {
-        case .Subscribers:
-            guard let viewModel = dataItems[indexPath.row] as? MemberViewModel else {
+        case .subscribers:
+            guard let viewModel = dataItems[(indexPath as NSIndexPath).row] as? MemberViewModel else {
                 return
             }
             
@@ -510,19 +510,19 @@ extension PlanProfileViewController : UITableViewDelegate {
             navigationController?.pushViewController(viewController, animated: true)
             
         //profileType = .calf
-        case .Details:
-            guard let viewModel = dataItems[indexPath.row] as? PlanViewModel else {
+        case .details:
+            guard let viewModel = dataItems[(indexPath as NSIndexPath).row] as? PlanViewModel else {
                 return
             }
             
 //                let viewController = PlanProfileViewController()
 //                
 //                navigationController?.pushViewController(viewController, animated: true)
-        case .Activity:
+        case .activity:
             break;
     }
     }
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let dataItems = dataSource[section]
         
         if dataItems.count > 0 {
@@ -533,7 +533,7 @@ extension PlanProfileViewController : UITableViewDelegate {
         
         return nil
     }
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let dataItems = dataSource[section]
         
         if dataItems.count > 0 {
@@ -544,13 +544,13 @@ extension PlanProfileViewController : UITableViewDelegate {
         
         return 0
     }
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.min
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat.leastNormalMagnitude
     }
 }
 extension PlanProfileViewController: PlanNavigationDelegate {
     func subscribersClicked() {
-        planNavigationState = .Subscribers
+        planNavigationState = .subscribers
         //planNavigation.setSelectedButton(memberNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)
@@ -561,7 +561,7 @@ extension PlanProfileViewController: PlanNavigationDelegate {
         reloadInputViews()
     }
     func activityClicked() {
-        planNavigationState = .Activity
+        planNavigationState = .activity
         //planNavigation.setSelectedButton(memberNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)
@@ -572,7 +572,7 @@ extension PlanProfileViewController: PlanNavigationDelegate {
         reloadInputViews()
     }
     func detailsClicked() {
-        planNavigationState = .Details
+        planNavigationState = .details
         //planNavigation.setSelectedButton(memberNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)

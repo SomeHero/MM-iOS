@@ -15,15 +15,15 @@ import ASImageResize
 private let imageScaledSize = CGSize(width: 800, height: 800)
 private let previewImageSize = CGSize(width: 30, height: 30)
 
-typealias ImagePickerCompletionBlock = (image: UIImage?) -> Void
-typealias MediaPermissionBlock = (granted: Bool, previouslyRequested: Bool) -> Void
+typealias ImagePickerCompletionBlock = (_ image: UIImage?) -> Void
+typealias MediaPermissionBlock = (_ granted: Bool, _ previouslyRequested: Bool) -> Void
 
 final class ImagePicker: NSObject {
     
-    private static let sharedInstance = ImagePicker()
-    private var completionBlock: ImagePickerCompletionBlock?
-    private var thumbnailCompletionBlock: ImagePickerCompletionBlock?
-    private var fetchThumbnail: Bool = false
+    fileprivate static let sharedInstance = ImagePicker()
+    fileprivate var completionBlock: ImagePickerCompletionBlock?
+    fileprivate var thumbnailCompletionBlock: ImagePickerCompletionBlock?
+    fileprivate var fetchThumbnail: Bool = false
     
     override init() {
         super.init()
@@ -31,7 +31,7 @@ final class ImagePicker: NSObject {
     
     // MARK: - Image picker
     
-    class func presentOn(controller: UIViewController, thumbnailCompletion: ImagePickerCompletionBlock? = nil, completion: ImagePickerCompletionBlock) {
+    class func presentOn(_ controller: UIViewController, thumbnailCompletion: ImagePickerCompletionBlock? = nil, completion: @escaping ImagePickerCompletionBlock) {
         requestLibraryAccess { granted, previouslyRequested in
             if granted {
                 sharedInstance.presentOn(controller, completion: completion, thumbnailCompletion: thumbnailCompletion)
@@ -41,34 +41,34 @@ final class ImagePicker: NSObject {
         }
     }
     
-    private func presentOn(controller: UIViewController, completion: ImagePickerCompletionBlock, thumbnailCompletion: ImagePickerCompletionBlock?) {
+    fileprivate func presentOn(_ controller: UIViewController, completion: @escaping ImagePickerCompletionBlock, thumbnailCompletion: ImagePickerCompletionBlock?) {
         completionBlock = completion
         thumbnailCompletionBlock = thumbnailCompletion
         
-        let imagePicker = ImagePickerSheetController(mediaType: .Image)
+        let imagePicker = ImagePickerSheetController(mediaType: .image)
         imagePicker.maximumSelection = 1
         
         let takePhotoAction = ImagePickerAction(title: NSLocalizedString("Take Photo", comment: "Action Title"), secondaryTitle: "", handler: { _ in
             ImagePicker.requestCameraAccess { granted, previouslyRequested in
                 if granted {
-                    self.presentImagePickerController(.Camera, controller: controller)
+                    self.presentImagePickerController(.camera, controller: controller)
                 } else if previouslyRequested {
                     self.showPermissionDeniedAlertWithMessage(NSLocalizedString("Error_Message_CameraSettings", comment: ""), controller: controller)
                 }
             }
             }, secondaryHandler: { _, numberOfPhotos in
-                self.addImageAssets(imagePicker.selectedImageAssets)
+                self.addImageAssets(imagePicker.selectedAssets)
         })
         
         let choosePhotoAction = ImagePickerAction(title: NSLocalizedString("Photo Library", comment: "Action Title"), secondaryTitle: {
-            NSString.localizedStringWithFormat(NSLocalizedString("Add Photo", comment: "Action Title"), $0) as String
+            NSString.localizedStringWithFormat(NSLocalizedString("Add Photo", comment: "Action Title") as NSString, $0) as String
             }, handler: { _ in
-                self.presentImagePickerController(.PhotoLibrary, controller: controller)
+                self.presentImagePickerController(.photoLibrary, controller: controller)
             }, secondaryHandler: { _, numberOfPhotos in
-                self.addImageAssets(imagePicker.selectedImageAssets)
+                self.addImageAssets(imagePicker.selectedAssets)
         })
         
-        let cancelAction = ImagePickerAction(title: NSLocalizedString("Cancel", comment: "Action Title"), style: .Cancel, handler: { _ in
+        let cancelAction = ImagePickerAction(title: NSLocalizedString("Cancel", comment: "Action Title"), style: .cancel, handler: { _ in
             print("Cancelled")
         })
         
@@ -76,47 +76,47 @@ final class ImagePicker: NSObject {
         imagePicker.addAction(choosePhotoAction)
         imagePicker.addAction(cancelAction)
         
-        controller.presentViewController(imagePicker, animated: true, completion: nil)
+        controller.present(imagePicker, animated: true, completion: nil)
     }
     
-    private func showPermissionDeniedAlertWithMessage(message: String, controller: UIViewController) {
-        let alert = UIAlertController(title: NSLocalizedString("Error_Title_Ouch", comment: ""), message: message, preferredStyle: .Alert)
-        let settingsAction = UIAlertAction(title: NSLocalizedString("Error_Action_GoToSettings", comment: ""), style: .Default) { _ in
-            if let url = NSURL(string:UIApplicationOpenSettingsURLString) {
-                UIApplication.sharedApplication().openURL(url)
+    fileprivate func showPermissionDeniedAlertWithMessage(_ message: String, controller: UIViewController) {
+        let alert = UIAlertController(title: NSLocalizedString("Error_Title_Ouch", comment: ""), message: message, preferredStyle: .alert)
+        let settingsAction = UIAlertAction(title: NSLocalizedString("Error_Action_GoToSettings", comment: ""), style: .default) { _ in
+            if let url = URL(string:UIApplicationOpenSettingsURLString) {
+                UIApplication.shared.openURL(url)
             }
         }
-        let cancelAction = UIAlertAction(title: NSLocalizedString("Common_NoThanks", comment: ""), style: .Cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Common_NoThanks", comment: ""), style: .cancel, handler: nil)
         alert.addAction(settingsAction)
         alert.addAction(cancelAction)
         
-        controller.presentViewController(alert, animated: true, completion: nil)
+        controller.present(alert, animated: true, completion: nil)
     }
     
-    private func presentImagePickerController(source: UIImagePickerControllerSourceType, controller: UIViewController) {
+    fileprivate func presentImagePickerController(_ source: UIImagePickerControllerSourceType, controller: UIViewController) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
         
         var sourceType = source
         if (!UIImagePickerController.isSourceTypeAvailable(sourceType)) {
-            sourceType = .PhotoLibrary
+            sourceType = .photoLibrary
             print("Fallback to camera roll as a source since the simulator doesn't support taking pictures")
         }
         imagePicker.sourceType = sourceType
         
-        controller.presentViewController(imagePicker, animated: true, completion: nil)
+        controller.present(imagePicker, animated: true, completion: nil)
     }
     
-    private func addImageAssets(assets: [PHAsset]) {
+    fileprivate func addImageAssets(_ assets: [PHAsset]) {
         let options = PHImageRequestOptions()
-        options.synchronous = true
+        options.isSynchronous = true
         
-        let manager = PHImageManager.defaultManager()
+        let manager = PHImageManager.default()
         
         // Right now the API limits us to just one photo
         if let asset = assets.first {
-            manager.requestImageForAsset(asset, targetSize: imageScaledSize, contentMode: .AspectFit, options: options, resultHandler: { [weak self] (image, _) -> Void in
+            manager.requestImage(for: asset, targetSize: imageScaledSize, contentMode: .aspectFit, options: options, resultHandler: { [weak self] (image, _) -> Void in
                 guard let _self = self else {
                     return
                 }
@@ -126,28 +126,28 @@ final class ImagePicker: NSObject {
         }
     }
     
-    private func resizedImageFor(image: UIImage) -> UIImage {
-        return image.resizedImageToFitInSize(imageScaledSize, scaleIfSmaller: false)
+    fileprivate func resizedImageFor(_ image: UIImage) -> UIImage {
+        return image.resizedImageToFit(in: imageScaledSize, scaleIfSmaller: false)
     }
     
-    private func thumbnailImageFor(image: UIImage) -> UIImage {
-        return image.resizedImageToFitInSize(previewImageSize, scaleIfSmaller: false)
+    fileprivate func thumbnailImageFor(_ image: UIImage) -> UIImage {
+        return image.resizedImageToFit(in: previewImageSize, scaleIfSmaller: false)
     }
     
-    private func callCompletionHandlersForImage(image: UIImage?) {
+    fileprivate func callCompletionHandlersForImage(_ image: UIImage?) {
         if let image = image {
             if let completion = completionBlock {
                 let resizedImage = resizedImageFor(image)
-                completion(image: resizedImage)
+                completion(resizedImage)
             }
             
             if let thumbnailCompletion = thumbnailCompletionBlock {
                 let thumbnailImage = thumbnailImageFor(image)
-                thumbnailCompletion(image: thumbnailImage)
+                thumbnailCompletion(thumbnailImage)
             }
         } else {
-            completionBlock?(image: nil)
-            thumbnailCompletionBlock?(image: nil)
+            completionBlock?(nil)
+            thumbnailCompletionBlock?(nil)
         }
     }
     
@@ -190,35 +190,35 @@ final class ImagePicker: NSObject {
 //        return nil
 //    }
     
-    private static func getImageFileURLFor(user: User) -> NSURL {
-        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+    fileprivate static func getImageFileURLFor(_ user: User) -> URL {
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         
-        var url = urls.last!.URLByAppendingPathComponent("isa_userImage_\(user.id)")
-        url = url.URLByAppendingPathExtension("png")
+        var url = urls.last!.appendingPathComponent("isa_userImage_\(user.id)")
+        url = url.appendingPathExtension("png")
         
         return url
     }
     
-    private static func requestCameraAccess(completion: MediaPermissionBlock) {
-        let previouslyRequested = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo) == .NotDetermined ? false : true
+    fileprivate static func requestCameraAccess(_ completion: @escaping MediaPermissionBlock) {
+        let previouslyRequested = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) == .notDetermined ? false : true
         
-        AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo, completionHandler: { granted in
-            dispatch_async(dispatch_get_main_queue()) {
-                completion(granted: granted, previouslyRequested: previouslyRequested)
+        AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { granted in
+            DispatchQueue.main.async {
+                completion(granted, previouslyRequested)
             }
         })
     }
     
-    private static func requestLibraryAccess(completion: MediaPermissionBlock) {
-        let previouslyRequested = PHPhotoLibrary.authorizationStatus() == .NotDetermined ? false : true
+    fileprivate static func requestLibraryAccess(_ completion: @escaping MediaPermissionBlock) {
+        let previouslyRequested = PHPhotoLibrary.authorizationStatus() == .notDetermined ? false : true
         
         PHPhotoLibrary.requestAuthorization { status in
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 switch status {
-                case .Authorized:
-                    completion(granted: true, previouslyRequested: previouslyRequested)
+                case .authorized:
+                    completion(true, previouslyRequested)
                 default:
-                    completion(granted: false, previouslyRequested: previouslyRequested)
+                    completion(false, previouslyRequested)
                 }
             }
         }
@@ -227,14 +227,14 @@ final class ImagePicker: NSObject {
 
 extension ImagePicker: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-        picker.dismissViewControllerAnimated(true) { [weak self] in
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [AnyHashable: Any]!) {
+        picker.dismiss(animated: true) { [weak self] in
             self?.callCompletionHandlersForImage(image)
         }
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        picker.dismissViewControllerAnimated(true) { [weak self] in
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        picker.dismiss(animated: true) { [weak self] in
             guard let _self = self else { return }
             if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
                 _self.callCompletionHandlersForImage(image)
@@ -244,8 +244,8 @@ extension ImagePicker: UIImagePickerControllerDelegate, UINavigationControllerDe
         }
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        picker.dismissViewControllerAnimated(true) { [weak self] in
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true) { [weak self] in
             guard let _self = self else { return }
             
             _self.callCompletionHandlersForImage(nil)

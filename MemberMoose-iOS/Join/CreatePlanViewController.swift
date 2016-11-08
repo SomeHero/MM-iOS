@@ -9,28 +9,28 @@
 import UIKit
 
 class CreatePlanViewController: UIViewController {
-    private lazy var backButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.Custom)
-        _button.setImage(UIImage(named: "Back"), forState: .Normal)
-        _button.imageView?.contentMode = .ScaleAspectFit
+    fileprivate lazy var backButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
+        _button.setImage(UIImage(named: "Back"), for: UIControlState())
+        _button.imageView?.contentMode = .scaleAspectFit
         
-        _button.addTarget(self, action: #selector(CreatePlanViewController.backClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(CreatePlanViewController.backClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var titleLabel: UILabel = {
+    fileprivate lazy var titleLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Small)
+        _label.textAlignment = .center
+        _label.font = UIFontTheme.Regular(.small)
         
         self.view.addSubview(_label)
         
         return _label
     }()
-    private lazy var scrollView: UIScrollView = {
+    fileprivate lazy var scrollView: UIScrollView = {
         let _scrollView = UIScrollView()
         
         self.view.addSubview(_scrollView)
@@ -38,13 +38,13 @@ class CreatePlanViewController: UIViewController {
     }()
     lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [self.planNameTextField, self.planDescriptionTextField, self.planChargeTypeTextField, self.planAmount, self.recurringPeriod, self.recurringDuration])
-        stack.axis = .Vertical
+        stack.axis = .vertical
         stack.spacing = 10
         
         self.scrollView.addSubview(stack)
         return stack
     }()
-    private lazy var planNameTextField: StackViewInputField = {
+    fileprivate lazy var planNameTextField: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", label: "Plan Name", placeholder: "My Subscription Plan", tag: 101)
         self.configureTextField(_textField.textField)
@@ -52,7 +52,7 @@ class CreatePlanViewController: UIViewController {
         //        _textField.textField.addTarget(self, action: #selector(ConfirmFacebookAccountViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return _textField
     }()
-    private lazy var planDescriptionTextField: StackViewInputField = {
+    fileprivate lazy var planDescriptionTextField: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", label: "Plan Description (Optional)", placeholder: "", tag: 102)
         self.configureTextField(_textField.textField)
@@ -60,44 +60,44 @@ class CreatePlanViewController: UIViewController {
         //        _textField.textField.addTarget(self, action: #selector(ConfirmFacebookAccountViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
         return _textField
     }()
-    private lazy var planChargeTypeTextField: PlanChargeTypeInputField = {
+    fileprivate lazy var planChargeTypeTextField: PlanChargeTypeInputField = {
         let _textField = PlanChargeTypeInputField()
         _textField.configure("How do you want to charge customers?")
         _textField.planChargeTypeDelegate = self
         return _textField
     }()
-    private lazy var planAmount: StackViewInputField = {
+    fileprivate lazy var planAmount: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", label: "Amount", placeholder: "", tag: 104)
         self.configureTextField(_textField.textField)
         
         //        _textField.textField.addTarget(self, action: #selector(ConfirmFacebookAccountViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
-        _textField.hidden = true
+        _textField.isHidden = true
         return _textField
     }()
-    private lazy var recurringPeriod: StackViewInputField = {
+    fileprivate lazy var recurringPeriod: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", label: "Recurring Period", placeholder: "", tag: 104)
         self.configureTextField(_textField.textField)
         
         //        _textField.textField.addTarget(self, action: #selector(ConfirmFacebookAccountViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
-        _textField.hidden = true
+        _textField.isHidden = true
         return _textField
     }()
-    private lazy var recurringDuration: StackViewInputField = {
+    fileprivate lazy var recurringDuration: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", label: "Recurring Duration", placeholder: "", tag: 104)
         self.configureTextField(_textField.textField)
         
         //        _textField.textField.addTarget(self, action: #selector(ConfirmFacebookAccountViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
-        _textField.hidden = true
+        _textField.isHidden = true
         return _textField
     }()
-    private lazy var nextButton: UIButton = {
+    fileprivate lazy var nextButton: UIButton = {
        let _button = UIButton()
         _button.backgroundColor = UIColorTheme.Primary
-        _button.setImage(UIImage(named: "RightArrow-Reversed"), forState: .Normal)
-        _button.imageView?.contentMode = .ScaleAspectFit
+        _button.setImage(UIImage(named: "RightArrow-Reversed"), for: UIControlState())
+        _button.imageView?.contentMode = .scaleAspectFit
         
         self.view.addSubview(_button)
         return _button
@@ -105,7 +105,7 @@ class CreatePlanViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         setup()
     }
 
@@ -116,49 +116,49 @@ class CreatePlanViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        backButton.snp_updateConstraints { (make) in
+        backButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(35)
             make.leading.equalTo(view).inset(15)
             make.height.equalTo(18)
         }
-        titleLabel.snp_updateConstraints { (make) in
+        titleLabel.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(35)
-            make.leading.greaterThanOrEqualTo(backButton.snp_trailing).inset(10)
+            make.leading.greaterThanOrEqualTo(backButton.snp.trailing).inset(10)
             //make.trailing.equalTo(leading)
             make.centerX.equalTo(view)
         }
-        scrollView.snp_updateConstraints { (make) in
+        scrollView.snp.updateConstraints { (make) in
             make.top.equalTo(titleLabel).inset(10)
             make.leading.trailing.equalTo(view)
             make.bottom.equalTo(view).inset(60)
         }
-        stackView.snp_updateConstraints { (make) in
+        stackView.snp.updateConstraints { (make) in
             make.top.equalTo(scrollView).inset(20)
             make.leading.trailing.equalTo(view).inset(20)
             make.bottom.equalTo(scrollView).inset(20)
         }
-        nextButton.snp_updateConstraints { (make) in
-            make.top.equalTo(scrollView.snp_bottom)
+        nextButton.snp.updateConstraints { (make) in
+            make.top.equalTo(scrollView.snp.bottom)
             make.leading.trailing.equalTo(view)
             make.bottom.equalTo(view)
         }
-        nextButton.imageView?.snp_updateConstraints(closure: { (make) in
+        nextButton.imageView?.snp.updateConstraints({ (make) in
             make.height.equalTo(40)
         })
     }
     func setup() {
         titleLabel.text = "Create First Plan"
     }
-    func backClicked(sender: UIButton) {
-        navigationController?.popViewControllerAnimated(true)
+    func backClicked(_ sender: UIButton) {
+        navigationController?.popViewController(animated: true)
     }
-    func nextClicked(sender: UIButton) {
+    func nextClicked(_ sender: UIButton) {
         let viewController = CreateFirstPlanViewController()
         
         navigationController?.pushViewController(viewController, animated: true)
     }
-    func configureTextField(textField: UITextField) {
-        textField.returnKeyType = .Next
+    func configureTextField(_ textField: UITextField) {
+        textField.returnKeyType = .next
         //        textField.delegate = self
         //
         //        let toolBar = KeyboardDecorator.getInputToolbarWithDelegate(self)
@@ -167,14 +167,14 @@ class CreatePlanViewController: UIViewController {
 }
 extension CreatePlanViewController: PlanChargeTypeDelegate {
     func didSetOneTime() {
-        planAmount.hidden = false
-        recurringPeriod.hidden = true
-        recurringDuration.hidden = true
+        planAmount.isHidden = false
+        recurringPeriod.isHidden = true
+        recurringDuration.isHidden = true
     }
     func didSetRecurrion() {
-        planAmount.hidden = false
-        recurringPeriod.hidden = false
-        recurringDuration.hidden = false
+        planAmount.isHidden = false
+        recurringPeriod.isHidden = false
+        recurringDuration.isHidden = false
     }
 }
 protocol PlanChargeTypeDelegate: class {
@@ -182,24 +182,24 @@ protocol PlanChargeTypeDelegate: class {
     func didSetRecurrion()
 }
 class PlanChargeTypeInputField: UIView {
-    private let padding: CGFloat = 18
-    private let verticalPadding: CGFloat = 6
-    private let fieldHeight: CGFloat = 40
+    fileprivate let padding: CGFloat = 18
+    fileprivate let verticalPadding: CGFloat = 6
+    fileprivate let fieldHeight: CGFloat = 40
 
     weak var planChargeTypeDelegate: PlanChargeTypeDelegate?
     
     lazy var inputLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Tiny)
+        _label.font = UIFontTheme.Regular(.tiny)
         
         self.addSubview(_label)
         return _label
     }()
     lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [self.oneTimeCheckbox, self.recurringCheckbox])
-        stack.axis = .Horizontal
+        stack.axis = .horizontal
         stack.spacing = 10
-        stack.distribution = .FillProportionally
+        stack.distribution = .fillProportionally
         
         self.addSubview(stack)
         
@@ -207,52 +207,52 @@ class PlanChargeTypeInputField: UIView {
     }()
     lazy var oneTimeCheckbox: UIButton = {
         let _button = UIButton()
-        _button.backgroundColor = UIColor.clearColor()
+        _button.backgroundColor = UIColor.clear
         _button.layer.cornerRadius = 5
         _button.layer.borderWidth = 1.0
         _button.layer.masksToBounds = true
-        _button.layer.backgroundColor = UIColor.clearColor().CGColor
-        _button.setTitle("One Time", forState: .Normal)
-        _button.setTitleColor(UIColorTheme.PrimaryFont, forState: .Normal)
+        _button.layer.backgroundColor = UIColor.clear.cgColor
+        _button.setTitle("One Time", for: UIControlState())
+        _button.setTitleColor(UIColorTheme.PrimaryFont, for: UIControlState())
         
-        _button.addTarget(self, action: #selector(PlanChargeTypeInputField.oneTimeClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(PlanChargeTypeInputField.oneTimeClicked(_:)), for: .touchUpInside)
         return _button
     }()
     lazy var recurringCheckbox: UIButton = {
         let _button = UIButton()
-        _button.backgroundColor = UIColor.clearColor()
+        _button.backgroundColor = UIColor.clear
         _button.layer.cornerRadius = 5
         _button.layer.borderWidth = 1.0
         _button.layer.masksToBounds = true
-        _button.layer.backgroundColor = UIColor.clearColor().CGColor
-        _button.setTitle("Recurring", forState: .Normal)
-        _button.setTitleColor(UIColorTheme.PrimaryFont, forState: .Normal)
+        _button.layer.backgroundColor = UIColor.clear.cgColor
+        _button.setTitle("Recurring", for: UIControlState())
+        _button.setTitleColor(UIColorTheme.PrimaryFont, for: UIControlState())
         
-        _button.addTarget(self, action: #selector(PlanChargeTypeInputField.recurringClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(PlanChargeTypeInputField.recurringClicked(_:)), for: .touchUpInside)
         return _button
     }()
     override func updateConstraints() {
-        inputLabel.snp_updateConstraints { (make) in
+        inputLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(self)
             make.top.equalTo(self).inset(verticalPadding)
             make.height.equalTo(fieldHeight)
         }
-        stackView.snp_updateConstraints { (make) in
+        stackView.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(self)
-            make.top.equalTo(inputLabel.snp_bottom).inset(verticalPadding)
+            make.top.equalTo(inputLabel.snp.bottom).inset(verticalPadding)
             make.bottom.equalTo(self)
         }
         
         super.updateConstraints()
     }
-    func configure(label: String? = nil, placeholder: String? = nil, tag: Int? = 0, keyboardType: UIKeyboardType? = .Default) {
-        inputLabel.text = label?.uppercaseString ?? ""
+    func configure(_ label: String? = nil, placeholder: String? = nil, tag: Int? = 0, keyboardType: UIKeyboardType? = .default) {
+        inputLabel.text = label?.uppercased() ?? ""
  
     }
-    func oneTimeClicked(sender: UIButton) {
+    func oneTimeClicked(_ sender: UIButton) {
         planChargeTypeDelegate?.didSetOneTime()
     }
-    func recurringClicked(sender: UIButton) {
+    func recurringClicked(_ sender: UIButton) {
         planChargeTypeDelegate?.didSetRecurrion()
     }
 }

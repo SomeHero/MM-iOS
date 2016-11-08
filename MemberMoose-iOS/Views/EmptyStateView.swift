@@ -13,13 +13,13 @@ class EmptyStateView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = UIColor.whiteColor()
+        backgroundColor = UIColor.white
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    private lazy var scrollView: UIScrollView = {
+    fileprivate lazy var scrollView: UIScrollView = {
         let _scrollView         = UIScrollView()
         
         self.addSubview(_scrollView)
@@ -28,10 +28,10 @@ class EmptyStateView: UIView {
     }()
     lazy var container: UIStackView = {
         let _container = UIStackView(arrangedSubviews: [self.titleLabel, self.messageLabel])
-        _container.axis = .Vertical
+        _container.axis = .vertical
         _container.spacing = 10
-        _container.distribution = .EqualSpacing
-        _container.alignment = .Center
+        _container.distribution = .equalSpacing
+        _container.alignment = .center
         
         self.scrollView.addSubview(_container)
         
@@ -47,24 +47,24 @@ class EmptyStateView: UIView {
     lazy var titleLabel: UILabel = {
         let _label = UILabel()
         
-        _label.font = UIFontTheme.Regular(.Large)
-        _label.textColor = UIColor.flatBlackColor()
+        _label.font = UIFontTheme.Regular(.large)
+        _label.textColor = UIColor.flatBlack()
         _label.numberOfLines = 0
-        _label.textAlignment = .Center
+        _label.textAlignment = .center
         
         return _label
     }()
     
     lazy var messageLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Default)
-        _label.textColor = UIColor.flatBlackColor()
+        _label.font = UIFontTheme.Regular(.default)
+        _label.textColor = UIColor.flatBlack()
         _label.numberOfLines = 0
-        _label.textAlignment = .Center
+        _label.textAlignment = .center
         
         return _label
     }()
-    func setup(title: String, message: String) {
+    func setup(_ title: String, message: String) {
         titleLabel.text = title
         messageLabel.text = message
         TextDecorator.applyLineHeight(1.2, toLabel: messageLabel)
@@ -73,13 +73,13 @@ class EmptyStateView: UIView {
         //        image.snp_updateConstraints { make in
         //            make.centerX.equalTo(container)
         //        }
-        scrollView.snp_updateConstraints { make in
+        scrollView.snp.updateConstraints { make in
             make.edges.equalTo(self)
         }
-        container.snp_updateConstraints { make in
+        container.snp.updateConstraints { make in
             make.leading.trailing.equalTo(self).inset(20)
             make.centerY.equalTo(self).offset(-20)
-            make.width.equalTo(UIScreen.mainScreen().bounds.width-(20*2))
+            make.width.equalTo(UIScreen.main.bounds.width-(20*2))
         }
         
         super.updateConstraints()

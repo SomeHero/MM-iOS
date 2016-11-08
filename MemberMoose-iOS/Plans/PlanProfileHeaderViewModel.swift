@@ -26,8 +26,8 @@ class PlanProfileHeaderViewModel:DataSourceItemProtocol {
         self.planNavigationState = planNavigationState
         self.planNavigationDelegate = planNavigationDelegate
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier("PlanProfileHeaderCellIdentifier", forIndexPath: indexPath) as? PlanProfileHeaderCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "PlanProfileHeaderCellIdentifier", for: indexPath) as? PlanProfileHeaderCell else {
             fatalError(#function)
         }
         
@@ -39,7 +39,7 @@ class PlanProfileHeaderViewModel:DataSourceItemProtocol {
         return nil
     }
     @objc func heightForHeader() -> CGFloat {
-        return CGFloat.min;
+        return CGFloat.leastNormalMagnitude;
     }
 }
 

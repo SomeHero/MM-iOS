@@ -10,38 +10,38 @@ import UIKit
 import SWRevealViewController
 
 class MenuViewController: UIViewController {
-    private let menuHeaderCellIdentifier        = "MenuHeaderCellIdentifier"
-    private let menuItemCellIdentifier          = "MenuItemCellIdentifier"
-    private let tableCellHeight: CGFloat        = 120
-    private let menuItems = ["Home", "My Subscriptions", "Payment Card", "Payment History", "Coupon Codes", "Notifications", "Connect Stripe", "Reports"]
+    fileprivate let menuHeaderCellIdentifier        = "MenuHeaderCellIdentifier"
+    fileprivate let menuItemCellIdentifier          = "MenuItemCellIdentifier"
+    fileprivate let tableCellHeight: CGFloat        = 120
+    fileprivate let menuItems = ["Home", "My Subscriptions", "Payment Card", "Payment History", "Coupon Codes", "Notifications", "Connect Stripe", "Reports"]
     var dataSource: [[DataSourceItemProtocol]] = [] {
         didSet {
             tableView.reloadData()
         }
     }
-    private lazy var tableView: UITableView = {
+    fileprivate lazy var tableView: UITableView = {
         let _tableView                  = UITableView()
         _tableView.dataSource           = self
         _tableView.delegate             = self
-        _tableView.backgroundColor      = UIColor.whiteColor()
+        _tableView.backgroundColor      = UIColor.white
         _tableView.alwaysBounceVertical = true
-        _tableView.separatorInset       = UIEdgeInsetsZero
-        _tableView.layoutMargins        = UIEdgeInsetsZero
+        _tableView.separatorInset       = UIEdgeInsets.zero
+        _tableView.layoutMargins        = UIEdgeInsets.zero
         _tableView.tableFooterView      = UIView()
         _tableView.estimatedRowHeight   = self.tableCellHeight
         
-        _tableView.registerClass(MenuHeaderCell.self, forCellReuseIdentifier: self.menuHeaderCellIdentifier)
-        _tableView.registerClass(MenuItemCell.self, forCellReuseIdentifier: self.menuItemCellIdentifier)
+        _tableView.register(MenuHeaderCell.self, forCellReuseIdentifier: self.menuHeaderCellIdentifier)
+        _tableView.register(MenuItemCell.self, forCellReuseIdentifier: self.menuItemCellIdentifier)
         
         self.view.addSubview(_tableView)
         return _tableView
     }()
-    private lazy var signOutButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.Custom)
+    fileprivate lazy var signOutButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
         _button.backgroundColor = UIColorTheme.Primary
-        _button.setTitle("Sign Out", forState: .Normal)
-        _button.setTitleColor(.whiteColor(), forState: .Normal) 
-        _button.addTarget(self, action: #selector(MenuViewController.signOutClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setTitle("Sign Out", for: UIControlState())
+        _button.setTitleColor(.white, for: UIControlState()) 
+        _button.addTarget(self, action: #selector(MenuViewController.signOutClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
@@ -51,7 +51,7 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         
         guard let user = SessionManager.sharedUser else {
             return
@@ -67,13 +67,13 @@ class MenuViewController: UIViewController {
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tableView.snp_updateConstraints { (make) in
+        tableView.snp.updateConstraints { (make) in
             make.top.equalTo(view)
             make.leading.equalTo(view)
             make.trailing.equalTo(view).multipliedBy(0.85)
         }
-        signOutButton.snp_updateConstraints { (make) in
-            make.top.equalTo(tableView.snp_bottom)
+        signOutButton.snp.updateConstraints { (make) in
+            make.top.equalTo(tableView.snp.bottom)
             make.leading.trailing.equalTo(view).multipliedBy(0.85)
             make.bottom.equalTo(view)
             make.height.equalTo(60)
@@ -84,41 +84,41 @@ class MenuViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func signOutClicked(sender: UIButton) {
-        if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate, window = appDelegate.window {
+    func signOutClicked(_ sender: UIButton) {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let window = appDelegate.window {
             SessionManager.sharedInstance.logout()
             
-            let snapshot = window.snapshotViewAfterScreenUpdates(true)
-            view.addSubview(snapshot)
+            let snapshot = window.snapshotView(afterScreenUpdates: true)
+            view.addSubview(snapshot!)
             
             let viewController = JoinViewController()
             let navigationController = UINavigationController(rootViewController: viewController)
-            navigationController.navigationBarHidden = true
+            navigationController.isNavigationBarHidden = true
             
             window.rootViewController = navigationController
             
-            UIView.animateWithDuration(0.5, animations: {
-                snapshot.alpha = 0
+            UIView.animate(withDuration: 0.5, animations: {
+                snapshot?.alpha = 0
                 }, completion: { (success) in
-                    snapshot.removeFromSuperview()
+                    snapshot?.removeFromSuperview()
             })
         }
     }
 }
 extension MenuViewController : UITableViewDataSource {
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return dataSource.count
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let dataItems = dataSource[section]
         
         return dataItems.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let dataItems = dataSource[indexPath.section]
-        let viewModel = dataItems[indexPath.item]
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let dataItems = dataSource[(indexPath as NSIndexPath).section]
+        let viewModel = dataItems[(indexPath as NSIndexPath).item]
         let cell = viewModel.dequeueAndConfigure(tableView, indexPath: indexPath)
         
         cell.layoutIfNeeded()
@@ -128,11 +128,11 @@ extension MenuViewController : UITableViewDataSource {
 }
 
 extension MenuViewController : UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-            delegate.swRevealViewController?.revealToggleAnimated(true)
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            delegate.swRevealViewController?.revealToggle(animated: true)
         }
     }
 }
@@ -145,11 +145,11 @@ extension MenuViewController: MenuHeaderDelegate {
         let viewController = UserProfileViewController(user: user, profileType: .bull)
         viewController.delegate = self
         
-        presentViewController(viewController, animated: true, completion: nil)
+        present(viewController, animated: true, completion: nil)
     }
 }
 extension MenuViewController: UserProfileDelegate {
     func didClickBack() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }

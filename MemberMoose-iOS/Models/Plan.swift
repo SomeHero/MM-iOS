@@ -12,26 +12,26 @@ import ObjectMapper
 enum CurrencyCode: String {
     case USD = "USD"
 }
-public class Plan: Mappable {
-    public var id: String!
-    public var planId: String!
-    public var name: String!
-    public var amount: Double!
+open class Plan: Mappable {
+    open var id: String!
+    open var planId: String!
+    open var name: String!
+    open var amount: Double!
     //public var currency: String!
-    public var interval: String!
-    public var intervalCount: Int!
-    public var statementDescriptor: String?
-    public var statementDescription: String?
-    public var trialPeriodDays: Int = 0
+    open var interval: String!
+    open var intervalCount: Int!
+    open var statementDescriptor: String?
+    open var statementDescription: String?
+    open var trialPeriodDays: Int = 0
     //public var planCreated: NSDate!
-    public var createdAt: NSDate!
-    public var updatedAt: NSDate?
+    open var createdAt: Date!
+    open var updatedAt: Date?
     
-    public required init?(_ map: Map){
-        mapping(map)
+    public required init?(map: Map){
+        mapping(map: map)
     }
     
-    public func mapping(map: Map) {
+    open func mapping(map: Map) {
         id <- map["_id"]
         planId <- map["reference_id"]
         name <- map["name"]

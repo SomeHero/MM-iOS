@@ -24,8 +24,8 @@ class ImportPlanViewModel {
         self.selected = false
     }
     
-    func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) ->  ImportPlanTableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier("ImportPlanCellIdentifier", forIndexPath: indexPath) as? ImportPlanTableViewCell else {
+    func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) ->  ImportPlanTableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImportPlanCellIdentifier", for: indexPath) as? ImportPlanTableViewCell else {
             fatalError(#function)
         }
         

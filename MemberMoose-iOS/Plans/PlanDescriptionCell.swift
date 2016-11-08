@@ -9,16 +9,16 @@
 import UIKit
 
 class PlanDescriptionCell: UITableViewCell {
-    private lazy var containerView: UIView = {
+    fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
         self.contentView.addSubview(_view)
         
         return _view
     }()
-    private lazy var descriptionLabel: UILabel = {
+    fileprivate lazy var descriptionLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Default)
+        _label.font = UIFontTheme.Regular(.default)
         _label.textColor = UIColorTheme.PrimaryFont
         _label.numberOfLines = 0
         
@@ -27,13 +27,13 @@ class PlanDescriptionCell: UITableViewCell {
         return _label
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .whiteColor()
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
-        accessoryType = .None
-        selectionStyle = .None
+        backgroundColor = .white
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
+        accessoryType = .none
+        selectionStyle = .none
         
         //selectedBackgroundView = selectedColorView
     }
@@ -47,20 +47,20 @@ class PlanDescriptionCell: UITableViewCell {
     }
     
     override func updateConstraints() {
-        containerView.snp_updateConstraints { (make) in
+        containerView.snp.updateConstraints { (make) in
             make.edges.equalTo(contentView).inset(20)
         }
-        descriptionLabel.snp_updateConstraints { (make) in
+        descriptionLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
             make.top.bottom.equalTo(containerView)
         }
 
         super.updateConstraints()
     }
-    override class func requiresConstraintBasedLayout() -> Bool {
+    override class var requiresConstraintBasedLayout : Bool {
         return true
     }
-    func setupWith(viewModel: DataSourceItemProtocol) {
+    func setupWith(_ viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? PlanDescriptionViewModel {
             descriptionLabel.text = viewModel.description
             TextDecorator.applyTightLineHeight(toLabel: descriptionLabel)

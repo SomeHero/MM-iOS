@@ -10,16 +10,16 @@ import UIKit
 
 class MenuItemCell: UITableViewCell {
     
-    private lazy var containerView: UIView = {
+    fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
         self.contentView.addSubview(_view)
         
         return _view
     }()
-    private lazy var titleLabel: UILabel = {
+    fileprivate lazy var titleLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Default)
+        _label.font = UIFontTheme.Regular(.default)
         _label.textColor = UIColorTheme.SecondaryFont
         _label.numberOfLines = 0
         
@@ -28,12 +28,12 @@ class MenuItemCell: UITableViewCell {
         return _label
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .whiteColor()
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
-        accessoryType = .None
+        backgroundColor = .white
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
+        accessoryType = .none
         
         //selectedBackgroundView = selectedColorView
     }
@@ -48,19 +48,19 @@ class MenuItemCell: UITableViewCell {
     }
     
     override func updateConstraints() {
-        containerView.snp_updateConstraints { (make) in
+        containerView.snp.updateConstraints { (make) in
             make.edges.equalTo(contentView).inset(20)
         }
-        titleLabel.snp_updateConstraints { (make) in
+        titleLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
             make.top.bottom.equalTo(containerView)
         }
         super.updateConstraints()
     }
-    override class func requiresConstraintBasedLayout() -> Bool {
+    override class var requiresConstraintBasedLayout : Bool {
         return true
     }
-    func setupWith(viewModel: DataSourceItemProtocol) {
+    func setupWith(_ viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? MenuItemViewModel {
             titleLabel.text = viewModel.title
         }

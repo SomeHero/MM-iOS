@@ -9,9 +9,9 @@
 import Foundation
 
 enum PlanNavigationState {
-    case Subscribers
-    case Activity
-    case Details
+    case subscribers
+    case activity
+    case details
 }
 protocol PlanNavigationDelegate: class {
     func subscribersClicked()
@@ -23,43 +23,43 @@ class PlanNavigationView: UIView {
     
     lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [self.subscribersButton, self.detailsButton, self.activityButton])
-        stack.axis = .Horizontal
-        stack.distribution = .EqualCentering
+        stack.axis = .horizontal
+        stack.distribution = .equalCentering
         stack.spacing = 10
         
         self.addSubview(stack)
         return stack
     }()
-    private lazy var subscribersButton: UIButton = {
+    fileprivate lazy var subscribersButton: UIButton = {
         let _button = UIButton()
-        _button.setTitle("SUBSCRIBERS", forState: .Normal)
-        _button.addTarget(self, action: #selector(PlanNavigationView.subscribersClicked(_:)), forControlEvents: .TouchUpInside)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
-        _button.titleLabel?.textColor = .whiteColor()
+        _button.setTitle("SUBSCRIBERS", for: UIControlState())
+        _button.addTarget(self, action: #selector(PlanNavigationView.subscribersClicked(_:)), for: .touchUpInside)
+        _button.titleLabel?.font = UIFontTheme.Regular(.small)
+        _button.titleLabel?.textColor = .white
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         self.addSubview(_button)
         
         return _button
     }()
-    private lazy var activityButton: UIButton = {
+    fileprivate lazy var activityButton: UIButton = {
         let _button = UIButton()
-        _button.setTitle("ACTIVITY", forState: .Normal)
-        _button.addTarget(self, action: #selector(PlanNavigationView.activityClicked(_:)), forControlEvents: .TouchUpInside)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
-        _button.titleLabel?.textColor = .whiteColor()
+        _button.setTitle("ACTIVITY", for: UIControlState())
+        _button.addTarget(self, action: #selector(PlanNavigationView.activityClicked(_:)), for: .touchUpInside)
+        _button.titleLabel?.font = UIFontTheme.Regular(.small)
+        _button.titleLabel?.textColor = .white
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         self.addSubview(_button)
         
         return _button
     }()
-    private lazy var detailsButton: UIButton = {
+    fileprivate lazy var detailsButton: UIButton = {
         let _button = UIButton()
-        _button.setTitle("DETAILS", forState: .Normal)
-        _button.addTarget(self, action: #selector(PlanNavigationView.detailsClicked(_:)), forControlEvents: .TouchUpInside)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
-        _button.titleLabel?.textColor = .whiteColor()
+        _button.setTitle("DETAILS", for: UIControlState())
+        _button.addTarget(self, action: #selector(PlanNavigationView.detailsClicked(_:)), for: .touchUpInside)
+        _button.titleLabel?.font = UIFontTheme.Regular(.small)
+        _button.titleLabel?.textColor = .white
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         self.addSubview(_button)
@@ -67,38 +67,38 @@ class PlanNavigationView: UIView {
         return _button
     }()
     override func updateConstraints() {
-        stackView.snp_updateConstraints { (make) in
+        stackView.snp.updateConstraints { (make) in
             make.edges.equalTo(self)
         }
         super.updateConstraints()
     }
-    func setSelectedButton(state: PlanNavigationState) {
+    func setSelectedButton(_ state: PlanNavigationState) {
         clearButtonSelectedState(subscribersButton)
         clearButtonSelectedState(activityButton)
         clearButtonSelectedState(detailsButton)
         
         switch state {
-        case .Subscribers:
+        case .subscribers:
             subscribersButton.backgroundColor = UIColorTheme.Primary
             subscribersButton.layer.cornerRadius = 40/2
-        case .Activity:
+        case .activity:
             activityButton.backgroundColor = UIColorTheme.Primary
             activityButton.layer.cornerRadius = 40/2
-        case .Details:
+        case .details:
             detailsButton.backgroundColor = UIColorTheme.Primary
             detailsButton.layer.cornerRadius = 40/2
         }
     }
-    private func clearButtonSelectedState(button: UIButton) {
-        button.backgroundColor = .clearColor()
+    fileprivate func clearButtonSelectedState(_ button: UIButton) {
+        button.backgroundColor = .clear
     }
-    func subscribersClicked(sender: UIButton) {
+    func subscribersClicked(_ sender: UIButton) {
         delegate?.subscribersClicked()
     }
-    func activityClicked(sender: UIButton) {
+    func activityClicked(_ sender: UIButton) {
         delegate?.activityClicked()
     }
-    func detailsClicked(sender: UIButton) {
+    func detailsClicked(_ sender: UIButton) {
         delegate?.detailsClicked()
     }
 }

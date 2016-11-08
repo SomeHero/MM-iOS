@@ -9,32 +9,32 @@
 import Foundation
 import ObjectMapper
 
-public class Account: Mappable {
-    public var id: String!
-    public var companyName: String!
-    public var avatar: Dictionary<String, String>? = [:]
-    public var subdomain: String!
-    public var status: String!
-    public var referencePlans: [ReferencePlan]!
-    public var createdAt: NSDate!
-    public var updatedAt: NSDate?
+open class Account: Mappable {
+    open var id: String!
+    open var companyName: String!
+    open var avatar: Dictionary<String, String>? = [:]
+    open var subdomain: String!
+    open var status: String!
+    open var referencePlans: [ReferencePlan]!
+    open var createdAt: Date!
+    open var updatedAt: Date?
     
-    public init(userDefaults: NSUserDefaults) {
-        self.id = userDefaults.stringForKey("id")
-        self.companyName = userDefaults.stringForKey("companyName")
-        let avatar = userDefaults.valueForKey("avatar")
+    public init(userDefaults: UserDefaults) {
+        self.id = userDefaults.string(forKey: "id")
+        self.companyName = userDefaults.string(forKey: "companyName")
+        let avatar = userDefaults.value(forKey: "avatar")
         if let avatar = avatar as? Dictionary<String, String> {
             self.avatar = avatar
         }
-        self.subdomain = userDefaults.stringForKey("subdomain")
-        self.status = userDefaults.stringForKey("status")
+        self.subdomain = userDefaults.string(forKey: "subdomain")
+        self.status = userDefaults.string(forKey: "status")
         self.referencePlans = []
     }
-    public required init?(_ map: Map){
-        mapping(map)
+    public required init?(map: Map){
+        mapping(map: map)
     }
     
-    public func mapping(map: Map) {
+    open func mapping(map: Map) {
         id <- map["_id"]
         companyName <- map["company_name"]
         avatar <- map["avatar"]
@@ -44,8 +44,8 @@ public class Account: Mappable {
         createdAt <- (map["createdAt"], ISO8601ExtendedDateTransform())
         updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
     }
-    func persistToUserDefaults(userDefaults: NSUserDefaults) {
-        userDefaults.setValuesForKeysWithDictionary([
+    func persistToUserDefaults(_ userDefaults: UserDefaults) {
+        userDefaults.setValuesForKeys([
             "id": id,
             "companyName": companyName,
             "subdomain": subdomain,

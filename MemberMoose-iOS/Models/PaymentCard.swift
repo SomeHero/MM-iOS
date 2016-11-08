@@ -9,22 +9,22 @@
 import Foundation
 import ObjectMapper
 
-public class PaymentCard: Mappable {
-    public var id: String!
-    public var nameOnCard: String?
-    public var brand: String!
-    public var cardLastFour: String!
-    public var expirationMonth: Int!
-    public var expirationYear: Int!
-    public var createdAt: NSDate!
-    public var updatedAt: NSDate?
+open class PaymentCard: Mappable {
+    open var id: String!
+    open var nameOnCard: String?
+    open var brand: String!
+    open var cardLastFour: String!
+    open var expirationMonth: Int!
+    open var expirationYear: Int!
+    open var createdAt: Date!
+    open var updatedAt: Date?
     
     
-    public required init?(_ map: Map){
-        mapping(map)
+    public required init?(map: Map){
+        mapping(map: map)
     }
     
-    public func mapping(map: Map) {
+    open func mapping(map: Map) {
         id <- map["id"]
         brand <- map["brand"]
         nameOnCard <- map["name"]

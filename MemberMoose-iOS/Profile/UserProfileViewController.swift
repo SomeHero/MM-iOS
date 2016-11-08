@@ -17,100 +17,100 @@ class UserProfileViewController: UIViewController {
     var avatar: UIImage?
     var activeField: UITextField?
     let user: User
-    private let profileType: ProfileType
+    fileprivate let profileType: ProfileType
     weak var delegate: UserProfileDelegate?
     
-    private lazy var scrollView: UIScrollView = {
+    fileprivate lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()
         self.view.addSubview(scroll)
         return scroll
     }()
     lazy var closeButton: UIButton = {
         let _button = UIButton()
-        _button.titleLabel?.font = UIFont.fontAwesomeOfSize(28)
-        _button.setTitleColor(UIColorTheme.SecondaryFont, forState: .Normal)
-        _button.setTitleColor(UIColorTheme.SecondaryFont, forState: .Highlighted)
-        _button.setTitle(String.fontAwesomeIconWithName(FontAwesome.Remove), forState: .Normal)
-        _button.backgroundColor = UIColor.clearColor()
-        _button.addTarget(self, action: #selector(UserProfileViewController.closeClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.titleLabel?.font = UIFont.fontAwesome(ofSize: 28)
+        _button.setTitleColor(UIColorTheme.SecondaryFont, for: UIControlState())
+        _button.setTitleColor(UIColorTheme.SecondaryFont, for: .highlighted)
+        _button.setTitle(String.fontAwesomeIcon(code: FontAwesome.remove.rawValue), for: .normal)
+        _button.backgroundColor = UIColor.clear
+        _button.addTarget(self, action: #selector(UserProfileViewController.closeClicked(_:)), for: .touchUpInside)
         
         self.scrollView.addSubview(_button)
         
         return _button
     }()
-    private lazy var avatarView: EditProfilePhotoView = {
+    fileprivate lazy var avatarView: EditProfilePhotoView = {
         let _photoView = EditProfilePhotoView()
         _photoView.buttonTitle = "Upload Avatar"
-        _photoView.editPhotoButton.addTarget(self, action: #selector(UserProfileViewController.editPhotoClicked), forControlEvents: .TouchUpInside)
+        _photoView.editPhotoButton.addTarget(self, action: #selector(UserProfileViewController.editPhotoClicked), for: .touchUpInside)
         
         self.scrollView.addSubview(_photoView)
         return _photoView
     }()
     lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [self.avatarView, self.firstNameTextField, self.lastNameTextField, self.emailAddressTextField, self.passwordTextField, self.confirmPasswordTextField])
-        stack.axis = .Vertical
+        stack.axis = .vertical
         stack.spacing = 40
         
         self.scrollView.addSubview(stack)
         return stack
     }()
-    private lazy var firstNameTextField: StackViewInputField = {
+    fileprivate lazy var firstNameTextField: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", placeholder: "Enter First Name", tag: 101)
         self.configureTextField(_textField.textField)
         
-        _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), for: UIControlEvents.editingChanged)
         return _textField
     }()
-    private lazy var lastNameTextField: StackViewInputField = {
+    fileprivate lazy var lastNameTextField: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", placeholder: "Enter Last Name", tag: 102)
-        _textField.textField.autocorrectionType = .No
-        _textField.textField.autocapitalizationType = .None
+        _textField.textField.autocorrectionType = .no
+        _textField.textField.autocapitalizationType = .none
         self.configureTextField(_textField.textField)
         
-        _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), for: UIControlEvents.editingChanged)
         return _textField
     }()
-    private lazy var emailAddressTextField: StackViewInputField = {
+    fileprivate lazy var emailAddressTextField: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", placeholder: "Enter Email Address", tag: 103)
-        _textField.textField.autocorrectionType = .No
-        _textField.textField.autocapitalizationType = .None
-        _textField.textField.keyboardType = .EmailAddress
+        _textField.textField.autocorrectionType = .no
+        _textField.textField.autocapitalizationType = .none
+        _textField.textField.keyboardType = .emailAddress
         self.configureTextField(_textField.textField)
         
-        _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), for: UIControlEvents.editingChanged)
         return _textField
     }()
-    private lazy var passwordTextField: StackViewInputField = {
+    fileprivate lazy var passwordTextField: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", placeholder: "Enter Password", tag: 104)
-        _textField.textField.autocorrectionType = .No
-        _textField.textField.autocapitalizationType = .None
-        _textField.textField.secureTextEntry = true
+        _textField.textField.autocorrectionType = .no
+        _textField.textField.autocapitalizationType = .none
+        _textField.textField.isSecureTextEntry = true
         self.configureTextField(_textField.textField)
         
-        _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), for: UIControlEvents.editingChanged)
         return _textField
     }()
-    private lazy var confirmPasswordTextField: StackViewInputField = {
+    fileprivate lazy var confirmPasswordTextField: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", placeholder: "Enter Password Again", tag: 105)
-        _textField.textField.autocorrectionType = .No
-        _textField.textField.autocapitalizationType = .None
-        _textField.textField.secureTextEntry = true
+        _textField.textField.autocorrectionType = .no
+        _textField.textField.autocapitalizationType = .none
+        _textField.textField.isSecureTextEntry = true
         self.configureTextField(_textField.textField)
         
-        _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(UserProfileViewController.validateForm), for: UIControlEvents.editingChanged)
         return _textField
     }()
-    private lazy var nextButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.Custom)
-        _button.setImage(UIImage(named: "RightArrow-Primary"), forState: .Normal)
-        _button.imageView?.contentMode = .ScaleAspectFit
+    fileprivate lazy var nextButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
+        _button.setImage(UIImage(named: "RightArrow-Primary"), for: UIControlState())
+        _button.imageView?.contentMode = .scaleAspectFit
         
-        _button.addTarget(self, action: #selector(UserProfileViewController.nextClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(UserProfileViewController.nextClicked(_:)), for: .touchUpInside)
         
         self.scrollView.addSubview(_button)
         
@@ -131,21 +131,21 @@ class UserProfileViewController: UIViewController {
         
         title = "User Profile"
 
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         
         setup()
         validateForm()
         // Do any additional setup after loading the view, typically from a nib.
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignUpViewController.keyboardDidAppear(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignUpViewController.keyboardDidHide(_:)), name: UIKeyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SignUpViewController.keyboardDidAppear(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SignUpViewController.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -155,29 +155,29 @@ class UserProfileViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        scrollView.snp_updateConstraints { (make) in
+        scrollView.snp.updateConstraints { (make) in
             make.edges.equalTo(view)
-            make.width.equalTo(UIScreen.mainScreen().bounds.width)
+            make.width.equalTo(UIScreen.main.bounds.width)
         }
-        closeButton.snp_updateConstraints { (make) in
+        closeButton.snp.updateConstraints { (make) in
             make.top.trailing.equalTo(view).inset(5)
             make.width.height.equalTo(40)
         }
-        stackView.snp_updateConstraints { (make) in
+        stackView.snp.updateConstraints { (make) in
             make.top.equalTo(scrollView).inset(40)
             make.leading.trailing.equalTo(view).inset(20)
         }
-        nextButton.snp_updateConstraints { (make) in
-            make.top.equalTo(stackView.snp_bottom).offset(60)
+        nextButton.snp.updateConstraints { (make) in
+            make.top.equalTo(stackView.snp.bottom).offset(60)
             make.centerX.equalTo(scrollView)
             make.height.equalTo(40)
             make.bottom.equalTo(scrollView).inset(20)
         }
     }
     func setup() {
-        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
-            avatarView.profilePhoto.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
-                                                       placeholderImage: UIImage(named: "Avatar-Calf"))
+        if let avatar = user.avatar, let avatarImageUrl = avatar["large"] {
+            avatarView.profilePhoto.kf.setImage(with: URL(string: avatarImageUrl)!,
+                                                       placeholder: UIImage(named: "Avatar-Calf"))
         } else {
             avatarView.profilePhoto.image = UIImage(named: "Avatar-Calf")
         }
@@ -185,11 +185,11 @@ class UserProfileViewController: UIViewController {
         lastNameTextField.textField.text = user.lastName
         emailAddressTextField.textField.text = user.emailAddress
     }
-    func closeClicked(sender: UIButton) {
+    func closeClicked(_ sender: UIButton) {
         delegate?.didClickBack()
     }
-    func nextClicked(sender: UIButton) {
-        guard let firstName = firstNameTextField.textField.text, lastName = lastNameTextField.textField.text, emailAddress = emailAddressTextField.textField.text else {
+    func nextClicked(_ sender: UIButton) {
+        guard let firstName = firstNameTextField.textField.text, let lastName = lastNameTextField.textField.text, let emailAddress = emailAddressTextField.textField.text else {
             return
         }
         let updateUser = UpdateUser(userId: user.id, firstName: firstName, lastName: lastName, emailAddress: emailAddress, avatar: avatar)
@@ -214,8 +214,8 @@ class UserProfileViewController: UIViewController {
             ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
         }
     }
-    func configureTextField(textField: UITextField) {
-        textField.returnKeyType = .Next
+    func configureTextField(_ textField: UITextField) {
+        textField.returnKeyType = .next
         textField.delegate = self
         
         let toolBar = KeyboardDecorator.getInputToolbarWithDelegate(self)
@@ -230,17 +230,17 @@ class UserProfileViewController: UIViewController {
             }
         }
     }
-    func addImage(image: UIImage) {
+    func addImage(_ image: UIImage) {
         avatarView.profilePhoto.image = image
         
         avatar = image
     }
     func resetScrollViewInsets() {
-        UIView.animateWithDuration(0.2) {
-            let contentInsets = UIEdgeInsetsZero
+        UIView.animate(withDuration: 0.2, animations: {
+            let contentInsets = UIEdgeInsets.zero
             self.scrollView.contentInset = contentInsets
             self.scrollView.scrollIndicatorInsets = contentInsets
-        }
+        }) 
     }
     func validateForm() {
         guard let firstName = firstNameTextField.textField.text else {
@@ -261,7 +261,7 @@ class UserProfileViewController: UIViewController {
     }
 }
 extension UserProfileViewController: UITextFieldDelegate {
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         activeField = textField
         if let toolBar = activeField?.inputAccessoryView as? UIToolbar {
             toggleKeyboardNavButtonsEnabled(toolBar)
@@ -270,21 +270,20 @@ extension UserProfileViewController: UITextFieldDelegate {
     }
 }
 extension UserProfileViewController : InputNavigationDelegate {
-    func keyboardDidAppear(notification: NSNotification) {
-        if let info = notification.userInfo {
-            if let keyboardSize = info[UIKeyboardFrameBeginUserInfoKey]?.CGRectValue.size {
-                let keyboardHeight = keyboardSize.height
-                
-                UIView.animateWithDuration(0.2) {
-                    let contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardHeight, 0.0)
-                    self.scrollView.contentInset = contentInsets
-                    self.scrollView.scrollIndicatorInsets = contentInsets
-                }
-            }
+    func keyboardDidAppear(_ notification: Notification) {
+        if let info = (notification as NSNotification).userInfo {
+            let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as AnyObject).cgRectValue.size
+            let keyboardHeight = keyboardSize.height
+            
+            UIView.animate(withDuration: 0.2, animations: {
+                let contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardHeight, 0.0)
+                self.scrollView.contentInset = contentInsets
+                self.scrollView.scrollIndicatorInsets = contentInsets
+            })
         }
     }
     
-    func keyboardDidHide(notification: NSNotification) {
+    func keyboardDidHide(_ notification: Notification) {
         resetScrollViewInsets()
     }
     
@@ -318,15 +317,15 @@ extension UserProfileViewController : InputNavigationDelegate {
         }
     }
     
-    func toggleKeyboardNavButtonsEnabled(toolBar: UIToolbar) {
+    func toggleKeyboardNavButtonsEnabled(_ toolBar: UIToolbar) {
         if let items = toolBar.items {
             let isLastItem = activeField == confirmPasswordTextField.textField
             let nextButtonIndex = KeyboardDecorator.nextIndex
-            items[nextButtonIndex].enabled = !isLastItem
+            items[nextButtonIndex].isEnabled = !isLastItem
             
             let isFirstItem = activeField == firstNameTextField.textField
             let previousButtonIndex = KeyboardDecorator.previousIndex
-            items[previousButtonIndex].enabled = !isFirstItem
+            items[previousButtonIndex].isEnabled = !isFirstItem
         }
     }
 }

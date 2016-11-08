@@ -10,7 +10,7 @@ import UIKit
 
 class MainTabBarViewController: UITabBarController {
 
-    private lazy var recentTransactionViewController: RecentTransactionsViewController = {
+    fileprivate lazy var recentTransactionViewController: RecentTransactionsViewController = {
         let _viewController = RecentTransactionsViewController()
         let _tabBarItem = UITabBarItem(title: "Home", image: UIImage(named: "defaultImage.png"), selectedImage: UIImage(named: "selectedImage.png"))
         
@@ -18,7 +18,7 @@ class MainTabBarViewController: UITabBarController {
         
         return _viewController
     }()
-    private lazy var membersViewController: MembersViewController = {
+    fileprivate lazy var membersViewController: MembersViewController = {
         let _viewController = MembersViewController()
         let _tabBarItem = UITabBarItem(title: "Members", image: UIImage(named: "defaultImage.png"), selectedImage: UIImage(named: "selectedImage.png"))
         
@@ -26,7 +26,7 @@ class MainTabBarViewController: UITabBarController {
         
         return _viewController
     }()
-    private lazy var oneTimePaymentViewController: OneTimePaymentViewController = {
+    fileprivate lazy var oneTimePaymentViewController: OneTimePaymentViewController = {
         let _viewController = OneTimePaymentViewController()
         let _tabBarItem = UITabBarItem(title: "One-Time Payments", image: UIImage(named: "defaultImage.png"), selectedImage: UIImage(named: "selectedImage.png"))
         
@@ -34,7 +34,7 @@ class MainTabBarViewController: UITabBarController {
         
         return _viewController
     }()
-    private lazy var subscribeViewController: SubscribeViewController = {
+    fileprivate lazy var subscribeViewController: SubscribeViewController = {
         let _viewController = SubscribeViewController()
         let _tabBarItem = UITabBarItem(title: "Subscribe", image: UIImage(named: "defaultImage.png"), selectedImage: UIImage(named: "selectedImage.png"))
         
@@ -44,20 +44,20 @@ class MainTabBarViewController: UITabBarController {
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tabBar.barStyle = .Black
-        self.tabBar.tintColor = .whiteColor()
+        self.tabBar.barStyle = .black
+        self.tabBar.tintColor = .white
         //Assign self for delegate for that ViewController can respond to UITabBarControllerDelegate methods
         self.delegate = self
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.viewControllers = [recentTransactionViewController, membersViewController, oneTimePaymentViewController, subscribeViewController]
     }
 }
 extension MainTabBarViewController: UITabBarControllerDelegate {
-    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         //do nothing
     }
 }

@@ -10,16 +10,16 @@ import UIKit
 
 class OneTimePaymentViewController: UIViewController {
 
-    private lazy var menuButton: UIButton = {
+    fileprivate lazy var menuButton: UIButton = {
         let _button = UIButton()
-        _button.setImage(UIImage(named:"Menu"), forState: .Normal)
-        _button.addTarget(self, action: #selector(OneTimePaymentViewController.toggleMenu(_:)), forControlEvents: .TouchUpInside)
+        _button.setImage(UIImage(named:"Menu"), for: UIControlState())
+        _button.addTarget(self, action: #selector(OneTimePaymentViewController.toggleMenu(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var topBackgroundView: UIView = {
+    fileprivate lazy var topBackgroundView: UIView = {
         let _view = UIView()
         
         _view.backgroundColor = UIColorTheme.TopBackgroundColor
@@ -28,37 +28,37 @@ class OneTimePaymentViewController: UIViewController {
         
         return _view
     }()
-    private lazy var containerView: UIView = {
+    fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
-        _view.backgroundColor = .clearColor()
+        _view.backgroundColor = .clear
         
         self.topBackgroundView.addSubview(_view)
         
         return _view
     }()
-    private lazy var subHeadingLabel: UILabel = {
+    fileprivate lazy var subHeadingLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.SubHeader
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Default)
+        _label.textAlignment = .center
+        _label.font = UIFontTheme.Regular(.default)
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var amountTextField: UITextField = {
+    fileprivate lazy var amountTextField: UITextField = {
         let _textField = UITextField()
-        _textField.backgroundColor = .clearColor()
-        _textField.clearButtonMode = .Never
-        _textField.textAlignment = .Right
-        _textField.textColor = .whiteColor()
-        _textField.font = UIFontTheme.Regular(.Huge)
+        _textField.backgroundColor = .clear
+        _textField.clearButtonMode = .never
+        _textField.textAlignment = .right
+        _textField.textColor = .white
+        _textField.font = UIFontTheme.Regular(.huge)
         
         self.containerView.addSubview(_textField)
         return _textField
     }()
-    private lazy var calculatorKeyboard: CalculatorKeyboard = {
+    fileprivate lazy var calculatorKeyboard: CalculatorKeyboard = {
         let _calculatorKeyboard = CalculatorKeyboard(frame: CGRect.zero)
         _calculatorKeyboard.delegate = self
         self.amountTextField.inputView = _calculatorKeyboard
@@ -70,7 +70,7 @@ class OneTimePaymentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         setup()
     }
 
@@ -82,31 +82,31 @@ class OneTimePaymentViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        topBackgroundView.snp_updateConstraints { (make) in
+        topBackgroundView.snp.updateConstraints { (make) in
             make.top.equalTo(view)
             make.leading.trailing.equalTo(view)
             make.height.equalTo(view).multipliedBy(0.4)
         }
-        menuButton.snp_updateConstraints { (make) in
+        menuButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.leading.equalTo(view).inset(15)
             make.height.width.equalTo(20)
         }
-        containerView.snp_updateConstraints { (make) in
+        containerView.snp.updateConstraints { (make) in
             make.centerX.centerY.equalTo(topBackgroundView)
         }
-        subHeadingLabel.snp_updateConstraints { (make) in
+        subHeadingLabel.snp.updateConstraints { (make) in
             make.top.equalTo(containerView)
             make.centerX.equalTo(containerView)
         }
-        amountTextField.snp_updateConstraints { (make) in
-            make.top.equalTo(subHeadingLabel.snp_bottom)
+        amountTextField.snp.updateConstraints { (make) in
+            make.top.equalTo(subHeadingLabel.snp.bottom)
             make.centerX.equalTo(containerView)
             make.bottom.equalTo(containerView)
         }
-        calculatorKeyboard.snp_updateConstraints { (make) in
-            make.top.equalTo(topBackgroundView.snp_bottom)
-            make.bottom.equalTo(snp_bottomLayoutGuideTop)
+        calculatorKeyboard.snp.updateConstraints { (make) in
+            make.top.equalTo(topBackgroundView.snp.bottom)
+            make.bottom.equalTo(view)
             make.leading.trailing.equalTo(view)
         }
 
@@ -117,11 +117,11 @@ class OneTimePaymentViewController: UIViewController {
     }
 }
 extension OneTimePaymentViewController: CalculatorDelegate {
-    func calculator(calculator: CalculatorKeyboard, didChangeValue value: String) {
+    func calculator(_ calculator: CalculatorKeyboard, didChangeValue value: String) {
         amountTextField.text = value
     }
-    func didContinue(calculator: CalculatorKeyboard) {
-        if let text = amountTextField.text, value = Double(text) {
+    func didContinue(_ calculator: CalculatorKeyboard) {
+        if let text = amountTextField.text, let value = Double(text) {
             //calculatorOverlayDelegate?.didContinue(value)
         }
     }

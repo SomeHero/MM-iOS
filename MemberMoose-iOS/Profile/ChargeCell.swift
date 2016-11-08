@@ -10,24 +10,24 @@ import UIKit
 import Money
 
 protocol ChargeCellDelegate: class {
-    func didChargeAmount(amount: USD)
+    func didChargeAmount(_ amount: USD)
 }
 class ChargeCell: UITableViewCell {
-    private var amount = USD(0.0)
+    fileprivate var amount = USD(0.0)
     weak var delegate: ChargeCellDelegate?
     
-    private lazy var amountToolbar: UIView = {
+    fileprivate lazy var amountToolbar: UIView = {
         let _view = UIView()
 
         self.contentView.addSubview(_view)
         
         return _view
     }()
-    private lazy var amountLabel: UILabel = {
+    fileprivate lazy var amountLabel: UILabel = {
         let _label = UILabel()
-        _label.backgroundColor = .whiteColor()
-        _label.textAlignment = .Right
-        _label.font = UIFontTheme.Regular(.XLarge)
+        _label.backgroundColor = .white
+        _label.textAlignment = .right
+        _label.font = UIFontTheme.Regular(.xLarge)
         
         self.amountToolbar.addSubview(_label)
         
@@ -41,7 +41,7 @@ class ChargeCell: UITableViewCell {
         
         return lineView
     }()
-    private lazy var keyboard: CalculatorKeyPadView = {
+    fileprivate lazy var keyboard: CalculatorKeyPadView = {
         let _keyBoard = CalculatorKeyPadView()
         _keyBoard.delegate = self
         
@@ -49,21 +49,21 @@ class ChargeCell: UITableViewCell {
         
         return _keyBoard
     }()
-    private lazy var currencyFormatter: NSNumberFormatter = {
-        let formatter = NSNumberFormatter()
+    fileprivate lazy var currencyFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
         formatter.generatesDecimalNumbers = true
-        formatter.numberStyle = .CurrencyStyle
+        formatter.numberStyle = .currency
     
         return formatter
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .whiteColor()
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
-        accessoryType = .None
-        selectionStyle = .None
+        backgroundColor = .white
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
+        accessoryType = .none
+        selectionStyle = .none
         
         //selectedBackgroundView = selectedColorView
     }
@@ -78,35 +78,35 @@ class ChargeCell: UITableViewCell {
     }
     
     override func updateConstraints() {
-        amountToolbar.snp_updateConstraints { (make) in
+        amountToolbar.snp.updateConstraints { (make) in
             make.top.leading.trailing.equalTo(contentView)
             make.height.equalTo(60)
         }
-        amountLabel.snp_updateConstraints { (make) in
+        amountLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(amountToolbar).inset(10)
             make.top.bottom.equalTo(amountToolbar)
         }
-        lineView.snp_updateConstraints { (make) in
+        lineView.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(contentView)
-            make.top.equalTo(amountToolbar.snp_bottom)
+            make.top.equalTo(amountToolbar.snp.bottom)
             make.height.equalTo(1)
         }
-        keyboard.snp_updateConstraints { (make) in
-            make.top.equalTo(lineView.snp_bottom)
+        keyboard.snp.updateConstraints { (make) in
+            make.top.equalTo(lineView.snp.bottom)
             make.leading.trailing.equalTo(contentView)
             make.bottom.equalTo(contentView)
         }
 
         super.updateConstraints()
     }
-    override class func requiresConstraintBasedLayout() -> Bool {
+    override class var requiresConstraintBasedLayout : Bool {
         return true
     }
-    func setupWith(viewModel: DataSourceItemProtocol) {
+    func setupWith(_ viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? ChargeViewModel {
             amountLabel.text = "\(amount)"
             
-            keyboard.snp_updateConstraints { (make) in
+            keyboard.snp.updateConstraints { (make) in
                 make.height.equalTo(viewModel.totalCellHeight-60-1)
             }
             setNeedsUpdateConstraints()
@@ -115,7 +115,7 @@ class ChargeCell: UITableViewCell {
     }
 }
 extension ChargeCell: CalculatorKeyPadViewDelegate {
-    func didClickNumber(number: Int) {
+    func didClickNumber(_ number: Int) {
         amount = USD(amount*10) + USD(Double(number)/Double(100.0))
         
         amountLabel.text = "\(amount.description)"

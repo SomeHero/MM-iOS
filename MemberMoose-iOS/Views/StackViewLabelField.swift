@@ -31,26 +31,26 @@ class StackViewLabelField: UIView {
     }()
     
     override func updateConstraints() {
-        inputLabel.snp_updateConstraints { (make) in
+        inputLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(self)
             make.top.equalTo(self).inset(verticalPadding)
             make.height.equalTo(fieldHeight)
         }
-        valueLabel.snp_updateConstraints { (make) -> Void in
+        valueLabel.snp.updateConstraints { (make) -> Void in
             make.leading.trailing.equalTo(self)
-            make.top.equalTo(inputLabel.snp_bottom).inset(verticalPadding)
+            make.top.equalTo(inputLabel.snp.bottom).inset(verticalPadding)
             make.height.equalTo(fieldHeight)
             make.bottom.equalTo(self)
         }
         super.updateConstraints()
     }
     
-    func configure(text: String?, label: String? = nil, tag: Int? = 0) {
-        inputLabel.text = label?.uppercaseString ?? ""
-        inputLabel.font = UIFontTheme.Regular(.Tiny)
+    func configure(_ text: String?, label: String? = nil, tag: Int? = 0) {
+        inputLabel.text = label?.uppercased() ?? ""
+        inputLabel.font = UIFontTheme.Regular(.tiny)
         
         valueLabel.text = text ?? ""
-        valueLabel.font = UIFontTheme.Regular(.Default)
+        valueLabel.font = UIFontTheme.Regular(.default)
         
         if let tag = tag {
             valueLabel.tag = tag

@@ -13,35 +13,35 @@ import SVProgressHUD
 class LoginViewController: UIViewController {
     var activeField: UITextField?
     
-    private lazy var scrollView: UIScrollView = {
+    fileprivate lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()
         self.view.addSubview(scroll)
         return scroll
     }()
-    private lazy var backButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.Custom)
-        _button.setImage(UIImage(named: "Back"), forState: .Normal)
-        _button.imageView?.contentMode = .ScaleAspectFit
+    fileprivate lazy var backButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
+        _button.setImage(UIImage(named: "Back"), for: UIControlState())
+        _button.imageView?.contentMode = .scaleAspectFit
         
-        _button.addTarget(self, action: #selector(SignUpViewController.backClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(SignUpViewController.backClicked(_:)), for: .touchUpInside)
         
         self.scrollView.addSubview(_button)
         
         return _button
     }()
-    private lazy var logo: UIImageView = {
+    fileprivate lazy var logo: UIImageView = {
         let _imageView = UIImageView()
         _imageView.image = UIImage(named: "Logo")
-        _imageView.contentMode = .ScaleAspectFit
+        _imageView.contentMode = .scaleAspectFit
         
         self.scrollView.addSubview(_imageView)
         return _imageView
     }()
-    private lazy var introLabel: UILabel = {
+    fileprivate lazy var introLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Default)
+        _label.textAlignment = .center
+        _label.font = UIFontTheme.Regular(.default)
         
         self.scrollView.addSubview(_label)
         
@@ -49,39 +49,39 @@ class LoginViewController: UIViewController {
     }()
     lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [self.emailTextField, self.passwordTextField])
-        stack.axis = .Vertical
+        stack.axis = .vertical
         stack.spacing = 30
         
         self.scrollView.addSubview(stack)
         return stack
     }()
-    private lazy var emailTextField: StackViewInputField = {
+    fileprivate lazy var emailTextField: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", placeholder: "EMAIL", tag: 101)
-        _textField.textField.autocorrectionType = .No
-        _textField.textField.autocapitalizationType = .None
+        _textField.textField.autocorrectionType = .no
+        _textField.textField.autocapitalizationType = .none
         self.configureTextField(_textField.textField)
         
-        _textField.textField.addTarget(self, action: #selector(LoginViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(LoginViewController.validateForm), for: UIControlEvents.editingChanged)
         return _textField
     }()
-    private lazy var passwordTextField: StackViewInputField = {
+    fileprivate lazy var passwordTextField: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", placeholder: "PASSWORD", tag: 102)
-        _textField.textField.autocorrectionType = .No
-        _textField.textField.autocapitalizationType = .None
-        _textField.textField.secureTextEntry = true
+        _textField.textField.autocorrectionType = .no
+        _textField.textField.autocapitalizationType = .none
+        _textField.textField.isSecureTextEntry = true
         self.configureTextField(_textField.textField)
         
-        _textField.textField.addTarget(self, action: #selector(LoginViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(LoginViewController.validateForm), for: UIControlEvents.editingChanged)
         return _textField
     }()
-    private lazy var nextButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.Custom)
-        _button.setImage(UIImage(named: "RightArrow-Primary"), forState: .Normal)
-        _button.imageView?.contentMode = .ScaleAspectFit
+    fileprivate lazy var nextButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
+        _button.setImage(UIImage(named: "RightArrow-Primary"), for: UIControlState())
+        _button.imageView?.contentMode = .scaleAspectFit
         
-        _button.addTarget(self, action: #selector(LoginViewController.nextClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(LoginViewController.nextClicked(_:)), for: .touchUpInside)
         
         self.scrollView.addSubview(_button)
         
@@ -90,16 +90,16 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         setup()
         
         validateForm()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignUpViewController.keyboardDidAppear(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignUpViewController.keyboardDidHide(_:)), name: UIKeyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SignUpViewController.keyboardDidAppear(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SignUpViewController.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
     }
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -108,38 +108,38 @@ class LoginViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        scrollView.snp_updateConstraints { (make) in
+        scrollView.snp.updateConstraints { (make) in
             make.edges.equalTo(view)
-            make.width.equalTo(UIScreen.mainScreen().bounds.width)
+            make.width.equalTo(UIScreen.main.bounds.width)
         }
-        backButton.snp_updateConstraints { (make) in
+        backButton.snp.updateConstraints { (make) in
             make.top.equalTo(scrollView).inset(35)
             make.leading.equalTo(scrollView).inset(15)
             make.height.equalTo(18)
         }
-        logo.snp_updateConstraints { (make) -> Void in
-            make.top.equalTo(backButton.snp_bottom).offset(20)
+        logo.snp.updateConstraints { (make) -> Void in
+            make.top.equalTo(backButton.snp.bottom).offset(20)
             make.centerX.equalTo(scrollView)
             make.height.equalTo(140)
         }
-        introLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(logo.snp_bottom).offset(40)
+        introLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(logo.snp.bottom).offset(40)
             make.centerX.equalTo(scrollView)
             make.leading.trailing.equalTo(scrollView).inset(60)
         }
-        stackView.snp_updateConstraints { (make) in
-            make.top.equalTo(introLabel.snp_bottom).offset(20)
+        stackView.snp.updateConstraints { (make) in
+            make.top.equalTo(introLabel.snp.bottom).offset(20)
             make.leading.trailing.equalTo(scrollView).inset(20)
         }
-        nextButton.snp_updateConstraints { (make) in
-            make.top.greaterThanOrEqualTo(stackView.snp_bottom).offset(40)
+        nextButton.snp.updateConstraints { (make) in
+            make.top.greaterThanOrEqualTo(stackView.snp.bottom).offset(40)
             make.centerX.equalTo(scrollView)
             make.height.equalTo(40)
             make.bottom.equalTo(scrollView)
         }
     }
-    func nextClicked(sender: UIButton) {
-        let authenticateUser = AuthenticateUser(emailAddress: emailTextField.textField.text!.lowercaseString, password: passwordTextField.textField.text!)
+    func nextClicked(_ sender: UIButton) {
+        let authenticateUser = AuthenticateUser(emailAddress: emailTextField.textField.text!.lowercased(), password: passwordTextField.textField.text!)
         
         SVProgressHUD.show()
         
@@ -154,16 +154,16 @@ class LoginViewController: UIViewController {
                 
                 let viewController = ProfileViewController(user: response, profileType: .bull)
                 let navigationController = UINavigationController(rootViewController: viewController)
-                navigationController.navigationBarHidden = true
+                navigationController.isNavigationBarHidden = true
                 
                 let menuViewController = MenuViewController()
                 
                 let swRevealViewController = SWRevealViewController(rearViewController: menuViewController, frontViewController: navigationController)
                 
-                if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+                if let delegate = UIApplication.shared.delegate as? AppDelegate {
                     delegate.swRevealViewController = swRevealViewController
                     
-                    delegate.window?.rootViewController?.presentViewController(swRevealViewController, animated: true, completion: nil)
+                    delegate.window?.rootViewController?.present(swRevealViewController!, animated: true, completion: nil)
                 }
             }, failure: { [weak self] (error, errorDictionary) in
                 SVProgressHUD.dismiss()
@@ -185,11 +185,11 @@ class LoginViewController: UIViewController {
             ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
         }
     }
-    func backClicked(sender: UIButton) {
-        navigationController?.popViewControllerAnimated(true)
+    func backClicked(_ sender: UIButton) {
+        navigationController?.popViewController(animated: true)
     }
-    func configureTextField(textField: UITextField) {
-        textField.returnKeyType = .Next
+    func configureTextField(_ textField: UITextField) {
+        textField.returnKeyType = .next
         textField.delegate = self
 
         let toolBar = KeyboardDecorator.getInputToolbarWithDelegate(self)
@@ -216,15 +216,15 @@ class LoginViewController: UIViewController {
         }
     }
     func resetScrollViewInsets() {
-        UIView.animateWithDuration(0.2) {
-            let contentInsets = UIEdgeInsetsZero
+        UIView.animate(withDuration: 0.2, animations: {
+            let contentInsets = UIEdgeInsets.zero
             self.scrollView.contentInset = contentInsets
             self.scrollView.scrollIndicatorInsets = contentInsets
-        }
+        }) 
     }
 }
 extension LoginViewController: UITextFieldDelegate {
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         activeField = textField
         if let toolBar = activeField?.inputAccessoryView as? UIToolbar {
             toggleKeyboardNavButtonsEnabled(toolBar)
@@ -233,21 +233,20 @@ extension LoginViewController: UITextFieldDelegate {
     }
 }
 extension LoginViewController : InputNavigationDelegate {
-    func keyboardDidAppear(notification: NSNotification) {
-        if let info = notification.userInfo {
-            if let keyboardSize = info[UIKeyboardFrameBeginUserInfoKey]?.CGRectValue.size {
-                let keyboardHeight = keyboardSize.height
+    func keyboardDidAppear(_ notification: Notification) {
+        if let info = (notification as NSNotification).userInfo {
+            let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as AnyObject).cgRectValue.size
+            let keyboardHeight = keyboardSize.height
                 
-                UIView.animateWithDuration(0.2) {
-                    let contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardHeight, 0.0)
-                    self.scrollView.contentInset = contentInsets
-                    self.scrollView.scrollIndicatorInsets = contentInsets
-                }
-            }
+            UIView.animate(withDuration: 0.2, animations: {
+                let contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardHeight, 0.0)
+                self.scrollView.contentInset = contentInsets
+                self.scrollView.scrollIndicatorInsets = contentInsets
+            })
         }
     }
     
-    func keyboardDidHide(notification: NSNotification) {
+    func keyboardDidHide(_ notification: Notification) {
         resetScrollViewInsets()
     }
     
@@ -281,15 +280,15 @@ extension LoginViewController : InputNavigationDelegate {
         }
     }
     
-    func toggleKeyboardNavButtonsEnabled(toolBar: UIToolbar) {
+    func toggleKeyboardNavButtonsEnabled(_ toolBar: UIToolbar) {
         if let items = toolBar.items {
             let isLastItem = activeField == passwordTextField.textField
             let nextButtonIndex = KeyboardDecorator.nextIndex
-            items[nextButtonIndex].enabled = !isLastItem
+            items[nextButtonIndex].isEnabled = !isLastItem
             
             let isFirstItem = activeField == emailTextField.textField
             let previousButtonIndex = KeyboardDecorator.previousIndex
-            items[previousButtonIndex].enabled = !isFirstItem
+            items[previousButtonIndex].isEnabled = !isFirstItem
         }
     }
 }

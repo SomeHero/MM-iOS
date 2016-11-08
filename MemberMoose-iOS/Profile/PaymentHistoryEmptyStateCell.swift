@@ -9,21 +9,21 @@
 import UIKit
 
 class PaymentHistoryEmptyStateCell: UITableViewCell {
-    private lazy var containerView: UIView = {
+    fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
-        _view.backgroundColor = .clearColor()
+        _view.backgroundColor = .clear
         
         self.contentView.addSubview(_view)
         
         return _view
     }()
-    private lazy var headerLabel: UILabel = {
+    fileprivate lazy var headerLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.Header
-        _label.textAlignment = .Left
-        _label.font = UIFontTheme.Regular(.Small)
-        _label.lineBreakMode = .ByWordWrapping
+        _label.textAlignment = .left
+        _label.font = UIFontTheme.Regular(.small)
+        _label.lineBreakMode = .byWordWrapping
         _label.numberOfLines = 0
         
         self.containerView.addSubview(_label)
@@ -31,13 +31,13 @@ class PaymentHistoryEmptyStateCell: UITableViewCell {
         return _label
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .whiteColor()
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
-        accessoryType = .None
-        selectionStyle = .None
+        backgroundColor = .white
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
+        accessoryType = .none
+        selectionStyle = .none
         
         //selectedBackgroundView = selectedColorView
     }
@@ -50,25 +50,25 @@ class PaymentHistoryEmptyStateCell: UITableViewCell {
         super.prepareForReuse()
         
     }
-    func setupWith(viewModel: DataSourceItemProtocol) {
+    func setupWith(_ viewModel: DataSourceItemProtocol) {
         guard let viewModel = viewModel as? PaymentHistoryEmptyStateViewModel else {
             return
         }
         headerLabel.text = viewModel.header
     }
     override func updateConstraints() {
-        containerView.snp_updateConstraints { (make) in
+        containerView.snp.updateConstraints { (make) in
             make.top.bottom.equalTo(contentView).inset(40)
             make.leading.trailing.equalTo(contentView).inset(20)
         }
-        headerLabel.snp_updateConstraints { (make) in
+        headerLabel.snp.updateConstraints { (make) in
             make.centerY.equalTo(containerView)
             make.leading.trailing.equalTo(containerView)
         }
         
         super.updateConstraints()
     }
-    override class func requiresConstraintBasedLayout() -> Bool {
+    override class var requiresConstraintBasedLayout : Bool {
         return true
     }
 }

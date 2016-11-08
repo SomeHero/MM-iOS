@@ -9,7 +9,7 @@
 import UIKit
 
 protocol PaymentCardDelegate: class {
-    func didUpdatePaymentCard(paymentCard: PaymentCard)
+    func didUpdatePaymentCard(_ paymentCard: PaymentCard)
 }
 class PaymentCardViewModel:DataSourceItemProtocol {
     var cellID: String = "PaymentCardCell"
@@ -18,7 +18,7 @@ class PaymentCardViewModel:DataSourceItemProtocol {
     var nameOnCard: String?
     let cardDescription: String
     let cardExpiration: String
-    private var paymentCard: PaymentCard
+    fileprivate var paymentCard: PaymentCard
     weak var paymentCardDelegate: PaymentCardDelegate?
     
     init(paymentCard: PaymentCard, paymentCardDelegate: PaymentCardDelegate? = nil) {
@@ -30,8 +30,8 @@ class PaymentCardViewModel:DataSourceItemProtocol {
         self.paymentCard = paymentCard
         self.paymentCardDelegate = paymentCardDelegate
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier("PaymentCardCellIdentifier", forIndexPath: indexPath) as? PaymentCardTableViewCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "PaymentCardCellIdentifier", for: indexPath) as? PaymentCardTableViewCell else {
             fatalError(#function)
         }
         
@@ -56,11 +56,11 @@ extension PaymentCardViewModel: PaymentCardCellDelegate {
     }
 }
 class PaymentCardHeaderView: UIView {
-    private lazy var titleLabel: UILabel = {
+    fileprivate lazy var titleLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .Left
-        _label.font = UIFontTheme.Regular(.Default)
+        _label.textAlignment = .left
+        _label.font = UIFontTheme.Regular(.default)
         
         self.addSubview(_label)
         
@@ -69,7 +69,7 @@ class PaymentCardHeaderView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        titleLabel.snp_makeConstraints { (make) in
+        titleLabel.snp.makeConstraints { (make) in
             make.leading.trailing.equalTo(self).inset(20)
             make.bottom.equalTo(self).inset(10)
         }
@@ -77,7 +77,7 @@ class PaymentCardHeaderView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    func setup(title: String) {
+    func setup(_ title: String) {
         titleLabel.text = title
     }
 }

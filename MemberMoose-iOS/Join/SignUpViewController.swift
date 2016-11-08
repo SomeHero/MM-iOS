@@ -13,73 +13,73 @@ class SignUpViewController: UIViewController {
     var avatar: UIImage?
     var activeField: UITextField?
     
-    private lazy var scrollView: UIScrollView = {
+    fileprivate lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()
         self.view.addSubview(scroll)
         return scroll
     }()
-    private lazy var backButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.Custom)
-        _button.setImage(UIImage(named: "Back"), forState: .Normal)
-        _button.imageView?.contentMode = .ScaleAspectFit
+    fileprivate lazy var backButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
+        _button.setImage(UIImage(named: "Back"), for: UIControlState())
+        _button.imageView?.contentMode = .scaleAspectFit
         
-        _button.addTarget(self, action: #selector(SignUpViewController.backClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(SignUpViewController.backClicked(_:)), for: .touchUpInside)
         
         self.scrollView.addSubview(_button)
         
         return _button
     }()
-    private lazy var avatarView: EditProfilePhotoView = {
+    fileprivate lazy var avatarView: EditProfilePhotoView = {
         let _photoView = EditProfilePhotoView()
         _photoView.buttonTitle = "Upload Your Logo"
-        _photoView.editPhotoButton.addTarget(self, action: #selector(SignUpViewController.editPhotoClicked), forControlEvents: .TouchUpInside)
+        _photoView.editPhotoButton.addTarget(self, action: #selector(SignUpViewController.editPhotoClicked), for: .touchUpInside)
         
         self.scrollView.addSubview(_photoView)
         return _photoView
     }()
     lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [self.companyNameTextField, self.emailTextField, self.passwordTextField])
-        stack.axis = .Vertical
+        stack.axis = .vertical
         stack.spacing = 40
         
         self.scrollView.addSubview(stack)
         return stack
     }()
-    private lazy var companyNameTextField: StackViewInputField = {
+    fileprivate lazy var companyNameTextField: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", placeholder: "COMPANY NAME", tag: 101)
         self.configureTextField(_textField.textField)
         
-        _textField.textField.addTarget(self, action: #selector(SignUpViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(SignUpViewController.validateForm), for: UIControlEvents.editingChanged)
         return _textField
     }()
-    private lazy var emailTextField: StackViewInputField = {
+    fileprivate lazy var emailTextField: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", placeholder: "EMAIL", tag: 102)
-        _textField.textField.autocorrectionType = .No
-        _textField.textField.autocapitalizationType = .None
+        _textField.textField.autocorrectionType = .no
+        _textField.textField.autocapitalizationType = .none
         self.configureTextField(_textField.textField)
         
-        _textField.textField.addTarget(self, action: #selector(SignUpViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(SignUpViewController.validateForm), for: UIControlEvents.editingChanged)
         return _textField
     }()
-    private lazy var passwordTextField: StackViewInputField = {
+    fileprivate lazy var passwordTextField: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", placeholder: "PASSWORD", tag: 103)
-        _textField.textField.autocorrectionType = .No
-        _textField.textField.autocapitalizationType = .None
-        _textField.textField.secureTextEntry = true
+        _textField.textField.autocorrectionType = .no
+        _textField.textField.autocapitalizationType = .none
+        _textField.textField.isSecureTextEntry = true
         self.configureTextField(_textField.textField)
         
-        _textField.textField.addTarget(self, action: #selector(SignUpViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(SignUpViewController.validateForm), for: UIControlEvents.editingChanged)
         return _textField
     }()
-    private lazy var nextButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.Custom)
-        _button.setImage(UIImage(named: "RightArrow-Primary"), forState: .Normal)
-        _button.imageView?.contentMode = .ScaleAspectFit
+    fileprivate lazy var nextButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
+        _button.setImage(UIImage(named: "RightArrow-Primary"), for: UIControlState())
+        _button.imageView?.contentMode = .scaleAspectFit
         
-        _button.addTarget(self, action: #selector(JoinViewController.nextClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(JoinViewController.nextClicked(_:)), for: .touchUpInside)
         
         self.scrollView.addSubview(_button)
         
@@ -88,15 +88,15 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         
         validateForm()
         // Do any additional setup after loading the view, typically from a nib.
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignUpViewController.keyboardDidAppear(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignUpViewController.keyboardDidHide(_:)), name: UIKeyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SignUpViewController.keyboardDidAppear(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SignUpViewController.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
     }
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func didReceiveMemoryWarning() {
@@ -106,37 +106,37 @@ class SignUpViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        scrollView.snp_updateConstraints { (make) in
+        scrollView.snp.updateConstraints { (make) in
             make.edges.equalTo(view)
-            make.width.equalTo(UIScreen.mainScreen().bounds.width)
+            make.width.equalTo(UIScreen.main.bounds.width)
         }
-        backButton.snp_updateConstraints { (make) in
+        backButton.snp.updateConstraints { (make) in
             make.top.equalTo(scrollView).inset(35)
             make.leading.equalTo(scrollView).inset(15)
             make.height.equalTo(18)
         }
-        avatarView.snp_updateConstraints { (make) in
-            make.top.equalTo(backButton.snp_bottom).offset(20)
+        avatarView.snp.updateConstraints { (make) in
+            make.top.equalTo(backButton.snp.bottom).offset(20)
             make.centerX.equalTo(scrollView)
             make.leading.trailing.equalTo(view).inset(20)
         }
-        stackView.snp_updateConstraints { (make) in
-            make.top.equalTo(avatarView.snp_bottom).offset(60)
+        stackView.snp.updateConstraints { (make) in
+            make.top.equalTo(avatarView.snp.bottom).offset(60)
             make.leading.trailing.equalTo(view).inset(20)
         }
-        nextButton.snp_updateConstraints { (make) in
-            make.top.equalTo(stackView.snp_bottom).offset(60)
+        nextButton.snp.updateConstraints { (make) in
+            make.top.equalTo(stackView.snp.bottom).offset(60)
             make.centerX.equalTo(scrollView)
             make.height.equalTo(40)
             make.bottom.equalTo(scrollView)
         }
     }
     
-    func backClicked(sender: UIButton) {
-        navigationController?.popViewControllerAnimated(true)
+    func backClicked(_ sender: UIButton) {
+        navigationController?.popViewController(animated: true)
     }
-    func nextClicked(sender: UIButton) {
-        guard let companyName = companyNameTextField.textField.text, emailAddress = emailTextField.textField.text, password = passwordTextField.textField.text else {
+    func nextClicked(_ sender: UIButton) {
+        guard let companyName = companyNameTextField.textField.text, let emailAddress = emailTextField.textField.text, let password = passwordTextField.textField.text else {
             return
         }
         let createUser = CreateUser(emailAddress: emailAddress, password: password, companyName: companyName, avatar: avatar)
@@ -174,8 +174,8 @@ class SignUpViewController: UIViewController {
             ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
         }
     }
-    func configureTextField(textField: UITextField) {
-        textField.returnKeyType = .Next
+    func configureTextField(_ textField: UITextField) {
+        textField.returnKeyType = .next
         textField.delegate = self
 
         let toolBar = KeyboardDecorator.getInputToolbarWithDelegate(self)
@@ -190,17 +190,17 @@ class SignUpViewController: UIViewController {
             }
         }
     }
-    func addImage(image: UIImage) {
+    func addImage(_ image: UIImage) {
         avatarView.profilePhoto.image = image
         
         avatar = image
     }
     func resetScrollViewInsets() {
-        UIView.animateWithDuration(0.2) {
-            let contentInsets = UIEdgeInsetsZero
+        UIView.animate(withDuration: 0.2, animations: {
+            let contentInsets = UIEdgeInsets.zero
             self.scrollView.contentInset = contentInsets
             self.scrollView.scrollIndicatorInsets = contentInsets
-        }
+        }) 
     }
     func validateForm() {
         guard let companyName = companyNameTextField.textField.text else {
@@ -226,7 +226,7 @@ class SignUpViewController: UIViewController {
     }
 }
 extension SignUpViewController: UITextFieldDelegate {
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         activeField = textField
         if let toolBar = activeField?.inputAccessoryView as? UIToolbar {
             toggleKeyboardNavButtonsEnabled(toolBar)
@@ -235,21 +235,20 @@ extension SignUpViewController: UITextFieldDelegate {
     }
 }
 extension SignUpViewController : InputNavigationDelegate {
-    func keyboardDidAppear(notification: NSNotification) {
-        if let info = notification.userInfo {
-            if let keyboardSize = info[UIKeyboardFrameBeginUserInfoKey]?.CGRectValue.size {
-                let keyboardHeight = keyboardSize.height
-                
-                UIView.animateWithDuration(0.2) {
-                    let contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardHeight, 0.0)
-                    self.scrollView.contentInset = contentInsets
-                    self.scrollView.scrollIndicatorInsets = contentInsets
-                }
-            }
+    func keyboardDidAppear(_ notification: Notification) {
+        if let info = (notification as NSNotification).userInfo {
+            let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as AnyObject).cgRectValue.size
+            let keyboardHeight = keyboardSize.height
+            
+            UIView.animate(withDuration: 0.2, animations: {
+                let contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardHeight, 0.0)
+                self.scrollView.contentInset = contentInsets
+                self.scrollView.scrollIndicatorInsets = contentInsets
+            })
         }
     }
     
-    func keyboardDidHide(notification: NSNotification) {
+    func keyboardDidHide(_ notification: Notification) {
         resetScrollViewInsets()
     }
     
@@ -283,15 +282,15 @@ extension SignUpViewController : InputNavigationDelegate {
         }
     }
     
-    func toggleKeyboardNavButtonsEnabled(toolBar: UIToolbar) {
+    func toggleKeyboardNavButtonsEnabled(_ toolBar: UIToolbar) {
         if let items = toolBar.items {
             let isLastItem = activeField == passwordTextField.textField
             let nextButtonIndex = KeyboardDecorator.nextIndex
-            items[nextButtonIndex].enabled = !isLastItem
+            items[nextButtonIndex].isEnabled = !isLastItem
             
             let isFirstItem = activeField == companyNameTextField.textField
             let previousButtonIndex = KeyboardDecorator.previousIndex
-            items[previousButtonIndex].enabled = !isFirstItem
+            items[previousButtonIndex].isEnabled = !isFirstItem
         }
     }
 }

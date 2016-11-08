@@ -9,40 +9,40 @@
 import Foundation
 import ObjectMapper
 
-public class User: Mappable {
-    public var id: String!
-    public var firstName: String?
-    public var lastName: String?
+open class User: Mappable {
+    open var id: String!
+    open var firstName: String?
+    open var lastName: String?
     //public var companyName: String!
-    public var emailAddress: String!
-    public var avatar: Dictionary<String, String>? = [:]
-    public var account: Account?
-    public var plans: [Plan] = []
-    public var subscriptions: [Subscription] =  []
-    public var memberships: [Membership] = []
-    public var paymentCards: [PaymentCard] = []
+    open var emailAddress: String!
+    open var avatar: Dictionary<String, String>? = [:]
+    open var account: Account?
+    open var plans: [Plan] = []
+    open var subscriptions: [Subscription] =  []
+    open var memberships: [Membership] = []
+    open var paymentCards: [PaymentCard] = []
     var charges: [Charge] = []
-    public var memberCount: Int = 0
-    public var createdAt: NSDate!
-    public var updatedAt: NSDate?
+    open var memberCount: Int = 0
+    open var createdAt: Date!
+    open var updatedAt: Date?
     
-    public init(userDefaults: NSUserDefaults) {
-        self.id = userDefaults.stringForKey("id")
-        self.firstName = userDefaults.stringForKey("firstName")
-        self.lastName = userDefaults.stringForKey("lastName")
-        self.emailAddress = userDefaults.stringForKey("email_address")!
-        let avatar = userDefaults.valueForKey("avatar")
+    public init(userDefaults: UserDefaults) {
+        self.id = userDefaults.string(forKey: "id")
+        self.firstName = userDefaults.string(forKey: "firstName")
+        self.lastName = userDefaults.string(forKey: "lastName")
+        self.emailAddress = userDefaults.string(forKey: "email_address")!
+        let avatar = userDefaults.value(forKey: "avatar")
         if let avatar = avatar as? Dictionary<String, String> {
             self.avatar = avatar
         }
         self.account = Account(userDefaults: userDefaults)
-        self.memberCount = userDefaults.integerForKey("member_count")
+        self.memberCount = userDefaults.integer(forKey: "member_count")
     }
-    public required init?(_ map: Map){
-        mapping(map)
+    public required init?(map: Map){
+        mapping(map: map)
     }
     
-    public func mapping(map: Map) {
+    open func mapping(map: Map) {
         id <- map["_id"]
         firstName <- map["first_name"]
         lastName <- map["last_name"]
@@ -59,8 +59,8 @@ public class User: Mappable {
         createdAt <- (map["createdAt"], ISO8601ExtendedDateTransform())
         updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
     }
-    func persistToUserDefaults(userDefaults: NSUserDefaults) {
-        userDefaults.setValuesForKeysWithDictionary([
+    func persistToUserDefaults(_ userDefaults: UserDefaults) {
+        userDefaults.setValuesForKeys([
             "id": id,
             "email_address": emailAddress,
             "member_count": memberCount

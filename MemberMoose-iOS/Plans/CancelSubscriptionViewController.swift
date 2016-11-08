@@ -10,7 +10,7 @@ import UIKit
 import FontAwesome_swift
 
 protocol CancelSubscriptionDelegate: class {
-    func didConfirmCancelSubscription(subscription: Subscription)
+    func didConfirmCancelSubscription(_ subscription: Subscription)
     func didClose()
 }
 class CancelSubscriptionViewController: UIViewController {
@@ -20,7 +20,7 @@ class CancelSubscriptionViewController: UIViewController {
     lazy var outerContainerView: UIView = {
         let _view = UIView()
         
-        _view.backgroundColor = .clearColor()
+        _view.backgroundColor = .clear
         
         self.view.addSubview(_view)
         
@@ -29,9 +29,9 @@ class CancelSubscriptionViewController: UIViewController {
     lazy var containerView: UIView = {
         let _view = UIView()
         
-        _view.backgroundColor = .whiteColor()
+        _view.backgroundColor = .white
         _view.layer.cornerRadius = 10.0
-        _view.layer.borderColor = UIColor.grayColor().CGColor
+        _view.layer.borderColor = UIColor.gray.cgColor
         _view.layer.borderWidth = 0.5
         _view.clipsToBounds = true
         
@@ -41,12 +41,12 @@ class CancelSubscriptionViewController: UIViewController {
     }()
     lazy var closeButton: UIButton = {
         let _button = UIButton()
-        _button.titleLabel?.font = UIFont.fontAwesomeOfSize(28)
-        _button.setTitleColor(UIColorTheme.SecondaryFont, forState: .Normal)
-        _button.setTitleColor(UIColorTheme.SecondaryFont, forState: .Highlighted)
-        _button.setTitle(String.fontAwesomeIconWithName(FontAwesome.Remove), forState: .Normal)
-        _button.backgroundColor = UIColor.clearColor()
-        _button.addTarget(self, action: #selector(CancelSubscriptionViewController.closeClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.titleLabel?.font = UIFont.fontAwesome(ofSize: 28)
+        _button.setTitleColor(UIColorTheme.SecondaryFont, for: UIControlState())
+        _button.setTitleColor(UIColorTheme.SecondaryFont, for: .highlighted)
+        _button.setTitle(String.fontAwesomeIcon(name: FontAwesome.remove), for: .normal)
+        _button.backgroundColor = UIColor.clear
+        _button.addTarget(self, action: #selector(CancelSubscriptionViewController.closeClicked(_:)), for: .touchUpInside)
         
         self.containerView.addSubview(_button)
         
@@ -56,9 +56,9 @@ class CancelSubscriptionViewController: UIViewController {
         let _label = UILabel()
         
         _label.textColor = UIColorTheme.PrimaryFont
-        _label.font = UIFontTheme.Regular(.Large)
+        _label.font = UIFontTheme.Regular(.large)
         _label.numberOfLines = 0
-        _label.textAlignment = .Center
+        _label.textAlignment = .center
         
         self.containerView.addSubview(_label)
         
@@ -70,7 +70,7 @@ class CancelSubscriptionViewController: UIViewController {
         _label.textColor = UIColorTheme.PrimaryFont
         _label.font = UIFontTheme.Regular()
         _label.numberOfLines = 0
-        _label.textAlignment = .Center
+        _label.textAlignment = .center
         
         self.containerView.addSubview(_label)
         
@@ -82,7 +82,7 @@ class CancelSubscriptionViewController: UIViewController {
         _label.textColor = UIColorTheme.PrimaryFont
         _label.font = UIFontTheme.Regular()
         _label.numberOfLines = 0
-        _label.textAlignment = .Center
+        _label.textAlignment = .center
         
         self.containerView.addSubview(_label)
         
@@ -91,7 +91,7 @@ class CancelSubscriptionViewController: UIViewController {
     lazy var buttonContainer: UIView = {
         let _view = UIView()
         
-        _view.backgroundColor = .whiteColor()
+        _view.backgroundColor = .white
         
         self.view.addSubview(_view)
         
@@ -99,12 +99,12 @@ class CancelSubscriptionViewController: UIViewController {
     }()
     lazy var cancelButton: UIButton = {
         let _button = UIButton()
-        _button.backgroundColor = .clearColor()
-        _button.setTitleColor(UIColorTheme.Link, forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Bold(.Tiny)
+        _button.backgroundColor = .clear
+        _button.setTitleColor(UIColorTheme.Link, for: UIControlState())
+        _button.titleLabel?.font = UIFontTheme.Bold(.tiny)
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
-        _button.addTarget(self, action: #selector(CancelSubscriptionViewController.cancelClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(CancelSubscriptionViewController.cancelClicked(_:)), for: .touchUpInside)
         
         self.buttonContainer.addSubview(_button)
         
@@ -112,14 +112,14 @@ class CancelSubscriptionViewController: UIViewController {
     }()
     lazy var confirmButton: UIButton = {
         let _button = UIButton()
-        _button.backgroundColor = .redColor()
-        _button.setTitleColor(.whiteColor(), forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Bold(.Tiny)
+        _button.backgroundColor = .red
+        _button.setTitleColor(.white, for: UIControlState())
+        _button.titleLabel?.font = UIFontTheme.Bold(.tiny)
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         _button.layer.cornerRadius = 5
         _button.clipsToBounds = true
         
-        _button.addTarget(self, action: #selector(CancelSubscriptionViewController.confirmClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(CancelSubscriptionViewController.confirmClicked(_:)), for: .touchUpInside)
         
         self.buttonContainer.addSubview(_button)
         
@@ -136,43 +136,43 @@ class CancelSubscriptionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .clearColor()
+        self.view.backgroundColor = .clear
         
-        outerContainerView.snp_makeConstraints { (make) in
+        outerContainerView.snp.makeConstraints { (make) in
             make.top.equalTo(view).inset(40)
             make.bottom.equalTo(view)
             make.leading.trailing.equalTo(view)
         }
-        closeButton.snp_makeConstraints { (make) in
+        closeButton.snp.makeConstraints { (make) in
             make.top.trailing.equalTo(containerView).inset(5)
             make.width.height.equalTo(40)
         }
-        containerView.snp_makeConstraints { (make) in
+        containerView.snp.makeConstraints { (make) in
             make.centerY.equalTo(outerContainerView)
             make.leading.trailing.equalTo(outerContainerView)
         }
-        headerLabel.snp_makeConstraints { (make) in
+        headerLabel.snp.makeConstraints { (make) in
             make.top.equalTo(containerView).inset(40)
             make.leading.trailing.equalTo(containerView).inset(20)
         }
-        descriptionLabel.snp_makeConstraints { (make) in
-            make.top.equalTo(headerLabel.snp_bottom).offset(20)
+        descriptionLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(headerLabel.snp.bottom).offset(20)
             make.leading.trailing.equalTo(containerView).inset(20)
         }
-        confirmationLabel.snp_makeConstraints { (make) in
-            make.top.equalTo(descriptionLabel.snp_bottom).offset(20)
+        confirmationLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(20)
             make.leading.trailing.equalTo(containerView).inset(20)
         }
-        buttonContainer.snp_makeConstraints { (make) in
-            make.top.equalTo(confirmationLabel.snp_bottom).offset(40)
+        buttonContainer.snp.makeConstraints { (make) in
+            make.top.equalTo(confirmationLabel.snp.bottom).offset(40)
             make.centerX.equalTo(containerView)
             make.bottom.equalTo(containerView).inset(10)
         }
-        cancelButton.snp_makeConstraints { (make) in
+        cancelButton.snp.makeConstraints { (make) in
             make.leading.top.bottom.equalTo(buttonContainer)
         }
-        confirmButton.snp_makeConstraints { (make) in
-            make.leading.equalTo(cancelButton.snp_trailing).offset(80)
+        confirmButton.snp.makeConstraints { (make) in
+            make.leading.equalTo(cancelButton.snp.trailing).offset(80)
             make.trailing.top.bottom.equalTo(buttonContainer)
         }
         
@@ -187,16 +187,16 @@ class CancelSubscriptionViewController: UIViewController {
         headerLabel.text = "Cancel Subscription"
         descriptionLabel.text = "You are about to cancel James Rhodes’ subscription to your plan Co-working 3 days per week.  This action can not be undone."
         confirmationLabel.text = "Are you sure?"
-        cancelButton.setTitle("No, Close", forState: .Normal)
-        confirmButton.setTitle("YES, CANCEL", forState: .Normal)
+        cancelButton.setTitle("No, Close", for: UIControlState())
+        confirmButton.setTitle("YES, CANCEL", for: UIControlState())
     }
-    func cancelClicked(sender: UIButton) {
+    func cancelClicked(_ sender: UIButton) {
         cancelSubscriptionDelegate?.didClose()
     }
-    func confirmClicked(sender: UIButton) {
+    func confirmClicked(_ sender: UIButton) {
         cancelSubscriptionDelegate?.didConfirmCancelSubscription(subscription)
     }
-    func closeClicked(sender: UIButton) {
+    func closeClicked(_ sender: UIButton) {
         cancelSubscriptionDelegate?.didClose()
     }
 }

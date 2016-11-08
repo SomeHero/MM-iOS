@@ -12,23 +12,23 @@ protocol PaymentCardCellDelegate: class {
     func didUpdateCardClicked()
 }
 class PaymentCardTableViewCell: UITableViewCell {
-    private lazy var containerView: UIView = {
+    fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
         self.contentView.addSubview(_view)
         
         return _view
     }()
-    private lazy var cardInfoView: UIView = {
+    fileprivate lazy var cardInfoView: UIView = {
         let _view = UIView()
         
         self.containerView.addSubview(_view)
         
         return _view
     }()
-    private lazy var nameOnCardLabel: UILabel = {
+    fileprivate lazy var nameOnCardLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Default)
+        _label.font = UIFontTheme.Regular(.default)
         _label.textColor = UIColorTheme.PrimaryFont
         _label.numberOfLines = 0
         
@@ -36,34 +36,34 @@ class PaymentCardTableViewCell: UITableViewCell {
         
         return _label
     }()
-    private lazy var cardDescriptionLabel: UILabel = {
+    fileprivate lazy var cardDescriptionLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Small)
+        _label.font = UIFontTheme.Regular(.small)
         _label.textColor = UIColorTheme.SecondaryFont
         
         self.cardInfoView.addSubview(_label)
         
         return _label
     }()
-    private lazy var cardExpirationLabel: UILabel = {
+    fileprivate lazy var cardExpirationLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Tiny)
+        _label.font = UIFontTheme.Regular(.tiny)
         _label.textColor = UIColorTheme.SecondaryFont
         
         self.cardInfoView.addSubview(_label)
         
         return _label
     }()
-    private lazy var updateCardButton: UIButton = {
+    fileprivate lazy var updateCardButton: UIButton = {
         let _button = UIButton()
-        _button.backgroundColor = .clearColor()
-        _button.setTitleColor(UIColorTheme.SecondaryFont, forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Tiny)
-        _button.layer.borderColor = UIColorTheme.SecondaryFont.CGColor
+        _button.backgroundColor = .clear
+        _button.setTitleColor(UIColorTheme.SecondaryFont, for: UIControlState())
+        _button.titleLabel?.font = UIFontTheme.Regular(.tiny)
+        _button.layer.borderColor = UIColorTheme.SecondaryFont.cgColor
         _button.layer.borderWidth = kOnePX
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
-        _button.addTarget(self, action: #selector(PaymentCardTableViewCell.updateCardClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(PaymentCardTableViewCell.updateCardClicked(_:)), for: .touchUpInside)
         
         self.containerView.addSubview(_button)
         
@@ -72,13 +72,13 @@ class PaymentCardTableViewCell: UITableViewCell {
     weak var paymentCardCellDelegate: PaymentCardCellDelegate?
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .whiteColor()
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
-        accessoryType = .None
-        selectionStyle = .None
+        backgroundColor = .white
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
+        accessoryType = .none
+        selectionStyle = .none
         
         //selectedBackgroundView = selectedColorView
     }
@@ -93,36 +93,36 @@ class PaymentCardTableViewCell: UITableViewCell {
     }
     
     override func updateConstraints() {
-        containerView.snp_updateConstraints { (make) in
+        containerView.snp.updateConstraints { (make) in
             make.edges.equalTo(contentView).inset(20)
         }
-        cardInfoView.snp_updateConstraints { (make) in
+        cardInfoView.snp.updateConstraints { (make) in
             make.top.leading.bottom.equalTo(containerView)
         }
-        nameOnCardLabel.snp_updateConstraints { (make) in
+        nameOnCardLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(cardInfoView)
             make.top.equalTo(cardInfoView)
         }
-        cardDescriptionLabel.snp_updateConstraints { (make) in
+        cardDescriptionLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(cardInfoView)
-            make.top.equalTo(nameOnCardLabel.snp_bottom)
+            make.top.equalTo(nameOnCardLabel.snp.bottom)
         }
-        cardExpirationLabel.snp_updateConstraints { (make) in
+        cardExpirationLabel.snp.updateConstraints { (make) in
             make.leading.equalTo(cardInfoView)
-            make.top.equalTo(cardDescriptionLabel.snp_bottom)
+            make.top.equalTo(cardDescriptionLabel.snp.bottom)
             make.bottom.equalTo(cardInfoView)
         }
-        updateCardButton.snp_updateConstraints { (make) in
-            make.leading.greaterThanOrEqualTo(cardInfoView.snp_trailing).offset(10)
+        updateCardButton.snp.updateConstraints { (make) in
+            make.leading.greaterThanOrEqualTo(cardInfoView.snp.trailing).offset(10)
             make.centerY.equalTo(containerView)
             make.trailing.equalTo(containerView).inset(10)
         }
         super.updateConstraints()
     }
-    override class func requiresConstraintBasedLayout() -> Bool {
+    override class var requiresConstraintBasedLayout : Bool {
         return true
     }
-    func setupWith(viewModel: DataSourceItemProtocol) {
+    func setupWith(_ viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? PaymentCardViewModel {
             nameOnCardLabel.text = viewModel.nameOnCard
             TextDecorator.applyTightLineHeight(toLabel: nameOnCardLabel)
@@ -133,10 +133,10 @@ class PaymentCardTableViewCell: UITableViewCell {
             cardExpirationLabel.text = viewModel.cardExpiration
             TextDecorator.applyTightLineHeight(toLabel: cardExpirationLabel)
             
-            updateCardButton.setTitle("Update Card", forState: .Normal)
+            updateCardButton.setTitle("Update Card", for: UIControlState())
         }
     }
-    func updateCardClicked(sender: UIButton) {
+    func updateCardClicked(_ sender: UIButton) {
         paymentCardCellDelegate?.didUpdateCardClicked()
     }
 }

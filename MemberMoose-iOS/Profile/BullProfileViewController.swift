@@ -14,51 +14,51 @@ class BullProfileViewController: UIViewController {
     var activeField: UITextField?
     let user: User
     
-    private lazy var scrollView: UIScrollView = {
+    fileprivate lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()
         self.view.addSubview(scroll)
         return scroll
     }()
-    private lazy var avatarView: EditProfilePhotoView = {
+    fileprivate lazy var avatarView: EditProfilePhotoView = {
         let _photoView = EditProfilePhotoView()
         _photoView.buttonTitle = "Upload Your Logo"
-        _photoView.editPhotoButton.addTarget(self, action: #selector(BullProfileViewController.editPhotoClicked), forControlEvents: .TouchUpInside)
+        _photoView.editPhotoButton.addTarget(self, action: #selector(BullProfileViewController.editPhotoClicked), for: .touchUpInside)
         
         self.scrollView.addSubview(_photoView)
         return _photoView
     }()
     lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [self.avatarView, self.companyNameTextField, self.subDomainTextField])
-        stack.axis = .Vertical
+        stack.axis = .vertical
         stack.spacing = 40
         
         self.scrollView.addSubview(stack)
         return stack
     }()
-    private lazy var companyNameTextField: StackViewInputField = {
+    fileprivate lazy var companyNameTextField: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", label: "Company Name", placeholder: "Enter Company Name", tag: 101)
         self.configureTextField(_textField.textField)
         
-        _textField.textField.addTarget(self, action: #selector(BullProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(BullProfileViewController.validateForm), for: UIControlEvents.editingChanged)
         return _textField
     }()
-    private lazy var subDomainTextField: StackViewInputField = {
+    fileprivate lazy var subDomainTextField: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", label: "Sub-Domain", placeholder: "Enter Sub-Domain", tag: 102)
-        _textField.textField.autocorrectionType = .No
-        _textField.textField.autocapitalizationType = .None
+        _textField.textField.autocorrectionType = .no
+        _textField.textField.autocapitalizationType = .none
         self.configureTextField(_textField.textField)
         
-        _textField.textField.addTarget(self, action: #selector(BullProfileViewController.validateForm), forControlEvents: UIControlEvents.EditingChanged)
+        _textField.textField.addTarget(self, action: #selector(BullProfileViewController.validateForm), for: UIControlEvents.editingChanged)
         return _textField
     }()
-    private lazy var nextButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.Custom)
-        _button.setImage(UIImage(named: "RightArrow-Primary"), forState: .Normal)
-        _button.imageView?.contentMode = .ScaleAspectFit
+    fileprivate lazy var nextButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
+        _button.setImage(UIImage(named: "RightArrow-Primary"), for: UIControlState())
+        _button.imageView?.contentMode = .scaleAspectFit
         
-        _button.addTarget(self, action: #selector(BullProfileViewController.nextClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(BullProfileViewController.nextClicked(_:)), for: .touchUpInside)
         
         self.scrollView.addSubview(_button)
         
@@ -79,25 +79,25 @@ class BullProfileViewController: UIViewController {
         title = "Company Profile"
         
         let image = UIImage(named: "Back")
-        let backButton = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(BullProfileViewController.backClicked(_:)))
+        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(BullProfileViewController.backClicked(_:)))
         
         navigationItem.leftBarButtonItem = backButton
         
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         
         setup()
         validateForm()
         // Do any additional setup after loading the view, typically from a nib.
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignUpViewController.keyboardDidAppear(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignUpViewController.keyboardDidHide(_:)), name: UIKeyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SignUpViewController.keyboardDidAppear(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SignUpViewController.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -107,36 +107,36 @@ class BullProfileViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        scrollView.snp_updateConstraints { (make) in
+        scrollView.snp.updateConstraints { (make) in
             make.edges.equalTo(view)
-            make.width.equalTo(UIScreen.mainScreen().bounds.width)
+            make.width.equalTo(UIScreen.main.bounds.width)
         }
-        stackView.snp_updateConstraints { (make) in
+        stackView.snp.updateConstraints { (make) in
             make.top.equalTo(scrollView).inset(20)
             make.leading.trailing.equalTo(view).inset(20)
         }
-        nextButton.snp_updateConstraints { (make) in
-            make.top.equalTo(stackView.snp_bottom).offset(60)
+        nextButton.snp.updateConstraints { (make) in
+            make.top.equalTo(stackView.snp.bottom).offset(60)
             make.centerX.equalTo(scrollView)
             make.height.equalTo(40)
             make.bottom.equalTo(scrollView).inset(20)
         }
     }
     func setup() {
-        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
-            avatarView.profilePhoto.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
-                                    placeholderImage: UIImage(named: "Avatar-Bull"))
+        if let avatar = user.avatar, let avatarImageUrl = avatar["large"] {
+            avatarView.profilePhoto.kf.setImage(with: URL(string: avatarImageUrl)!,
+                                    placeholder: UIImage(named: "Avatar-Bull"))
         } else {
             avatarView.profilePhoto.image = UIImage(named: "Avatar-Bull")
         }
         companyNameTextField.textField.text = user.account?.companyName
         subDomainTextField.textField.text = user.account?.subdomain
     }
-    func backClicked(sender: UIButton) {
-        navigationController?.popViewControllerAnimated(true)
+    func backClicked(_ sender: UIButton) {
+        navigationController?.popViewController(animated: true)
     }
-    func nextClicked(sender: UIButton) {
-        guard let companyName = companyNameTextField.textField.text, subDomain = subDomainTextField.textField.text else {
+    func nextClicked(_ sender: UIButton) {
+        guard let companyName = companyNameTextField.textField.text, let subDomain = subDomainTextField.textField.text else {
             return
         }
 //        let createUser = CreateUser(emailAddress: emailAddress, password: password, companyName: companyName, avatar: avatar)
@@ -166,8 +166,8 @@ class BullProfileViewController: UIViewController {
 //            SVProgressHUD.dismiss()
 //        }
     }
-    func configureTextField(textField: UITextField) {
-        textField.returnKeyType = .Next
+    func configureTextField(_ textField: UITextField) {
+        textField.returnKeyType = .next
         textField.delegate = self
         
         let toolBar = KeyboardDecorator.getInputToolbarWithDelegate(self)
@@ -182,17 +182,17 @@ class BullProfileViewController: UIViewController {
             }
         }
     }
-    func addImage(image: UIImage) {
+    func addImage(_ image: UIImage) {
         avatarView.profilePhoto.image = image
         
         avatar = image
     }
     func resetScrollViewInsets() {
-        UIView.animateWithDuration(0.2) {
-            let contentInsets = UIEdgeInsetsZero
+        UIView.animate(withDuration: 0.2, animations: {
+            let contentInsets = UIEdgeInsets.zero
             self.scrollView.contentInset = contentInsets
             self.scrollView.scrollIndicatorInsets = contentInsets
-        }
+        }) 
     }
     func validateForm() {
         guard let companyName = companyNameTextField.textField.text else {
@@ -213,7 +213,7 @@ class BullProfileViewController: UIViewController {
     }
 }
 extension BullProfileViewController: UITextFieldDelegate {
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         activeField = textField
         if let toolBar = activeField?.inputAccessoryView as? UIToolbar {
             toggleKeyboardNavButtonsEnabled(toolBar)
@@ -222,21 +222,20 @@ extension BullProfileViewController: UITextFieldDelegate {
     }
 }
 extension BullProfileViewController : InputNavigationDelegate {
-    func keyboardDidAppear(notification: NSNotification) {
-        if let info = notification.userInfo {
-            if let keyboardSize = info[UIKeyboardFrameBeginUserInfoKey]?.CGRectValue.size {
-                let keyboardHeight = keyboardSize.height
-                
-                UIView.animateWithDuration(0.2) {
-                    let contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardHeight, 0.0)
-                    self.scrollView.contentInset = contentInsets
-                    self.scrollView.scrollIndicatorInsets = contentInsets
-                }
-            }
+    func keyboardDidAppear(_ notification: Notification) {
+        if let info = (notification as NSNotification).userInfo {
+            let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as AnyObject).cgRectValue.size
+            let keyboardHeight = keyboardSize.height
+            
+            UIView.animate(withDuration: 0.2, animations: {
+                let contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardHeight, 0.0)
+                self.scrollView.contentInset = contentInsets
+                self.scrollView.scrollIndicatorInsets = contentInsets
+            })
         }
     }
     
-    func keyboardDidHide(notification: NSNotification) {
+    func keyboardDidHide(_ notification: Notification) {
         resetScrollViewInsets()
     }
     
@@ -270,15 +269,15 @@ extension BullProfileViewController : InputNavigationDelegate {
         }
     }
     
-    func toggleKeyboardNavButtonsEnabled(toolBar: UIToolbar) {
+    func toggleKeyboardNavButtonsEnabled(_ toolBar: UIToolbar) {
         if let items = toolBar.items {
             let isLastItem = activeField == subDomainTextField.textField
             let nextButtonIndex = KeyboardDecorator.nextIndex
-            items[nextButtonIndex].enabled = !isLastItem
+            items[nextButtonIndex].isEnabled = !isLastItem
             
             let isFirstItem = activeField == companyNameTextField.textField
             let previousButtonIndex = KeyboardDecorator.previousIndex
-            items[previousButtonIndex].enabled = !isFirstItem
+            items[previousButtonIndex].isEnabled = !isFirstItem
         }
     }
 }

@@ -20,17 +20,17 @@ class MenuHeaderViewModel:DataSourceItemProtocol {
     
     init(user: User, menuHeaderDelegate: MenuHeaderDelegate?) {
         self.avatar = "Avatar-Bull"
-        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
+        if let avatar = user.avatar, let avatarImageUrl = avatar["large"] {
             avatarUrl = avatarImageUrl
         }
-        if let firstName = user.firstName, lastName = user.lastName {
+        if let firstName = user.firstName, let lastName = user.lastName {
             self.name = "\(firstName) \(lastName)"
         }
         self.emailAddress = user.emailAddress
         self.menuHeaderDelegate = menuHeaderDelegate
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier("MenuHeaderCellIdentifier", forIndexPath: indexPath) as? MenuHeaderCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuHeaderCellIdentifier", for: indexPath) as? MenuHeaderCell else {
             fatalError(#function)
         }
         

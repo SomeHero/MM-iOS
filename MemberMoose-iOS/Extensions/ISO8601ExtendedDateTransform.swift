@@ -12,8 +12,8 @@ import ObjectMapper
 
 class ISO8601ExtendedDateTransform: DateFormatterTransform {
     init() {
-        let formatter = NSDateFormatter()
-        formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         super.init(dateFormatter: formatter)
     }

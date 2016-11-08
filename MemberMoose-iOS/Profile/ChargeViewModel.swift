@@ -19,8 +19,8 @@ class ChargeViewModel:DataSourceItemProtocol {
         self.totalCellHeight = totalCellHeight
         self.delegate = chargeCellDelegate
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as? ChargeCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? ChargeCell else {
             fatalError(#function)
         }
         
@@ -33,6 +33,6 @@ class ChargeViewModel:DataSourceItemProtocol {
         return nil
     }
     @objc func heightForHeader() -> CGFloat {
-        return CGFloat.min;
+        return CGFloat.leastNormalMagnitude;
     }
 }

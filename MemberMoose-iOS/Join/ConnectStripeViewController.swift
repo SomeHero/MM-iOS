@@ -12,8 +12,8 @@ import SWRevealViewController
 import SVProgressHUD
 
 class ConnectStripeViewController: UIViewController {
-    private lazy var provider:SwiftyOAuth.Provider = {
-        let _provider = Provider.Stripe(
+    fileprivate lazy var provider:SwiftyOAuth.Provider = {
+        let _provider = Provider.stripe(
             clientID:     kStripeConnectClientId,
             clientSecret: kStripeSecretKey,
             redirectURL:  kStripeOAuthRedirectUrl
@@ -24,55 +24,55 @@ class ConnectStripeViewController: UIViewController {
     
         return _provider
     }()
-    private lazy var skipButton: UIButton = {
+    fileprivate lazy var skipButton: UIButton = {
         let _button = UIButton()
-        _button.backgroundColor = .clearColor()
-        _button.setTitleColor(.grayColor(), forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Bold(.Tiny)
+        _button.backgroundColor = .clear
+        _button.setTitleColor(.gray, for: UIControlState())
+        _button.titleLabel?.font = UIFontTheme.Bold(.tiny)
         
-        _button.addTarget(self, action: #selector(CreateFirstPlanViewController.skipClicked(_:)), forControlEvents: .TouchUpInside)
-        
-        self.view.addSubview(_button)
-        
-        return _button
-    }()
-    private lazy var backButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.Custom)
-        _button.setImage(UIImage(named: "Back"), forState: .Normal)
-        _button.imageView?.contentMode = .ScaleAspectFit
-        
-        _button.addTarget(self, action: #selector(CreatePlanViewController.backClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(CreateFirstPlanViewController.skipClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var titleLabel: UILabel = {
+    fileprivate lazy var backButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
+        _button.setImage(UIImage(named: "Back"), for: UIControlState())
+        _button.imageView?.contentMode = .scaleAspectFit
+        
+        _button.addTarget(self, action: #selector(CreatePlanViewController.backClicked(_:)), for: .touchUpInside)
+        
+        self.view.addSubview(_button)
+        
+        return _button
+    }()
+    fileprivate lazy var titleLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Small)
+        _label.textAlignment = .center
+        _label.font = UIFontTheme.Regular(.small)
         
         self.view.addSubview(_label)
         
         return _label
     }()
-    private lazy var memberMoosePlusStripe: UIImageView = {
+    fileprivate lazy var memberMoosePlusStripe: UIImageView = {
         let _imageView = UIImageView()
         _imageView.image = UIImage(named: "MMPlusStripe")
-        _imageView.contentMode = .ScaleAspectFit
+        _imageView.contentMode = .scaleAspectFit
         
         self.view.addSubview(_imageView)
         
         return _imageView
     }()
-    private lazy var introLabel: UILabel = {
+    fileprivate lazy var introLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .Center
+        _label.textAlignment = .center
         _label.numberOfLines = 0
-        _label.lineBreakMode = .ByWordWrapping
-        _label.font = UIFontTheme.Regular(.Small)
+        _label.lineBreakMode = .byWordWrapping
+        _label.font = UIFontTheme.Regular(.small)
         
         self.view.addSubview(_label)
         
@@ -80,77 +80,77 @@ class ConnectStripeViewController: UIViewController {
     }()
     lazy var lineView: UIView = {
         let lineView = UIView()
-        lineView.backgroundColor = UIColor.flatWhiteColor()
+        lineView.backgroundColor = .flatWhite()
         
         self.view.addSubview(lineView)
         
         return lineView
     }()
-    private lazy var feature1: UILabel = {
+    fileprivate lazy var feature1: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .Center
+        _label.textAlignment = .center
         _label.numberOfLines = 0
-        _label.lineBreakMode = .ByWordWrapping
-        _label.font = UIFontTheme.Regular(.Small)
+        _label.lineBreakMode = .byWordWrapping
+        _label.font = UIFontTheme.Regular(.small)
         
         self.view.addSubview(_label)
         
         return _label
     }()
-    private lazy var feature2: UILabel = {
+    fileprivate lazy var feature2: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .Center
+        _label.textAlignment = .center
         _label.numberOfLines = 0
-        _label.lineBreakMode = .ByWordWrapping
-        _label.font = UIFontTheme.Regular(.Small)
+        _label.lineBreakMode = .byWordWrapping
+        _label.font = UIFontTheme.Regular(.small)
         
         self.view.addSubview(_label)
         
         return _label
     }()
-    private lazy var feature3: UILabel = {
+    fileprivate lazy var feature3: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .Center
+        _label.textAlignment = .center
         _label.numberOfLines = 0
-        _label.lineBreakMode = .ByWordWrapping
-        _label.font = UIFontTheme.Regular(.Small)
+        _label.lineBreakMode = .byWordWrapping
+        _label.font = UIFontTheme.Regular(.small)
         
         self.view.addSubview(_label)
         
         return _label
     }()
-    private lazy var connectWithStripe: UIButton = {
+    fileprivate lazy var connectWithStripe: UIButton = {
         let _button = UIButton()
-        _button.backgroundColor = .clearColor()
-        _button.setImage(UIImage(named: "ConnectWithStripe"), forState: .Normal)
-        _button.addTarget(self, action: #selector(ConnectStripeViewController.connectStripeClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.backgroundColor = .clear
+        _button.setImage(UIImage(named: "ConnectWithStripe"), for: UIControlState())
+        _button.addTarget(self, action: #selector(ConnectStripeViewController.connectStripeClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var connectLaterButton: UIButton = {
+    fileprivate lazy var connectLaterButton: UIButton = {
         let _button = UIButton()
-        _button.backgroundColor = .clearColor()
-        _button.setTitleColor(UIColorTheme.Link, forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Bold(.Tiny)
+        _button.backgroundColor = .clear
+        _button.setTitleColor(UIColorTheme.Link, for: UIControlState())
+        _button.titleLabel?.font = UIFontTheme.Bold(.tiny)
         
-        _button.addTarget(self, action: #selector(ConnectStripeViewController.connectLaterClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(ConnectStripeViewController.connectLaterClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var termOfServiceLabel: UILabel = {
+    fileprivate lazy var termOfServiceLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .Center
+        _label.textAlignment = .center
         _label.numberOfLines = 0
-        _label.lineBreakMode = .ByWordWrapping
-        _label.font = UIFontTheme.Regular(.Tiny)
+        _label.lineBreakMode = .byWordWrapping
+        _label.font = UIFontTheme.Regular(.tiny)
         
         self.view.addSubview(_label)
         
@@ -160,10 +160,10 @@ class ConnectStripeViewController: UIViewController {
         super.viewDidLoad()
 
         title = "Connect Stripe"
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         
         let image = UIImage(named: "Back")
-        let backButton = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(PlanDetailViewController.backClicked(_:)))
+        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(PlanDetailViewController.backClicked(_:)))
         
         navigationItem.leftBarButtonItem = backButton
         
@@ -172,48 +172,48 @@ class ConnectStripeViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        memberMoosePlusStripe.snp_updateConstraints { (make) in
+        memberMoosePlusStripe.snp.updateConstraints { (make) in
             make.top.equalTo(view).offset(20)
             make.centerX.equalTo(view)
             make.width.equalTo(view).multipliedBy(0.7)
         }
-        introLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(memberMoosePlusStripe.snp_bottom).offset(20)
+        introLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(memberMoosePlusStripe.snp.bottom).offset(20)
             make.centerX.equalTo(view)
             make.width.equalTo(view).multipliedBy(0.7)
         }
-        lineView.snp_updateConstraints { (make) -> Void in
-            make.top.equalTo(introLabel.snp_bottom).offset(40)
+        lineView.snp.updateConstraints { (make) -> Void in
+            make.top.equalTo(introLabel.snp.bottom).offset(40)
             make.centerX.equalTo(view)
             make.width.equalTo(view).multipliedBy(0.7)
             make.height.equalTo(kOnePX*2)
         }
-        feature1.snp_updateConstraints { (make) in
-            make.top.equalTo(lineView.snp_bottom).offset(20)
+        feature1.snp.updateConstraints { (make) in
+            make.top.equalTo(lineView.snp.bottom).offset(20)
             make.centerX.equalTo(view)
             make.width.equalTo(view).multipliedBy(0.7)
         }
-        feature2.snp_updateConstraints { (make) in
-            make.top.equalTo(feature1.snp_bottom).offset(20)
+        feature2.snp.updateConstraints { (make) in
+            make.top.equalTo(feature1.snp.bottom).offset(20)
             make.centerX.equalTo(view)
             make.width.equalTo(view).multipliedBy(0.7)
         }
-        feature3.snp_updateConstraints { (make) in
-            make.top.equalTo(feature2.snp_bottom).offset(20)
+        feature3.snp.updateConstraints { (make) in
+            make.top.equalTo(feature2.snp.bottom).offset(20)
             make.centerX.equalTo(view)
             make.width.equalTo(view).multipliedBy(0.7)
         }
-        connectWithStripe.snp_updateConstraints { (make) in
-            make.top.equalTo(feature3.snp_bottom).offset(40)
+        connectWithStripe.snp.updateConstraints { (make) in
+            make.top.equalTo(feature3.snp.bottom).offset(40)
             make.centerX.equalTo(view)
             make.width.equalTo(262)
         }
-        connectLaterButton.snp_updateConstraints { (make) in
-            make.top.equalTo(connectWithStripe.snp_bottom).offset(5)
+        connectLaterButton.snp.updateConstraints { (make) in
+            make.top.equalTo(connectWithStripe.snp.bottom).offset(5)
             make.centerX.equalTo(view)
         }
-        termOfServiceLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(connectLaterButton.snp_bottom).offset(20)
+        termOfServiceLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(connectLaterButton.snp.bottom).offset(20)
             make.centerX.equalTo(view)
             make.width.equalTo(262)
         }
@@ -228,22 +228,22 @@ class ConnectStripeViewController: UIViewController {
         feature1.text = "No monthly fees or minimums"
         feature2.text = "Built-in fraud detection & security"
         feature3.text = "Trusted by over 12,000 businesses"
-        connectLaterButton.setTitle("I'll Connect Later", forState: .Normal)
+        connectLaterButton.setTitle("I'll Connect Later", for: UIControlState())
         termOfServiceLabel.text = "By connecting your Stripe account you are agreeing to the Terms of Service"
     }
-    func backClicked(sender: UIButton) {
-        navigationController?.popViewControllerAnimated(true)
+    func backClicked(_ sender: UIButton) {
+        navigationController?.popViewController(animated: true)
     }
-    func connectStripeClicked(sender: UIButton) {
+    func connectStripeClicked(_ sender: UIButton) {
         guard let user = SessionManager.sharedUser else {
             return
         }
         SVProgressHUD.show()
         
-        provider.authorize { (result: Result<Token, Error>) -> Void in
+        provider.authorize { (result: Result<Token, SwiftyOAuth.Error>) -> Void in
             switch result {
-            case .Success(let token):
-                let stripeParams: [String: AnyObject] = token.dictionary
+            case .success(let token):
+                let stripeParams: [String: AnyObject] = token.dictionary as [String: AnyObject]
                 let connectStripe = ConnectStripe(userId: user.id, stripeParams: stripeParams)
                 
                 ApiManager.sharedInstance.connectStripe(connectStripe, success: { (response) in
@@ -263,29 +263,29 @@ class ConnectStripeViewController: UIViewController {
                     
                     ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 })
-            case .Failure(let error):
+            case .failure(let error):
                 SVProgressHUD.dismiss()
                 
                 ErrorHandler.presentErrorDialog(self, error: error, errorDictionary: nil)
             }
         }
     }
-    func connectLaterClicked(sender: UIButton) {
+    func connectLaterClicked(_ sender: UIButton) {
         guard let user = SessionManager.sharedUser else {
             return
         }
         let viewController = ProfileViewController(user: user, profileType: .bull)
         let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.navigationBarHidden = true
+        navigationController.isNavigationBarHidden = true
         
         let menuViewController = MenuViewController()
         
         let swRevealViewController = SWRevealViewController(rearViewController: menuViewController, frontViewController: navigationController)
         
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
             delegate.swRevealViewController = swRevealViewController
             
-            delegate.window?.rootViewController?.presentViewController(swRevealViewController, animated: true, completion: nil)
+            delegate.window?.rootViewController?.present(swRevealViewController!, animated: true, completion: nil)
         }
     }
 }

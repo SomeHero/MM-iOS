@@ -21,7 +21,7 @@ class ProfileHeaderViewModel:DataSourceItemProtocol {
     
     init(user: User, membershipNavigationState: MembershipNavigationState, membershipNavigationDelegate: MembershipNavigationDelegate? = nil) {
         self.avatar = "Avatar-Bull"
-        if let account = user.account, avatar = account.avatar, avatarImageUrl = avatar["large"] {
+        if let account = user.account, let avatar = account.avatar, let avatarImageUrl = avatar["large"] {
             self.avatarImageUrl = avatarImageUrl
         }
         self.companyName = user.account?.companyName
@@ -29,8 +29,8 @@ class ProfileHeaderViewModel:DataSourceItemProtocol {
         self.membershipNavigationState = membershipNavigationState
         self.membershipNavigationDelegate = membershipNavigationDelegate
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier("ProfileHeaderCellIdentifier", forIndexPath: indexPath) as? ProfileHeaderCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileHeaderCellIdentifier", for: indexPath) as? ProfileHeaderCell else {
             fatalError(#function)
         }
         
@@ -42,7 +42,7 @@ class ProfileHeaderViewModel:DataSourceItemProtocol {
         return nil
     }
     @objc func heightForHeader() -> CGFloat {
-        return CGFloat.min;
+        return CGFloat.leastNormalMagnitude;
     }
 }
 

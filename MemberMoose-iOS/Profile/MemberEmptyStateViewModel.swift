@@ -27,8 +27,8 @@ class MemberEmptyStateViewModel:DataSourceItemProtocol {
         self.subHeader = subHeader
         self.memberEmptyStateDelegate = memberEmptyStateDelegate
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as? MemberEmptyStateCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? MemberEmptyStateCell else {
             fatalError(#function)
         }
         
@@ -41,7 +41,7 @@ class MemberEmptyStateViewModel:DataSourceItemProtocol {
         return nil
     }
     @objc func heightForHeader() -> CGFloat {
-        return CGFloat.min;
+        return CGFloat.leastNormalMagnitude;
     }
 }
 extension MemberEmptyStateViewModel: MemberEmptyStateCellDelegate {

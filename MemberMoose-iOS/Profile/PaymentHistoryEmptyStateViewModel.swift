@@ -17,8 +17,8 @@ class PaymentHistoryEmptyStateViewModel:DataSourceItemProtocol {
     init(header: String) {
         self.header = header
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as? PaymentHistoryEmptyStateCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? PaymentHistoryEmptyStateCell else {
             fatalError(#function)
         }
         

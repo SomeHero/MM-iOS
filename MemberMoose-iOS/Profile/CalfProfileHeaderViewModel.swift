@@ -21,10 +21,10 @@ class CalfProfileHeaderViewModel:DataSourceItemProtocol {
     
     init(user: User, memberNavigationState: MemberNavigationState, memberNavigationDelegate: MemberNavigationDelegate? = nil) {
         self.avatar = "Avatar-Calf"
-        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
+        if let avatar = user.avatar, let avatarImageUrl = avatar["large"] {
             self.avatarImageUrl = avatarImageUrl
         }
-        if let firstName = user.firstName, lastName = user.lastName {
+        if let firstName = user.firstName, let lastName = user.lastName {
             self.name = "\(firstName) \(lastName)"
         } else {
             self.name = user.emailAddress
@@ -33,8 +33,8 @@ class CalfProfileHeaderViewModel:DataSourceItemProtocol {
         self.memberNavigationState = memberNavigationState
         self.memberNavigationDelegate = memberNavigationDelegate
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier("CalfProfileHeaderCellIdentifier", forIndexPath: indexPath) as? CalfProfileHeaderCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CalfProfileHeaderCellIdentifier", for: indexPath) as? CalfProfileHeaderCell else {
             fatalError(#function)
         }
         
@@ -46,7 +46,7 @@ class CalfProfileHeaderViewModel:DataSourceItemProtocol {
         return nil
     }
     @objc func heightForHeader() -> CGFloat {
-        return CGFloat.min;
+        return CGFloat.leastNormalMagnitude;
     }
 }
 

@@ -22,7 +22,7 @@ class MessagesViewModel:DataSourceItemProtocol {
     init(user: User, memberNavigationState: MemberNavigationState, memberNavigationDelegate: MemberNavigationDelegate? = nil) {
         self.avatar = "Avatar-Bull"
         self.avatarImageUrl = nil
-        if let firstName = user.firstName, lastName = user.lastName {
+        if let firstName = user.firstName, let lastName = user.lastName {
             self.name = "\(firstName) \(lastName)"
         } else {
             self.name = user.emailAddress
@@ -31,8 +31,8 @@ class MessagesViewModel:DataSourceItemProtocol {
         self.memberNavigationState = memberNavigationState
         self.memberNavigationDelegate = memberNavigationDelegate
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as? MessagesCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? MessagesCell else {
             fatalError(#function)
         }
         
@@ -44,6 +44,6 @@ class MessagesViewModel:DataSourceItemProtocol {
         return nil
     }
     @objc func heightForHeader() -> CGFloat {
-        return CGFloat.min;
+        return CGFloat.leastNormalMagnitude;
     }
 }

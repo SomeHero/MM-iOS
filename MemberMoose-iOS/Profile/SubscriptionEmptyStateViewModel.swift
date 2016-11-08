@@ -22,8 +22,8 @@ class SubscriptionEmptyStateViewModel:DataSourceItemProtocol {
         self.header = header
         self.subscriptionEmptyStateDelegate = subscriptionEmptyStateDelegate
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as? SubscriptionEmptyStateCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? SubscriptionEmptyStateCell else {
             fatalError(#function)
         }
         

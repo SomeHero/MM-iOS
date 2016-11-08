@@ -10,14 +10,14 @@ import UIKit
 
 class MemberCell: UITableViewCell {
 
-    private lazy var containerView: UIView = {
+    fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
         self.contentView.addSubview(_view)
         
         return _view
     }()
-    private lazy var avatarView: UIImageView = {
+    fileprivate lazy var avatarView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 60 / 2
         imageView.clipsToBounds = true
@@ -26,50 +26,50 @@ class MemberCell: UITableViewCell {
         
         return imageView
     }()
-    private lazy var nameLabel: UILabel = {
+    fileprivate lazy var nameLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Bold(.Small)
-        _label.textColor = UIColor.flatBlackColor()
+        _label.font = UIFontTheme.Bold(.small)
+        _label.textColor = UIColor.flatBlack()
         _label.numberOfLines = 0
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var emailAddressLabel: UILabel = {
+    fileprivate lazy var emailAddressLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Small)
-        _label.textColor = UIColor.flatBlackColor()
+        _label.font = UIFontTheme.Regular(.small)
+        _label.textColor = UIColor.flatBlack()
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var memberSinceLabel: UILabel = {
+    fileprivate lazy var memberSinceLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Small)
-        _label.textColor = UIColor.flatBlackColor()
+        _label.font = UIFontTheme.Regular(.small)
+        _label.textColor = UIColor.flatBlack()
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var planNameLabel: UILabel = {
+    fileprivate lazy var planNameLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Small)
-        _label.textColor = UIColor.flatBlackColor()
+        _label.font = UIFontTheme.Regular(.small)
+        _label.textColor = UIColor.flatBlack()
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .whiteColor()
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
-        accessoryType = .DisclosureIndicator
+        backgroundColor = .white
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
+        accessoryType = .disclosureIndicator
         
         //selectedBackgroundView = selectedColorView
     }
@@ -82,57 +82,57 @@ class MemberCell: UITableViewCell {
         super.prepareForReuse()
         
     }
-    func setupWith(viewModel: DataSourceItemProtocol) {
+    func setupWith(_ viewModel: DataSourceItemProtocol) {
         guard let viewModel = viewModel as? MemberViewModel else {
             return
         }
         if let avatarImageUrl = viewModel.avatarUrl {
-            avatarView.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
-                                          placeholderImage: UIImage(named: viewModel.avatar))
+            avatarView.kf.setImage(with: URL(string: avatarImageUrl)!,
+                                          placeholder: UIImage(named: viewModel.avatar))
         } else {
             avatarView.image = UIImage(named: viewModel.avatar)
         }
         if let name = viewModel.memberName {
-            nameLabel.hidden = false
+            nameLabel.isHidden = false
             nameLabel.text = name
         } else {
-            nameLabel.hidden = true
+            nameLabel.isHidden = true
         }
         memberSinceLabel.text = "Member Since 11/5/2015"
         planNameLabel.text = viewModel.planName
     }
     override func updateConstraints() {
-        avatarView.snp_makeConstraints { (make) -> Void in
+        avatarView.snp.updateConstraints { (make) -> Void in
             make.leading.equalTo(contentView).inset(10)
             make.centerY.equalTo(contentView)
             make.height.width.equalTo(60)
         }
-        containerView.snp_updateConstraints { (make) in
-            make.leading.equalTo(avatarView.snp_trailing).offset(10)
+        containerView.snp.updateConstraints { (make) in
+            make.leading.equalTo(avatarView.snp.trailing).offset(10)
             make.trailing.equalTo(contentView)
             make.centerY.equalTo(contentView)
             make.top.bottom.equalTo(contentView).inset(10)
         }
-        nameLabel.snp_updateConstraints { (make) in
+        nameLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
             make.top.equalTo(containerView).inset(10)
         }
-        emailAddressLabel.snp_updateConstraints { (make) in
+        emailAddressLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
-            make.top.equalTo(nameLabel.snp_bottom)
+            make.top.equalTo(nameLabel.snp.bottom)
         }
-        memberSinceLabel.snp_updateConstraints { (make) in
+        memberSinceLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
-            make.top.equalTo(emailAddressLabel.snp_bottom)
+            make.top.equalTo(emailAddressLabel.snp.bottom)
         }
-        planNameLabel.snp_updateConstraints { (make) in
+        planNameLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
-            make.top.equalTo(memberSinceLabel.snp_bottom)
+            make.top.equalTo(memberSinceLabel.snp.bottom)
             make.bottom.equalTo(containerView)
         }
         super.updateConstraints()
     }
-    override class func requiresConstraintBasedLayout() -> Bool {
+    override class var requiresConstraintBasedLayout : Bool {
         return true
     }
 }

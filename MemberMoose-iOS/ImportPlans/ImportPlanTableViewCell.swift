@@ -10,48 +10,48 @@ import UIKit
 
 class ImportPlanTableViewCell: UITableViewCell {
 
-    private lazy var containerView: UIView = {
+    fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
         self.contentView.addSubview(_view)
         
         return _view
     }()
-    private lazy var planNameLabel: UILabel = {
+    fileprivate lazy var planNameLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Small)
-        _label.textColor = UIColor.flatBlackColor()
+        _label.font = UIFontTheme.Regular(.small)
+        _label.textColor = UIColor.flatBlack()
         _label.numberOfLines = 0
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var planAmountLabel: UILabel = {
+    fileprivate lazy var planAmountLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Small)
-        _label.textColor = UIColor.flatBlackColor()
+        _label.font = UIFontTheme.Regular(.small)
+        _label.textColor = UIColor.flatBlack()
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var radioBoxImageView: UIImageView = {
+    fileprivate lazy var radioBoxImageView: UIImageView = {
         let _imageView = UIImageView()
-        _imageView.contentMode = .ScaleAspectFit
+        _imageView.contentMode = .scaleAspectFit
         
         self.contentView.addSubview(_imageView)
         
         return _imageView
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .whiteColor()
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
-        accessoryType = .None
-        selectionStyle = .None
+        backgroundColor = .white
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
+        accessoryType = .none
+        selectionStyle = .none
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -62,7 +62,7 @@ class ImportPlanTableViewCell: UITableViewCell {
         super.prepareForReuse()
         
     }
-    func setupWith(viewModel: ImportPlanViewModel) {
+    func setupWith(_ viewModel: ImportPlanViewModel) {
         planNameLabel.text = viewModel.planName
         planAmountLabel.text = viewModel.planAmount
         
@@ -73,18 +73,18 @@ class ImportPlanTableViewCell: UITableViewCell {
         }
     }
     override func updateConstraints() {
-        containerView.snp_updateConstraints { (make) in
+        containerView.snp.updateConstraints { (make) in
             make.leading.equalTo(contentView).offset(10)
             make.centerY.equalTo(contentView)
             make.top.bottom.equalTo(contentView).inset(10)
         }
-        planNameLabel.snp_updateConstraints { (make) in
+        planNameLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
             make.top.equalTo(containerView)
             make.bottom.equalTo(containerView)
         }
-        radioBoxImageView.snp_updateConstraints { (make) in
-            make.leading.equalTo(containerView.snp_trailing).offset(10)
+        radioBoxImageView.snp.updateConstraints { (make) in
+            make.leading.equalTo(containerView.snp.trailing).offset(10)
             make.trailing.equalTo(contentView).inset(10)
             make.centerY.equalTo(contentView)
             make.bottom.equalTo(containerView)
@@ -92,7 +92,7 @@ class ImportPlanTableViewCell: UITableViewCell {
         }
         super.updateConstraints()
     }
-    override class func requiresConstraintBasedLayout() -> Bool {
+    override class var requiresConstraintBasedLayout : Bool {
         return true
     }
 }

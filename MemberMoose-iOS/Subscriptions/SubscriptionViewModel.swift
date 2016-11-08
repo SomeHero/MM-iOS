@@ -9,9 +9,9 @@
 import UIKit
 import Money
 protocol SubscriptionDelegate: class {
-    func didCancelSubscription(subscription: Subscription)
-    func didChangeSubscription(subscription: Subscription)
-    func didHoldSubscription(subscription: Subscription)
+    func didCancelSubscription(_ subscription: Subscription)
+    func didChangeSubscription(_ subscription: Subscription)
+    func didHoldSubscription(_ subscription: Subscription)
 }
 class SubscriptionViewModel:DataSourceItemProtocol {
     var cellID: String = "SubscriptionCell"
@@ -20,7 +20,7 @@ class SubscriptionViewModel:DataSourceItemProtocol {
     let planName: String
     let planAmount: String
     let status: String
-    private let subscription: Subscription
+    fileprivate let subscription: Subscription
     weak var subscriptionDelegate: SubscriptionDelegate?
     
     init(subscription: Subscription, subscriptionDelegate: SubscriptionDelegate? = nil) {
@@ -31,8 +31,8 @@ class SubscriptionViewModel:DataSourceItemProtocol {
         
         self.subscriptionDelegate = subscriptionDelegate
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier("SubscriptionCellIdentifier", forIndexPath: indexPath) as? SubscriptionCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SubscriptionCellIdentifier", for: indexPath) as? SubscriptionCell else {
             fatalError(#function)
         }
         
@@ -63,11 +63,11 @@ extension SubscriptionViewModel: SubscriptionCellDelegate {
     }
 }
 class SubscriptionHeaderView: UIView {
-    private lazy var titleLabel: UILabel = {
+    fileprivate lazy var titleLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .Left
-        _label.font = UIFontTheme.Regular(.Default)
+        _label.textAlignment = .left
+        _label.font = UIFontTheme.Regular(.default)
         
         self.addSubview(_label)
         
@@ -76,7 +76,7 @@ class SubscriptionHeaderView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        titleLabel.snp_makeConstraints { (make) in
+        titleLabel.snp.makeConstraints { (make) in
             make.leading.trailing.equalTo(self).inset(20)
             make.bottom.equalTo(self).inset(10)
         }
@@ -85,7 +85,7 @@ class SubscriptionHeaderView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    func setup(title: String) {
+    func setup(_ title: String) {
         titleLabel.text = title
     }
 }

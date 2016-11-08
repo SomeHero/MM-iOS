@@ -9,43 +9,43 @@
 import UIKit
 
 class SubscribeViewController: UIViewController {
-    private enum Copy: String {
+    fileprivate enum Copy: String {
         case TitleText = "Send Subscription Link"
     }
-    private lazy var menuButton: UIButton = {
+    fileprivate lazy var menuButton: UIButton = {
         let _button = UIButton()
-        _button.setImage(UIImage(named:"Menu-Reverse"), forState: .Normal)
-        _button.addTarget(self, action: #selector(SubscribeViewController.toggleMenu(_:)), forControlEvents: .TouchUpInside)
+        _button.setImage(UIImage(named:"Menu-Reverse"), for: UIControlState())
+        _button.addTarget(self, action: #selector(SubscribeViewController.toggleMenu(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var titleLabel: UILabel = {
+    fileprivate lazy var titleLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .Left
-        _label.font = UIFontTheme.Regular(.Default)
+        _label.textAlignment = .left
+        _label.font = UIFontTheme.Regular(.default)
         
         self.view.addSubview(_label)
         
         return _label
     }()
-    private lazy var scrollView: UIScrollView = {
+    fileprivate lazy var scrollView: UIScrollView = {
         let _scrollView = UIScrollView()
         
         self.view.addSubview(_scrollView)
         return _scrollView
     }()
-    private lazy var stackView: UIStackView = {
+    fileprivate lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [self.emailTextField])
-        stack.axis = .Vertical
+        stack.axis = .vertical
         stack.spacing = 10
         
         self.scrollView.addSubview(stack)
         return stack
     }()
-    private lazy var emailTextField: StackViewInputField = {
+    fileprivate lazy var emailTextField: StackViewInputField = {
         let _textField = StackViewInputField()
         _textField.configure("", label: "Email", placeholder: "Email Address", tag: 102)
         self.configureTextField(_textField.textField)
@@ -56,7 +56,7 @@ class SubscribeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         setup()
     }
 
@@ -67,42 +67,42 @@ class SubscribeViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        menuButton.snp_updateConstraints { (make) in
+        menuButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(35)
             make.leading.equalTo(view).inset(15)
             make.height.equalTo(18)
         }
-        titleLabel.snp_updateConstraints { (make) in
+        titleLabel.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(35)
-            make.leading.greaterThanOrEqualTo(menuButton.snp_trailing).inset(10)
+            make.leading.greaterThanOrEqualTo(menuButton.snp.trailing).inset(10)
             //make.trailing.equalTo(leading)
             make.centerX.equalTo(view)
         }
-        scrollView.snp_updateConstraints { (make) in
+        scrollView.snp.updateConstraints { (make) in
             make.top.equalTo(titleLabel).inset(10)
             make.leading.trailing.equalTo(view)
             make.bottom.equalTo(view).inset(60)
         }
-        stackView.snp_updateConstraints { (make) in
+        stackView.snp.updateConstraints { (make) in
             make.top.equalTo(scrollView).inset(20)
             make.leading.trailing.equalTo(view).inset(20)
             make.bottom.equalTo(scrollView).inset(20)
         }
-        menuButton.snp_updateConstraints { (make) in
+        menuButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.leading.equalTo(view).inset(15)
             make.height.width.equalTo(20)
         }
-        titleLabel.snp_updateConstraints { (make) in
+        titleLabel.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(60)
             make.leading.trailing.equalTo(view).inset(20)
         }
     }
-    private func setup() {
+    fileprivate func setup() {
         titleLabel.text = Copy.TitleText.rawValue
     }
-    func configureTextField(textField: UITextField) {
-        textField.returnKeyType = .Next
+    func configureTextField(_ textField: UITextField) {
+        textField.returnKeyType = .next
         //        textField.delegate = self
         //
         //        let toolBar = KeyboardDecorator.getInputToolbarWithDelegate(self)

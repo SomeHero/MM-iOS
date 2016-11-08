@@ -10,7 +10,7 @@ import UIKit
 import Stripe
 
 protocol CardCaptureDelegate: class {
-    func didCompleteCardCapture(stpCard: STPCardParams)
+    func didCompleteCardCapture(_ stpCard: STPCardParams)
     func didCancelCardCapture()
 }
 class CardIOViewController: UIViewController {
@@ -20,16 +20,16 @@ class CardIOViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor.white
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         CardIOUtilities.preload()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     override func viewDidLayoutSubviews() {
@@ -38,15 +38,15 @@ class CardIOViewController: UIViewController {
     func scanCard() {
         scanViewController = CardIOPaymentViewController(paymentDelegate: self)
         scanViewController?.useCardIOLogo = true
-        presentViewController(scanViewController!, animated: true, completion: nil)
+        present(scanViewController!, animated: true, completion: nil)
     }
 }
 extension CardIOViewController: CardIOPaymentViewControllerDelegate {
-    func userDidCancelPaymentViewController(paymentViewController: CardIOPaymentViewController!) {
+    func userDidCancel(_ paymentViewController: CardIOPaymentViewController!) {
         self.cardCaptureDelegate?.didCancelCardCapture()
     }
     
-    func userDidProvideCreditCardInfo(cardInfo: CardIOCreditCardInfo!, inPaymentViewController paymentViewController: CardIOPaymentViewController!) {
+    func userDidProvide(_ cardInfo: CardIOCreditCardInfo!, in paymentViewController: CardIOPaymentViewController!) {
         if let info = cardInfo {
             let stpCard = STPCardParams()
             stpCard.number = info.cardNumber

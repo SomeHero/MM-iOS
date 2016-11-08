@@ -18,26 +18,26 @@ class PlanSubscriberViewModel: DataSourceItemProtocol {
     let userId: String
     var memberName: String?
     let planName: String
-    let memberSince: NSDate
+    let memberSince: Date
     
     init(user: User) {
         self.user = user
         self.avatar = "Avatar-Calf"
-        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
+        if let avatar = user.avatar, let avatarImageUrl = avatar["large"] {
             avatarUrl = avatarImageUrl
         }
         userId = user.id
-        if let firstName = user.firstName, lastName = user.lastName {
+        if let firstName = user.firstName, let lastName = user.lastName {
             memberName = "\(firstName) \(lastName)"
         } else {
             memberName = user.emailAddress
         }
-        planName = (user.memberships.flatMap { $0.planNames } as [String]).joinWithSeparator(", ")
-        memberSince = NSDate()
+        planName = (user.memberships.flatMap { $0.planNames } as [String]).joined(separator: ", ")
+        memberSince = Date()
     }
     
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) ->  UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as? PlanSubscriberCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) ->  UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? PlanSubscriberCell else {
             fatalError(#function)
         }
         
@@ -49,6 +49,6 @@ class PlanSubscriberViewModel: DataSourceItemProtocol {
         return nil
     }
     @objc func heightForHeader() -> CGFloat {
-        return CGFloat.min;
+        return CGFloat.leastNormalMagnitude;
     }
 }

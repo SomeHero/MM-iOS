@@ -10,12 +10,12 @@ import UIKit
 
 struct TextDecorator {
     enum SpacingType {
-        case Roomy
-        case Tight
+        case roomy
+        case tight
     }
     
-    private static let tightLineHeightMultiple: CGFloat = 0.8
-    private static let roomyLineHeightMultiple: CGFloat = 1.5
+    fileprivate static let tightLineHeightMultiple: CGFloat = 0.8
+    fileprivate static let roomyLineHeightMultiple: CGFloat = 1.5
     
     static var roomyLineHeight: NSMutableParagraphStyle = {
         let style = NSMutableParagraphStyle()
@@ -47,7 +47,7 @@ struct TextDecorator {
         let attributes = [NSParagraphStyleAttributeName : style]
         label.attributedText = NSAttributedString(string: text, attributes: attributes)
     }
-    static func applyLineHeight(lineHeight: CGFloat, toLabel label: UILabel) {
+    static func applyLineHeight(_ lineHeight: CGFloat, toLabel label: UILabel) {
         guard let text = label.text else { return }
         
         let style = NSMutableParagraphStyle()

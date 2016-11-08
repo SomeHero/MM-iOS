@@ -12,12 +12,12 @@ import Kingfisher
 
 
 class MembersViewController: UIViewController {
-    private let membersCellIdentifier                  = "MemberCellIdentifier"
-    private let plansCellIdentifier                  = "PlanCellIdentifier"
-    private let tableCellHeight: CGFloat        = 120
-    private var membershipNavigationState: MembershipNavigationState = .Members
-    private let textInputBar = ALTextInputBar()
-    private var profileType: ProfileType = .bull
+    fileprivate let membersCellIdentifier                  = "MemberCellIdentifier"
+    fileprivate let plansCellIdentifier                  = "PlanCellIdentifier"
+    fileprivate let tableCellHeight: CGFloat        = 120
+    fileprivate var membershipNavigationState: MembershipNavigationState = .members
+    fileprivate let textInputBar = ALTextInputBar()
+    fileprivate var profileType: ProfileType = .bull
     
     var members: [MemberViewModel] = [] {
         didSet {
@@ -29,19 +29,19 @@ class MembersViewController: UIViewController {
             tableView.reloadData()
         }
     }
-    private lazy var tableView: UITableView = {
-        let _tableView                  = UITableView(frame: CGRect.zero, style: .Grouped)
+    fileprivate lazy var tableView: UITableView = {
+        let _tableView                  = UITableView(frame: CGRect.zero, style: .grouped)
         _tableView.dataSource           = self
         _tableView.delegate             = self
-        _tableView.backgroundColor      = UIColor.whiteColor()
+        _tableView.backgroundColor      = UIColor.white
         _tableView.alwaysBounceVertical = true
-        _tableView.separatorInset       = UIEdgeInsetsZero
-        _tableView.layoutMargins        = UIEdgeInsetsZero
+        _tableView.separatorInset       = UIEdgeInsets.zero
+        _tableView.layoutMargins        = UIEdgeInsets.zero
         _tableView.tableFooterView      = UIView()
         _tableView.estimatedRowHeight   = self.tableCellHeight
         
-        _tableView.registerClass(MemberCell.self, forCellReuseIdentifier: self.membersCellIdentifier)
-        _tableView.registerClass(PlanCell.self, forCellReuseIdentifier: self.plansCellIdentifier)
+        _tableView.register(MemberCell.self, forCellReuseIdentifier: self.membersCellIdentifier)
+        _tableView.register(PlanCell.self, forCellReuseIdentifier: self.plansCellIdentifier)
         
         _tableView.addSubview(self.emptyState)
         _tableView.addSubview(self.membersEmptyState)
@@ -51,99 +51,99 @@ class MembersViewController: UIViewController {
         self.view.addSubview(_tableView)
         return _tableView
     }()
-    private lazy var membersEmptyState: MembershipEmptyState = {
+    fileprivate lazy var membersEmptyState: MembershipEmptyState = {
         let _emptyState = MembershipEmptyState()
         _emptyState.alpha = 0.0
         
         return _emptyState
     }()
-    private lazy var createMemberButton: UIButton = {
+    fileprivate lazy var createMemberButton: UIButton = {
         let _button = UIButton()
         _button.backgroundColor = UIColorTheme.GreenButton
-        _button.setTitleColor(.whiteColor(), forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
-        _button.addTarget(self, action: #selector(MembersViewController.createMemberClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setTitleColor(.white, for: UIControlState())
+        _button.titleLabel?.font = UIFontTheme.Regular(.small)
+        _button.addTarget(self, action: #selector(MembersViewController.createMemberClicked(_:)), for: .touchUpInside)
         _button.layer.cornerRadius = 25
         _button.clipsToBounds = true
-        _button.setTitle("Add a Member", forState: .Normal)
+        _button.setTitle("Add a Member", for: UIControlState())
         
         return _button
     }()
-    private lazy var sharePlanButton: UIButton = {
+    fileprivate lazy var sharePlanButton: UIButton = {
         let _button = UIButton()
         _button.backgroundColor = UIColorTheme.GreenButton
-        _button.setTitleColor(.whiteColor(), forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
-        _button.addTarget(self, action: #selector(MembersViewController.sharePlanClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setTitleColor(.white, for: UIControlState())
+        _button.titleLabel?.font = UIFontTheme.Regular(.small)
+        _button.addTarget(self, action: #selector(MembersViewController.sharePlanClicked(_:)), for: .touchUpInside)
         _button.layer.cornerRadius = 25
         _button.clipsToBounds = true
-        _button.setTitle("Share Plan", forState: .Normal)
+        _button.setTitle("Share Plan", for: UIControlState())
         
         return _button
     }()
-    private lazy var plansEmptyState: MembershipEmptyState = {
+    fileprivate lazy var plansEmptyState: MembershipEmptyState = {
         let _emptyState = MembershipEmptyState()
         _emptyState.alpha = 0.0
         
         return _emptyState
     }()
-    private lazy var createPlanButton: UIButton = {
+    fileprivate lazy var createPlanButton: UIButton = {
         let _button = UIButton()
         _button.backgroundColor = UIColorTheme.GreenButton
-        _button.setTitleColor(.whiteColor(), forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
-        _button.addTarget(self, action: #selector(MembersViewController.createMemberClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setTitleColor(.white, for: UIControlState())
+        _button.titleLabel?.font = UIFontTheme.Regular(.small)
+        _button.addTarget(self, action: #selector(MembersViewController.createMemberClicked(_:)), for: .touchUpInside)
         _button.layer.cornerRadius = 25
         _button.clipsToBounds = true
-        _button.setTitle("Create Plan", forState: .Normal)
+        _button.setTitle("Create Plan", for: UIControlState())
         
         return _button
     }()
-    private lazy var importFromStripeButton: UIButton = {
+    fileprivate lazy var importFromStripeButton: UIButton = {
         let _button = UIButton()
         _button.backgroundColor = UIColorTheme.GreenButton
-        _button.setTitleColor(.whiteColor(), forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
-        _button.addTarget(self, action: #selector(MembersViewController.sharePlanClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setTitleColor(.white, for: UIControlState())
+        _button.titleLabel?.font = UIFontTheme.Regular(.small)
+        _button.addTarget(self, action: #selector(MembersViewController.sharePlanClicked(_:)), for: .touchUpInside)
         _button.layer.cornerRadius = 25
         _button.clipsToBounds = true
-        _button.setTitle("Import from Stripe", forState: .Normal)
+        _button.setTitle("Import from Stripe", for: UIControlState())
         
         return _button
     }()
-    private lazy var messagesEmptyState: MembershipEmptyState = {
+    fileprivate lazy var messagesEmptyState: MembershipEmptyState = {
         let _emptyState = MembershipEmptyState()
         _emptyState.alpha = 0.0
         
         return _emptyState
     }()
-    private lazy var emptyState: EmptyStateView = {
+    fileprivate lazy var emptyState: EmptyStateView = {
         let _emptyState = EmptyStateView()
         _emptyState.alpha = 0.0
         _emptyState.translatesAutoresizingMaskIntoConstraints = false
         
         return _emptyState
     }()
-    private lazy var menuButton: UIButton = {
+    fileprivate lazy var menuButton: UIButton = {
         let _button = UIButton()
-        _button.setImage(UIImage(named:"Menu"), forState: .Normal)
-        _button.addTarget(self, action: #selector(MembersViewController.menuButtonClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setImage(UIImage(named:"Menu"), for: UIControlState())
+        _button.addTarget(self, action: #selector(MembersViewController.menuButtonClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var settingsButton: UIButton = {
+    fileprivate lazy var settingsButton: UIButton = {
         let _button = UIButton()
-        _button.setImage(UIImage(named:"Edit"), forState: .Normal)
-        _button.addTarget(self, action: #selector(MembersViewController.showProfile(_:)), forControlEvents: .TouchUpInside)
+        _button.setImage(UIImage(named:"Edit"), for: UIControlState())
+        _button.addTarget(self, action: #selector(MembersViewController.showProfile(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
 
-    private lazy var messageToolbarView: MessageToolbarView = {
+    fileprivate lazy var messageToolbarView: MessageToolbarView = {
         let _view = MessageToolbarView()
         
         return _view
@@ -151,20 +151,20 @@ class MembersViewController: UIViewController {
     override var inputAccessoryView: UIView? {
         get {
             switch membershipNavigationState {
-            case .Messages:
+            case .messages:
                 return textInputBar
             default:
                 return nil
             }
         }
     }
-    override func canBecomeFirstResponder() -> Bool {
+    override var canBecomeFirstResponder : Bool {
         return true
     }
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         
         configureRevealControllerGestures(view)
         configureRevealWidth()
@@ -175,12 +175,12 @@ class MembersViewController: UIViewController {
         
         //emptyState.alpha = 1
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
+        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
        // membershipNavigation.setSelectedButton(membershipNavigationState)
@@ -194,24 +194,24 @@ class MembersViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        menuButton.snp_updateConstraints { (make) in
+        menuButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.leading.equalTo(view).inset(15)
             make.height.width.equalTo(20)
         }
-        settingsButton.snp_updateConstraints { (make) in
+        settingsButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.trailing.equalTo(view).inset(15)
             make.height.width.equalTo(20)
         }
-        tableView.snp_updateConstraints { (make) in
-            make.top.equalTo(view.snp_bottom)
+        tableView.snp.updateConstraints { (make) in
+            make.top.equalTo(view.snp.bottom)
             make.leading.trailing.equalTo(view)
             make.bottom.equalTo(view)
         }
     }
     func setup() {
-        guard let user = SessionManager.sharedUser, account = user.account else {
+        guard let user = SessionManager.sharedUser, let account = user.account else {
             return
         }
         membersEmptyState.setup("\(account.companyName) has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.")
@@ -288,13 +288,13 @@ class MembersViewController: UIViewController {
         view.becomeFirstResponder()
         reloadInputViews()
     }
-    func menuButtonClicked(sender: UIButton) {
+    func menuButtonClicked(_ sender: UIButton) {
         //resignFirstResponder()
         reloadInputViews()
         
         toggleMenu(sender)
     }
-    func showProfile(sender: UIButton) {
+    func showProfile(_ sender: UIButton) {
         guard let user = SessionManager.sharedUser else {
             return
         }
@@ -302,39 +302,39 @@ class MembersViewController: UIViewController {
         viewController.profileDelegate = self
         
         let navigationController = UINavigationController(rootViewController: viewController);
-        navigationController.navigationBarHidden = true
+        navigationController.isNavigationBarHidden = true
         
-        presentViewController(navigationController, animated: true, completion: nil)
+        present(navigationController, animated: true, completion: nil)
         
         profileType = .bull
     }
-    private func resetEmptyStates() {
+    fileprivate func resetEmptyStates() {
         membersEmptyState.alpha = 0
         plansEmptyState.alpha = 0
         messagesEmptyState.alpha = 0
     }
-    func createMemberClicked(button: UIButton) {
+    func createMemberClicked(_ button: UIButton) {
         
     }
-    func sharePlanClicked(button: UIButton) {
+    func sharePlanClicked(_ button: UIButton) {
         
     }
 }
 extension MembersViewController: MembershipNavigationDelegate {
     func membersClicked() {
-        membershipNavigationState = .Members
+        membershipNavigationState = .members
         //membershipNavigation.setSelectedButton(membershipNavigationState)
         
         showMembers()
     }
     func plansClicked() {
-        membershipNavigationState = .Plans
+        membershipNavigationState = .plans
         //membershipNavigation.setSelectedButton(membershipNavigationState)
         
         showPlans()
     }
     func messagesClicked() {
-        membershipNavigationState = .Messages
+        membershipNavigationState = .messages
         //membershipNavigation.setSelectedButton(membershipNavigationState)
         
         showMessages()
@@ -342,24 +342,24 @@ extension MembersViewController: MembershipNavigationDelegate {
 }
 
 extension MembersViewController : UITableViewDataSource {
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch membershipNavigationState {
-        case .Members:
+        case .members:
             return members.count
         default:
             return plans.count
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         switch membershipNavigationState {
-        case .Members:
-            let viewModel = members[indexPath.item]
+        case .members:
+            let viewModel = members[(indexPath as NSIndexPath).item]
             let cell = viewModel.dequeueAndConfigure(tableView, indexPath: indexPath)
             
             //cell.setupWith(viewModel)
@@ -367,7 +367,7 @@ extension MembersViewController : UITableViewDataSource {
             
             return cell
         default:
-            let viewModel = plans[indexPath.item]
+            let viewModel = plans[(indexPath as NSIndexPath).item]
             let cell = viewModel.dequeueAndConfigure(tableView, indexPath: indexPath)
             
             //cell.setupWith(viewModel)
@@ -378,12 +378,12 @@ extension MembersViewController : UITableViewDataSource {
     }
 }
 extension MembersViewController : UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
         switch membershipNavigationState {
-        case .Members:
-            let viewModel = members[indexPath.item]
+        case .members:
+            let viewModel = members[(indexPath as NSIndexPath).item]
             
             let viewController = ProfileViewController(user: viewModel.user, profileType: .calf)
             viewController.profileDelegate = self
@@ -392,7 +392,7 @@ extension MembersViewController : UITableViewDelegate {
 
             profileType = .calf
         default:
-            let viewModel = plans[indexPath.item]
+            let viewModel = plans[(indexPath as NSIndexPath).item]
             
             let viewController = PlanDetailViewController(plan: viewModel.plan)
             
@@ -400,14 +400,14 @@ extension MembersViewController : UITableViewDelegate {
         }
 
     }
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = MembershipHeaderView()
         
         switch membershipNavigationState {
-        case .Members:
+        case .members:
             headerView.setup("Your Members")
             return headerView
-        case .Plans:
+        case .plans:
             headerView.setup("Your Plans")
             return headerView
         default:
@@ -415,15 +415,15 @@ extension MembersViewController : UITableViewDelegate {
         }
 
     }
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch membershipNavigationState {
-        case .Members:
+        case .members:
             if members.count > 0 {
                 return 40
             } else {
                 return 0
             }
-        case .Plans:
+        case .plans:
             if plans.count > 0 {
                 return 40
             } else {
@@ -438,17 +438,17 @@ extension MembersViewController: ProfileDelegate {
     func didBackClicked() {
         switch profileType {
         case .calf:
-            navigationController?.popViewControllerAnimated(true)
+            navigationController?.popViewController(animated: true)
         case .bull:
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
         }
 
     }
 }
 enum MembershipNavigationState {
-    case Members
-    case Plans
-    case Messages
+    case members
+    case plans
+    case messages
 }
 protocol MembershipNavigationDelegate: class {
     func membersClicked()
@@ -460,43 +460,43 @@ class MembershipNavigationView: UIView {
     
     lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [self.membersButton, self.plansButton, self.messagesButton])
-        stack.axis = .Horizontal
-        stack.distribution = .EqualCentering
+        stack.axis = .horizontal
+        stack.distribution = .equalCentering
         stack.spacing = 10
         
         self.addSubview(stack)
         return stack
     }()
-    private lazy var membersButton: UIButton = {
+    fileprivate lazy var membersButton: UIButton = {
         let _button = UIButton()
-        _button.setTitle("MEMBERS", forState: .Normal)
-        _button.addTarget(self, action: #selector(MembershipNavigationView.membersClicked(_:)), forControlEvents: .TouchUpInside)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
-        _button.titleLabel?.textColor = .whiteColor()
+        _button.setTitle("MEMBERS", for: UIControlState())
+        _button.addTarget(self, action: #selector(MembershipNavigationView.membersClicked(_:)), for: .touchUpInside)
+        _button.titleLabel?.font = UIFontTheme.Regular(.small)
+        _button.titleLabel?.textColor = .white
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         self.addSubview(_button)
         
         return _button
     }()
-    private lazy var plansButton: UIButton = {
+    fileprivate lazy var plansButton: UIButton = {
         let _button = UIButton()
-        _button.setTitle("PLANS", forState: .Normal)
-        _button.addTarget(self, action: #selector(MembershipNavigationView.plansClicked(_:)), forControlEvents: .TouchUpInside)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
-        _button.titleLabel?.textColor = .whiteColor()
+        _button.setTitle("PLANS", for: UIControlState())
+        _button.addTarget(self, action: #selector(MembershipNavigationView.plansClicked(_:)), for: .touchUpInside)
+        _button.titleLabel?.font = UIFontTheme.Regular(.small)
+        _button.titleLabel?.textColor = .white
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         self.addSubview(_button)
         
         return _button
     }()
-    private lazy var messagesButton: UIButton = {
+    fileprivate lazy var messagesButton: UIButton = {
         let _button = UIButton()
-        _button.setTitle("MESSAGES", forState: .Normal)
-        _button.addTarget(self, action: #selector(MembershipNavigationView.messagesClicked(_:)), forControlEvents: .TouchUpInside)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
-        _button.titleLabel?.textColor = .whiteColor()
+        _button.setTitle("MESSAGES", for: UIControlState())
+        _button.addTarget(self, action: #selector(MembershipNavigationView.messagesClicked(_:)), for: .touchUpInside)
+        _button.titleLabel?.font = UIFontTheme.Regular(.small)
+        _button.titleLabel?.textColor = .white
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         self.addSubview(_button)
@@ -504,58 +504,58 @@ class MembershipNavigationView: UIView {
         return _button
     }()
     override func updateConstraints() {
-        stackView.snp_updateConstraints { (make) in
+        stackView.snp.updateConstraints { (make) in
             make.edges.equalTo(self)
         }
         super.updateConstraints()
     }
-    func setSelectedButton(state: MembershipNavigationState) {
+    func setSelectedButton(_ state: MembershipNavigationState) {
         clearButtonSelectedState(membersButton)
         clearButtonSelectedState(plansButton)
         clearButtonSelectedState(messagesButton)
         
         switch state {
-        case .Members:
+        case .members:
             membersButton.backgroundColor = UIColorTheme.Primary
             membersButton.layer.cornerRadius = 40/2
-        case .Plans:
+        case .plans:
             plansButton.backgroundColor = UIColorTheme.Primary
             plansButton.layer.cornerRadius = 40/2
-        case .Messages:
+        case .messages:
             messagesButton.backgroundColor = UIColorTheme.Primary
             messagesButton.layer.cornerRadius = 40/2
         }
     }
-    private func clearButtonSelectedState(button: UIButton) {
-        button.backgroundColor = .clearColor()
+    fileprivate func clearButtonSelectedState(_ button: UIButton) {
+        button.backgroundColor = .clear
     }
-    func membersClicked(sender: UIButton) {
+    func membersClicked(_ sender: UIButton) {
         delegate?.membersClicked()
     }
-    func plansClicked(sender: UIButton) {
+    func plansClicked(_ sender: UIButton) {
         delegate?.plansClicked()
     }
-    func messagesClicked(sender: UIButton) {
+    func messagesClicked(_ sender: UIButton) {
         delegate?.messagesClicked()
     }
 }
 class MembershipHeaderView: UIView {
-    private lazy var titleLabel: UILabel = {
+    fileprivate lazy var titleLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .Left
-        _label.font = UIFontTheme.Regular(.Default)
+        _label.textAlignment = .left
+        _label.font = UIFontTheme.Regular(.default)
         
         self.addSubview(_label)
         
         return _label
     }()
-    private lazy var addButton: UIButton = {
+    fileprivate lazy var addButton: UIButton = {
         let _button = UIButton()
-        _button.backgroundColor = .clearColor()
-        _button.setTitleColor(.blueColor(), forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Bold(.Tiny)
-        _button.addTarget(self, action: #selector(MembershipHeaderView.addButtonClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.backgroundColor = .clear
+        _button.setTitleColor(.blue, for: UIControlState())
+        _button.titleLabel?.font = UIFontTheme.Bold(.tiny)
+        _button.addTarget(self, action: #selector(MembershipHeaderView.addButtonClicked(_:)), for: .touchUpInside)
         
         self.addSubview(_button)
         
@@ -563,11 +563,11 @@ class MembershipHeaderView: UIView {
     }()
     override init(frame: CGRect) {
         super.init(frame: frame)
-        titleLabel.snp_updateConstraints { (make) in
+        titleLabel.snp.updateConstraints { (make) in
             make.bottom.leading.equalTo(self).inset(10)
         }
-        addButton.snp_updateConstraints { (make) in
-            make.leading.equalTo(titleLabel.snp_trailing).offset(10)
+        addButton.snp.updateConstraints { (make) in
+            make.leading.equalTo(titleLabel.snp.trailing).offset(10)
             make.bottom.trailing.equalTo(self).inset(10)
         }
     }
@@ -575,60 +575,60 @@ class MembershipHeaderView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    func setup(title: String) {
+    func setup(_ title: String) {
         titleLabel.text = title
-        addButton.setTitle("Add", forState: .Normal)
+        addButton.setTitle("Add", for: UIControlState())
     }
-    func addButtonClicked(sender: UIButton) {
+    func addButtonClicked(_ sender: UIButton) {
         
     }
 }
 class MembershipEmptyState: UIView {
-    private lazy var containerView: UIView = {
+    fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
-        _view.backgroundColor = .clearColor()
+        _view.backgroundColor = .clear
         
         self.addSubview(_view)
         
         return _view
     }()
-    private lazy var logo: UIImageView = {
+    fileprivate lazy var logo: UIImageView = {
         let _imageView = UIImageView()
-        _imageView.contentMode = .ScaleAspectFit
+        _imageView.contentMode = .scaleAspectFit
         
         self.containerView.addSubview(_imageView)
         
         return _imageView
     }()
-    private lazy var headerLabel: UILabel = {
+    fileprivate lazy var headerLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.Header
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Default)
-        _label.lineBreakMode = .ByWordWrapping
+        _label.textAlignment = .center
+        _label.font = UIFontTheme.Regular(.default)
+        _label.lineBreakMode = .byWordWrapping
         _label.numberOfLines = 0
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var subHeadingLabel: UILabel = {
+    fileprivate lazy var subHeadingLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.SubHeader
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Tiny)
-        _label.lineBreakMode = .ByWordWrapping
+        _label.textAlignment = .center
+        _label.font = UIFontTheme.Regular(.tiny)
+        _label.lineBreakMode = .byWordWrapping
         _label.numberOfLines = 0
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var buttonContainer: UIView = {
+    fileprivate lazy var buttonContainer: UIView = {
         let _view = UIView()
         
-        _view.backgroundColor = .clearColor()
+        _view.backgroundColor = .clear
         
         self.containerView.addSubview(_view)
         
@@ -637,25 +637,25 @@ class MembershipEmptyState: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        containerView.snp_updateConstraints { (make) in
+        containerView.snp.updateConstraints { (make) in
             make.center.equalTo(self)
             make.edges.equalTo(self).inset(20)
         }
-        logo.snp_updateConstraints { (make) in
+        logo.snp.updateConstraints { (make) in
             make.top.equalTo(containerView)
             make.centerX.equalTo(containerView)
             make.height.width.equalTo(80)
         }
-        headerLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(logo.snp_bottom).offset(10)
+        headerLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(logo.snp.bottom).offset(10)
             make.leading.trailing.equalTo(containerView).inset(10)
         }
-        subHeadingLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(headerLabel.snp_bottom)
+        subHeadingLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(headerLabel.snp.bottom)
             make.leading.trailing.equalTo(containerView).inset(40)
         }
-        buttonContainer.snp_updateConstraints { (make) in
-            make.top.equalTo(subHeadingLabel.snp_bottom).offset(20)
+        buttonContainer.snp.updateConstraints { (make) in
+            make.top.equalTo(subHeadingLabel.snp.bottom).offset(20)
             make.leading.trailing.equalTo(containerView)
             make.bottom.equalTo(containerView).inset(20)
         }
@@ -663,27 +663,27 @@ class MembershipEmptyState: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    func setup(header: String, subHeader: String) {
+    func setup(_ header: String, subHeader: String) {
         logo.image = UIImage(named: "Logo-DeadMoose")
         headerLabel.text = header
         subHeadingLabel.text = subHeader
     }
-    func addButtons(buttons: [UIButton]) {
+    func addButtons(_ buttons: [UIButton]) {
         var previousButton: UIButton?
         
         for button in buttons {
             buttonContainer.addSubview(button)
             
-            button.snp_updateConstraints { (make) in
+            button.snp.updateConstraints { (make) in
                 make.leading.trailing.equalTo(buttonContainer).inset(40)
                 make.height.equalTo(50)
             }
             if let previousButton = previousButton {
-                button.snp_updateConstraints(closure: { (make) in
-                    make.top.equalTo(previousButton.snp_bottom).offset(10)
+                button.snp.updateConstraints({ (make) in
+                    make.top.equalTo(previousButton.snp.bottom).offset(10)
                 })
             } else {
-                button.snp_updateConstraints(closure: { (make) in
+                button.snp.updateConstraints({ (make) in
                     make.top.equalTo(buttonContainer)
                 })
             }
@@ -691,17 +691,17 @@ class MembershipEmptyState: UIView {
             previousButton = button
         }
         if let previousButton = previousButton {
-            previousButton.snp_updateConstraints { (make) in
+            previousButton.snp.updateConstraints { (make) in
                 make.bottom.equalTo(buttonContainer)
             }
         }
     }
 }
 class MessageToolbarView: UIView {
-    private lazy var messageTextField: UITextField = {
+    fileprivate lazy var messageTextField: UITextField = {
         let _messageTextField = UITextField()
-        _messageTextField.backgroundColor = .clearColor()
-        _messageTextField.font = UIFontTheme.Regular(.Small)
+        _messageTextField.backgroundColor = .clear
+        _messageTextField.font = UIFontTheme.Regular(.small)
         _messageTextField.textColor = UIColorTheme.PrimaryFont
         _messageTextField.placeholder = "Enter Message"
         
@@ -710,7 +710,7 @@ class MessageToolbarView: UIView {
         return _messageTextField
     }()
     override func updateConstraints() {
-        messageTextField.snp_updateConstraints { (make) in
+        messageTextField.snp.updateConstraints { (make) in
             make.edges.equalTo(self).inset(10)
         }
 

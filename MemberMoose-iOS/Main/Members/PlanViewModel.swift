@@ -29,8 +29,8 @@ class PlanViewModel: DataSourceItemProtocol {
         subscribersCount = 23
     }
     
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) ->  UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier("PlanCellIdentifier", forIndexPath: indexPath) as? PlanCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) ->  UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "PlanCellIdentifier", for: indexPath) as? PlanCell else {
             fatalError(#function)
         }
         
@@ -42,6 +42,6 @@ class PlanViewModel: DataSourceItemProtocol {
         return nil
     }
     @objc func heightForHeader() -> CGFloat {
-        return CGFloat.min;
+        return CGFloat.leastNormalMagnitude;
     }
 }

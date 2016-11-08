@@ -49,6 +49,7 @@
 		4240B7641DA44671000D137E /* MemberMoose_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240B7631DA44671000D137E /* MemberMoose_iOSTests.swift */; };
 		4240B76F1DA44671000D137E /* MemberMoose_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240B76E1DA44671000D137E /* MemberMoose_iOSUITests.swift */; };
 		4240B7821DA6C903000D137E /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240B7811DA6C903000D137E /* JoinViewController.swift */; };
+		4245074F1DCF8EE3004F4D16 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245074E1DCF8EE3004F4D16 /* Message.swift */; };
 		424D97D91DAD195500C8B674 /* PlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D97D81DAD195500C8B674 /* PlanCell.swift */; };
 		424D97DB1DAD198B00C8B674 /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D97DA1DAD198B00C8B674 /* PlanViewModel.swift */; };
 		424D97DD1DAD233500C8B674 /* PlanProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D97DC1DAD233500C8B674 /* PlanProfileViewController.swift */; };
@@ -223,6 +224,7 @@
 		4240B76E1DA44671000D137E /* MemberMoose_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberMoose_iOSUITests.swift; sourceTree = "<group>"; };
 		4240B7701DA44671000D137E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4240B7811DA6C903000D137E /* JoinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JoinViewController.swift; path = Join/JoinViewController.swift; sourceTree = "<group>"; };
+		4245074E1DCF8EE3004F4D16 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = Members/Message.swift; sourceTree = "<group>"; };
 		424D97D81DAD195500C8B674 /* PlanCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanCell.swift; path = Main/Members/PlanCell.swift; sourceTree = "<group>"; };
 		424D97DA1DAD198B00C8B674 /* PlanViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanViewModel.swift; path = Main/Members/PlanViewModel.swift; sourceTree = "<group>"; };
 		424D97DC1DAD233500C8B674 /* PlanProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanProfileViewController.swift; path = Main/Members/PlanProfileViewController.swift; sourceTree = "<group>"; };
@@ -767,6 +769,7 @@
 				4275F7091DC0F9FD00E0FF7B /* Charge.swift */,
 				42F08C311DAC31A300D5D4E3 /* Member.swift */,
 				4211D8BB1DB7288E0092F7C5 /* Membership.swift */,
+				4245074E1DCF8EE3004F4D16 /* Message.swift */,
 				42F08C3F1DAC693E00D5D4E3 /* PaymentCard.swift */,
 				42F08C2F1DAC318F00D5D4E3 /* Plan.swift */,
 				42DB7CC11DC82196005DC106 /* ReferencePlan.swift */,
@@ -906,6 +909,7 @@
 					4240B74A1DA44671000D137E = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 5K56Y8ABUA;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.SafariKeychain = {
 								enabled = 1;
@@ -914,6 +918,7 @@
 					};
 					4240B75E1DA44671000D137E = {
 						CreatedOnToolsVersion = 7.3.1;
+						ProvisioningStyle = Automatic;
 						TestTargetID = 4240B74A1DA44671000D137E;
 					};
 					4240B7691DA44671000D137E = {
@@ -1125,6 +1130,7 @@
 				4268414A1DA7A80300A2BFF8 /* MainTabBarViewController.swift in Sources */,
 				4275F7191DC1AE9800E0FF7B /* PlanDescriptionViewModel.swift in Sources */,
 				4225370D1DB90187004B33D8 /* CalfProfileHeaderCell.swift in Sources */,
+				4245074F1DCF8EE3004F4D16 /* Message.swift in Sources */,
 				426841631DA86CAF00A2BFF8 /* EmptyStateView.swift in Sources */,
 				4253B67C1DC02A5300A93E98 /* PlansViewController.swift in Sources */,
 				4211D8C61DB7AF700092F7C5 /* MenuHeaderViewModel.swift in Sources */,
@@ -1383,6 +1389,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOS";
 				PRODUCT_NAME = MemberMoose;
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1404,6 +1411,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOS";
 				PRODUCT_NAME = MemberMoose;
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1413,11 +1421,13 @@
 			baseConfigurationReference = 16DD0AEFCDFF0BA7F279FD5F /* Pods-MemberMoose-iOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "MemberMoose-iOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MemberMoose-iOS.app/MemberMoose-iOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MemberMoose.app/MemberMoose";
 			};
 			name = Debug;
 		};
@@ -1426,11 +1436,13 @@
 			baseConfigurationReference = 1318DB11250D091E50536A83 /* Pods-MemberMoose-iOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "MemberMoose-iOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MemberMoose-iOS.app/MemberMoose-iOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MemberMoose.app/MemberMoose";
 			};
 			name = Release;
 		};

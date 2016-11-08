@@ -22,8 +22,8 @@ class PaymentCardEmptyStateViewModel:DataSourceItemProtocol {
         self.header = header
         self.paymentCardEmptyStateDelegate = paymentCardEmptyStateDelegate
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as? PaymentCardEmptyStateCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? PaymentCardEmptyStateCell else {
             fatalError(#function)
         }
         

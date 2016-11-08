@@ -9,16 +9,16 @@
 import Foundation
 import ObjectMapper
 
-public class ReferencePlan: Mappable {
-    public var id: String!
-    public var referenceId: String!
-    public var planName: String!
+open class ReferencePlan: Mappable {
+    open var id: String!
+    open var referenceId: String!
+    open var planName: String!
 
-    public required init?(_ map: Map){
-        mapping(map)
+    public required init?(map: Map){
+        mapping(map: map)
     }
     
-    public func mapping(map: Map) {
+    open func mapping(map: Map) {
         id <- map["id"]
         referenceId <- map["reference_id"]
         planName <- map["plan_name"]

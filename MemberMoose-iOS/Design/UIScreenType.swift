@@ -10,18 +10,18 @@ import UIKit
 
 struct UIScreenSizeType {
     enum Width {
-        case Narrow
-        case Wide
+        case narrow
+        case wide
     }
     enum Height {
-        case Short
-        case Tall
+        case short
+        case tall
     }
     
     static var width: Width {
-        return UIScreen.mainScreen().bounds.width >= 375 ? .Wide : .Narrow
+        return UIScreen.main.bounds.width >= 375 ? .wide : .narrow
     }
     static var height: Height {
-        return UIScreen.mainScreen().bounds.height >= 568 ? .Tall : .Short
+        return UIScreen.main.bounds.height >= 568 ? .tall : .short
     }
 }

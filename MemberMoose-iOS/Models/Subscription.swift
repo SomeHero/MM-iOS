@@ -9,19 +9,19 @@
 import Foundation
 import ObjectMapper
 
-public class Subscription: Mappable {
-    public var id: String!
-    public var plan: Plan!
-    public var status: String!
-    public var subscriptionDate: NSDate!
-    public var createdAt: NSDate!
-    public var updatedAt: NSDate?
+open class Subscription: Mappable {
+    open var id: String!
+    open var plan: Plan!
+    open var status: String!
+    open var subscriptionDate: Date!
+    open var createdAt: Date!
+    open var updatedAt: Date?
     
-    public required init?(_ map: Map){
-        mapping(map)
+    public required init?(map: Map){
+        mapping(map: map)
     }
     
-    public func mapping(map: Map) {
+    open func mapping(map: Map) {
         id <- map["_id"]
         plan <- map["plan"]
         status <- map["status"]

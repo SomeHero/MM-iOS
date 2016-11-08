@@ -15,16 +15,16 @@ protocol SubscriptionCellDelegate: class {
 }
 class SubscriptionCell: UITableViewCell {
     
-    private lazy var containerView: UIView = {
+    fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
         self.contentView.addSubview(_view)
         
         return _view
     }()
-    private lazy var planNameLabel: UILabel = {
+    fileprivate lazy var planNameLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Default)
+        _label.font = UIFontTheme.Regular(.default)
         _label.textColor = UIColorTheme.PrimaryFont
         _label.numberOfLines = 0
         
@@ -32,49 +32,49 @@ class SubscriptionCell: UITableViewCell {
         
         return _label
     }()
-    private lazy var planAmountLabel: UILabel = {
+    fileprivate lazy var planAmountLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Small)
+        _label.font = UIFontTheme.Regular(.small)
         _label.textColor = UIColorTheme.SecondaryFont
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var statusLabel: UILabel = {
+    fileprivate lazy var statusLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Small)
-        _label.textColor = UIColor.flatBlackColor()
+        _label.font = UIFontTheme.Regular(.small)
+        _label.textColor = UIColor.flatBlack()
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var changePlanButton: UIButton = {
+    fileprivate lazy var changePlanButton: UIButton = {
         let _button = UIButton()
-        _button.backgroundColor = .clearColor()
-        _button.setTitleColor(UIColorTheme.SecondaryFont, forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Tiny)
-        _button.layer.borderColor = UIColorTheme.SecondaryFont.CGColor
+        _button.backgroundColor = .clear
+        _button.setTitleColor(UIColorTheme.SecondaryFont, for: UIControlState())
+        _button.titleLabel?.font = UIFontTheme.Regular(.tiny)
+        _button.layer.borderColor = UIColorTheme.SecondaryFont.cgColor
         _button.layer.borderWidth = kOnePX
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
-        _button.addTarget(self, action: #selector(SubscriptionCell.upgradeDowngradeClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(SubscriptionCell.upgradeDowngradeClicked(_:)), for: .touchUpInside)
         
         self.containerView.addSubview(_button)
         
         return _button
     }()
-    private lazy var cancelSubscriptionButton: UIButton = {
+    fileprivate lazy var cancelSubscriptionButton: UIButton = {
         let _button = UIButton()
-        _button.backgroundColor = .clearColor()
-        _button.setTitleColor(UIColorTheme.SecondaryFont, forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Tiny)
-        _button.layer.borderColor = UIColorTheme.SecondaryFont.CGColor
+        _button.backgroundColor = .clear
+        _button.setTitleColor(UIColorTheme.SecondaryFont, for: UIControlState())
+        _button.titleLabel?.font = UIFontTheme.Regular(.tiny)
+        _button.layer.borderColor = UIColorTheme.SecondaryFont.cgColor
         _button.layer.borderWidth = kOnePX
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
-        _button.addTarget(self, action: #selector(SubscriptionCell.cancelSubscriptionClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(SubscriptionCell.cancelSubscriptionClicked(_:)), for: .touchUpInside)
         
         self.containerView.addSubview(_button)
         
@@ -83,13 +83,13 @@ class SubscriptionCell: UITableViewCell {
     weak var subscriptionCellDelegate: SubscriptionCellDelegate?
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .whiteColor()
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
-        accessoryType = .None
-        selectionStyle = .None
+        backgroundColor = .white
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
+        accessoryType = .none
+        selectionStyle = .none
         
         //selectedBackgroundView = selectedColorView
     }
@@ -104,33 +104,33 @@ class SubscriptionCell: UITableViewCell {
     }
 
     override func updateConstraints() {
-        containerView.snp_updateConstraints { (make) in
+        containerView.snp.updateConstraints { (make) in
             make.edges.equalTo(contentView).inset(20)
         }
-        planNameLabel.snp_updateConstraints { (make) in
+        planNameLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
             make.top.equalTo(containerView)
         }
-        planAmountLabel.snp_updateConstraints { (make) in
+        planAmountLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
-            make.top.equalTo(planNameLabel.snp_bottom)
+            make.top.equalTo(planNameLabel.snp.bottom)
         }
-        changePlanButton.snp_updateConstraints { (make) in
+        changePlanButton.snp.updateConstraints { (make) in
             make.leading.equalTo(containerView)
-            make.top.equalTo(planAmountLabel.snp_bottom).offset(10)
+            make.top.equalTo(planAmountLabel.snp.bottom).offset(10)
             make.bottom.equalTo(containerView)
         }
-        cancelSubscriptionButton.snp_updateConstraints { (make) in
-            make.leading.equalTo(changePlanButton.snp_trailing).offset(10)
-            make.top.equalTo(planAmountLabel.snp_bottom).offset(10)
+        cancelSubscriptionButton.snp.updateConstraints { (make) in
+            make.leading.equalTo(changePlanButton.snp.trailing).offset(10)
+            make.top.equalTo(planAmountLabel.snp.bottom).offset(10)
             make.bottom.equalTo(containerView)
         }
         super.updateConstraints()
     }
-    override class func requiresConstraintBasedLayout() -> Bool {
+    override class var requiresConstraintBasedLayout : Bool {
         return true
     }
-    func setupWith(viewModel: DataSourceItemProtocol) {
+    func setupWith(_ viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? SubscriptionViewModel {
             planNameLabel.text = viewModel.planName
             TextDecorator.applyTightLineHeight(toLabel: planNameLabel)
@@ -139,14 +139,14 @@ class SubscriptionCell: UITableViewCell {
             TextDecorator.applyTightLineHeight(toLabel: planAmountLabel)
             
             statusLabel.text = viewModel.status
-            changePlanButton.setTitle("Upgrade/Downgrade", forState: .Normal)
-            cancelSubscriptionButton.setTitle("Cancel", forState: .Normal)
+            changePlanButton.setTitle("Upgrade/Downgrade", for: UIControlState())
+            cancelSubscriptionButton.setTitle("Cancel", for: UIControlState())
         }
     }
-    func upgradeDowngradeClicked(sender: UIButton) {
+    func upgradeDowngradeClicked(_ sender: UIButton) {
         subscriptionCellDelegate?.didChangeSubscriptionClicked()
     }
-    func cancelSubscriptionClicked(sender: UIButton) {
+    func cancelSubscriptionClicked(_ sender: UIButton) {
         subscriptionCellDelegate?.didCancelSubscriptionClicked() 
     }
 }

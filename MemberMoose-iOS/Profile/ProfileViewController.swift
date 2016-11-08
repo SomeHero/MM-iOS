@@ -16,10 +16,10 @@ import Money
 @objc protocol DataSourceItemProtocol {
     func viewForHeader() -> UIView?
     func heightForHeader() -> CGFloat
-    func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell
+    func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell
 }
 @objc protocol DataSourceTableViewCellProtocol: class {
-    func setupWith(viewModel: DataSourceItemProtocol)
+    func setupWith(_ viewModel: DataSourceItemProtocol)
 }
 protocol ProfileDelegate: class {
     func didBackClicked()
@@ -29,53 +29,53 @@ enum ProfileType {
     case calf
 }
 class ProfileViewController: UIViewController {
-    private let user: User
-    private let profileType: ProfileType
-    private let calfProfileCellIdentifier       = "CalfProfileHeaderCellIdentifier"
-    private let profileCellIdentifier           = "ProfileHeaderCellIdentifier"
-    private let subscriptionCellIdentifier                  = "SubscriptionCellIdentifier"
-    private let subscriptionEmptyStateCellIdentifier        = "SubscriptionEmptyStateCellIdentifier"
-    private let paymentCardCellIdentifier       = "PaymentCardCellIdentifier"
-    private let paymentCardEmptyStateCellIdentifier       = "PaymentCardEmptyStateCellIdentifier"
-    private let paymentHistoryCellIdentifier       = "PaymentHistoryCellIdentifier"
-    private let paymentHistoryEmptyStateCellIdentifier       = "PaymentHistoryEmptyStateCellIdentifier"
-    private let chargeCellIdentifier            = "ChargeCellIdentifier"
-    private let memberCellIdentifier            = "MemberCellIdentifier"
-    private let memberEmptyStateCellIdentifier  = "MemberEmptyStateCellIdentifier"
-    private let planCellIdentifier              = "PlanCellIdentifier"
-    private let planEmptyStateCellIdentifier    = "PlanEmptyStateCellIdentifier"
-    private let tableCellHeight: CGFloat        = 120
-    private var membershipNavigationState: MembershipNavigationState = .Members
-    private var memberNavigationState: MemberNavigationState = .Profile
-    private let textInputBar = ALTextInputBar()
+    fileprivate let user: User
+    fileprivate let profileType: ProfileType
+    fileprivate let calfProfileCellIdentifier       = "CalfProfileHeaderCellIdentifier"
+    fileprivate let profileCellIdentifier           = "ProfileHeaderCellIdentifier"
+    fileprivate let subscriptionCellIdentifier                  = "SubscriptionCellIdentifier"
+    fileprivate let subscriptionEmptyStateCellIdentifier        = "SubscriptionEmptyStateCellIdentifier"
+    fileprivate let paymentCardCellIdentifier       = "PaymentCardCellIdentifier"
+    fileprivate let paymentCardEmptyStateCellIdentifier       = "PaymentCardEmptyStateCellIdentifier"
+    fileprivate let paymentHistoryCellIdentifier       = "PaymentHistoryCellIdentifier"
+    fileprivate let paymentHistoryEmptyStateCellIdentifier       = "PaymentHistoryEmptyStateCellIdentifier"
+    fileprivate let chargeCellIdentifier            = "ChargeCellIdentifier"
+    fileprivate let memberCellIdentifier            = "MemberCellIdentifier"
+    fileprivate let memberEmptyStateCellIdentifier  = "MemberEmptyStateCellIdentifier"
+    fileprivate let planCellIdentifier              = "PlanCellIdentifier"
+    fileprivate let planEmptyStateCellIdentifier    = "PlanEmptyStateCellIdentifier"
+    fileprivate let tableCellHeight: CGFloat        = 120
+    fileprivate var membershipNavigationState: MembershipNavigationState = .members
+    fileprivate var memberNavigationState: MemberNavigationState = .profile
+    fileprivate let textInputBar = ALTextInputBar()
     weak var profileDelegate: ProfileDelegate?
     
-    private let offsetNavHeaderHeight: CGFloat = 64.0
-    private let offsetLabelHeaderHeight: CGFloat = 32.0
-    private let labelHeaderAdditionalOffset: CGFloat = 6.0
-    private let chromeAnimationDuration: NSTimeInterval = 0.2
-    private let verticalNavHeaderOffset: CGFloat = 12.0
-    private let menuButtonWidth: CGFloat = 26.0
-    private let nonNavBarMenuButtonVerticalOffset: CGFloat = 20.0;
-    private let nonNavBarMenuButtonHorizontalOffset: CGFloat = 12.0;
-    private var chromeVisible = true
+    fileprivate let offsetNavHeaderHeight: CGFloat = 64.0
+    fileprivate let offsetLabelHeaderHeight: CGFloat = 32.0
+    fileprivate let labelHeaderAdditionalOffset: CGFloat = 6.0
+    fileprivate let chromeAnimationDuration: TimeInterval = 0.2
+    fileprivate let verticalNavHeaderOffset: CGFloat = 12.0
+    fileprivate let menuButtonWidth: CGFloat = 26.0
+    fileprivate let nonNavBarMenuButtonVerticalOffset: CGFloat = 20.0;
+    fileprivate let nonNavBarMenuButtonHorizontalOffset: CGFloat = 12.0;
+    fileprivate var chromeVisible = true
     
-    private var hasMembers = false
-    private var hasPlans = false
+    fileprivate var hasMembers = false
+    fileprivate var hasPlans = false
     
-    private var pageNumber = 1
+    fileprivate var pageNumber = 1
     
-    private var presenter: Presentr = {
-        let _presenter = Presentr(presentationType: .Alert)
-        _presenter.transitionType = .CoverVertical // Optional
-        _presenter.presentationType = .Popup
+    fileprivate var presenter: Presentr = {
+        let _presenter = Presentr(presentationType: .alert)
+        _presenter.transitionType = .coverVertical // Optional
+        _presenter.presentationType = .popup
         
         return _presenter
     }()
-    private var scrollDarkNavDelayFactor:CGFloat {
+    fileprivate var scrollDarkNavDelayFactor:CGFloat {
         return 1.3
     }
-    private var parallaxHeight: CGFloat {
+    fileprivate var parallaxHeight: CGFloat {
         //values determined by the top padding of the title in the authed/unauth headers
         if tableView.visibleCells.count > 0 {
             return tableView.visibleCells[0].frame.size.height
@@ -83,15 +83,15 @@ class ProfileViewController: UIViewController {
         
         return 0
     }
-    private lazy var navHeader: UIView = {
+    fileprivate lazy var navHeader: UIView = {
         let _view = UIView()
-        _view.backgroundColor = UIColor.clearColor()
+        _view.backgroundColor = UIColor.clear
         _view.clipsToBounds = true
         
         self.view.addSubview(_view)
         return _view
     }()
-    private lazy var navHeaderDarkCoverView: UIView = {
+    fileprivate lazy var navHeaderDarkCoverView: UIView = {
         let _view = UIView()
         _view.backgroundColor = UIColorTheme.Primary
         _view.alpha = 0
@@ -99,19 +99,19 @@ class ProfileViewController: UIViewController {
         self.navHeader.addSubview(_view)
         return _view
     }()
-    private lazy var navHeaderLineView: UIView = {
+    fileprivate lazy var navHeaderLineView: UIView = {
         let _view = UIView()
-        _view.backgroundColor = UIColor.flatWhiteColor()
+        _view.backgroundColor = UIColor.flatWhite()
         
         self.navHeaderDarkCoverView.addSubview(_view)
         
         return _view
     }()
-    private lazy var navHeaderNameLabel: UILabel = {
+    fileprivate lazy var navHeaderNameLabel: UILabel = {
         let _label = UILabel()
         _label.font = UIFontTheme.Bold()
-        _label.textColor = UIColor.whiteColor()
-        _label.textAlignment = .Center
+        _label.textColor = UIColor.white
+        _label.textAlignment = .center
         
         self.navHeaderDarkCoverView.addSubview(_label)
         
@@ -122,82 +122,82 @@ class ProfileViewController: UIViewController {
             tableView.reloadData()
         }
     }
-    private lazy var menuButton: UIButton = {
+    fileprivate lazy var menuButton: UIButton = {
         let _button = UIButton()
-        if let navigationController = self.navigationController where navigationController.viewControllers.count > 1 {
-            _button.setImage(UIImage(named:"Back-Reverse"), forState: .Normal)
+        if let navigationController = self.navigationController , navigationController.viewControllers.count > 1 {
+            _button.setImage(UIImage(named:"Back-Reverse"), for: UIControlState())
         } else {
-            _button.setImage(UIImage(named:"Menu"), forState: .Normal)
+            _button.setImage(UIImage(named:"Menu"), for: UIControlState())
         }
-        _button.addTarget(self, action: #selector(ProfileViewController.backClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(ProfileViewController.backClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var settingsButton: UIButton = {
+    fileprivate lazy var settingsButton: UIButton = {
         let _button = UIButton()
-        _button.setImage(UIImage(named:"Edit"), forState: .Normal)
-        _button.addTarget(self, action: #selector(ProfileViewController.editProfileClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setImage(UIImage(named:"Edit"), for: UIControlState())
+        _button.addTarget(self, action: #selector(ProfileViewController.editProfileClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var tableView: UITableView = {
-        let _tableView                  = UITableView(frame: CGRect.zero, style: .Grouped)
+    fileprivate lazy var tableView: UITableView = {
+        let _tableView                  = UITableView(frame: CGRect.zero, style: .grouped)
         _tableView.dataSource           = self
         _tableView.delegate             = self
-        _tableView.backgroundColor      = UIColor.whiteColor()
+        _tableView.backgroundColor      = UIColor.white
         _tableView.alwaysBounceVertical = true
-        _tableView.separatorInset       = UIEdgeInsetsZero
-        _tableView.layoutMargins        = UIEdgeInsetsZero
+        _tableView.separatorInset       = UIEdgeInsets.zero
+        _tableView.layoutMargins        = UIEdgeInsets.zero
         _tableView.tableFooterView      = UIView()
         _tableView.estimatedRowHeight   = self.tableCellHeight
         _tableView.rowHeight = UITableViewAutomaticDimension
-        _tableView.contentInset         = UIEdgeInsetsZero
+        _tableView.contentInset         = UIEdgeInsets.zero
         //_tableView.separatorStyle       = .None
         
-        _tableView.registerClass(ProfileHeaderCell.self, forCellReuseIdentifier: self.profileCellIdentifier)
-        _tableView.registerClass(CalfProfileHeaderCell.self, forCellReuseIdentifier: self.calfProfileCellIdentifier)
-        _tableView.registerClass(SubscriptionCell.self, forCellReuseIdentifier: self.subscriptionCellIdentifier)
-        _tableView.registerClass(SubscriptionEmptyStateCell.self, forCellReuseIdentifier: self.subscriptionEmptyStateCellIdentifier)
-        _tableView.registerClass(PaymentCardTableViewCell.self, forCellReuseIdentifier: self.paymentCardCellIdentifier)
-        _tableView.registerClass(PaymentCardEmptyStateCell.self, forCellReuseIdentifier: self.paymentCardEmptyStateCellIdentifier)
-        _tableView.registerClass(PaymentHistoryTableViewCell.self, forCellReuseIdentifier: self.paymentHistoryCellIdentifier)
-        _tableView.registerClass(PaymentHistoryEmptyStateCell.self, forCellReuseIdentifier: self.paymentHistoryEmptyStateCellIdentifier)
-        _tableView.registerClass(ChargeCell.self, forCellReuseIdentifier: self.chargeCellIdentifier)
-        _tableView.registerClass(MemberCell.self, forCellReuseIdentifier: self.memberCellIdentifier)
-        _tableView.registerClass(MemberEmptyStateCell.self, forCellReuseIdentifier: self.memberEmptyStateCellIdentifier)
-        _tableView.registerClass(PlanCell.self, forCellReuseIdentifier: self.planCellIdentifier)
-        _tableView.registerClass(PlanEmptyStateCell.self, forCellReuseIdentifier: self.planEmptyStateCellIdentifier)
+        _tableView.register(ProfileHeaderCell.self, forCellReuseIdentifier: self.profileCellIdentifier)
+        _tableView.register(CalfProfileHeaderCell.self, forCellReuseIdentifier: self.calfProfileCellIdentifier)
+        _tableView.register(SubscriptionCell.self, forCellReuseIdentifier: self.subscriptionCellIdentifier)
+        _tableView.register(SubscriptionEmptyStateCell.self, forCellReuseIdentifier: self.subscriptionEmptyStateCellIdentifier)
+        _tableView.register(PaymentCardTableViewCell.self, forCellReuseIdentifier: self.paymentCardCellIdentifier)
+        _tableView.register(PaymentCardEmptyStateCell.self, forCellReuseIdentifier: self.paymentCardEmptyStateCellIdentifier)
+        _tableView.register(PaymentHistoryTableViewCell.self, forCellReuseIdentifier: self.paymentHistoryCellIdentifier)
+        _tableView.register(PaymentHistoryEmptyStateCell.self, forCellReuseIdentifier: self.paymentHistoryEmptyStateCellIdentifier)
+        _tableView.register(ChargeCell.self, forCellReuseIdentifier: self.chargeCellIdentifier)
+        _tableView.register(MemberCell.self, forCellReuseIdentifier: self.memberCellIdentifier)
+        _tableView.register(MemberEmptyStateCell.self, forCellReuseIdentifier: self.memberEmptyStateCellIdentifier)
+        _tableView.register(PlanCell.self, forCellReuseIdentifier: self.planCellIdentifier)
+        _tableView.register(PlanEmptyStateCell.self, forCellReuseIdentifier: self.planEmptyStateCellIdentifier)
         
         self.view.addSubview(_tableView)
         return _tableView
     }()
-    private lazy var addMemberButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.Custom)
+    fileprivate lazy var addMemberButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
         _button.backgroundColor = UIColorTheme.Primary
-        _button.setTitle("ADD MEMBER", forState: .Normal)
-        _button.setTitleColor(.whiteColor(), forState: .Normal)
-        _button.addTarget(self, action: #selector(ProfileViewController.addMemberClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setTitle("ADD MEMBER", for: UIControlState())
+        _button.setTitleColor(.white, for: UIControlState())
+        _button.addTarget(self, action: #selector(ProfileViewController.addMemberClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var addPlanButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.Custom)
+    fileprivate lazy var addPlanButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
         _button.backgroundColor = UIColorTheme.Primary
-        _button.setTitle("CREATE PLAN", forState: .Normal)
-        _button.setTitleColor(.whiteColor(), forState: .Normal)
-        _button.addTarget(self, action: #selector(ProfileViewController.addPlanClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setTitle("CREATE PLAN", for: UIControlState())
+        _button.setTitleColor(.white, for: UIControlState())
+        _button.addTarget(self, action: #selector(ProfileViewController.addPlanClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var messageToolbarView: MessageToolbarView = {
+    fileprivate lazy var messageToolbarView: MessageToolbarView = {
         let _view = MessageToolbarView()
         
         return _view
@@ -207,14 +207,14 @@ class ProfileViewController: UIViewController {
             switch profileType {
             case .bull:
                 switch membershipNavigationState {
-                case .Messages:
+                case .messages:
                     return textInputBar
                 default:
                     return nil
                 }
             case .calf:
                 switch memberNavigationState {
-                case .Message:
+                case .message:
                     return textInputBar
                 default:
                     return nil
@@ -222,7 +222,7 @@ class ProfileViewController: UIViewController {
             }
         }
     }
-    override func canBecomeFirstResponder() -> Bool {
+    override var canBecomeFirstResponder : Bool {
         return true
     }
     init(user: User, profileType: ProfileType) {
@@ -234,7 +234,7 @@ class ProfileViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: true)
@@ -242,22 +242,22 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = UIRectEdge()
         automaticallyAdjustsScrollViewInsets = false
         
         title = "Profile"
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
 
         configureRevealControllerGestures(view)
         configureRevealWidth()
         
-        self.tableView.infiniteScrollIndicatorStyle = .Gray
+        self.tableView.infiniteScrollIndicatorStyle = .gray
         
         // Set custom indicator margin
         self.tableView.infiniteScrollIndicatorMargin = 40
         
         // Add infinite scroll handler
-        self.tableView.addInfiniteScrollWithHandler { [weak self] (scrollView) -> Void in
+        self.tableView.addInfiniteScroll { [weak self] (scrollView) -> Void in
             guard let _self = self else {
                 return
             }
@@ -269,7 +269,7 @@ class ProfileViewController: UIViewController {
             _self.pageNumber += 1
             
             switch _self.membershipNavigationState {
-            case .Members:
+            case .members:
                 ApiManager.sharedInstance.getMembers(_self.pageNumber, success: { (members) in
                     var viewModels = _self.dataSource[1]
                     for member in members! {
@@ -289,7 +289,7 @@ class ProfileViewController: UIViewController {
                         
                         ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 })
-            case .Plans:
+            case .plans:
                 ApiManager.sharedInstance.getPlans(_self.pageNumber, success: { (plans) in
                     var viewModels = _self.dataSource[1]
                     for plan in plans! {
@@ -309,7 +309,7 @@ class ProfileViewController: UIViewController {
                         
                         ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 })
-            case .Messages: break
+            case .messages: break
             }
             
             scrollView.finishInfiniteScroll()
@@ -323,100 +323,100 @@ class ProfileViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        menuButton.snp_updateConstraints { (make) in
+        menuButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.leading.equalTo(view).inset(15)
             make.height.width.equalTo(20)
         }
-        settingsButton.snp_updateConstraints { (make) in
+        settingsButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.trailing.equalTo(view).inset(15)
             make.height.width.equalTo(20)
         }
-        tableView.snp_updateConstraints { (make) in
+        tableView.snp.updateConstraints { (make) in
             make.edges.equalTo(view)
         }
-        navHeader.snp_updateConstraints { (make) in
+        navHeader.snp.updateConstraints { (make) in
             make.top.equalTo(self.view)
             make.leading.trailing.equalTo(self.view)
             make.height.equalTo(offsetNavHeaderHeight)
         }
-        navHeaderDarkCoverView.snp_updateConstraints { (make) in
+        navHeaderDarkCoverView.snp.updateConstraints { (make) in
             make.edges.equalTo(self.navHeader)
         }
-        navHeaderNameLabel.snp_updateConstraints { (make) in
+        navHeaderNameLabel.snp.updateConstraints { (make) in
             make.centerX.equalTo(self.navHeader)
             make.centerY.equalTo(self.navHeader).offset(verticalNavHeaderOffset)
             make.leading.trailing.equalTo(self.navHeader).inset(10*2+menuButtonWidth)
         }
-        navHeaderLineView.snp_updateConstraints { (make) in
+        navHeaderLineView.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(self.navHeader)
             make.height.equalTo(kOnePX*2)
            
-            make.bottom.equalTo(self.navHeader.snp_bottom)
+            make.bottom.equalTo(self.navHeader.snp.bottom)
         }
-        addMemberButton.snp_updateConstraints { (make) in
+        addMemberButton.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(view)
             make.height.equalTo(60)
         }
-        addPlanButton.snp_updateConstraints { (make) in
+        addPlanButton.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(view)
             make.height.equalTo(60)
         }
         switch profileType {
         case .bull:
             switch membershipNavigationState {
-            case .Members:
+            case .members:
                 var offset = 60
                 var tableViewOffset = 0
                 if hasMembers {
                     offset = 0
                     tableViewOffset = 60
                 }
-                addMemberButton.snp_updateConstraints { (make) in
-                    make.bottom.equalTo(view.snp_bottom).offset(offset)
+                addMemberButton.snp.updateConstraints { (make) in
+                    make.bottom.equalTo(view.snp.bottom).offset(offset)
                 }
-                addPlanButton.snp_updateConstraints { (make) in
-                    make.bottom.equalTo(view.snp_bottom).offset(60)
+                addPlanButton.snp.updateConstraints { (make) in
+                    make.bottom.equalTo(view.snp.bottom).offset(60)
                 }
-                tableView.snp_updateConstraints { (make) in
+                tableView.snp.updateConstraints { (make) in
                     make.bottom.equalTo(view).inset(tableViewOffset)
                 }
-            case .Plans:
+            case .plans:
                 var offset = 60
                 var tableViewOffset = 0
                 if hasPlans {
                     offset = 0
                     tableViewOffset = 60
                 }
-                addMemberButton.snp_updateConstraints(closure: { (make) in
-                    make.bottom.equalTo(view.snp_bottom).offset(60)
+                addMemberButton.snp.updateConstraints({ (make) in
+                    make.bottom.equalTo(view.snp.bottom).offset(60)
                 })
-                addPlanButton.snp_updateConstraints(closure: { (make) in
-                    make.bottom.equalTo(view.snp_bottom).offset(offset)
+                addPlanButton.snp.updateConstraints({ (make) in
+                    make.bottom.equalTo(view.snp.bottom).offset(offset)
                 })
-                tableView.snp_updateConstraints { (make) in
+                tableView.snp.updateConstraints { (make) in
                     make.bottom.equalTo(view).inset(tableViewOffset)
                 }
             default:
-                addMemberButton.snp_updateConstraints { (make) in
-                    make.bottom.equalTo(view.snp_bottom).offset(60)
+                addMemberButton.snp.updateConstraints { (make) in
+                    make.bottom.equalTo(view.snp.bottom).offset(60)
                 }
-                addPlanButton.snp_updateConstraints { (make) in
-                    make.bottom.equalTo(view.snp_bottom).offset(60)
+                addPlanButton.snp.updateConstraints { (make) in
+                    make.bottom.equalTo(view.snp.bottom).offset(60)
                 }
-                tableView.snp_updateConstraints { (make) in
+                tableView.snp.updateConstraints { (make) in
                     make.bottom.equalTo(view).inset(0)
                 }
             }
         default:
-            addMemberButton.snp_updateConstraints { (make) in
-                make.bottom.equalTo(view.snp_bottom).offset(60)
+            addMemberButton.snp.updateConstraints { (make) in
+                make.bottom.equalTo(view.snp.bottom).offset(60)
             }
-            addPlanButton.snp_updateConstraints { (make) in
-                make.bottom.equalTo(view.snp_bottom).offset(60)
+            addPlanButton.snp.updateConstraints { (make) in
+                make.bottom.equalTo(view.snp.bottom).offset(60)
             }
-            tableView.snp_updateConstraints { (make) in
+            tableView.snp.updateConstraints { (make) in
                 make.bottom.equalTo(view).inset(0)
             }
         }
@@ -430,22 +430,22 @@ class ProfileViewController: UIViewController {
         case .bull:
             navHeaderNameLabel.text = user.account?.companyName
         case .calf:
-            if let firstName = user.firstName, lastName = user.lastName {
+            if let firstName = user.firstName, let lastName = user.lastName {
                 navHeaderNameLabel.text = "\(firstName) \(lastName)"
             } else {
                 navHeaderNameLabel.text = user.emailAddress
             }
         }
     }
-    func backClicked(sender: UIButton) {
+    func backClicked(_ sender: UIButton) {
         switch profileType {
         case .bull:
             toggleMenu(sender)
         case .calf:
-            navigationController?.popViewControllerAnimated(true)
+            navigationController?.popViewController(animated: true)
         }
     }
-    func editProfileClicked(button: UIButton) {
+    func editProfileClicked(_ button: UIButton) {
         switch profileType {
         case .bull:
             guard let account = user.account else {
@@ -454,12 +454,12 @@ class ProfileViewController: UIViewController {
             let viewController = AccountProfileViewController(account: account, profileType: .bull)
             viewController.delegate = self
             
-            presentViewController(viewController, animated: true, completion: nil)
+            present(viewController, animated: true, completion: nil)
         case .calf:
             let viewController = UserProfileViewController(user: user, profileType: .bull)
             viewController.delegate = self
             
-            presentViewController(viewController, animated: true, completion: nil)
+            present(viewController, animated: true, completion: nil)
         }
     }
     func buildDataSet() {
@@ -474,7 +474,7 @@ class ProfileViewController: UIViewController {
             items.append([profileHeaderViewModel])
             
             switch membershipNavigationState {
-            case .Members:
+            case .members:
                     ApiManager.sharedInstance.getMembers(self.pageNumber, success: { [weak self] (members) in
                         guard let _self = self else {
                             return
@@ -511,7 +511,7 @@ class ProfileViewController: UIViewController {
                         
                         ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 }
-            case .Plans:
+            case .plans:
                 ApiManager.sharedInstance.getPlans(1, success: { [weak self] (plans) in
                     guard let _self = self else {
                         return
@@ -547,7 +547,7 @@ class ProfileViewController: UIViewController {
                     
                     ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 }
-            case .Messages:
+            case .messages:
                 break
             }
         case .calf:
@@ -556,7 +556,7 @@ class ProfileViewController: UIViewController {
             items.append([calfProfileHeaderViewModel])
             
             switch memberNavigationState {
-            case .Profile:
+            case .profile:
                 if user.memberships.count > 0 {
                     var subscriptionViewModels: [SubscriptionViewModel] = []
                     for membership in user.memberships {
@@ -604,7 +604,7 @@ class ProfileViewController: UIViewController {
                     items.append(paymentHistoryEmptyStateViewModels)
                 }
                
-            case .Charge:
+            case .charge:
                 let remainingHeight = view.frame.size.height - tableView.visibleCells[0].frame.size.height
                 
                 let viewModel = ChargeViewModel(totalCellHeight: remainingHeight, chargeCellDelegate: self)
@@ -618,14 +618,14 @@ class ProfileViewController: UIViewController {
         
         dataSource = items
     }
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y
         handleNavHeaderScrollingWithOffset(yOffset)
     }
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
-    func handleNavHeaderScrollingWithOffset(yOffset: CGFloat) {
+    func handleNavHeaderScrollingWithOffset(_ yOffset: CGFloat) {
         if chromeVisible {
             navHeaderDarkCoverView.alpha = min(1.0, (yOffset * scrollDarkNavDelayFactor - parallaxHeight + offsetLabelHeaderHeight) *  0.01)
             
@@ -633,31 +633,31 @@ class ProfileViewController: UIViewController {
             navHeaderNameLabel.layer.transform = labelTransform
         }
     }
-    func addPlanClicked(sender: UIButton) {
+    func addPlanClicked(_ sender: UIButton) {
 //        let viewController = PlanProfileViewController()
 //        
 //        navigationController?.pushViewController(viewController, animated: true)
     }
-    func addMemberClicked(sender: UIButton) {
+    func addMemberClicked(_ sender: UIButton) {
         let viewController = SharePlanViewController()
         
         navigationController?.pushViewController(viewController, animated: true)
     }
 }
 extension ProfileViewController : UITableViewDataSource {
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return dataSource.count
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let dataItems = dataSource[section]
         
         return dataItems.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let dataItems = dataSource[indexPath.section]
-        let viewModel = dataItems[indexPath.row]
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let dataItems = dataSource[(indexPath as NSIndexPath).section]
+        let viewModel = dataItems[(indexPath as NSIndexPath).row]
         let cell = viewModel.dequeueAndConfigure(tableView, indexPath: indexPath)
         
         cell.layoutIfNeeded()
@@ -667,18 +667,18 @@ extension ProfileViewController : UITableViewDataSource {
 }
 
 extension ProfileViewController : UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
-        let dataItems = dataSource[indexPath.section]
+        let dataItems = dataSource[(indexPath as NSIndexPath).section]
         
         switch profileType {
         case .calf:
             break
         case .bull:
             switch membershipNavigationState {
-            case .Members:
-                guard let viewModel = dataItems[indexPath.row] as? MemberViewModel else {
+            case .members:
+                guard let viewModel = dataItems[(indexPath as NSIndexPath).row] as? MemberViewModel else {
                     return
                 }
                 
@@ -688,20 +688,20 @@ extension ProfileViewController : UITableViewDelegate {
                 navigationController?.pushViewController(viewController, animated: true)
                 
             //profileType = .calf
-            case .Plans:
-                guard let viewModel = dataItems[indexPath.row] as? PlanViewModel else {
+            case .plans:
+                guard let viewModel = dataItems[(indexPath as NSIndexPath).row] as? PlanViewModel else {
                     return
                 }
                 
                 let viewController = PlanProfileViewController(plan: viewModel.plan)
                 
                 navigationController?.pushViewController(viewController, animated: true)
-            case .Messages:
+            case .messages:
                 break;
             }
         }
     }
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let dataItems = dataSource[section]
         
         if dataItems.count > 0 {
@@ -712,7 +712,7 @@ extension ProfileViewController : UITableViewDelegate {
         
         return nil
     }
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let dataItems = dataSource[section]
         
         if dataItems.count > 0 {
@@ -723,23 +723,23 @@ extension ProfileViewController : UITableViewDelegate {
         
         return 0
     }
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.min
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat.leastNormalMagnitude
     }
 }
 extension ProfileViewController: UserProfileDelegate {
     func didClickBack() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }
 extension ProfileViewController: AccountProfileDelegate {
     func didAccountProfileClickBack() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }
 extension ProfileViewController: MemberNavigationDelegate {
     func messageClicked() {
-        memberNavigationState = .Message
+        memberNavigationState = .message
         //memberNavigation.setSelectedButton(memberNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)
@@ -750,7 +750,7 @@ extension ProfileViewController: MemberNavigationDelegate {
         reloadInputViews()
     }
     func profileClicked() {
-        memberNavigationState = .Profile
+        memberNavigationState = .profile
         //memberNavigation.setSelectedButton(memberNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)
@@ -761,7 +761,7 @@ extension ProfileViewController: MemberNavigationDelegate {
         reloadInputViews()
     }
     func chargeClicked() {
-        memberNavigationState = .Charge
+        memberNavigationState = .charge
         //memberNavigation.setSelectedButton(memberNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)
@@ -774,7 +774,7 @@ extension ProfileViewController: MemberNavigationDelegate {
 }
 extension ProfileViewController: MembershipNavigationDelegate {
     func membersClicked() {
-        membershipNavigationState = .Members
+        membershipNavigationState = .members
         //membershipNavigation.setSelectedButton(membershipNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)
@@ -785,7 +785,7 @@ extension ProfileViewController: MembershipNavigationDelegate {
         reloadInputViews()
     }
     func plansClicked() {
-        membershipNavigationState = .Plans
+        membershipNavigationState = .plans
         //membershipNavigation.setSelectedButton(membershipNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)
@@ -796,7 +796,7 @@ extension ProfileViewController: MembershipNavigationDelegate {
         reloadInputViews()
     }
     func messagesClicked() {
-        membershipNavigationState = .Messages
+        membershipNavigationState = .messages
         //membershipNavigation.setSelectedButton(membershipNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)
@@ -808,25 +808,25 @@ extension ProfileViewController: MembershipNavigationDelegate {
     }
 }
 extension ProfileViewController: SubscriptionDelegate {
-    func didCancelSubscription(subscription: Subscription) {
+    func didCancelSubscription(_ subscription: Subscription) {
         print("cancel subscription")
 
         let controller = CancelSubscriptionViewController(subscription: subscription)
         controller.cancelSubscriptionDelegate = self
         customPresentViewController(presenter, viewController: controller, animated: true, completion: nil)
     }
-    func didChangeSubscription(subscription: Subscription) {
+    func didChangeSubscription(_ subscription: Subscription) {
         print("change subscription")
         let viewController = ChangePlansViewController()
         
         navigationController?.pushViewController(viewController, animated: true)
     }
-    func didHoldSubscription(subscription: Subscription) {
+    func didHoldSubscription(_ subscription: Subscription) {
         print("hold subscription")
     }
 }
 extension ProfileViewController: PaymentCardDelegate {
-    func didUpdatePaymentCard(paymentCard: PaymentCard) {
+    func didUpdatePaymentCard(_ paymentCard: PaymentCard) {
         let viewController = CardIOViewController()
         viewController.cardCaptureDelegate = self
 
@@ -835,11 +835,11 @@ extension ProfileViewController: PaymentCardDelegate {
 }
 extension ProfileViewController: CancelSubscriptionDelegate {
     func didClose() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
-    func didConfirmCancelSubscription(subscription: Subscription) {
+    func didConfirmCancelSubscription(_ subscription: Subscription) {
         ApiManager.sharedInstance.cancelSubscription(subscription.id, success: {
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }) { (error, errorDictionary) in
             print("error occurred")
         }
@@ -877,19 +877,19 @@ extension ProfileViewController: PaymentCardEmptyStateDelegate {
         let viewController = CardIOViewController()
         viewController.cardCaptureDelegate = self
         
-        presentViewController(viewController, animated: true) { 
+        present(viewController, animated: true) { 
             viewController.scanCard()
         }
     }
 }
 extension ProfileViewController: CardCaptureDelegate {
     func didCancelCardCapture() {
-        navigationController?.popViewControllerAnimated(true)
+        navigationController?.popViewController(animated: true)
     }
-    func didCompleteCardCapture(stpCard: STPCardParams) {
-        dismissViewControllerAnimated(true, completion: {
+    func didCompleteCardCapture(_ stpCard: STPCardParams) {
+        dismiss(animated: true, completion: {
             SVProgressHUD.show()
-            STPAPIClient.sharedClient().createTokenWithCard(stpCard, completion: { [weak self] (token, error) in
+            STPAPIClient.shared().createToken(withCard: stpCard, completion: { [weak self] (token, error) in
                 guard let _self = self else {
                     return
                 }
@@ -920,7 +920,7 @@ extension ProfileViewController: CardCaptureDelegate {
     }
 }
 extension ProfileViewController: ChargeCellDelegate {
-    func didChargeAmount(amount: USD) {
+    func didChargeAmount(_ amount: USD) {
         SVProgressHUD.show()
         
         let createCharge = CreateCharge(userId: user.id, amount: amount.floatValue, description: "Test Charge")

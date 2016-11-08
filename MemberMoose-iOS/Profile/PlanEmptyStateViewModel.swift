@@ -27,8 +27,8 @@ class PlanEmptyStateViewModel:DataSourceItemProtocol {
         self.subHeader = subHeader
         self.planEmptyStateDelgate = planEmptyStateDelgate
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as? PlanEmptyStateCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? PlanEmptyStateCell else {
             fatalError(#function)
         }
         
@@ -41,7 +41,7 @@ class PlanEmptyStateViewModel:DataSourceItemProtocol {
         return nil
     }
     @objc func heightForHeader() -> CGFloat {
-        return CGFloat.min;
+        return CGFloat.leastNormalMagnitude;
     }
 }
 extension PlanEmptyStateViewModel: PlanEmptyStateCellDelegate {

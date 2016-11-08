@@ -8,7 +8,7 @@
 import Foundation
 
 struct HumanReadableErrorMessage {
-    static func translateMinorCode(minorCode: Int) -> String {
+    static func translateMinorCode(_ minorCode: Int) -> String {
         switch minorCode {
         case 1001:
             return "The email address/password was not found.  Please try again."
@@ -30,20 +30,20 @@ struct HumanReadableErrorMessage {
     }
 }
 class ErrorHandler {
-    static func presentErrorDialog(presentingViewController: UIViewController, title: String, message: String) {
+    static func presentErrorDialog(_ presentingViewController: UIViewController, title: String, message: String) {
         print("unknown error occurred")
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         
-        presentingViewController.presentViewController(alert, animated: true, completion: nil)
+        presentingViewController.present(alert, animated: true, completion: nil)
     }
-    static func presentErrorDialog(presentingViewController: UIViewController) {
+    static func presentErrorDialog(_ presentingViewController: UIViewController) {
         print("unknown error occurred")
         
         ErrorHandler.presentErrorDialog(presentingViewController, title: "An Error Occurred", message: "Sorry, something happened.  Please try again.")
     }
-    static func presentErrorDialog(presentingViewController: UIViewController, error: ErrorType?) {
+    static func presentErrorDialog(_ presentingViewController: UIViewController, error: Error?) {
         if let error = error {
             print("an error occured: \(error)")
         } else {
@@ -52,20 +52,20 @@ class ErrorHandler {
         
         ErrorHandler.presentErrorDialog(presentingViewController, title: "An Error Occurred", message: "Sorry, something happened.  Please try again.")
     }
-    static func presentErrorDialog(presentingViewController: UIViewController, error: ErrorType?, errorDictionary: [String: AnyObject]?) {
+    static func presentErrorDialog(_ presentingViewController: UIViewController, error: Error?, errorDictionary: [String: AnyObject]?) {
         if let error = error {
             print("an error occured: \(error)")
         } else {
             print("unknown error occurred")
         }
         
-        if let errorDictionary = errorDictionary, minorCode = errorDictionary["minor_code"] as? Int {
+        if let errorDictionary = errorDictionary, let minorCode = errorDictionary["minor_code"] as? Int {
             ErrorHandler.presentErrorDialog(presentingViewController, title: "An Error Occurred", message: HumanReadableErrorMessage.translateMinorCode(minorCode))
         } else {
             ErrorHandler.presentErrorDialog(presentingViewController, title: "An Error Occurred", message: HumanReadableErrorMessage.translateMinorCode(0))
         }
     }
-    static func parseHumanReadableErrorMessage(errorDictionary: [String: AnyObject]) -> String {
+    static func parseHumanReadableErrorMessage(_ errorDictionary: [String: AnyObject]) -> String {
         var humanReadableErrorMessage: String = ""
         
         if let minorCode = errorDictionary["minor_code"] as? Int {

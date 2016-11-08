@@ -9,14 +9,14 @@
 import Foundation
 import ObjectMapper
 
-public class Charge: Mappable {
-    public var id: String!
-    public var referenceId: String!
-    public var amount: Double!
-    public var amountRefunded: Double!
-    public var balanceTransaction: String!
-    public var captured: Bool!
-    public var chargeCreated: NSDate!
+open class Charge: Mappable {
+    open var id: String!
+    open var referenceId: String!
+    open var amount: Double!
+    open var amountRefunded: Double!
+    open var balanceTransaction: String!
+    open var captured: Bool!
+    open var chargeCreated: Date!
     var currency: String!
     var description: String!
     var destination: String?
@@ -31,14 +31,14 @@ public class Charge: Mappable {
     var statementDescriptor: String?
     var status: String!
     var cardInfo: String!
-    public var createdAt: NSDate!
-    public var updatedAt: NSDate?
+    open var createdAt: Date!
+    open var updatedAt: Date?
     
-    public required init?(_ map: Map){
-        mapping(map)
+    public required init?(map: Map){
+        mapping(map: map)
     }
     
-    public func mapping(map: Map) {
+    open func mapping(map: Map) {
         id <- map["_id"]
         referenceId <- map["reference_id"]
         amount <- map["amount"]

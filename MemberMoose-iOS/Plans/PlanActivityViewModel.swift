@@ -17,8 +17,8 @@ class PlanActivityViewModel:DataSourceItemProtocol {
     init(activity: String) {
         self.activity = activity
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as? PlanActivityCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? PlanActivityCell else {
             fatalError(#function)
         }
         

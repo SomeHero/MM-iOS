@@ -10,16 +10,16 @@ import UIKit
 
 
 class PlanTermsOfServiceCell: UITableViewCell {
-    private lazy var containerView: UIView = {
+    fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
         self.contentView.addSubview(_view)
         
         return _view
     }()
-    private lazy var termsOfServiceLabel: UILabel = {
+    fileprivate lazy var termsOfServiceLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Default)
+        _label.font = UIFontTheme.Regular(.default)
         _label.textColor = UIColorTheme.PrimaryFont
         _label.numberOfLines = 0
         
@@ -28,13 +28,13 @@ class PlanTermsOfServiceCell: UITableViewCell {
         return _label
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .whiteColor()
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
-        accessoryType = .None
-        selectionStyle = .None
+        backgroundColor = .white
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
+        accessoryType = .none
+        selectionStyle = .none
         
         //selectedBackgroundView = selectedColorView
     }
@@ -48,20 +48,20 @@ class PlanTermsOfServiceCell: UITableViewCell {
     }
     
     override func updateConstraints() {
-        containerView.snp_updateConstraints { (make) in
+        containerView.snp.updateConstraints { (make) in
             make.edges.equalTo(contentView).inset(20)
         }
-        termsOfServiceLabel.snp_updateConstraints { (make) in
+        termsOfServiceLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
             make.top.bottom.equalTo(containerView)
         }
         
         super.updateConstraints()
     }
-    override class func requiresConstraintBasedLayout() -> Bool {
+    override class var requiresConstraintBasedLayout : Bool {
         return true
     }
-    func setupWith(viewModel: DataSourceItemProtocol) {
+    func setupWith(_ viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? PlanTermsOfServiceViewModel {
             termsOfServiceLabel.text = viewModel.termsOfService
             TextDecorator.applyTightLineHeight(toLabel: termsOfServiceLabel)

@@ -15,92 +15,92 @@ protocol MemberEmptyStateCellDelegate: class {
 class MemberEmptyStateCell: UITableViewCell {
     weak var memberEmptyStateCellDelegate: MemberEmptyStateCellDelegate?
     
-    private lazy var containerView: UIView = {
+    fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
-        _view.backgroundColor = .clearColor()
+        _view.backgroundColor = .clear
         
         self.contentView.addSubview(_view)
         
         return _view
     }()
-    private lazy var logo: UIImageView = {
+    fileprivate lazy var logo: UIImageView = {
         let _imageView = UIImageView()
-        _imageView.contentMode = .ScaleAspectFit
+        _imageView.contentMode = .scaleAspectFit
         
         self.containerView.addSubview(_imageView)
         
         return _imageView
     }()
-    private lazy var headerLabel: UILabel = {
+    fileprivate lazy var headerLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.Header
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Default)
-        _label.lineBreakMode = .ByWordWrapping
+        _label.textAlignment = .center
+        _label.font = UIFontTheme.Regular(.default)
+        _label.lineBreakMode = .byWordWrapping
         _label.numberOfLines = 0
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var subHeadingLabel: UILabel = {
+    fileprivate lazy var subHeadingLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.SubHeader
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Tiny)
-        _label.lineBreakMode = .ByWordWrapping
+        _label.textAlignment = .center
+        _label.font = UIFontTheme.Regular(.tiny)
+        _label.lineBreakMode = .byWordWrapping
         _label.numberOfLines = 0
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var buttonContainer: UIView = {
+    fileprivate lazy var buttonContainer: UIView = {
         let _view = UIView()
         
-        _view.backgroundColor = .clearColor()
+        _view.backgroundColor = .clear
         
         self.containerView.addSubview(_view)
         
         return _view
     }()
-    private lazy var createMemberButton: UIButton = {
+    fileprivate lazy var createMemberButton: UIButton = {
         let _button = UIButton()
         _button.backgroundColor = UIColorTheme.Primary
-        _button.setTitleColor(.whiteColor(), forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
-        _button.addTarget(self, action: #selector(MemberEmptyStateCell.createMemberClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setTitleColor(.white, for: UIControlState())
+        _button.titleLabel?.font = UIFontTheme.Regular(.small)
+        _button.addTarget(self, action: #selector(MemberEmptyStateCell.createMemberClicked(_:)), for: .touchUpInside)
         _button.layer.cornerRadius = 25
         _button.clipsToBounds = true
-        _button.setTitle("ADD A MEMBER", forState: .Normal)
+        _button.setTitle("ADD A MEMBER", for: UIControlState())
        
         self.buttonContainer.addSubview(_button)
         
         return _button
     }()
-    private lazy var sharePlanButton: UIButton = {
+    fileprivate lazy var sharePlanButton: UIButton = {
         let _button = UIButton()
         _button.backgroundColor = UIColorTheme.Primary
-        _button.setTitleColor(.whiteColor(), forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
-        _button.addTarget(self, action: #selector(MemberEmptyStateCell.sharePlanClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setTitleColor(.white, for: UIControlState())
+        _button.titleLabel?.font = UIFontTheme.Regular(.small)
+        _button.addTarget(self, action: #selector(MemberEmptyStateCell.sharePlanClicked(_:)), for: .touchUpInside)
         _button.layer.cornerRadius = 25
         _button.clipsToBounds = true
-        _button.setTitle("SEND LINK TO PLAN", forState: .Normal)
+        _button.setTitle("SEND LINK TO PLAN", for: UIControlState())
         
         self.buttonContainer.addSubview(_button)
         
         return _button
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .whiteColor()
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
-        accessoryType = .None
-        selectionStyle = .None
+        backgroundColor = .white
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
+        accessoryType = .none
+        selectionStyle = .none
         
         //selectedBackgroundView = selectedColorView
     }
@@ -113,7 +113,7 @@ class MemberEmptyStateCell: UITableViewCell {
         super.prepareForReuse()
         
     }
-    func setupWith(viewModel: DataSourceItemProtocol) {
+    func setupWith(_ viewModel: DataSourceItemProtocol) {
         guard let viewModel = viewModel as? MemberEmptyStateViewModel else {
             return
         }
@@ -122,47 +122,47 @@ class MemberEmptyStateCell: UITableViewCell {
         subHeadingLabel.text = viewModel.subHeader
     }
     override func updateConstraints() {
-        containerView.snp_updateConstraints { (make) in
+        containerView.snp.updateConstraints { (make) in
             make.center.equalTo(contentView)
             make.edges.equalTo(contentView).inset(20)
         }
-        logo.snp_updateConstraints { (make) in
+        logo.snp.updateConstraints { (make) in
             make.top.equalTo(containerView)
             make.centerX.equalTo(containerView)
             make.height.width.equalTo(80)
         }
-        headerLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(logo.snp_bottom).offset(10)
+        headerLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(logo.snp.bottom).offset(10)
             make.leading.trailing.equalTo(containerView).inset(10)
         }
-        subHeadingLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(headerLabel.snp_bottom)
+        subHeadingLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(headerLabel.snp.bottom)
             make.leading.trailing.equalTo(containerView).inset(40)
         }
-        buttonContainer.snp_updateConstraints { (make) in
-            make.top.equalTo(subHeadingLabel.snp_bottom).offset(20)
+        buttonContainer.snp.updateConstraints { (make) in
+            make.top.equalTo(subHeadingLabel.snp.bottom).offset(20)
             make.leading.trailing.equalTo(containerView)
             make.bottom.equalTo(containerView).inset(20)
         }
-        createMemberButton.snp_updateConstraints { (make) in
+        createMemberButton.snp.updateConstraints { (make) in
             make.top.leading.trailing.equalTo(buttonContainer)
             make.height.equalTo(50)
         }
-        sharePlanButton.snp_updateConstraints { (make) in
-            make.top.equalTo(createMemberButton.snp_bottom).offset(10)
+        sharePlanButton.snp.updateConstraints { (make) in
+            make.top.equalTo(createMemberButton.snp.bottom).offset(10)
             make.leading.trailing.equalTo(buttonContainer)
             make.bottom.equalTo(buttonContainer)
             make.height.equalTo(50)
         }
         super.updateConstraints()
     }
-    override class func requiresConstraintBasedLayout() -> Bool {
+    override class var requiresConstraintBasedLayout : Bool {
         return true
     }
-    func createMemberClicked(sender: UIButton) {
+    func createMemberClicked(_ sender: UIButton) {
         memberEmptyStateCellDelegate?.didCreateMemberClicked()
     }
-    func sharePlanClicked(sender: UIButton) {
+    func sharePlanClicked(_ sender: UIButton) {
         memberEmptyStateCellDelegate?.didSharePlanClicked()
     }
 }

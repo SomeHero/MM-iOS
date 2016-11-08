@@ -11,60 +11,60 @@ import SWRevealViewController
 import SVProgressHUD
 
 class ImportPlansViewController: UIViewController {
-    private let plansCellIdentifier                  = "ImportPlanCellIdentifier"
-    private let tableCellHeight: CGFloat        = 120
-    private let user:User
+    fileprivate let plansCellIdentifier                  = "ImportPlanCellIdentifier"
+    fileprivate let tableCellHeight: CGFloat        = 120
+    fileprivate let user:User
     
     var plans: [ImportPlanViewModel] = [] {
         didSet {
             tableView.reloadData()
         }
     }
-    private lazy var tableView: UITableView = {
+    fileprivate lazy var tableView: UITableView = {
         let _tableView                  = UITableView()
         _tableView.dataSource           = self
         _tableView.delegate             = self
-        _tableView.backgroundColor      = UIColor.whiteColor()
+        _tableView.backgroundColor      = UIColor.white
         _tableView.alwaysBounceVertical = true
-        _tableView.separatorInset       = UIEdgeInsetsZero
-        _tableView.layoutMargins        = UIEdgeInsetsZero
+        _tableView.separatorInset       = UIEdgeInsets.zero
+        _tableView.layoutMargins        = UIEdgeInsets.zero
         _tableView.tableFooterView      = UIView()
         _tableView.estimatedRowHeight   = self.tableCellHeight
  
-        _tableView.registerClass(ImportPlanTableViewCell.self, forCellReuseIdentifier: self.plansCellIdentifier)
+        _tableView.register(ImportPlanTableViewCell.self, forCellReuseIdentifier: self.plansCellIdentifier)
         
         self.view.addSubview(_tableView)
         return _tableView
     }()
-    private lazy var planCountLabel: UILabel = {
+    fileprivate lazy var planCountLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Small)
+        _label.textAlignment = .center
+        _label.font = UIFontTheme.Regular(.small)
         
         self.view.addSubview(_label)
         
         return _label
     }()
-    private lazy var nextButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.Custom)
-        _button.setImage(UIImage(named: "RightArrow-Primary"), forState: .Normal)
-        _button.imageView?.contentMode = .ScaleAspectFit
+    fileprivate lazy var nextButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
+        _button.setImage(UIImage(named: "RightArrow-Primary"), for: UIControlState())
+        _button.imageView?.contentMode = .scaleAspectFit
         
-        _button.addTarget(self, action: #selector(ImportPlansViewController.nextClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(ImportPlansViewController.nextClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var noThanksButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.Custom)
+    fileprivate lazy var noThanksButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
         
-        _button.backgroundColor = .clearColor()
-        _button.setTitleColor(UIColorTheme.Link, forState: .Normal)
-        _button.titleLabel?.font = UIFontTheme.Bold(.Tiny)
+        _button.backgroundColor = .clear
+        _button.setTitleColor(UIColorTheme.Link, for: UIControlState())
+        _button.titleLabel?.font = UIFontTheme.Bold(.tiny)
         
-        _button.addTarget(self, action: #selector(ImportPlansViewController.skipClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.addTarget(self, action: #selector(ImportPlansViewController.skipClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
@@ -82,12 +82,12 @@ class ImportPlansViewController: UIViewController {
         super.viewDidLoad()
         
         title = "Import from Stripe"
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         
-        let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: self, action: nil)
+        let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: self, action: nil)
         navigationItem.leftBarButtonItem = backButton
         
-        let skipButton = UIBarButtonItem(title: "SKIP", style: UIBarButtonItemStyle.Plain, target: self, action:  #selector(CreateFirstPlanViewController.skipClicked(_:)))
+        let skipButton = UIBarButtonItem(title: "SKIP", style: UIBarButtonItemStyle.plain, target: self, action:  #selector(CreateFirstPlanViewController.skipClicked(_:)))
         navigationItem.rightBarButtonItem = skipButton
         
         setup()
@@ -101,31 +101,31 @@ class ImportPlansViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        tableView.snp_updateConstraints { (make) in
+        tableView.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(20)
             make.leading.trailing.equalTo(view)
         }
-        planCountLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(tableView.snp_bottom).offset(20)
+        planCountLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(tableView.snp.bottom).offset(20)
             make.leading.trailing.equalTo(view).inset(20)
         }
-        nextButton.snp_updateConstraints { (make) in
-            make.top.equalTo(planCountLabel.snp_bottom).offset(10)
+        nextButton.snp.updateConstraints { (make) in
+            make.top.equalTo(planCountLabel.snp.bottom).offset(10)
             make.centerX.equalTo(view)
             make.height.equalTo(40)
         }
-        noThanksButton.snp_updateConstraints { (make) in
-            make.top.equalTo(nextButton.snp_bottom).offset(10)
+        noThanksButton.snp.updateConstraints { (make) in
+            make.top.equalTo(nextButton.snp.bottom).offset(10)
             make.centerX.equalTo(view)
             make.bottom.equalTo(view).inset(10)
         }
     }
     func setup() {
         setPlanCountLabel()
-        noThanksButton.setTitle("No Thanks", forState: .Normal)
+        noThanksButton.setTitle("No Thanks", for: UIControlState())
     }
     func loadPlans() {
-        guard let user = SessionManager.sharedUser, account = user.account else {
+        guard let user = SessionManager.sharedUser, let account = user.account else {
             return
         }
         
@@ -135,22 +135,22 @@ class ImportPlansViewController: UIViewController {
         }
         plans = viewModels
     }
-    func skipClicked(sender: UIButton) {
+    func skipClicked(_ sender: UIButton) {
         let viewController = ProfileViewController(user: user, profileType: .bull)
         let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.navigationBarHidden = true
+        navigationController.isNavigationBarHidden = true
         
         let menuViewController = MenuViewController()
         
         let swRevealViewController = SWRevealViewController(rearViewController: menuViewController, frontViewController: navigationController)
         
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
             delegate.swRevealViewController = swRevealViewController
             
-            delegate.window?.rootViewController?.presentViewController(swRevealViewController, animated: true, completion: nil)
+            delegate.window?.rootViewController?.present(swRevealViewController!, animated: true, completion: nil)
         }
     }
-    func nextClicked(sender: UIButton) {
+    func nextClicked(_ sender: UIButton) {
         guard let user = SessionManager.sharedUser else {
             return
         }
@@ -171,16 +171,16 @@ class ImportPlansViewController: UIViewController {
             
             let viewController = ProfileViewController(user: user, profileType: .bull)
             let navigationController = UINavigationController(rootViewController: viewController)
-            navigationController.navigationBarHidden = true
+            navigationController.isNavigationBarHidden = true
             
             let menuViewController = MenuViewController()
             
             let swRevealViewController = SWRevealViewController(rearViewController: menuViewController, frontViewController: navigationController)
             
-            if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+            if let delegate = UIApplication.shared.delegate as? AppDelegate {
                 delegate.swRevealViewController = swRevealViewController
                 
-                delegate.window?.rootViewController?.presentViewController(swRevealViewController, animated: true, completion: nil)
+                delegate.window?.rootViewController?.present(swRevealViewController!, animated: true, completion: nil)
             }
         }) { [weak self] (error, errorDictionary) in
             SVProgressHUD.dismiss()
@@ -208,16 +208,16 @@ class ImportPlansViewController: UIViewController {
 }
 
 extension ImportPlansViewController : UITableViewDataSource {
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return plans.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let viewModel = plans[indexPath.item]
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let viewModel = plans[(indexPath as NSIndexPath).item]
         let cell = viewModel.dequeueAndConfigure(tableView, indexPath: indexPath)
         
         cell.setupWith(viewModel)
@@ -228,14 +228,14 @@ extension ImportPlansViewController : UITableViewDataSource {
 }
 
 extension ImportPlansViewController : UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
-        let viewModel = plans[indexPath.item]
+        let viewModel = plans[(indexPath as NSIndexPath).item]
         
         viewModel.selected = !viewModel.selected
         
         setPlanCountLabel()
-        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+        self.tableView.reloadRows(at: [indexPath], with: .none)
     }
 }

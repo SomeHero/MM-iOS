@@ -17,8 +17,8 @@ class MenuItemViewModel:DataSourceItemProtocol {
     init(title: String) {
         self.title = title
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier("MenuItemCellIdentifier", forIndexPath: indexPath) as? MenuItemCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItemCellIdentifier", for: indexPath) as? MenuItemCell else {
             fatalError(#function)
         }
         

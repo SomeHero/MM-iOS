@@ -13,31 +13,31 @@ class SessionManager: NSObject {
     static let sharedInstance = SessionManager()
     static var sharedUser: User?
     
-    private override init() {}
+    fileprivate override init() {}
     
-    func setToken(token: String) {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
+    func setToken(_ token: String) {
+        let userDefaults = UserDefaults.standard
         
         userDefaults.setValue(token, forKey: "token")
         
         userDefaults.synchronize()
     }
     func getToken() -> String? {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let userDefaults = UserDefaults.standard
         
-        return userDefaults.stringForKey("token")
+        return userDefaults.string(forKey: "token")
     }
     func logout() {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let userDefaults = UserDefaults.standard
         
-        userDefaults.removeObjectForKey("token")
+        userDefaults.removeObject(forKey: "token")
         
         userDefaults.synchronize()
     }
     func clearToken() {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let userDefaults = UserDefaults.standard
         
-        userDefaults.removeObjectForKey("token")
+        userDefaults.removeObject(forKey: "token")
         
         userDefaults.synchronize()
     }
@@ -46,12 +46,12 @@ class SessionManager: NSObject {
             return
         }
         
-        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let userDefaults = UserDefaults.standard
         
         user.persistToUserDefaults(userDefaults)
     }
     static func getPersistedUser() -> User? {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let userDefaults = UserDefaults.standard
         let user = User(userDefaults: userDefaults)
         
         return user

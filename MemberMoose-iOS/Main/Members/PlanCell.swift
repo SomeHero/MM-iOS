@@ -10,48 +10,48 @@ import UIKit
 
 class PlanCell: UITableViewCell {
     
-    private lazy var planNameLabel: UILabel = {
+    fileprivate lazy var planNameLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Small)
-        _label.textColor = UIColor.flatBlackColor()
+        _label.font = UIFontTheme.Regular(.small)
+        _label.textColor = UIColor.flatBlack()
         _label.numberOfLines = 0
         
         self.contentView.addSubview(_label)
         
         return _label
     }()
-    private lazy var planAmountLabel: UILabel = {
+    fileprivate lazy var planAmountLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Small)
-        _label.textColor = UIColor.flatBlackColor()
+        _label.font = UIFontTheme.Regular(.small)
+        _label.textColor = UIColor.flatBlack()
         
         self.contentView.addSubview(_label)
         
         return _label
     }()
-    private lazy var subscribersCountLabel: UILabel = {
+    fileprivate lazy var subscribersCountLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.Small)
-        _label.textColor = UIColor.flatBlackColor()
+        _label.font = UIFontTheme.Regular(.small)
+        _label.textColor = UIColor.flatBlack()
         
         self.contentView.addSubview(_label)
         
         return _label
     }()
-    lazy var currencyFormatter: NSNumberFormatter = {
-        let _formatter = NSNumberFormatter()
+    lazy var currencyFormatter: NumberFormatter = {
+        let _formatter = NumberFormatter()
         _formatter.generatesDecimalNumbers = true
-        _formatter.numberStyle = .CurrencyStyle
+        _formatter.numberStyle = .currency
         
         return _formatter
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .whiteColor()
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
-        accessoryType = .DisclosureIndicator
+        backgroundColor = .white
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
+        accessoryType = .disclosureIndicator
         
         //selectedBackgroundView = selectedColorView
     }
@@ -64,7 +64,7 @@ class PlanCell: UITableViewCell {
         super.prepareForReuse()
         
     }
-    func setupWith(viewModel: DataSourceItemProtocol) {
+    func setupWith(_ viewModel: DataSourceItemProtocol) {
         guard let viewModel = viewModel as? PlanViewModel else {
             return
         }
@@ -74,22 +74,22 @@ class PlanCell: UITableViewCell {
         subscribersCountLabel.text = "\(viewModel.subscribersCount) Subscribers"
     }
     override func updateConstraints() {
-        planNameLabel.snp_updateConstraints { (make) in
+        planNameLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(contentView).inset(10)
             make.top.equalTo(contentView).inset(10)
         }
-        planAmountLabel.snp_updateConstraints { (make) in
+        planAmountLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(contentView).inset(10)
-            make.top.equalTo(planNameLabel.snp_bottom)
+            make.top.equalTo(planNameLabel.snp.bottom)
         }
-        subscribersCountLabel.snp_updateConstraints { (make) in
+        subscribersCountLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(contentView).inset(10)
-            make.top.equalTo(planAmountLabel.snp_bottom)
+            make.top.equalTo(planAmountLabel.snp.bottom)
             make.bottom.equalTo(contentView).inset(10)
         }
         super.updateConstraints()
     }
-    override class func requiresConstraintBasedLayout() -> Bool {
+    override class var requiresConstraintBasedLayout : Bool {
         return true
     }
 }

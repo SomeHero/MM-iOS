@@ -17,14 +17,14 @@ class ProfilePhotoView: UIView {
     
     lazy var profilePhoto: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .grayColor()
+        imageView.backgroundColor = .gray
         imageView.layer.cornerRadius = photoSize / 2
         imageView.layer.borderWidth = 1.0
-        imageView.layer.borderColor = UIColor.whiteColor().CGColor
+        imageView.layer.borderColor = UIColor.white.cgColor
         imageView.layer.masksToBounds = true
-        imageView.contentMode = .ScaleAspectFill
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.shouldRasterize = true
-        imageView.layer.rasterizationScale = UIScreen.mainScreen().scale
+        imageView.layer.rasterizationScale = UIScreen.main.scale
         
         self.addSubview(imageView)
         return imageView
@@ -34,7 +34,7 @@ class ProfilePhotoView: UIView {
     
     override func updateConstraints() {
         
-        profilePhoto.snp_updateConstraints { (make) -> Void in
+        profilePhoto.snp.updateConstraints { (make) -> Void in
             make.top.equalTo(self)
             make.bottom.equalTo(self)
             make.centerX.equalTo(self)
@@ -47,7 +47,7 @@ class ProfilePhotoView: UIView {
     
     // MARK: - Public methods
     
-    func setPhoto(photo: UIImage?) {
+    func setPhoto(_ photo: UIImage?) {
         //        if let photo = photo {
         //            profilePhoto.setImageWithFade(photo)
         //        } else if let placeholderPhoto = Image.noCouplePhotoJoin {

@@ -19,21 +19,21 @@ class PaymentHistoryViewModel:DataSourceItemProtocol {
     let amount: String
     let dateFormatter = DateFormatters.timeStampDateFormatter
     
-    lazy var currencyFormatter: NSNumberFormatter = {
-        let _formatter = NSNumberFormatter()
+    lazy var currencyFormatter: NumberFormatter = {
+        let _formatter = NumberFormatter()
         _formatter.generatesDecimalNumbers = true
-        _formatter.numberStyle = .CurrencyStyle
+        _formatter.numberStyle = .currency
         
         return _formatter
     }()
     init(charge: Charge) {
-        transactionDate = dateFormatter.stringFromDate(charge.chargeCreated)
+        transactionDate = dateFormatter.string(from: charge.chargeCreated)
         transactionDescription = charge.description
         cardDescription = charge.cardInfo
         amount = USD(charge.amount).description
     }
-    @objc func dequeueAndConfigure(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier("PaymentHistoryCellIdentifier", forIndexPath: indexPath) as? PaymentHistoryTableViewCell else {
+    @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "PaymentHistoryCellIdentifier", for: indexPath) as? PaymentHistoryTableViewCell else {
             fatalError(#function)
         }
         
@@ -52,10 +52,10 @@ class PaymentHistoryViewModel:DataSourceItemProtocol {
     }
 }
 class PaymentHistoryHeaderView: UIView {
-    private lazy var titleLabel: UILabel = {
+    fileprivate lazy var titleLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .Left
+        _label.textAlignment = .left
         _label.font = UIFontTheme.Regular()
         
         self.addSubview(_label)
@@ -65,7 +65,7 @@ class PaymentHistoryHeaderView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        titleLabel.snp_makeConstraints { (make) in
+        titleLabel.snp.makeConstraints { (make) in
             make.leading.trailing.equalTo(self).inset(20)
             make.bottom.equalTo(self).inset(10)
         }
@@ -74,7 +74,7 @@ class PaymentHistoryHeaderView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    func setup(title: String) {
+    func setup(_ title: String) {
         titleLabel.text = title
     }
 }

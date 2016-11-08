@@ -9,7 +9,7 @@
 import UIKit
 
 class CalfProfileHeaderCell: UITableViewCell {
-    private lazy var topBackgroundView: UIView = {
+    fileprivate lazy var topBackgroundView: UIView = {
         let _view = UIView()
         
         _view.backgroundColor = UIColorTheme.TopBackgroundColor
@@ -18,47 +18,47 @@ class CalfProfileHeaderCell: UITableViewCell {
         
         return _view
     }()
-    private lazy var containerView: UIView = {
+    fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
-        _view.backgroundColor = .clearColor()
+        _view.backgroundColor = .clear
 
         self.topBackgroundView.addSubview(_view)
         
         return _view
     }()
-    private lazy var logo: UIImageView = {
+    fileprivate lazy var logo: UIImageView = {
         let _imageView = UIImageView()
         _imageView.layer.cornerRadius = 80 / 2
         _imageView.clipsToBounds = true
-        _imageView.layer.borderColor = UIColor.whiteColor().CGColor
+        _imageView.layer.borderColor = UIColor.white.cgColor
         _imageView.layer.borderWidth = 2.0
         
         self.containerView.addSubview(_imageView)
         
         return _imageView
     }()
-    private lazy var headingLabel: UILabel = {
+    fileprivate lazy var headingLabel: UILabel = {
         let _label = UILabel()
-        _label.textColor = .whiteColor()
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Default)
+        _label.textColor = .white
+        _label.textAlignment = .center
+        _label.font = UIFontTheme.Regular(.default)
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var subHeadingLabel: UILabel = {
+    fileprivate lazy var subHeadingLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.SubHeader
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Tiny)
+        _label.textAlignment = .center
+        _label.font = UIFontTheme.Regular(.tiny)
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var memberNavigation: MemberNavigationView = {
+    fileprivate lazy var memberNavigation: MemberNavigationView = {
         let _view = MemberNavigationView()
         
         self.contentView.addSubview(_view)
@@ -66,13 +66,13 @@ class CalfProfileHeaderCell: UITableViewCell {
         return _view
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
         backgroundColor = UIColorTheme.TopBackgroundColor
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
-        accessoryType = .None
-        selectionStyle = .None
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
+        accessoryType = .none
+        selectionStyle = .none
         //selectedBackgroundView = selectedColorView
     
     }
@@ -86,37 +86,37 @@ class CalfProfileHeaderCell: UITableViewCell {
     }
     
     override func updateConstraints() {
-        containerView.snp_updateConstraints { (make) in
+        containerView.snp.updateConstraints { (make) in
             make.edges.equalTo(contentView).inset(20)
         }
-        logo.snp_updateConstraints { (make) in
+        logo.snp.updateConstraints { (make) in
             make.top.equalTo(containerView).inset(20)
             make.centerX.equalTo(containerView)
             make.height.width.equalTo(80)
         }
-        headingLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(logo.snp_bottom).offset(20)
+        headingLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(logo.snp.bottom).offset(20)
             make.centerX.equalTo(containerView)
         }
-        subHeadingLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(headingLabel.snp_bottom)
+        subHeadingLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(headingLabel.snp.bottom)
             make.centerX.equalTo(containerView)
         }
-        memberNavigation.snp_updateConstraints { (make) in
-            make.top.equalTo(subHeadingLabel.snp_bottom).offset(20)
+        memberNavigation.snp.updateConstraints { (make) in
+            make.top.equalTo(subHeadingLabel.snp.bottom).offset(20)
             make.leading.trailing.equalTo(containerView)
             make.bottom.equalTo(containerView)
         }
         super.updateConstraints()
     }
-    override class func requiresConstraintBasedLayout() -> Bool {
+    override class var requiresConstraintBasedLayout : Bool {
         return true
     }
-    func setupWith(viewModel: DataSourceItemProtocol) {
+    func setupWith(_ viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? CalfProfileHeaderViewModel {
             if let avatarImageUrl = viewModel.avatarImageUrl {
-                logo.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
-                                        placeholderImage: UIImage(named: viewModel.avatar))
+                logo.kf.setImage(with: URL(string: avatarImageUrl)!,
+                                        placeholder: UIImage(named: viewModel.avatar))
             } else {
                 logo.image = UIImage(named: viewModel.avatar)
             }
@@ -125,7 +125,7 @@ class CalfProfileHeaderCell: UITableViewCell {
             
             memberNavigation.delegate = viewModel.memberNavigationDelegate
             memberNavigation.setSelectedButton(viewModel.memberNavigationState)
-            memberNavigation.bringSubviewToFront(containerView)
+            memberNavigation.bringSubview(toFront: containerView)
             
             setNeedsUpdateConstraints()
             updateConstraintsIfNeeded()

@@ -9,23 +9,23 @@
 import Foundation
 import ObjectMapper
 
-public class Member: Mappable {
-    public var id: String!
-    public var memberId: String!
-    public var first_name: String?
-    public var last_name: String?
-    public var emailAddress: String!
-    public var memberCreated: NSDate!
-    public var subscriptions: [Subscription] = []
-    public var paymentCards: [PaymentCard] = []
-    public var createdAt: NSDate!
-    public var updatedAt: NSDate?
+open class Member: Mappable {
+    open var id: String!
+    open var memberId: String!
+    open var first_name: String?
+    open var last_name: String?
+    open var emailAddress: String!
+    open var memberCreated: Date!
+    open var subscriptions: [Subscription] = []
+    open var paymentCards: [PaymentCard] = []
+    open var createdAt: Date!
+    open var updatedAt: Date?
     
-    public required init?(_ map: Map){
-        mapping(map)
+    public required init?(map: Map){
+        mapping(map: map)
     }
     
-    public func mapping(map: Map) {
+    open func mapping(map: Map) {
         id <- map["_id"]
         memberId <- map["reference_id"]
         first_name <- map["first_name"]

@@ -11,29 +11,29 @@ import ALTextInputBar
 import Kingfisher
 
 class MemberDetailViewController: UIViewController {
-    private var memberNavigationState: MemberNavigationState = .Message
-    private let user: User
-    private let textInputBar = ALTextInputBar()
+    fileprivate var memberNavigationState: MemberNavigationState = .message
+    fileprivate let user: User
+    fileprivate let textInputBar = ALTextInputBar()
 
-    private lazy var menuButton: UIButton = {
+    fileprivate lazy var menuButton: UIButton = {
         let _button = UIButton()
-        _button.setImage(UIImage(named:"Back-Reverse"), forState: .Normal)
-        _button.addTarget(self, action: #selector(MemberDetailViewController.backClicked(_:)), forControlEvents: .TouchUpInside)
+        _button.setImage(UIImage(named:"Back-Reverse"), for: UIControlState())
+        _button.addTarget(self, action: #selector(MemberDetailViewController.backClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var settingsButton: UIButton = {
+    fileprivate lazy var settingsButton: UIButton = {
         let _button = UIButton()
-        _button.setImage(UIImage(named:"Settings"), forState: .Normal)
-        _button.addTarget(self, action: #selector(MemberDetailViewController.showProfile(_:)), forControlEvents: .TouchUpInside)
+        _button.setImage(UIImage(named:"Settings"), for: UIControlState())
+        _button.addTarget(self, action: #selector(MemberDetailViewController.showProfile(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
         return _button
     }()
-    private lazy var topBackgroundView: UIView = {
+    fileprivate lazy var topBackgroundView: UIView = {
         let _view = UIView()
         
         _view.backgroundColor = UIColorTheme.TopBackgroundColor
@@ -42,47 +42,47 @@ class MemberDetailViewController: UIViewController {
         
         return _view
     }()
-    private lazy var containerView: UIView = {
+    fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
-        _view.backgroundColor = .clearColor()
+        _view.backgroundColor = .clear
         
         self.topBackgroundView.addSubview(_view)
         
         return _view
     }()
-    private lazy var logo: UIImageView = {
+    fileprivate lazy var logo: UIImageView = {
         let _imageView = UIImageView()
         _imageView.layer.cornerRadius = 80 / 2
         _imageView.clipsToBounds = true
-        _imageView.layer.borderColor = UIColor.whiteColor().CGColor
+        _imageView.layer.borderColor = UIColor.white.cgColor
         _imageView.layer.borderWidth = 2.0
         
         self.containerView.addSubview(_imageView)
         
         return _imageView
     }()
-    private lazy var companyNameLabel: UILabel = {
+    fileprivate lazy var companyNameLabel: UILabel = {
         let _label = UILabel()
-        _label.textColor = .whiteColor()
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Default)
+        _label.textColor = .white
+        _label.textAlignment = .center
+        _label.font = UIFontTheme.Regular(.default)
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var subHeadingLabel: UILabel = {
+    fileprivate lazy var subHeadingLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.SubHeader
-        _label.textAlignment = .Center
-        _label.font = UIFontTheme.Regular(.Tiny)
+        _label.textAlignment = .center
+        _label.font = UIFontTheme.Regular(.tiny)
         
         self.containerView.addSubview(_label)
         
         return _label
     }()
-    private lazy var memberNavigation: MemberNavigationView = {
+    fileprivate lazy var memberNavigation: MemberNavigationView = {
         let _view = MemberNavigationView()
         _view.delegate = self
         self.topBackgroundView.addSubview(_view)
@@ -92,14 +92,14 @@ class MemberDetailViewController: UIViewController {
     override var inputAccessoryView: UIView? {
         get {
             switch memberNavigationState {
-            case .Message:
+            case .message:
                 return textInputBar
             default:
                 return nil
             }
         }
     }
-    override func canBecomeFirstResponder() -> Bool {
+    override var canBecomeFirstResponder : Bool {
         return true
     }
     init(user: User) {
@@ -116,16 +116,16 @@ class MemberDetailViewController: UIViewController {
         super.viewDidLoad()
         
         title = "Member Detail"
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         
         let image = UIImage(named: "Back")
-        let backButton = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(ProfileViewController.backClicked(_:)))
+        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(ProfileViewController.backClicked(_:)))
         
         navigationItem.leftBarButtonItem = backButton
         
         setup()
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         memberNavigation.setSelectedButton(memberNavigationState)
@@ -133,39 +133,39 @@ class MemberDetailViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        topBackgroundView.snp_updateConstraints { (make) in
+        topBackgroundView.snp.updateConstraints { (make) in
             make.top.equalTo(view)
             make.leading.trailing.equalTo(view)
         }
-        menuButton.snp_updateConstraints { (make) in
+        menuButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.leading.equalTo(view).inset(15)
             make.height.width.equalTo(20)
         }
-        settingsButton.snp_updateConstraints { (make) in
+        settingsButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.trailing.equalTo(view).inset(15)
             make.height.width.equalTo(20)
         }
-        containerView.snp_updateConstraints { (make) in
+        containerView.snp.updateConstraints { (make) in
             make.centerX.centerY.equalTo(topBackgroundView)
         }
-        logo.snp_updateConstraints { (make) in
+        logo.snp.updateConstraints { (make) in
             make.top.equalTo(containerView)
             make.centerX.equalTo(containerView)
             make.height.width.equalTo(80)
         }
-        companyNameLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(logo.snp_bottom).offset(20)
+        companyNameLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(logo.snp.bottom).offset(20)
             make.centerX.equalTo(containerView)
         }
-        subHeadingLabel.snp_updateConstraints { (make) in
-            make.top.equalTo(companyNameLabel.snp_bottom)
+        subHeadingLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(companyNameLabel.snp.bottom)
             make.centerX.equalTo(containerView)
             make.bottom.equalTo(containerView)
         }
-        memberNavigation.snp_updateConstraints { (make) in
-            make.top.equalTo(containerView.snp_bottom).offset(20)
+        memberNavigation.snp.updateConstraints { (make) in
+            make.top.equalTo(containerView.snp.bottom).offset(20)
             make.leading.trailing.equalTo(topBackgroundView).inset(20)
             make.bottom.equalTo(topBackgroundView).inset(20)
         }
@@ -175,42 +175,42 @@ class MemberDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     func setup() {
-        if let avatar = user.avatar, avatarImageUrl = avatar["large"] {
-            logo.kf_setImageWithURL(NSURL(string: avatarImageUrl)!,
-                                    placeholderImage: UIImage(named: "Avatar-Calf"))
+        if let avatar = user.avatar, let avatarImageUrl = avatar["large"] {
+            logo.kf.setImage(with: URL(string: avatarImageUrl)!,
+                                    placeholder: UIImage(named: "Avatar-Calf"))
         } else {
             logo.image = UIImage(named: "Avatar-Calf")
         }
         companyNameLabel.text = user.emailAddress
         subHeadingLabel.text = "Member Since ()"
     }
-    func backClicked(button: UIButton) {
-        navigationController?.popViewControllerAnimated(true)
+    func backClicked(_ button: UIButton) {
+        navigationController?.popViewController(animated: true)
     }
-    func showProfile(button: UIButton) {
+    func showProfile(_ button: UIButton) {
         let viewController = ProfileViewController(user: user, profileType: .calf)
  
         let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.navigationBarHidden = true
+        navigationController.isNavigationBarHidden = true
         
-        presentViewController(navigationController, animated: true, completion: nil)
+        present(navigationController, animated: true, completion: nil)
     }
 }
 extension MemberDetailViewController: MemberNavigationDelegate {
     func messageClicked() {
-        memberNavigationState = .Message
+        memberNavigationState = .message
         memberNavigation.setSelectedButton(memberNavigationState)
         
         reloadInputViews()
     }
     func profileClicked() {
-        memberNavigationState = .Profile
+        memberNavigationState = .profile
         memberNavigation.setSelectedButton(memberNavigationState)
         
         reloadInputViews()
     }
     func chargeClicked() {
-        memberNavigationState = .Charge
+        memberNavigationState = .charge
         memberNavigation.setSelectedButton(memberNavigationState)
         
         reloadInputViews()
@@ -218,9 +218,9 @@ extension MemberDetailViewController: MemberNavigationDelegate {
 }
 
 enum MemberNavigationState {
-    case Message
-    case Profile
-    case Charge
+    case message
+    case profile
+    case charge
 }
 protocol MemberNavigationDelegate: class {
     func messageClicked()
@@ -232,43 +232,43 @@ class MemberNavigationView: UIView {
     
     lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [self.messageButton, self.profileButton, self.chargeButton])
-        stack.axis = .Horizontal
-        stack.distribution = .EqualCentering
+        stack.axis = .horizontal
+        stack.distribution = .equalCentering
         stack.spacing = 10
         
         self.addSubview(stack)
         return stack
     }()
-    private lazy var messageButton: UIButton = {
+    fileprivate lazy var messageButton: UIButton = {
         let _button = UIButton()
-        _button.setTitle("MESSAGE", forState: .Normal)
-        _button.addTarget(self, action: #selector(MemberNavigationView.messageClicked(_:)), forControlEvents: .TouchUpInside)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
-        _button.titleLabel?.textColor = .whiteColor()
+        _button.setTitle("MESSAGE", for: UIControlState())
+        _button.addTarget(self, action: #selector(MemberNavigationView.messageClicked(_:)), for: .touchUpInside)
+        _button.titleLabel?.font = UIFontTheme.Regular(.small)
+        _button.titleLabel?.textColor = .white
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         self.addSubview(_button)
         
         return _button
     }()
-    private lazy var profileButton: UIButton = {
+    fileprivate lazy var profileButton: UIButton = {
         let _button = UIButton()
-        _button.setTitle("PROFILE", forState: .Normal)
-        _button.addTarget(self, action: #selector(MemberNavigationView.profileClicked(_:)), forControlEvents: .TouchUpInside)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
-        _button.titleLabel?.textColor = .whiteColor()
+        _button.setTitle("PROFILE", for: UIControlState())
+        _button.addTarget(self, action: #selector(MemberNavigationView.profileClicked(_:)), for: .touchUpInside)
+        _button.titleLabel?.font = UIFontTheme.Regular(.small)
+        _button.titleLabel?.textColor = .white
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         self.addSubview(_button)
         
         return _button
     }()
-    private lazy var chargeButton: UIButton = {
+    fileprivate lazy var chargeButton: UIButton = {
         let _button = UIButton()
-        _button.setTitle("CHARGE", forState: .Normal)
-        _button.addTarget(self, action: #selector(MemberNavigationView.chargeClicked(_:)), forControlEvents: .TouchUpInside)
-        _button.titleLabel?.font = UIFontTheme.Regular(.Small)
-        _button.titleLabel?.textColor = .whiteColor()
+        _button.setTitle("CHARGE", for: UIControlState())
+        _button.addTarget(self, action: #selector(MemberNavigationView.chargeClicked(_:)), for: .touchUpInside)
+        _button.titleLabel?.font = UIFontTheme.Regular(.small)
+        _button.titleLabel?.textColor = .white
         _button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         self.addSubview(_button)
@@ -276,38 +276,38 @@ class MemberNavigationView: UIView {
         return _button
     }()
     override func updateConstraints() {
-        stackView.snp_updateConstraints { (make) in
+        stackView.snp.updateConstraints { (make) in
             make.edges.equalTo(self)
         }
         super.updateConstraints()
     }
-    func setSelectedButton(state: MemberNavigationState) {
+    func setSelectedButton(_ state: MemberNavigationState) {
         clearButtonSelectedState(messageButton)
         clearButtonSelectedState(profileButton)
         clearButtonSelectedState(chargeButton)
         
         switch state {
-        case .Message:
+        case .message:
             messageButton.backgroundColor = UIColorTheme.Primary
             messageButton.layer.cornerRadius = 40/2
-        case .Profile:
+        case .profile:
             profileButton.backgroundColor = UIColorTheme.Primary
             profileButton.layer.cornerRadius = 40/2
-        case .Charge:
+        case .charge:
             chargeButton.backgroundColor = UIColorTheme.Primary
             chargeButton.layer.cornerRadius = 40/2
         }
     }
-    private func clearButtonSelectedState(button: UIButton) {
-        button.backgroundColor = .clearColor()
+    fileprivate func clearButtonSelectedState(_ button: UIButton) {
+        button.backgroundColor = .clear
     }
-    func messageClicked(sender: UIButton) {
+    func messageClicked(_ sender: UIButton) {
         delegate?.messageClicked()
     }
-    func profileClicked(sender: UIButton) {
+    func profileClicked(_ sender: UIButton) {
         delegate?.profileClicked()
     }
-    func chargeClicked(sender: UIButton) {
+    func chargeClicked(_ sender: UIButton) {
         delegate?.chargeClicked()
     }
 }
