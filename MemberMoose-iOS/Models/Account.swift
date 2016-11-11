@@ -21,7 +21,7 @@ open class Account: Mappable {
     
     public init(userDefaults: UserDefaults) {
         self.id = userDefaults.string(forKey: "id")
-        self.companyName = userDefaults.string(forKey: "companyName")
+        self.companyName = userDefaults.string(forKey: "companyName")!
         let avatar = userDefaults.value(forKey: "avatar")
         if let avatar = avatar as? Dictionary<String, String> {
             self.avatar = avatar

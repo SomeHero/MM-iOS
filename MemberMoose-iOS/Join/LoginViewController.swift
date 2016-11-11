@@ -234,8 +234,7 @@ extension LoginViewController: UITextFieldDelegate {
 }
 extension LoginViewController : InputNavigationDelegate {
     func keyboardDidAppear(_ notification: Notification) {
-        if let info = (notification as NSNotification).userInfo {
-            let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as AnyObject).cgRectValue.size
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             let keyboardHeight = keyboardSize.height
                 
             UIView.animate(withDuration: 0.2, animations: {

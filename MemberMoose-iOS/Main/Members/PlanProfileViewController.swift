@@ -295,11 +295,11 @@ class PlanProfileViewController: UIViewController {
             make.bottom.equalTo(self.navHeader.snp.bottom)
         }
         addMemberButton.snp.updateConstraints { (make) in
-            make.leading.trailing.equalTo(view)
+            make.leading.trailing.bottom.equalTo(view)
             make.height.equalTo(60)
         }
         addPlanButton.snp.updateConstraints { (make) in
-            make.leading.trailing.equalTo(view)
+            make.leading.trailing.bottom.equalTo(view)
             make.height.equalTo(60)
         }
         switch planNavigationState {

@@ -295,14 +295,13 @@ extension PaymentCardViewController: UIPickerViewDelegate {
 }
 extension PaymentCardViewController : InputNavigationDelegate {
     func keyboardDidAppear(_ notification: Notification) {
-        if let info = (notification as NSNotification).userInfo {
-                let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as AnyObject).cgRectValue.size
-                let keyboardHeight = keyboardSize.height
-                
-                UIView.animate(withDuration: 0.2, animations: {
-                    let contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardHeight, 0.0)
-                    self.scrollView.contentInset = contentInsets
-                    self.scrollView.scrollIndicatorInsets = contentInsets
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeight = keyboardSize.height
+            
+            UIView.animate(withDuration: 0.2, animations: {
+                let contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardHeight, 0.0)
+                self.scrollView.contentInset = contentInsets
+                self.scrollView.scrollIndicatorInsets = contentInsets
             })
         }
     }

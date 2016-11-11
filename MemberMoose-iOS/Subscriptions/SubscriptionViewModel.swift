@@ -25,7 +25,7 @@ class SubscriptionViewModel:DataSourceItemProtocol {
     
     init(subscription: Subscription, subscriptionDelegate: SubscriptionDelegate? = nil) {
         self.planName = subscription.plan.name
-        self.planAmount = "\(USD(subscription.plan.amount/100).description)/\(subscription.plan.interval)"
+        self.planAmount = "\(USD(subscription.plan.amount/100).description)/\(subscription.plan.interval!)"
         self.status = subscription.status
         self.subscription = subscription
         

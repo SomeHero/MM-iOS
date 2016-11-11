@@ -25,8 +25,8 @@ class PaymentCardViewModel:DataSourceItemProtocol {
         if let name = paymentCard.nameOnCard {
             nameOnCard = name
         }
-        cardDescription = "\(paymentCard.brand) ending in \(paymentCard.cardLastFour)"
-        cardExpiration = "Expiration: \(paymentCard.expirationMonth)/\(paymentCard.expirationYear)"
+        cardDescription = "\(paymentCard.brand!) ending in \(paymentCard.cardLastFour!)"
+        cardExpiration = "Expiration: \(paymentCard.expirationMonth!)/\(paymentCard.expirationYear!)"
         self.paymentCard = paymentCard
         self.paymentCardDelegate = paymentCardDelegate
     }

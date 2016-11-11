@@ -321,8 +321,6 @@ class ProfileViewController: UIViewController {
         setup()
     }
     override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
         menuButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.leading.equalTo(view).inset(15)
@@ -358,10 +356,12 @@ class ProfileViewController: UIViewController {
         addMemberButton.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(view)
             make.height.equalTo(60)
+            make.bottom.equalTo(view)
         }
         addPlanButton.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(view)
             make.height.equalTo(60)
+            make.bottom.equalTo(view)
         }
         switch profileType {
         case .bull:
@@ -420,6 +420,9 @@ class ProfileViewController: UIViewController {
                 make.bottom.equalTo(view).inset(0)
             }
         }
+        
+        super.viewDidLayoutSubviews()
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -497,7 +500,7 @@ class ProfileViewController: UIViewController {
                             }
                             
                             var viewModels: [MemberEmptyStateViewModel] = []
-                            viewModels.append(MemberEmptyStateViewModel(logo: "Logo-DeadMoose", header: "\(account.companyName) has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.", memberEmptyStateDelegate: _self))
+                            viewModels.append(MemberEmptyStateViewModel(logo: "Logo-DeadMoose", header: "\(account.companyName!) has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.", memberEmptyStateDelegate: _self))
                             
                             items.append(viewModels)
                             _self.dataSource = items

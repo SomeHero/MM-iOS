@@ -20,13 +20,13 @@ public struct AuthenticateUser {
         self.emailAddress = emailAddress
         self.password = password
     }
-    func parameterize() -> [String : AnyObject] {
+    func parameterize() -> [String : String] {
         let parameters = [
             "email_address": emailAddress,
             "password": password
         ]
         
-        return parameters as [String : AnyObject]
+        return parameters as [String : String]
     }
 }
 public struct CreateUser {
@@ -41,14 +41,14 @@ public struct CreateUser {
         self.companyName = companyName
         self.avatar = avatar
     }
-    func parameterize() -> [String : AnyObject] {
+    func parameterize() -> [String : String] {
         let parameters = [
             "email_address": emailAddress,
             "password": password,
             "company_name": companyName
         ]
 
-        return parameters as [String : AnyObject]
+        return parameters as [String : String]
     }
 }
 public struct UpdateUser {
@@ -66,7 +66,7 @@ public struct UpdateUser {
         self.emailAddress = emailAddress
         self.avatar = avatar
     }
-    func parameterize() -> [String : AnyObject] {
+    func parameterize() -> [String : String] {
         var parameters = [
             "first_name": firstName,
             "last_name": lastName,
@@ -76,7 +76,7 @@ public struct UpdateUser {
             parameters["password"] = password
         }
         
-        return parameters as [String : AnyObject]
+        return parameters as [String : String]
     }
 }
 public struct UpdateAccount {
@@ -89,12 +89,12 @@ public struct UpdateAccount {
         self.subdomain = subdomain
         self.avatar = avatar
     }
-    func parameterize() -> [String : AnyObject] {
+    func parameterize() -> [String : String] {
         let parameters = [
             "company_name": companyName,
             "subdomain": subdomain
         ]
-        return parameters as [String : AnyObject]
+        return parameters as [String : String]
     }
 }
 public struct ConnectStripe {
@@ -282,7 +282,7 @@ open class ApiManager {
             multipartFormData: {
                 multipartFormData in
                 for (key, value) in params {
-                    multipartFormData.append(value.data, withName: key)
+                    multipartFormData.append(value.data(using: .utf8)!, withName: key)
                  }
                 if let avatar = createUser.avatar, let imageData = UIImageJPEGRepresentation(avatar, 1.0) {
                     multipartFormData.append(imageData, withName: "file", fileName: "file.png", mimeType: "image/png")
@@ -324,7 +324,7 @@ open class ApiManager {
             multipartFormData in
             
             for (key, value) in params {
-                multipartFormData.append(value.data, withName: key)
+                multipartFormData.append(value.data(using: .utf8)!, withName: key)
             }
             if let avatar = updateUser.avatar, let imageData = UIImageJPEGRepresentation(avatar, 1.0) {
                 multipartFormData.append(imageData, withName: "file", fileName: "file.png", mimeType: "image/png")
@@ -374,7 +374,7 @@ open class ApiManager {
             multipartFormData in
             
             for (key, value) in params {
-                multipartFormData.append(value.data, withName: key)
+                multipartFormData.append(value.data(using: .utf8)!, withName: key)
             }
             if let avatar = updateAccount.avatar, let imageData = UIImageJPEGRepresentation(avatar, 1.0) {
                 multipartFormData.append(imageData, withName: "file", fileName: "file.png", mimeType: "image/png")
