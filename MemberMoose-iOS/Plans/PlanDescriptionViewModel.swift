@@ -15,7 +15,11 @@ class PlanDescriptionViewModel:DataSourceItemProtocol {
     let description: String
     
     init(plan: Plan) {
-        self.description = "A membership doesn’t just mean you get to work in a collaborative and creative space, but you become part of a community of freelancers, independents, and start-ups. You’ll get access to events, extra exposure, and chances to start great conversations."
+        if let description = plan.description {
+            self.description = description
+        } else {
+            self.description = "No description provided"
+        }
     }
     @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? PlanDescriptionCell else {

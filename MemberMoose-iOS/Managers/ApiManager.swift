@@ -554,6 +554,33 @@ open class ApiManager {
         }
         
     }
+    open func getMembers(_ plan: Plan, _ page: Int = 1, success: @escaping (_ response: [User]?) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        Alamofire.request(apiBaseUrl + "plans/\(plan.id!)/members?page=\(page)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .responseArray { (response: DataResponse<[User]>) in
+                if let error = response.result.error {
+                    var errorResponse: [String: AnyObject]? = [:]
+                    
+                    if let data = response.data {
+                        do {
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
+                        } catch let error as NSError {
+                            failure(error, nil)
+                        }
+                        catch let error {
+                            failure(error, nil)
+                        }
+                        failure(error, errorResponse)
+                    } else {
+                        failure(error, nil)
+                    }
+                }
+                if let users = response.result.value {
+                    success(users)
+                }
+        }
+        
+    }
     open func cancelSubscription(_ subscriptionId: String, success: @escaping ()  -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         
         Alamofire.request(apiBaseUrl + "subscriptions/\(subscriptionId)", method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers)

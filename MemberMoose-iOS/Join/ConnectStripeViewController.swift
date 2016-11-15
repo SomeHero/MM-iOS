@@ -238,11 +238,11 @@ class ConnectStripeViewController: UIViewController {
         guard let user = SessionManager.sharedUser else {
             return
         }
-        SVProgressHUD.show()
-        
         provider.authorize { (result: Result<Token, SwiftyOAuth.Error>) -> Void in
             switch result {
             case .success(let token):
+                SVProgressHUD.show()
+                
                 let stripeParams: [String: AnyObject] = token.dictionary as [String: AnyObject]
                 let connectStripe = ConnectStripe(userId: user.id, stripeParams: stripeParams)
                 
@@ -250,10 +250,28 @@ class ConnectStripeViewController: UIViewController {
                     SVProgressHUD.dismiss()
                     
                     SessionManager.sharedUser = response
-
-                    let viewController = ImportPlansViewController(user: user)
-
-                    self.navigationController?.pushViewController(viewController, animated: true)
+                    SessionManager.persistUser()
+                    
+                    if let account = response.account, account.referencePlans.count > 0 {
+                        let viewController = ImportPlansViewController(user: user)
+                        
+                        self.navigationController?.pushViewController(viewController, animated: true)
+                    } else {
+                        let viewController = ProfileViewController(user: user, profileType: .bull)
+                        let navigationController = UINavigationController(rootViewController: viewController)
+                        navigationController.isNavigationBarHidden = true
+                        
+                        let menuViewController = MenuViewController()
+                        
+                        let swRevealViewController = SWRevealViewController(rearViewController: menuViewController, frontViewController: navigationController)
+                        
+                        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+                            delegate.swRevealViewController = swRevealViewController
+                            
+                            delegate.window?.rootViewController?.present(swRevealViewController!, animated: true, completion: nil)
+                        }
+                    }
+                    
                 }, failure: { [weak self] (error, errorDictionary) in
                     SVProgressHUD.dismiss()
                     
@@ -264,8 +282,6 @@ class ConnectStripeViewController: UIViewController {
                     ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 })
             case .failure(let error):
-                SVProgressHUD.dismiss()
-                
                 ErrorHandler.presentErrorDialog(self, error: error, errorDictionary: nil)
             }
         }

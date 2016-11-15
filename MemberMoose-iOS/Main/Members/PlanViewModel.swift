@@ -26,7 +26,7 @@ class PlanViewModel: DataSourceItemProtocol {
         planName = plan.name
         planAmount = "\(USD(plan.amount/100).description)"
         interval = plan.interval
-        subscribersCount = 23
+        subscribersCount = plan.memberCount
     }
     
     @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) ->  UITableViewCell {

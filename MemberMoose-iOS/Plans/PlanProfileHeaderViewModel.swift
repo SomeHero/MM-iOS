@@ -22,7 +22,7 @@ class PlanProfileHeaderViewModel:DataSourceItemProtocol {
     init(plan: Plan, planNavigationState: PlanNavigationState, planNavigationDelegate: PlanNavigationDelegate? = nil) {
         self.avatar = "Avatar-Bull"
         self.planName = plan.name
-        self.membersCount = "102 Members"
+        self.membersCount = "\(plan.memberCount) Members"
         self.planNavigationState = planNavigationState
         self.planNavigationDelegate = planNavigationDelegate
     }

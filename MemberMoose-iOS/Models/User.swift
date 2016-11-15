@@ -23,6 +23,7 @@ open class User: Mappable {
     open var paymentCards: [PaymentCard] = []
     var charges: [Charge] = []
     open var memberCount: Int = 0
+    var gravatarUrl: String?
     open var createdAt: Date!
     open var updatedAt: Date?
     
@@ -56,6 +57,7 @@ open class User: Mappable {
         paymentCards <- map["payment_cards"]
         charges <- map["charges"]
         memberCount <- map["member_count"]
+        gravatarUrl <- map["gravatar_url"]
         createdAt <- (map["createdAt"], ISO8601ExtendedDateTransform())
         updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
     }

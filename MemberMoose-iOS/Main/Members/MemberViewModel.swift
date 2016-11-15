@@ -9,7 +9,7 @@
 import UIKit
 
 class MemberViewModel: DataSourceItemProtocol {
-    var cellID: String = "MemberCell"
+    var cellID: String = "MemberCellIdentifier"
     var cellClass: UITableViewCell.Type = MemberCell.self
     
     let user: User
@@ -23,8 +23,13 @@ class MemberViewModel: DataSourceItemProtocol {
     init(user: User) {
         self.user = user
         self.avatar = "Avatar-Calf"
-        if let avatar = user.avatar, let avatarImageUrl = avatar["large"] {
-            avatarUrl = avatarImageUrl
+//        if let avatar = user.avatar, let avatarImageUrl = avatar["large"] {
+//            avatarUrl = avatarImageUrl
+//        }
+        if let avatarImageUrl = user.gravatarUrl {
+            self.avatarUrl = avatarImageUrl
+        } else {
+            self.avatarUrl = nil
         }
         userId = user.id
         if let firstName = user.firstName, let lastName = user.lastName {

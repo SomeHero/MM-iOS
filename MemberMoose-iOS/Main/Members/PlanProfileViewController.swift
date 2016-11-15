@@ -17,6 +17,7 @@ class PlanProfileViewController: UIViewController {
     fileprivate let planDescriptionCellIdentifier   = "PlanDescriptionCellIdentifier"
     fileprivate let planFeatureCellIdentifier       = "PlanFeatureCellIdentifier"
     fileprivate let planTermsOfServiceCellIdentifier = "PlanTermsOfServiceCellIdentifier"
+    fileprivate let planSubscriberEmptyStateCellIdentifier    = "PlanSubscriberEmptyStateCellIdentifier"
     fileprivate let planSubscriberCellIdentifier    = "PlanSubscriberCellIdentifier"
     fileprivate let planActivityCellIdentifier      = "PlanActivityCellIdentifier"
 
@@ -138,6 +139,7 @@ class PlanProfileViewController: UIViewController {
         _tableView.register(PlanFeatureCell.self, forCellReuseIdentifier: self.planFeatureCellIdentifier)
         _tableView.register(PlanTermsOfServiceCell.self, forCellReuseIdentifier: self.planTermsOfServiceCellIdentifier)
         _tableView.register(PlanSubscriberCell.self, forCellReuseIdentifier: self.planSubscriberCellIdentifier)
+        _tableView.register(PlanSubscriberEmptyStateCell.self, forCellReuseIdentifier: self.planSubscriberEmptyStateCellIdentifier)
         _tableView.register(PlanActivityCell.self, forCellReuseIdentifier: self.planActivityCellIdentifier)
         
         self.view.addSubview(_tableView)
@@ -407,7 +409,7 @@ class PlanProfileViewController: UIViewController {
             items.append(activityViewModels)
             
         case .subscribers:
-            ApiManager.sharedInstance.getMembers(self.pageNumber, success: { [weak self] (members) in
+            ApiManager.sharedInstance.getMembers(plan, self.pageNumber, success: { [weak self] (members) in
                 guard let _self = self else {
                     return
                 }
@@ -424,13 +426,13 @@ class PlanProfileViewController: UIViewController {
                     
                     _self.dataSource = items
                 }
-//                else {
-//                    var viewModels: [MemberEmptyStateViewModel] = []
-//                    viewModels.append(MemberEmptyStateViewModel(logo: "Logo-DeadMoose", header: "804RVA has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.", memberEmptyStateDelegate: _self))
-//                    
-//                    items.append(viewModels)
-//                    _self.dataSource = items
-//                }
+                else {
+                    var viewModels: [PlanSubscriberEmptyStateViewModel] = []
+                    viewModels.append(PlanSubscriberEmptyStateViewModel(logo: "Logo-DeadMoose", header: "804RVA has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.", planSubscriberEmptyStateDelegate: _self))
+                    
+                    items.append(viewModels)
+                    _self.dataSource = items
+                }
             }) { [weak self] (error, errorDictionary) in
                 SVProgressHUD.dismiss()
                 
@@ -581,5 +583,13 @@ extension PlanProfileViewController: PlanNavigationDelegate {
         
         view.becomeFirstResponder()
         reloadInputViews()
+    }
+}
+extension PlanProfileViewController: PlanSubscriberEmptyStateDelegate {
+    func didCreatePlanSubscriber() {
+        
+    }
+    func didSharePlanToSubscriber(){
+        
     }
 }

@@ -536,7 +536,7 @@ class ProfileViewController: UIViewController {
                             return
                         }
                         var viewModels: [PlanEmptyStateViewModel] = []
-                        viewModels.append(PlanEmptyStateViewModel(logo: "Logo-DeadMoose", header: "\(account.companyName) has no plans!", subHeader: "The best way to add plans to your community is to create a plan manually or import existing plans from your Stripe account.", planEmptyStateDelgate: self))
+                        viewModels.append(PlanEmptyStateViewModel(logo: "Logo-DeadMoose", header: "\(account.companyName!) has no plans!", subHeader: "The best way to add plans to your community is to create a plan manually or import existing plans from your Stripe account.", planEmptyStateDelgate: self))
                         
                         items.append(viewModels)
                         _self.dataSource = items
