@@ -9,7 +9,7 @@
 import Foundation
 import ObjectMapper
 
-class Message: Mappable {
+open class Message: Mappable {
     var id: String!
     var sender: User!
     var recipient: User!
@@ -17,10 +17,10 @@ class Message: Mappable {
     var createdAt: Date!
     var updatedAt: Date?
     
-    required init?(map: Map){
+    public required init?(map: Map){
         mapping(map: map)
     }
-    func mapping(map: Map) {
+    open func mapping(map: Map) {
         id <- map["_id"]
         sender <- map["]sender"]
         recipient <- map["recipient"]

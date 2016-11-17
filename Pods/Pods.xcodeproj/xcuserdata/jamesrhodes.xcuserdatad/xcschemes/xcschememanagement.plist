@@ -89,6 +89,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SlackTextViewController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SnapKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -127,6 +132,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>0EF939859E274AE5DB743CB09C17CCF9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>1DE93A359FA21F91DFBE81309E851A4A</key>
 		<dict>
 			<key>primary</key>
@@ -137,12 +147,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1FE2578FF0805299395CF2A0206BB671</key>
+		<key>1F8301398D60512A4D79BDBFB699ADAE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>26C3E58EE62502534B16F8C9BECBCBD3</key>
+		<key>1FE2578FF0805299395CF2A0206BB671</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -162,12 +172,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4F1102A6C179E9ED0D3C140D1BFDF569</key>
+		<key>4FB6A01F8CF1365A2DEF365096D3B70F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>585B7D8C1D29BCD61C7EB2FAA2CBD294</key>
+		<key>619DD2A4C800BBB38E849FD46A9DAB17</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -182,12 +192,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7AC13EBB3F0E66FC16B90A58505FF329</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>8B49349C09543824C2E10A2926D84566</key>
+		<key>84A7511CE706FDF96B27072091D1B4CF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -202,22 +207,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B4D568C75AC65DFA5DF38704ECE2D871</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B4EA853F19F82A4C95705224C944D1CE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>BE7CD717DF35BAD265E90C810B08C172</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>C5CBCAA97E951CC882334464FBDF983D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CBBAA05060B938B6B627C4165E656D16</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D2C666796CFC91047E31464AB1F087E4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -227,12 +227,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E9D4508E2BB600FD3B42B6C99CC39CA2</key>
+		<key>D8BD8A94AE34C85C8F852634EAD5F8B2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EF1BE18BC29898E98706BD81BBEC1B02</key>
+		<key>DC34FB4BE1C59B08B82BC01143EBD701</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DEC2F88AF03081D5F20BC3C930B0BE9C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E2EA48F646337B1E1FF3BD0A100B6385</key>
 		<dict>
 			<key>primary</key>
 			<true/>

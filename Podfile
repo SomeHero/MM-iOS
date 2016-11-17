@@ -28,6 +28,8 @@ target 'MemberMoose-iOS' do
   pod 'Money'
   pod 'ValueCoding'
   pod 'UIScrollView-InfiniteScroll'
+  pod 'SlackTextViewController'
+  
   
   target 'MemberMoose-iOSTests' do
     inherit! :search_paths

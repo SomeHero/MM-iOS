@@ -12,31 +12,17 @@ class MessagesViewModel:DataSourceItemProtocol {
     var cellID: String = "MessagesCellIdentifier"
     var cellClass: UITableViewCell.Type = MessagesCell.self
     
-    let avatar: String
-    let avatarImageUrl: String?
-    let name: String?
-    let memberSince: String
-    let memberNavigationState: MemberNavigationState
-    let memberNavigationDelegate: MemberNavigationDelegate?
+    let totalCellHeight: CGFloat
     
-    init(user: User, memberNavigationState: MemberNavigationState, memberNavigationDelegate: MemberNavigationDelegate? = nil) {
-        self.avatar = "Avatar-Bull"
-        self.avatarImageUrl = nil
-        if let firstName = user.firstName, let lastName = user.lastName {
-            self.name = "\(firstName) \(lastName)"
-        } else {
-            self.name = user.emailAddress
-        }
-        self.memberSince = "Member Since Jan 2015"
-        self.memberNavigationState = memberNavigationState
-        self.memberNavigationDelegate = memberNavigationDelegate
+    init(totalCellHeight: CGFloat) {
+        self.totalCellHeight = totalCellHeight
     }
     @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? MessagesCell else {
             fatalError(#function)
         }
         
-        //cell.setupWith(self)
+        cell.setupWith(self)
         
         return cell
     }

@@ -12,6 +12,7 @@ import Presentr
 import Stripe
 import SVProgressHUD
 import Money
+import SlackTextViewController
 
 @objc protocol DataSourceItemProtocol {
     func viewForHeader() -> UIView?
@@ -40,6 +41,7 @@ class ProfileViewController: UIViewController {
     fileprivate let paymentHistoryCellIdentifier       = "PaymentHistoryCellIdentifier"
     fileprivate let paymentHistoryEmptyStateCellIdentifier       = "PaymentHistoryEmptyStateCellIdentifier"
     fileprivate let chargeCellIdentifier            = "ChargeCellIdentifier"
+    fileprivate let messagesCellIdentifier          = "MessagesCellIdentifier"
     fileprivate let memberCellIdentifier            = "MemberCellIdentifier"
     fileprivate let memberEmptyStateCellIdentifier  = "MemberEmptyStateCellIdentifier"
     fileprivate let planCellIdentifier              = "PlanCellIdentifier"
@@ -47,7 +49,8 @@ class ProfileViewController: UIViewController {
     fileprivate let tableCellHeight: CGFloat        = 120
     fileprivate var membershipNavigationState: MembershipNavigationState = .members
     fileprivate var memberNavigationState: MemberNavigationState = .profile
-    fileprivate let textInputBar = ALTextInputBar()
+    fileprivate let textInputBar = SLKTextInputbar()
+    
     weak var profileDelegate: ProfileDelegate?
     
     fileprivate let offsetNavHeaderHeight: CGFloat = 64.0
@@ -167,6 +170,7 @@ class ProfileViewController: UIViewController {
         _tableView.register(PaymentHistoryTableViewCell.self, forCellReuseIdentifier: self.paymentHistoryCellIdentifier)
         _tableView.register(PaymentHistoryEmptyStateCell.self, forCellReuseIdentifier: self.paymentHistoryEmptyStateCellIdentifier)
         _tableView.register(ChargeCell.self, forCellReuseIdentifier: self.chargeCellIdentifier)
+        _tableView.register(MessagesCell.self, forCellReuseIdentifier: self.messagesCellIdentifier)
         _tableView.register(MemberCell.self, forCellReuseIdentifier: self.memberCellIdentifier)
         _tableView.register(MemberEmptyStateCell.self, forCellReuseIdentifier: self.memberEmptyStateCellIdentifier)
         _tableView.register(PlanCell.self, forCellReuseIdentifier: self.planCellIdentifier)
@@ -551,6 +555,12 @@ class ProfileViewController: UIViewController {
                     ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 }
             case .messages:
+                let remainingHeight = view.frame.size.height - tableView.visibleCells[0].frame.size.height
+                
+                var viewModels: [MessagesViewModel] = []
+                viewModels.append(MessagesViewModel(totalCellHeight: remainingHeight))
+                
+                items.append(viewModels)
                 break
             }
         case .calf:
@@ -559,6 +569,13 @@ class ProfileViewController: UIViewController {
             items.append([calfProfileHeaderViewModel])
             
             switch memberNavigationState {
+            case .message:
+                let remainingHeight = view.frame.size.height - tableView.visibleCells[0].frame.size.height
+
+                var viewModels: [MessagesViewModel] = []
+                viewModels.append(MessagesViewModel(totalCellHeight: remainingHeight))
+                
+                items.append(viewModels)
             case .profile:
                 if user.memberships.count > 0 {
                     var subscriptionViewModels: [SubscriptionViewModel] = []

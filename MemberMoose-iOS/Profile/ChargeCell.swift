@@ -91,11 +91,6 @@ class ChargeCell: UITableViewCell {
             make.top.equalTo(amountToolbar.snp.bottom)
             make.height.equalTo(1)
         }
-        keyboard.snp.updateConstraints { (make) in
-            make.top.equalTo(lineView.snp.bottom)
-            make.leading.trailing.equalTo(contentView)
-            make.bottom.equalTo(contentView)
-        }
 
         super.updateConstraints()
     }
@@ -107,6 +102,9 @@ class ChargeCell: UITableViewCell {
             amountLabel.text = "\(amount)"
             
             keyboard.snp.updateConstraints { (make) in
+                make.top.equalTo(lineView.snp.bottom)
+                make.leading.trailing.equalTo(contentView)
+                make.bottom.equalTo(contentView)
                 make.height.equalTo(viewModel.totalCellHeight-60-1)
             }
             setNeedsUpdateConstraints()

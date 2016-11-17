@@ -219,7 +219,7 @@ open class ApiManager {
     
     fileprivate init() {}
     
-    fileprivate var headers: [String: String]? {
+    var headers: [String: String]? {
         var headers: [String: String] = [:]
         
         if let token = token {

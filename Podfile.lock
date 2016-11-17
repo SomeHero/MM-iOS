@@ -16,6 +16,7 @@ PODS:
     - ValueCoding (~> 2)
   - ObjectMapper (2.2.1)
   - Presentr (1.0.3)
+  - SlackTextViewController (1.9.5)
   - SnapKit (3.0.2)
   - Stripe (9.1.0)
   - SVProgressHUD (2.0.3)
@@ -38,6 +39,7 @@ DEPENDENCIES:
   - Money
   - ObjectMapper
   - Presentr
+  - SlackTextViewController
   - SnapKit
   - Stripe
   - SVProgressHUD
@@ -70,6 +72,7 @@ SPEC CHECKSUMS:
   Money: b2fdc19e2b73e4aeba55c398a805b6c61878bbfc
   ObjectMapper: 41e43e1a89f8060ef5ea5d04ba852e269a621d68
   Presentr: 9759bf538d9f3211a5ee1314a541a11bbea7ea71
+  SlackTextViewController: fbcdadbb8090673f604484ff5b6eb8d77baed42a
   SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
   Stripe: f9acdd48bd3e4f1b4a91ed260317982db7a2ed65
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
@@ -79,6 +82,6 @@ SPEC CHECKSUMS:
   UIScrollView-InfiniteScroll: 14e204c50ca4040467e1cbfa141dad7a18919b56
   ValueCoding: f18cd2f0c941c43e06669717ca25aeed02d702a9
 
-PODFILE CHECKSUM: 9eefd15742ed9974842e1d8ae19e6c1932a776bd
+PODFILE CHECKSUM: ce510c0e60723008521bb85d1e2541870be8ab4b
 
 COCOAPODS: 1.1.1

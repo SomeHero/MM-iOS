@@ -140,6 +140,8 @@
 		429F63091DA72B6800C3F54E /* CreatePlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429F63081DA72B6800C3F54E /* CreatePlanViewController.swift */; };
 		42BD767C1DDA75070017EC93 /* PlanSubscriberEmptyStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BD767B1DDA75070017EC93 /* PlanSubscriberEmptyStateViewModel.swift */; };
 		42BD76811DDA96190017EC93 /* PlanSubscriberEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BD76801DDA96190017EC93 /* PlanSubscriberEmptyStateCell.swift */; };
+		42BD76831DDAAAC40017EC93 /* MessagesApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BD76821DDAAAC40017EC93 /* MessagesApiManager.swift */; };
+		42C2A4621DDDFA7200504C28 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C2A4611DDDFA7200504C28 /* MessageView.swift */; };
 		42DB7CC21DC82196005DC106 /* ReferencePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB7CC11DC82196005DC106 /* ReferencePlan.swift */; };
 		42F08C2B1DABBDA100D5D4E3 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C2A1DABBDA100D5D4E3 /* ApiManager.swift */; };
 		42F08C2D1DABC5F100D5D4E3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C2C1DABC5F100D5D4E3 /* Constants.swift */; };
@@ -322,6 +324,8 @@
 		429F63081DA72B6800C3F54E /* CreatePlanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreatePlanViewController.swift; path = Join/CreatePlanViewController.swift; sourceTree = "<group>"; };
 		42BD767B1DDA75070017EC93 /* PlanSubscriberEmptyStateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanSubscriberEmptyStateViewModel.swift; path = Plans/PlanSubscriberEmptyStateViewModel.swift; sourceTree = "<group>"; };
 		42BD76801DDA96190017EC93 /* PlanSubscriberEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanSubscriberEmptyStateCell.swift; path = Plans/PlanSubscriberEmptyStateCell.swift; sourceTree = "<group>"; };
+		42BD76821DDAAAC40017EC93 /* MessagesApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessagesApiManager.swift; path = Managers/MessagesApiManager.swift; sourceTree = "<group>"; };
+		42C2A4611DDDFA7200504C28 /* MessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageView.swift; path = Profile/MessageView.swift; sourceTree = "<group>"; };
 		42DB7CC11DC82196005DC106 /* ReferencePlan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReferencePlan.swift; path = Models/ReferencePlan.swift; sourceTree = "<group>"; };
 		42F08C2A1DABBDA100D5D4E3 /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ApiManager.swift; path = Managers/ApiManager.swift; sourceTree = "<group>"; };
 		42F08C2C1DABC5F100D5D4E3 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -757,10 +761,19 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		42C2A4601DDDF91400504C28 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				42C2A4611DDDFA7200504C28 /* MessageView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		42F08C291DABBD7E00D5D4E3 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
 				42F08C2A1DABBDA100D5D4E3 /* ApiManager.swift */,
+				42BD76821DDAAAC40017EC93 /* MessagesApiManager.swift */,
 				4255B3F91DAE89A8008DECAC /* SessionManager.swift */,
 				4255B3FD1DAEA3BF008DECAC /* ImagePicker.swift */,
 				425013B41DAFCA8100ED21B1 /* Validator.swift */,
@@ -799,6 +812,7 @@
 		42F08C381DAC5E4200D5D4E3 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				42C2A4601DDDF91400504C28 /* Views */,
 				424D97D51DAD0FAB00C8B674 /* Cells */,
 				42330B901DB3D47F003BDDEC /* ViewModels */,
 				42F08C3B1DAC5EE600D5D4E3 /* ProfileViewController.swift */,
@@ -1215,6 +1229,7 @@
 				422537221DB987DB004B33D8 /* StackViewLabelField.swift in Sources */,
 				4225372C1DBA7772004B33D8 /* PlanEmptyStateCell.swift in Sources */,
 				42DB7CC21DC82196005DC106 /* ReferencePlan.swift in Sources */,
+				42C2A4621DDDFA7200504C28 /* MessageView.swift in Sources */,
 				4253B65D1DBBB2CD00A93E98 /* PaymentCardEmptyStateViewModel.swift in Sources */,
 				422537151DB91BCB004B33D8 /* ChargeCell.swift in Sources */,
 				4253B6641DBBEA1F00A93E98 /* CalculatorKeyPadView.swift in Sources */,
@@ -1237,6 +1252,7 @@
 				42F08C401DAC693E00D5D4E3 /* PaymentCard.swift in Sources */,
 				422537131DB9135C004B33D8 /* MessagesViewModel.swift in Sources */,
 				426841731DA875CB00A2BFF8 /* RecentTransactionViewModel.swift in Sources */,
+				42BD76831DDAAAC40017EC93 /* MessagesApiManager.swift in Sources */,
 				429F62FF1DA6E8E800C3F54E /* LoginViewController.swift in Sources */,
 				429F62F01DA6DDD900C3F54E /* UIScreenType.swift in Sources */,
 				422537111DB91347004B33D8 /* MessagesCell.swift in Sources */,

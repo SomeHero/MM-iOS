@@ -709,11 +709,33 @@ class MessageToolbarView: UIView {
         
         return _messageTextField
     }()
+    private lazy var sendButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
+        _button.setTitle("Send", for: .normal)
+        _button.titleLabel?.font = UIFontTheme.Regular(.large)
+        _button.setTitleColor(UIColorTheme.SecondaryFont, for: UIControlState())
+        _button.setTitleColor(UIColorTheme.SecondaryFont, for: .highlighted)
+        _button.backgroundColor = UIColor.clear
+        
+        
+        _button.addTarget(self, action: #selector(MessageToolbarView.sendClicked(_:)), for: .touchUpInside)
+        
+        self.addSubview(_button)
+        
+        return _button
+    }()
     override func updateConstraints() {
         messageTextField.snp.updateConstraints { (make) in
-            make.edges.equalTo(self).inset(10)
+            make.top.leading.bottom.equalTo(self).inset(10)
+        }
+        sendButton.snp.updateConstraints { (make) in
+            make.leading.equalTo(messageTextField.snp.trailing).inset(10)
+            make.top.trailing.bottom.equalTo(self).inset(10)
         }
 
         super.updateConstraints()
+    }
+    func sendClicked(_ sender: UIButton) {
+        print("sent clicked")
     }
 }
