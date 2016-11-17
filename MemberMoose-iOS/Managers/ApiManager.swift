@@ -719,4 +719,76 @@ open class ApiManager {
                 }
         }
     }
+    public struct CreateMessage {
+        let recipient: User
+        let content: String
+        
+        public init(recipient: User, content:String) {
+            self.recipient = recipient
+            self.content = content
+        }
+        func parameterize() -> [String : String] {
+            let parameters = [
+                "content": content
+            ]
+            
+            return parameters as [String : String]
+        }
+    }
+    open func createMessage(_ createMessage: CreateMessage, success: @escaping (_ message: Message) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        let params = createMessage.parameterize()
+        
+        Alamofire.request(apiBaseUrl + "messages/\(createMessage.recipient.id!)", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .responseObject { (response: DataResponse<Message>) in
+                if let error = response.result.error {
+                    var errorResponse: [String: AnyObject]? = [:]
+                    
+                    if let data = response.data {
+                        do {
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:AnyObject]
+                        } catch let error as NSError {
+                            failure(error, nil)
+                        } catch let error {
+                            failure(error, nil)
+                        }
+                        failure(error, errorResponse)
+                    } else {
+                        failure(error, nil)
+                    }
+                }
+                if let message = response.result.value {
+                    success(message)
+                } else {
+                    failure(nil, nil)
+                }
+        }
+    }
+    open func getMessages(_ recipient: User, _ page: Int = 1, success: @escaping (_ response: [Message]?) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        Alamofire.request(apiBaseUrl + "messages/\(recipient.id!)?page=\(page)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .responseArray { (response: DataResponse<[Message]>) in
+                if let error = response.result.error {
+                    var errorResponse: [String: AnyObject]? = [:]
+                    
+                    if let data = response.data {
+                        do {
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
+                        } catch let error as NSError {
+                            failure(error, nil)
+                        }
+                        catch let error {
+                            failure(error, nil)
+                        }
+                        failure(error, errorResponse)
+                    } else {
+                        failure(error, nil)
+                    }
+                }
+                if let messages = response.result.value {
+                    success(messages)
+                }
+        }
+        
+    }
 }

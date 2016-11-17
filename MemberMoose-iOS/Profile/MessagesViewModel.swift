@@ -13,9 +13,13 @@ class MessagesViewModel:DataSourceItemProtocol {
     var cellClass: UITableViewCell.Type = MessagesCell.self
     
     let totalCellHeight: CGFloat
+    var messages: [Message]
+    weak var messageViewDelegate: MessageViewDelegate?
     
-    init(totalCellHeight: CGFloat) {
+    init(totalCellHeight: CGFloat, messages: [Message], messageViewDelegate: MessageViewDelegate? = nil) {
         self.totalCellHeight = totalCellHeight
+        self.messages = messages
+        self.messageViewDelegate = messageViewDelegate
     }
     @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? MessagesCell else {

@@ -558,7 +558,7 @@ class ProfileViewController: UIViewController {
                 let remainingHeight = view.frame.size.height - tableView.visibleCells[0].frame.size.height
                 
                 var viewModels: [MessagesViewModel] = []
-                viewModels.append(MessagesViewModel(totalCellHeight: remainingHeight))
+                viewModels.append(MessagesViewModel(totalCellHeight: remainingHeight, messages: [], messageViewDelegate: self))
                 
                 items.append(viewModels)
                 break
@@ -572,10 +572,24 @@ class ProfileViewController: UIViewController {
             case .message:
                 let remainingHeight = view.frame.size.height - tableView.visibleCells[0].frame.size.height
 
-                var viewModels: [MessagesViewModel] = []
-                viewModels.append(MessagesViewModel(totalCellHeight: remainingHeight))
-                
-                items.append(viewModels)
+                ApiManager.sharedInstance.getMessages(user, self.pageNumber, success: { [weak self] (messages) in
+                    guard let _self = self else {
+                        return
+                    }
+                    var viewModels: [MessagesViewModel] = []
+                    viewModels.append(MessagesViewModel(totalCellHeight: remainingHeight, messages: messages!, messageViewDelegate: self))
+                    items.append(viewModels)
+                    
+                    _self.dataSource = items
+                }) { [weak self] (error, errorDictionary) in
+                    SVProgressHUD.dismiss()
+                    
+                    guard let _self = self else {
+                        return
+                    }
+                    
+                    ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+                }
             case .profile:
                 if user.memberships.count > 0 {
                     var subscriptionViewModels: [SubscriptionViewModel] = []
@@ -962,6 +976,35 @@ extension ProfileViewController: ChargeCellDelegate {
             }
             
             ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+        }
+    }
+}
+extension ProfileViewController: MessageViewDelegate {
+    func didSubmitMessage(message: String) {
+        switch profileType {
+        case .bull:
+            break
+        case .calf:
+            let createMessage = ApiManager.CreateMessage(recipient: user, content: message)
+            
+            ApiManager.sharedInstance.createMessage(createMessage, success: { [weak self] (message) in
+                guard let _self = self else {
+                    return
+                }
+                guard let dataSourceItems = _self.dataSource[1] as? [MessagesViewModel] else {
+                    return
+                }
+                var items = _self.dataSource
+                
+                let messagesViewModel = dataSourceItems[0]
+                messagesViewModel.messages.append(message)
+                
+                items[1] = [messagesViewModel]
+                
+                _self.dataSource = items
+            }) { (error, errorDictionary) in
+                print("failed")
+            }
         }
     }
 }

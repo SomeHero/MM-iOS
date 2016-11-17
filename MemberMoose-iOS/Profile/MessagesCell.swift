@@ -12,7 +12,7 @@ import SlackTextViewController
 class MessagesCell: UITableViewCell {
     fileprivate lazy var messageView: MessageView = {
         let _messageViewController = MessageView()
-        
+ 
         self.contentView.addSubview(_messageViewController.view)
         
         return _messageViewController
@@ -43,6 +43,8 @@ class MessagesCell: UITableViewCell {
     }
     func setupWith(_ viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? MessagesViewModel {
+            messageView.dataSource = viewModel.messages
+            messageView.messageViewDelegate = viewModel.messageViewDelegate
             messageView.view.snp.updateConstraints { (make) in
                 make.edges.equalTo(contentView)
                 make.height.equalTo(viewModel.totalCellHeight)
