@@ -24,9 +24,15 @@ class MessageView: SLKTextViewController {
         super.init(tableViewStyle: .plain)
         
         configureTableView()
+       
     }
     required init(coder decoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        textView.placeholder = "Message"
     }
     private func configureTableView() {
         isInverted = false
@@ -35,6 +41,7 @@ class MessageView: SLKTextViewController {
             tableView.tableFooterView = UIView()
             tableView.scrollsToTop = true
             tableView.register(MessageCell.self, forCellReuseIdentifier: MessageCell.identifier)
+            tableView.register(MessagesEmptyStateCell.self, forCellReuseIdentifier: MessagesEmptyStateCell.identifier)
             let controller = UITableViewController()
             controller.tableView = self.tableView
             //controller.refreshControl = refreshControl
@@ -50,7 +57,9 @@ class MessageView: SLKTextViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MessageCell.identifier, for: indexPath) as! MessageCell
         let model = dataSource[indexPath.row]
-        cell.setupWith(model)
+        
+        let viewModel = MessageViewModel(message: model)
+        cell.setupWith(viewModel)
         cell.layoutSubviews()
 
         return cell

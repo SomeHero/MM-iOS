@@ -14,6 +14,7 @@ class MessagesViewModel:DataSourceItemProtocol {
     
     let totalCellHeight: CGFloat
     var messages: [Message]
+    
     weak var messageViewDelegate: MessageViewDelegate?
     
     init(totalCellHeight: CGFloat, messages: [Message], messageViewDelegate: MessageViewDelegate? = nil) {

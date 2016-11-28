@@ -233,7 +233,7 @@ class PlanProfileViewController: UIViewController {
             case .activity:
                 ApiManager.sharedInstance.getPlans(_self.pageNumber, success: { (plans) in
                     var viewModels = _self.dataSource[1]
-                    for plan in plans! {
+                    for plan in plans {
                         let viewModel = PlanViewModel(plan: plan)
                         
                         viewModels.append(viewModel)

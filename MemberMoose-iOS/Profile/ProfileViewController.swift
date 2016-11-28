@@ -42,6 +42,7 @@ class ProfileViewController: UIViewController {
     fileprivate let paymentHistoryEmptyStateCellIdentifier       = "PaymentHistoryEmptyStateCellIdentifier"
     fileprivate let chargeCellIdentifier            = "ChargeCellIdentifier"
     fileprivate let messagesCellIdentifier          = "MessagesCellIdentifier"
+    fileprivate let messagesEmptyStateCellIdentifier          = "MessagesEmptyStateCellIdentifier"
     fileprivate let memberCellIdentifier            = "MemberCellIdentifier"
     fileprivate let memberEmptyStateCellIdentifier  = "MemberEmptyStateCellIdentifier"
     fileprivate let planCellIdentifier              = "PlanCellIdentifier"
@@ -171,6 +172,7 @@ class ProfileViewController: UIViewController {
         _tableView.register(PaymentHistoryEmptyStateCell.self, forCellReuseIdentifier: self.paymentHistoryEmptyStateCellIdentifier)
         _tableView.register(ChargeCell.self, forCellReuseIdentifier: self.chargeCellIdentifier)
         _tableView.register(MessagesCell.self, forCellReuseIdentifier: self.messagesCellIdentifier)
+        _tableView.register(MessagesEmptyStateCell.self, forCellReuseIdentifier: self.messagesEmptyStateCellIdentifier)
         _tableView.register(MemberCell.self, forCellReuseIdentifier: self.memberCellIdentifier)
         _tableView.register(MemberEmptyStateCell.self, forCellReuseIdentifier: self.memberEmptyStateCellIdentifier)
         _tableView.register(PlanCell.self, forCellReuseIdentifier: self.planCellIdentifier)
@@ -296,7 +298,7 @@ class ProfileViewController: UIViewController {
             case .plans:
                 ApiManager.sharedInstance.getPlans(_self.pageNumber, success: { (plans) in
                     var viewModels = _self.dataSource[1]
-                    for plan in plans! {
+                    for plan in plans {
                         let viewModel = PlanViewModel(plan: plan)
                         
                         viewModels.append(viewModel)
@@ -523,11 +525,11 @@ class ProfileViewController: UIViewController {
                     guard let _self = self else {
                         return
                     }
-                    if(plans!.count > 0) {
+                    if(plans.count > 0) {
                         _self.hasPlans = true
                         
                         var viewModels: [PlanViewModel] = []
-                        for plan in plans! {
+                        for plan in plans {
                             let viewModel = PlanViewModel(plan: plan)
                             
                             viewModels.append(viewModel)
@@ -573,13 +575,13 @@ class ProfileViewController: UIViewController {
                 let remainingHeight = view.frame.size.height - tableView.visibleCells[0].frame.size.height
 
                 ApiManager.sharedInstance.getMessages(user, self.pageNumber, success: { [weak self] (messages) in
-                    guard let _self = self else {
+                    guard let _self = self, let messages = messages else {
                         return
                     }
                     var viewModels: [MessagesViewModel] = []
-                    viewModels.append(MessagesViewModel(totalCellHeight: remainingHeight, messages: messages!, messageViewDelegate: self))
+                    viewModels.append(MessagesViewModel(totalCellHeight: remainingHeight, messages: messages, messageViewDelegate: self))
                     items.append(viewModels)
-                    
+                        
                     _self.dataSource = items
                 }) { [weak self] (error, errorDictionary) in
                     SVProgressHUD.dismiss()
@@ -851,7 +853,8 @@ extension ProfileViewController: SubscriptionDelegate {
     }
     func didChangeSubscription(_ subscription: Subscription) {
         print("change subscription")
-        let viewController = ChangePlansViewController()
+        let viewController = ChangePlansViewController(user: user, subscription: subscription)
+        viewController.changePlanDelegate = self
         
         navigationController?.pushViewController(viewController, animated: true)
     }
@@ -1006,5 +1009,13 @@ extension ProfileViewController: MessageViewDelegate {
                 print("failed")
             }
         }
+    }
+}
+extension ProfileViewController: ChangePlanDelegate {
+    func didCompleteChangePlan(subscription: Subscription) {
+        user.memberships[0].subscription = subscription
+        buildDataSet()
+        
+        let _ = self.navigationController?.popViewController(animated: true)
     }
 }

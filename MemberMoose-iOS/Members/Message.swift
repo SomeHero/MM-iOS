@@ -22,7 +22,7 @@ open class Message: Mappable {
     }
     open func mapping(map: Map) {
         id <- map["_id"]
-        sender <- map["]sender"]
+        sender <- map["sender"]
         recipient <- map["recipient"]
         content <- map["content"]
         createdAt <- (map["createdAt"], ISO8601ExtendedDateTransform())

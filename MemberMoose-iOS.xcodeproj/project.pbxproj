@@ -36,6 +36,10 @@
 		4225372C1DBA7772004B33D8 /* PlanEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4225372B1DBA7772004B33D8 /* PlanEmptyStateCell.swift */; };
 		422537301DBA7940004B33D8 /* PlanEmptyStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4225372F1DBA7940004B33D8 /* PlanEmptyStateViewModel.swift */; };
 		422537321DBA8D64004B33D8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422537311DBA8D64004B33D8 /* Account.swift */; };
+		42296D8B1DE0EF0800F90818 /* CurrentPlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42296D8A1DE0EF0800F90818 /* CurrentPlanCell.swift */; };
+		42296D8E1DE0EF2C00F90818 /* NewPlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42296D8D1DE0EF2C00F90818 /* NewPlanCell.swift */; };
+		42296D901DE0EF7F00F90818 /* CurrentPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42296D8F1DE0EF7F00F90818 /* CurrentPlanViewModel.swift */; };
+		42296D921DE0EF9600F90818 /* NewPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42296D911DE0EF9600F90818 /* NewPlanViewModel.swift */; };
 		42330B8F1DB3B694003BDDEC /* SharePlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */; };
 		42330B921DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */; };
 		42330B941DB3D5B5003BDDEC /* PaymentCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */; };
@@ -143,6 +147,9 @@
 		42BD76831DDAAAC40017EC93 /* MessagesApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BD76821DDAAAC40017EC93 /* MessagesApiManager.swift */; };
 		42C2A4621DDDFA7200504C28 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C2A4611DDDFA7200504C28 /* MessageView.swift */; };
 		42C2A4641DDE069F00504C28 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C2A4631DDE069F00504C28 /* MessageCell.swift */; };
+		42C2A4661DDE500300504C28 /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C2A4651DDE500300504C28 /* MessageViewModel.swift */; };
+		42C2A4681DDE5AA200504C28 /* MessagesEmptyStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C2A4671DDE5AA200504C28 /* MessagesEmptyStateViewModel.swift */; };
+		42C2A46A1DDE5B2000504C28 /* MessagesEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C2A4691DDE5B2000504C28 /* MessagesEmptyStateCell.swift */; };
 		42DB7CC21DC82196005DC106 /* ReferencePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB7CC11DC82196005DC106 /* ReferencePlan.swift */; };
 		42F08C2B1DABBDA100D5D4E3 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C2A1DABBDA100D5D4E3 /* ApiManager.swift */; };
 		42F08C2D1DABC5F100D5D4E3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C2C1DABC5F100D5D4E3 /* Constants.swift */; };
@@ -210,6 +217,10 @@
 		4225372B1DBA7772004B33D8 /* PlanEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanEmptyStateCell.swift; path = Profile/PlanEmptyStateCell.swift; sourceTree = "<group>"; };
 		4225372F1DBA7940004B33D8 /* PlanEmptyStateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanEmptyStateViewModel.swift; path = Profile/PlanEmptyStateViewModel.swift; sourceTree = "<group>"; };
 		422537311DBA8D64004B33D8 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Account.swift; path = Models/Account.swift; sourceTree = "<group>"; };
+		42296D8A1DE0EF0800F90818 /* CurrentPlanCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CurrentPlanCell.swift; path = ChangePlan/CurrentPlanCell.swift; sourceTree = "<group>"; };
+		42296D8D1DE0EF2C00F90818 /* NewPlanCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPlanCell.swift; sourceTree = "<group>"; };
+		42296D8F1DE0EF7F00F90818 /* CurrentPlanViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CurrentPlanViewModel.swift; path = ChangePlan/CurrentPlanViewModel.swift; sourceTree = "<group>"; };
+		42296D911DE0EF9600F90818 /* NewPlanViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewPlanViewModel.swift; path = ChangePlan/NewPlanViewModel.swift; sourceTree = "<group>"; };
 		42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharePlanViewController.swift; path = Plans/SharePlanViewController.swift; sourceTree = "<group>"; };
 		42330B911DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardTableViewCell.swift; path = Profile/PaymentCardTableViewCell.swift; sourceTree = "<group>"; };
 		42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentCardViewModel.swift; path = Profile/PaymentCardViewModel.swift; sourceTree = "<group>"; };
@@ -328,6 +339,9 @@
 		42BD76821DDAAAC40017EC93 /* MessagesApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessagesApiManager.swift; path = Managers/MessagesApiManager.swift; sourceTree = "<group>"; };
 		42C2A4611DDDFA7200504C28 /* MessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageView.swift; path = Profile/MessageView.swift; sourceTree = "<group>"; };
 		42C2A4631DDE069F00504C28 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageCell.swift; path = Profile/MessageCell.swift; sourceTree = "<group>"; };
+		42C2A4651DDE500300504C28 /* MessageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageViewModel.swift; path = Profile/MessageViewModel.swift; sourceTree = "<group>"; };
+		42C2A4671DDE5AA200504C28 /* MessagesEmptyStateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessagesEmptyStateViewModel.swift; path = Profile/MessagesEmptyStateViewModel.swift; sourceTree = "<group>"; };
+		42C2A4691DDE5B2000504C28 /* MessagesEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesEmptyStateCell.swift; sourceTree = "<group>"; };
 		42DB7CC11DC82196005DC106 /* ReferencePlan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReferencePlan.swift; path = Models/ReferencePlan.swift; sourceTree = "<group>"; };
 		42F08C2A1DABBDA100D5D4E3 /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ApiManager.swift; path = Managers/ApiManager.swift; sourceTree = "<group>"; };
 		42F08C2C1DABC5F100D5D4E3 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -443,13 +457,40 @@
 			name = PaymentCards;
 			sourceTree = "<group>";
 		};
+		42296D871DE0EDDF00F90818 /* ChangePlan */ = {
+			isa = PBXGroup;
+			children = (
+				42296D891DE0EEE000F90818 /* Cells */,
+				42296D881DE0EED900F90818 /* ViewModels */,
+				422537231DB988EF004B33D8 /* ChangePlansViewController.swift */,
+			);
+			name = ChangePlan;
+			sourceTree = "<group>";
+		};
+		42296D881DE0EED900F90818 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				42296D8F1DE0EF7F00F90818 /* CurrentPlanViewModel.swift */,
+				42296D911DE0EF9600F90818 /* NewPlanViewModel.swift */,
+			);
+			name = ViewModels;
+			sourceTree = "<group>";
+		};
+		42296D891DE0EEE000F90818 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				42296D8A1DE0EF0800F90818 /* CurrentPlanCell.swift */,
+				42296D8D1DE0EF2C00F90818 /* NewPlanCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		42330B8D1DB3B64D003BDDEC /* Plans */ = {
 			isa = PBXGroup;
 			children = (
 				4275F7111DC19F7200E0FF7B /* Views */,
 				4275F70C1DC1866700E0FF7B /* ViewModels */,
 				4275F70B1DC1865E00E0FF7B /* Cells */,
-				422537231DB988EF004B33D8 /* ChangePlansViewController.swift */,
 				424D97DC1DAD233500C8B674 /* PlanProfileViewController.swift */,
 				42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */,
 				422537251DB99693004B33D8 /* CancelSubscriptionViewController.swift */,
@@ -465,6 +506,8 @@
 				422537161DB91BDC004B33D8 /* ChargeViewModel.swift */,
 				4268416B1DA86D5A00A2BFF8 /* MemberViewModel.swift */,
 				422537121DB9135C004B33D8 /* MessagesViewModel.swift */,
+				42C2A4671DDE5AA200504C28 /* MessagesEmptyStateViewModel.swift */,
+				42C2A4651DDE500300504C28 /* MessageViewModel.swift */,
 				422537291DBA589D004B33D8 /* MemberEmptyStateViewModel.swift */,
 				42330B931DB3D5B5003BDDEC /* PaymentCardViewModel.swift */,
 				4253B65C1DBBB2CD00A93E98 /* PaymentCardEmptyStateViewModel.swift */,
@@ -515,6 +558,7 @@
 			children = (
 				4275F7281DC2864000E0FF7B /* ErrorHandlers */,
 				4255B4011DAF3509008DECAC /* MemberMoose-iOS.entitlements */,
+				42296D871DE0EDDF00F90818 /* ChangePlan */,
 				426841641DA86CD400A2BFF8 /* Decorators */,
 				429F62DB1DA6DD3300C3F54E /* Design */,
 				42F08C351DAC34C700D5D4E3 /* Extensions */,
@@ -577,6 +621,7 @@
 				4225370C1DB90187004B33D8 /* CalfProfileHeaderCell.swift */,
 				422537141DB91BCB004B33D8 /* ChargeCell.swift */,
 				422537101DB91347004B33D8 /* MessagesCell.swift */,
+				42C2A4691DDE5B2000504C28 /* MessagesEmptyStateCell.swift */,
 				42C2A4631DDE069F00504C28 /* MessageCell.swift */,
 				422537271DBA5879004B33D8 /* MemberEmptyStateCell.swift */,
 				4268416D1DA86DA700A2BFF8 /* MemberCell.swift */,
@@ -1159,7 +1204,9 @@
 				4253B67C1DC02A5300A93E98 /* PlansViewController.swift in Sources */,
 				4211D8C61DB7AF700092F7C5 /* MenuHeaderViewModel.swift in Sources */,
 				422537201DB96397004B33D8 /* PaymentCardViewController.swift in Sources */,
+				42C2A46A1DDE5B2000504C28 /* MessagesEmptyStateCell.swift in Sources */,
 				425013B51DAFCA8100ED21B1 /* Validator.swift in Sources */,
+				42C2A4681DDE5AA200504C28 /* MessagesEmptyStateViewModel.swift in Sources */,
 				42330B9B1DB3DDC8003BDDEC /* DateFormatters.swift in Sources */,
 				4275F71B1DC2775600E0FF7B /* PlanDescriptionCell.swift in Sources */,
 				4268415C1DA7EEBD00A2BFF8 /* CalculatorProcessor.swift in Sources */,
@@ -1196,6 +1243,7 @@
 				4240B7511DA44671000D137E /* ViewController.swift in Sources */,
 				425013BC1DB08C2B00ED21B1 /* ImportPlanViewModel.swift in Sources */,
 				4253B67A1DBFBD7D00A93E98 /* AccountProfileViewController.swift in Sources */,
+				42296D921DE0EF9600F90818 /* NewPlanViewModel.swift in Sources */,
 				4211D8BC1DB7288E0092F7C5 /* Membership.swift in Sources */,
 				4275F70E1DC18A6E00E0FF7B /* PlanProfileHeaderCell.swift in Sources */,
 				4275F7171DC1AE7300E0FF7B /* PlanPaymentDetailsCell.swift in Sources */,
@@ -1206,6 +1254,7 @@
 				42C2A4641DDE069F00504C28 /* MessageCell.swift in Sources */,
 				42330B921DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift in Sources */,
 				4255B3FE1DAEA3BF008DECAC /* ImagePicker.swift in Sources */,
+				42C2A4661DDE500300504C28 /* MessageViewModel.swift in Sources */,
 				4275F72C1DC2962A00E0FF7B /* PlanSubscriberViewModel.swift in Sources */,
 				42F08C491DACAADA00D5D4E3 /* SubscriptionCell.swift in Sources */,
 				429F62FA1DA6E02400C3F54E /* SignUpViewController.swift in Sources */,
@@ -1223,6 +1272,7 @@
 				4253B6591DBBAC6100A93E98 /* SubscriptionEmptyStateViewModel.swift in Sources */,
 				4275F7101DC18A9800E0FF7B /* PlanProfileHeaderViewModel.swift in Sources */,
 				425013B71DB080E400ED21B1 /* ImportPlansViewController.swift in Sources */,
+				42296D901DE0EF7F00F90818 /* CurrentPlanViewModel.swift in Sources */,
 				4275F7151DC1AD9200E0FF7B /* PlanPaymentDetailsViewModel.swift in Sources */,
 				426841681DA86D0E00A2BFF8 /* ButtonDecorator.swift in Sources */,
 				42F08C441DAC850B00D5D4E3 /* MemberDetailViewController.swift in Sources */,
@@ -1258,8 +1308,10 @@
 				426841731DA875CB00A2BFF8 /* RecentTransactionViewModel.swift in Sources */,
 				42BD76831DDAAAC40017EC93 /* MessagesApiManager.swift in Sources */,
 				429F62FF1DA6E8E800C3F54E /* LoginViewController.swift in Sources */,
+				42296D8E1DE0EF2C00F90818 /* NewPlanCell.swift in Sources */,
 				429F62F01DA6DDD900C3F54E /* UIScreenType.swift in Sources */,
 				422537111DB91347004B33D8 /* MessagesCell.swift in Sources */,
+				42296D8B1DE0EF0800F90818 /* CurrentPlanCell.swift in Sources */,
 				42F08C3C1DAC5EE600D5D4E3 /* ProfileViewController.swift in Sources */,
 				42F08C2B1DABBDA100D5D4E3 /* ApiManager.swift in Sources */,
 				42330B941DB3D5B5003BDDEC /* PaymentCardViewModel.swift in Sources */,

@@ -27,9 +27,29 @@ class MessageCell: UITableViewCell {
         
         return imageView
     }()
-    fileprivate lazy var contentLabel: UILabel = {
+    fileprivate lazy var authorLabel: UILabel = {
+        let _label = UILabel()
+        _label.font = UIFontTheme.Bold(.tiny)
+        _label.textColor = UIColorTheme.PrimaryFont
+        _label.numberOfLines = 1
+        
+        self.containerView.addSubview(_label)
+        
+        return _label
+    }()
+    fileprivate lazy var messageSentLabel: UILabel = {
         let _label = UILabel()
         _label.font = UIFontTheme.Regular(.tiny)
+        _label.textColor = UIColorTheme.SecondaryFont
+        _label.numberOfLines = 0
+        
+        self.containerView.addSubview(_label)
+        
+        return _label
+    }()
+    fileprivate lazy var contentLabel: UILabel = {
+        let _label = UILabel()
+        _label.font = UIFontTheme.Regular(.small)
         _label.textColor = UIColorTheme.PrimaryFont
         _label.numberOfLines = 0
         
@@ -56,9 +76,11 @@ class MessageCell: UITableViewCell {
         super.prepareForReuse()
         
     }
-    func setupWith(_ viewModel: Message) {
+    func setupWith(_ viewModel: MessageViewModel) {
         avatarView.image = UIImage(named: "Avatar-Calf")
         contentLabel.text = viewModel.content
+        authorLabel.text = viewModel.authorName
+        messageSentLabel.text = viewModel.messageSent
     }
     override func updateConstraints() {
         avatarView.snp.updateConstraints { (make) -> Void in
@@ -68,13 +90,24 @@ class MessageCell: UITableViewCell {
         }
         containerView.snp.updateConstraints { (make) in
             make.leading.equalTo(avatarView.snp.trailing).offset(10)
-            make.trailing.equalTo(contentView)
+            make.trailing.equalTo(contentView).inset(10)
             make.centerY.equalTo(contentView)
             make.top.bottom.equalTo(contentView).inset(10)
         }
+        authorLabel.snp.updateConstraints { (make) in
+            make.leading.equalTo(containerView)
+            make.top.equalTo(containerView)
+        }
+        messageSentLabel.snp.updateConstraints { (make) in
+            make.leading.equalTo(authorLabel.snp.trailing).offset(5)
+            make.top.equalTo(containerView)
+            make.trailing.greaterThanOrEqualTo(containerView)
+            make.bottom.equalTo(contentLabel.snp.top)
+        }
         contentLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(authorLabel.snp.bottom)
             make.leading.trailing.equalTo(containerView)
-            make.top.bottom.equalTo(containerView).inset(10)
+            make.bottom.equalTo(containerView).inset(10)
         }
         super.updateConstraints()
     }

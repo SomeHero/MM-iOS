@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Money
 
 class ImportPlanViewModel {
     var cellID: String = "PlanCell"

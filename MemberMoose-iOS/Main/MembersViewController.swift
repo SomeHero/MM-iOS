@@ -256,9 +256,9 @@ class MembersViewController: UIViewController {
         tableView.reloadData()
         
         ApiManager.sharedInstance.getPlans(1, success: { (plans) in
-            if(plans!.count > 0) {
+            if(plans.count > 0) {
                 var viewModels: [PlanViewModel] = []
-                for plan in plans! {
+                for plan in plans {
                     let viewModel = PlanViewModel(plan: plan)
                     
                     viewModels.append(viewModel)

@@ -200,6 +200,20 @@ public struct CreateCharge {
         return parameters
     }
 }
+public struct UpgradeSubscription {
+    let planId: String
+    
+    public init(planId: String) {
+        self.planId = planId
+    }
+    func parameterize() -> [String: AnyObject] {
+        let parameters: [String: AnyObject] = [
+            "plan_id": planId as AnyObject
+        ]
+        
+        return parameters
+    }
+}
 open class ApiManager {
     fileprivate var kApiBaseUrl:String?
     open var apiBaseUrl: String {
@@ -500,7 +514,7 @@ open class ApiManager {
                 }
         }
     }
-    open func getPlans(_ page: Int = 1,success: @escaping (_ response: [Plan]?) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+    open func getPlans(_ page: Int = 1,success: @escaping (_ response: [Plan]) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         Alamofire.request(apiBaseUrl + "plans?page=\(page)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseArray(keyPath: "results") { (response: DataResponse<[Plan]>) in
@@ -604,6 +618,33 @@ open class ApiManager {
                     }
                 } else {
                     success()
+                }
+        }
+    }
+    open func upgradeSubscription(_ userId: String, _ subscriptionId: String, _ upgradeSubscription: UpgradeSubscription, success: @escaping (_ response: Subscription)  -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        let params = upgradeSubscription.parameterize()
+        
+        Alamofire.request(apiBaseUrl + "users/\(userId)/subscriptions/\(subscriptionId)/upgrade", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .responseObject { (response: DataResponse<Subscription>) in
+                if let error = response.result.error {
+                    var errorResponse: [String: AnyObject]? = [:]
+                    
+                    if let data = response.data {
+                        do {
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
+                        } catch let error as NSError {
+                            failure(error, nil)
+                        } catch let error {
+                            failure(error, nil)
+                        }
+                        failure(error, errorResponse)
+                    } else {
+                        failure(error, nil)
+                    }
+                }
+                if let subscription = response.result.value {
+                    success(subscription)
                 }
         }
     }
