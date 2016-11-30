@@ -26,7 +26,11 @@ class PlanPaymentDetailsViewModel:DataSourceItemProtocol {
             self.signUpFee = "No signup fee"
         }
         self.recurringAmountHeader = "Recurring Amount"
-        self.recurringAmount = "\(USD(plan.amount).description)/\(plan.interval!)"
+        if let amount = plan.amount, let interval = plan.interval {
+            self.recurringAmount = "\(USD(amount).description)/\(interval)"
+        } else {
+            self.recurringAmount = "Amount not set"
+        }
     }
     @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? PlanPaymentDetailsCell else {

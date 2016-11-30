@@ -150,7 +150,7 @@ class CreatePlanViewController: UIViewController {
         titleLabel.text = "Create First Plan"
     }
     func backClicked(_ sender: UIButton) {
-        navigationController?.popViewController(animated: true)
+        let _ = navigationController?.popViewController(animated: true)
     }
     func nextClicked(_ sender: UIButton) {
         let viewController = CreateFirstPlanViewController()

@@ -126,12 +126,10 @@ class ChangePlansViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     func changePlanClicked(_ sender: UIButton) {
-        guard let selectedIndexPath = selectedIndexPath, let selectedPlan = dataSource[selectedIndexPath.section][selectedIndexPath.row] as? NewPlanViewModel else {
+        guard let selectedIndexPath = selectedIndexPath, let selectedPlan = dataSource[selectedIndexPath.section][selectedIndexPath.row] as? NewPlanViewModel, let planId = selectedPlan.plan.id else {
             return
         }
-        print(selectedPlan.plan.name)
-        
-        let upgradeSubscription = UpgradeSubscription(planId: selectedPlan.plan.id)
+        let upgradeSubscription = UpgradeSubscription(planId: planId)
         
         SVProgressHUD.show()
         

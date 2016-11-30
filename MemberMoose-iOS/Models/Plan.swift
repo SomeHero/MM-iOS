@@ -13,24 +13,27 @@ enum CurrencyCode: String {
     case USD = "USD"
 }
 open class Plan: Mappable {
-    open var id: String!
-    open var planId: String!
-    open var name: String!
+    open var id: String?
+    open var planId: String?
+    open var name: String?
     var description: String?
     var oneTimeAmount: Double?
-    open var amount: Double!
+    open var amount: Double?
     //public var currency: String!
-    open var interval: String!
-    open var intervalCount: Int!
+    open var interval: String?
+    open var intervalCount: Int = 00
     open var statementDescriptor: String?
     open var statementDescription: String?
     open var trialPeriodDays: Int = 0
     var termsOfService: String?
     //public var planCreated: NSDate!
     var memberCount: Int = 0
-    open var createdAt: Date!
+    open var createdAt: Date?
     open var updatedAt: Date?
     
+    init() {
+        
+    }
     public required init?(map: Map){
         mapping(map: map)
     }

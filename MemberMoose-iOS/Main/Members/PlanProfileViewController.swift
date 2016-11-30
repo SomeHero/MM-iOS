@@ -13,9 +13,10 @@ import Presentr
 class PlanProfileViewController: UIViewController {
     fileprivate let plan: Plan
     fileprivate let profileCellIdentifier           = "PlanProfileHeaderCellIdentifier"
+    fileprivate let newProfileCellIdentifier           = "NewPlanProfileHeaderCellIdentifier"
     fileprivate let planPaymentCellIdentifier       = "PlanPaymentDetailsCellIdentifier"
     fileprivate let planDescriptionCellIdentifier   = "PlanDescriptionCellIdentifier"
-    fileprivate let planFeatureCellIdentifier       = "PlanFeatureCellIdentifier"
+    fileprivate let planFeaturesCellIdentifier       = "PlanFeaturesCellIdentifier"
     fileprivate let planTermsOfServiceCellIdentifier = "PlanTermsOfServiceCellIdentifier"
     fileprivate let planSubscriberEmptyStateCellIdentifier    = "PlanSubscriberEmptyStateCellIdentifier"
     fileprivate let planSubscriberCellIdentifier    = "PlanSubscriberCellIdentifier"
@@ -134,9 +135,10 @@ class PlanProfileViewController: UIViewController {
         //_tableView.separatorStyle       = .None
         
         _tableView.register(PlanProfileHeaderCell.self, forCellReuseIdentifier: self.profileCellIdentifier)
+        _tableView.register(NewPlanProfileHeaderCell.self, forCellReuseIdentifier: self.newProfileCellIdentifier)
         _tableView.register(PlanPaymentDetailsCell.self, forCellReuseIdentifier: self.planPaymentCellIdentifier)
         _tableView.register(PlanDescriptionCell.self, forCellReuseIdentifier: self.planDescriptionCellIdentifier)
-        _tableView.register(PlanFeatureCell.self, forCellReuseIdentifier: self.planFeatureCellIdentifier)
+        _tableView.register(PlanFeaturesCell.self, forCellReuseIdentifier: self.planFeaturesCellIdentifier)
         _tableView.register(PlanTermsOfServiceCell.self, forCellReuseIdentifier: self.planTermsOfServiceCellIdentifier)
         _tableView.register(PlanSubscriberCell.self, forCellReuseIdentifier: self.planSubscriberCellIdentifier)
         _tableView.register(PlanSubscriberEmptyStateCell.self, forCellReuseIdentifier: self.planSubscriberEmptyStateCellIdentifier)
@@ -197,64 +199,64 @@ class PlanProfileViewController: UIViewController {
         configureRevealControllerGestures(view)
         configureRevealWidth()
         
-        self.tableView.infiniteScrollIndicatorStyle = .gray
-        
-        // Set custom indicator margin
-        self.tableView.infiniteScrollIndicatorMargin = 40
-        
-        // Add infinite scroll handler
-        self.tableView.addInfiniteScroll { [weak self] (scrollView) -> Void in
-            guard let _self = self else {
-                return
-            }
-            _self.pageNumber += 1
-            
-            switch _self.planNavigationState {
-            case .subscribers:
-                ApiManager.sharedInstance.getMembers(_self.pageNumber, success: { (members) in
-                    var viewModels = _self.dataSource[1]
-                    for member in members! {
-                        let viewModel = MemberViewModel(user: member)
-                        
-                        viewModels.append(viewModel)
-                    }
-                    _self.dataSource[1] = viewModels
-                    
-                    _self.tableView.reloadData()
-                    }, failure: { [weak self] (error, errorDictionary) in
-                        SVProgressHUD.dismiss()
-                        
-                        guard let _self = self else {
-                            return
-                        }
-                        
-                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
-                })
-            case .activity:
-                ApiManager.sharedInstance.getPlans(_self.pageNumber, success: { (plans) in
-                    var viewModels = _self.dataSource[1]
-                    for plan in plans {
-                        let viewModel = PlanViewModel(plan: plan)
-                        
-                        viewModels.append(viewModel)
-                    }
-                    _self.dataSource[1] = viewModels
-                    
-                    _self.tableView.reloadData()
-                    }, failure: {[weak self] (error, errorDictionary) in
-                        SVProgressHUD.dismiss()
-                        
-                        guard let _self = self else {
-                            return
-                        }
-                        
-                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
-                })
-            case .details: break
-            }
-            
-            scrollView.finishInfiniteScroll()
-        }
+//        self.tableView.infiniteScrollIndicatorStyle = .gray
+//        
+//        // Set custom indicator margin
+//        self.tableView.infiniteScrollIndicatorMargin = 40
+//        
+//        // Add infinite scroll handler
+//        self.tableView.addInfiniteScroll { [weak self] (scrollView) -> Void in
+//            guard let _self = self else {
+//                return
+//            }
+//            _self.pageNumber += 1
+//            
+//            switch _self.planNavigationState {
+//            case .subscribers:
+//                ApiManager.sharedInstance.getMembers(_self.pageNumber, success: { (members) in
+//                    var viewModels = _self.dataSource[1]
+//                    for member in members! {
+//                        let viewModel = MemberViewModel(user: member)
+//                        
+//                        viewModels.append(viewModel)
+//                    }
+//                    _self.dataSource[1] = viewModels
+//                    
+//                    _self.tableView.reloadData()
+//                    }, failure: { [weak self] (error, errorDictionary) in
+//                        SVProgressHUD.dismiss()
+//                        
+//                        guard let _self = self else {
+//                            return
+//                        }
+//                        
+//                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+//                })
+//            case .activity:
+//                ApiManager.sharedInstance.getPlans(_self.pageNumber, success: { (plans) in
+//                    var viewModels = _self.dataSource[1]
+//                    for plan in plans {
+//                        let viewModel = PlanViewModel(plan: plan)
+//                        
+//                        viewModels.append(viewModel)
+//                    }
+//                    _self.dataSource[1] = viewModels
+//                    
+//                    _self.tableView.reloadData()
+//                    }, failure: {[weak self] (error, errorDictionary) in
+//                        SVProgressHUD.dismiss()
+//                        
+//                        guard let _self = self else {
+//                            return
+//                        }
+//                        
+//                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+//                })
+//            case .details: break
+//            }
+//            
+//            scrollView.finishInfiniteScroll()
+//        }
         
         pageNumber = 1
         buildDataSet()
@@ -354,10 +356,14 @@ class PlanProfileViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     func setup() {
-        navHeaderNameLabel.text = plan.name
+        if let planName = plan.name {
+            navHeaderNameLabel.text = planName
+        } else {
+            navHeaderNameLabel.text = "New Plan"
+        }
     }
     func backClicked(_ sender: UIButton) {
-        navigationController?.popViewController(animated: true)
+        let _ = navigationController?.popViewController(animated: true)
     }
     func editProfileClicked(_ button: UIButton) {
 
@@ -365,8 +371,13 @@ class PlanProfileViewController: UIViewController {
     func buildDataSet() {
         var items: [[DataSourceItemProtocol]] = []
         
-        let profileHeaderViewModel = PlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
-        items.append([profileHeaderViewModel])
+        if let _ = plan.id {
+            let profileHeaderViewModel = PlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
+            items.append([profileHeaderViewModel])
+        } else {
+            let profileHeaderViewModel = NewPlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
+            items.append([profileHeaderViewModel])
+        }
 
         switch planNavigationState {
         case .details:
@@ -375,6 +386,8 @@ class PlanProfileViewController: UIViewController {
             items.append([planPaymentDetailsViewModel])
             
             let planDescriptionViewModel = PlanDescriptionViewModel(plan: plan)
+            planDescriptionViewModel.planDescriptionDelegate = self
+            
             items.append([planDescriptionViewModel])
             
             let features = ["Meeting room for presentations, group meetings, or just additional space to work",
@@ -388,13 +401,14 @@ class PlanProfileViewController: UIViewController {
                             "Clean, bright, beautiful space designed and built to encourage collaboration",
                             "Clean, bright, beautiful space designed and built to encourage collaboration"
             ]
-            var featureViewModels: [PlanFeatureViewModel] = []
-            for feature in features {
-                featureViewModels.append(PlanFeatureViewModel(feature: feature))
-            }
-            items.append(featureViewModels)
+            let planFeaturesViewModel = PlanFeaturesViewModel(features: features)
+            planFeaturesViewModel.planFeaturesDelegate = self
+            
+            items.append([planFeaturesViewModel])
             
             let planTermOfServiceViewModel = PlanTermsOfServiceViewModel(plan: plan)
+            planTermOfServiceViewModel.planTermsOfServiceDelegate = self
+            
             items.append([planTermOfServiceViewModel])
         case.activity:
             let activities = ["James Rhodes subscribed!",
@@ -471,6 +485,31 @@ class PlanProfileViewController: UIViewController {
         
         navigationController?.pushViewController(viewController, animated: true)
     }
+    func savePlan() {
+        let updatePlan = UpdatePlan(plan: plan)
+        
+        SVProgressHUD.show()
+        
+        ApiManager.sharedInstance.updatePlan(updatePlan, success: { [weak self] (plan) in
+            SVProgressHUD.dismiss()
+            
+            guard let _self = self else {
+                return
+            }
+            
+            print("plan saved")
+            
+            let _ = _self.navigationController?.popViewController(animated: true)
+        }) { [weak self] (error, errorDictionary) in
+            SVProgressHUD.dismiss()
+            
+            guard let _self = self else {
+                return
+            }
+            
+            ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+        }
+    }
 }
 extension PlanProfileViewController : UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -513,13 +552,9 @@ extension PlanProfileViewController : UITableViewDelegate {
             
         //profileType = .calf
         case .details:
-            guard let viewModel = dataItems[(indexPath as NSIndexPath).row] as? PlanViewModel else {
-                return
-            }
+            let viewModel = dataItems[(indexPath as NSIndexPath).row]
             
-//                let viewController = PlanProfileViewController()
-//                
-//                navigationController?.pushViewController(viewController, animated: true)
+            viewModel.didSelectItem?(viewController: self)
         case .activity:
             break;
     }
@@ -591,5 +626,31 @@ extension PlanProfileViewController: PlanSubscriberEmptyStateDelegate {
     }
     func didSharePlanToSubscriber(){
         
+    }
+}
+extension PlanProfileViewController: PlanFeaturesCellDelegate {
+    func didSelectItem(feature: String) {
+        let textEditorViewController = TextEditorViewController(title: "Feature", text: feature)
+        //textEditorViewController.textEditorDelegate = self
+        
+        navigationController?.pushViewController(textEditorViewController, animated: true)
+    }
+}
+extension PlanProfileViewController: PlanDescriptionDelegate {
+    func didUpdatePlanDescription(text: String) {
+        plan.description = text
+        
+        buildDataSet()
+        
+        savePlan()
+    }
+}
+extension PlanProfileViewController: PlanTermsOfServiceDelegate {
+    func didUpdateTermsOfService(text: String) {
+        plan.termsOfService = text
+        
+        buildDataSet()
+        
+        savePlan()
     }
 }

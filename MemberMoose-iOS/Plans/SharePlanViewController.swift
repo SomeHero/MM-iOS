@@ -41,7 +41,7 @@ class SharePlanViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     func backClicked(_ sender: UIButton) {
-        navigationController?.popViewController(animated: true)
+        let _ = navigationController?.popViewController(animated: true)
     }
 
 }

@@ -114,32 +114,45 @@ public struct ConnectStripe {
     }
 }
 public struct CreatePlan {
-    let name: String
-    let amount: Double
-    let interval: String
-    let intervalCount: Int
-    let statementDescriptor: String
-    let trialPeriodDays: Int
-    let statementDescription: String
+    let plan: Plan
     
-    public init(name: String, amount:Double, interval: String, intervalCount: Int, statementDescriptor: String, trialPeriodDays: Int, statementDescription: String) {
-        self.name = name
-        self.amount = amount
-        self.interval = interval
-        self.intervalCount = intervalCount
-        self.statementDescriptor = statementDescriptor
-        self.trialPeriodDays = trialPeriodDays
-        self.statementDescription = statementDescription
+    public init(plan: Plan) {
+        self.plan = plan
     }
     func parameterize() -> [String: AnyObject] {
         let parameters: [String: AnyObject] = [
-            "name": name as AnyObject,
-            "amount": amount as AnyObject,
-            "interval": interval as AnyObject,
-            "interval_count": intervalCount as AnyObject,
-            "statement_descriptor": statementDescriptor as AnyObject,
-            "trial_period_days": trialPeriodDays as AnyObject,
-            "statement_description": statementDescription as AnyObject
+            "name": plan.name as AnyObject,
+            "description": plan.description as AnyObject,
+            "amount": plan.amount as AnyObject,
+            "interval": plan.interval as AnyObject,
+            "interval_count": plan.intervalCount as AnyObject,
+            "statement_descriptor": plan.statementDescriptor as AnyObject,
+            "trial_period_days": plan.trialPeriodDays as AnyObject,
+            "statement_description": plan.statementDescription as AnyObject,
+            "terms_of_service": plan.termsOfService as AnyObject
+        ]
+        
+        return parameters
+    }
+}
+public struct UpdatePlan {
+    let plan: Plan
+    
+    public init(plan: Plan) {
+        self.plan = plan
+    }
+    func parameterize() -> [String: AnyObject] {
+        let parameters: [String: AnyObject] = [
+            "reference_id": plan.planId as AnyObject,
+            "name": plan.name as AnyObject,
+            "description": plan.description as AnyObject,
+            "amount": plan.amount as AnyObject,
+            "interval": plan.interval as AnyObject,
+            "interval_count": plan.intervalCount as AnyObject,
+            "statement_descriptor": plan.statementDescriptor as AnyObject,
+            "trial_period_days": plan.trialPeriodDays as AnyObject,
+            "statement_description": plan.statementDescription as AnyObject,
+            "terms_of_service": plan.termsOfService as AnyObject
         ]
         
         return parameters
@@ -595,9 +608,9 @@ open class ApiManager {
         }
         
     }
-    open func cancelSubscription(_ subscriptionId: String, success: @escaping ()  -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+    open func cancelSubscription(_ userId: String,_ subscriptionId: String, success: @escaping ()  -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         
-        Alamofire.request(apiBaseUrl + "subscriptions/\(subscriptionId)", method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers)
+        Alamofire.request(apiBaseUrl + "users/\(userId)/subscriptions/\(subscriptionId)", method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .response {  response in
                 if let error = response.error {
@@ -652,6 +665,33 @@ open class ApiManager {
         let params = createPlan.parameterize()
         
         Alamofire.request(apiBaseUrl + "plans", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .responseObject { (response: DataResponse<Plan>) in
+                if let error = response.result.error {
+                    var errorResponse: [String: AnyObject]? = [:]
+                    
+                    if let data = response.data {
+                        do {
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
+                        } catch let error as NSError {
+                            failure(error, nil)
+                        } catch let error {
+                            failure(error, nil)
+                        }
+                        failure(error, errorResponse)
+                    } else {
+                        failure(error, nil)
+                    }
+                }
+                if let plan = response.result.value {
+                    success(plan)
+                }
+        }
+    }
+    func updatePlan(_ updatePlan: UpdatePlan, success: @escaping (_ response: Plan) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        let params = updatePlan.parameterize()
+        
+        Alamofire.request(apiBaseUrl + "plans/\(updatePlan.plan.id!)", method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseObject { (response: DataResponse<Plan>) in
                 if let error = response.result.error {

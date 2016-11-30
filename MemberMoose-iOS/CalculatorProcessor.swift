@@ -146,7 +146,7 @@ class CalculatorProcessor {
             raw = String(format: "%.2f", value)
             return raw
         } else {
-            var end = raw.characters.index(before: raw.endIndex)
+            let end = raw.characters.index(before: raw.endIndex)
             var foundDecimal = false
             while end != raw.startIndex && (raw[end] == "0" || isDecimal(raw[end])) && !foundDecimal {
                 foundDecimal = isDecimal(raw[end])

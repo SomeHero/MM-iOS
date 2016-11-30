@@ -12,6 +12,11 @@
 		28790F6EE44EA913916FB2D4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFDDA6A1220B4260531E6A32 /* AVFoundation.framework */; };
 		2FCC09F802463F8BEEE81469 /* Pods_MemberMoose_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A19A1D3FFDA91DEA0456E431 /* Pods_MemberMoose_iOSTests.framework */; };
 		396A13AD4BAD38F102D4561D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9948E5FFC6283BE56C5EAD2C /* CoreMedia.framework */; };
+		420741BE1DEE109D006CFCE2 /* NewPlanProfileHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741BD1DEE109D006CFCE2 /* NewPlanProfileHeaderViewModel.swift */; };
+		420741C01DEE10F2006CFCE2 /* NewPlanProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741BF1DEE10F2006CFCE2 /* NewPlanProfileHeaderCell.swift */; };
+		420741C21DEE1643006CFCE2 /* PlanFeaturesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741C11DEE1643006CFCE2 /* PlanFeaturesCell.swift */; };
+		420741C41DEE583C006CFCE2 /* PlanFeaturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741C31DEE583C006CFCE2 /* PlanFeaturesViewModel.swift */; };
+		420741C61DEE636A006CFCE2 /* TextEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741C51DEE636A006CFCE2 /* TextEditorViewController.swift */; };
 		4211D8BC1DB7288E0092F7C5 /* Membership.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8BB1DB7288E0092F7C5 /* Membership.swift */; };
 		4211D8C01DB7A96A0092F7C5 /* MenuItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8BF1DB7A96A0092F7C5 /* MenuItemViewModel.swift */; };
 		4211D8C21DB7AA3C0092F7C5 /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8C11DB7AA3C0092F7C5 /* MenuItemCell.swift */; };
@@ -193,6 +198,11 @@
 		16DD0AEFCDFF0BA7F279FD5F /* Pods-MemberMoose-iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MemberMoose-iOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MemberMoose-iOSTests/Pods-MemberMoose-iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1F32ABB8242B94DBE1742861 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		30DA34FE4B9A105A776A6CA6 /* Pods_MemberMoose_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MemberMoose_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		420741BD1DEE109D006CFCE2 /* NewPlanProfileHeaderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewPlanProfileHeaderViewModel.swift; path = Plans/NewPlanProfileHeaderViewModel.swift; sourceTree = "<group>"; };
+		420741BF1DEE10F2006CFCE2 /* NewPlanProfileHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewPlanProfileHeaderCell.swift; path = Plans/NewPlanProfileHeaderCell.swift; sourceTree = "<group>"; };
+		420741C11DEE1643006CFCE2 /* PlanFeaturesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanFeaturesCell.swift; path = Plans/PlanFeaturesCell.swift; sourceTree = "<group>"; };
+		420741C31DEE583C006CFCE2 /* PlanFeaturesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanFeaturesViewModel.swift; path = Plans/PlanFeaturesViewModel.swift; sourceTree = "<group>"; };
+		420741C51DEE636A006CFCE2 /* TextEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextEditorViewController.swift; path = Plans/TextEditorViewController.swift; sourceTree = "<group>"; };
 		4211D8BB1DB7288E0092F7C5 /* Membership.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Membership.swift; path = Models/Membership.swift; sourceTree = "<group>"; };
 		4211D8BF1DB7A96A0092F7C5 /* MenuItemViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuItemViewModel.swift; path = "View Models/MenuItemViewModel.swift"; sourceTree = "<group>"; };
 		4211D8C11DB7AA3C0092F7C5 /* MenuItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuItemCell.swift; path = Menu/MenuItemCell.swift; sourceTree = "<group>"; };
@@ -495,6 +505,7 @@
 				42330B8E1DB3B694003BDDEC /* SharePlanViewController.swift */,
 				422537251DB99693004B33D8 /* CancelSubscriptionViewController.swift */,
 				4253B67B1DC02A5300A93E98 /* PlansViewController.swift */,
+				420741C51DEE636A006CFCE2 /* TextEditorViewController.swift */,
 			);
 			name = Plans;
 			sourceTree = "<group>";
@@ -725,10 +736,12 @@
 				4275F71C1DC27B8100E0FF7B /* PlanTermsOfServiceCell.swift */,
 				4275F7161DC1AE7300E0FF7B /* PlanPaymentDetailsCell.swift */,
 				4275F71A1DC2775600E0FF7B /* PlanDescriptionCell.swift */,
+				420741C11DEE1643006CFCE2 /* PlanFeaturesCell.swift */,
 				4275F7261DC27EC800E0FF7B /* PlanFeatureCell.swift */,
 				42BD76801DDA96190017EC93 /* PlanSubscriberEmptyStateCell.swift */,
 				4275F72D1DC2965800E0FF7B /* PlanSubscriberCell.swift */,
 				4275F7311DC29ACB00E0FF7B /* PlanActivityCell.swift */,
+				420741BF1DEE10F2006CFCE2 /* NewPlanProfileHeaderCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -740,10 +753,12 @@
 				4275F7141DC1AD9200E0FF7B /* PlanPaymentDetailsViewModel.swift */,
 				4275F7181DC1AE9800E0FF7B /* PlanDescriptionViewModel.swift */,
 				4275F71E1DC27BA400E0FF7B /* PlanTermsOfServiceViewModel.swift */,
+				420741C31DEE583C006CFCE2 /* PlanFeaturesViewModel.swift */,
 				4275F7201DC27BC800E0FF7B /* PlanFeatureViewModel.swift */,
 				4275F72B1DC2962A00E0FF7B /* PlanSubscriberViewModel.swift */,
 				42BD767B1DDA75070017EC93 /* PlanSubscriberEmptyStateViewModel.swift */,
 				4275F72F1DC2999900E0FF7B /* PlanActivityViewModel.swift */,
+				420741BD1DEE109D006CFCE2 /* NewPlanProfileHeaderViewModel.swift */,
 			);
 			name = ViewModels;
 			sourceTree = "<group>";
@@ -1209,6 +1224,7 @@
 				42C2A4681DDE5AA200504C28 /* MessagesEmptyStateViewModel.swift in Sources */,
 				42330B9B1DB3DDC8003BDDEC /* DateFormatters.swift in Sources */,
 				4275F71B1DC2775600E0FF7B /* PlanDescriptionCell.swift in Sources */,
+				420741C61DEE636A006CFCE2 /* TextEditorViewController.swift in Sources */,
 				4268415C1DA7EEBD00A2BFF8 /* CalculatorProcessor.swift in Sources */,
 				42F08C3E1DAC68D000D5D4E3 /* Subscription.swift in Sources */,
 				4268416A1DA86D0E00A2BFF8 /* TextDecorator.swift in Sources */,
@@ -1253,7 +1269,9 @@
 				4211D8C01DB7A96A0092F7C5 /* MenuItemViewModel.swift in Sources */,
 				42C2A4641DDE069F00504C28 /* MessageCell.swift in Sources */,
 				42330B921DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift in Sources */,
+				420741C41DEE583C006CFCE2 /* PlanFeaturesViewModel.swift in Sources */,
 				4255B3FE1DAEA3BF008DECAC /* ImagePicker.swift in Sources */,
+				420741C21DEE1643006CFCE2 /* PlanFeaturesCell.swift in Sources */,
 				42C2A4661DDE500300504C28 /* MessageViewModel.swift in Sources */,
 				4275F72C1DC2962A00E0FF7B /* PlanSubscriberViewModel.swift in Sources */,
 				42F08C491DACAADA00D5D4E3 /* SubscriptionCell.swift in Sources */,
@@ -1271,6 +1289,7 @@
 				42F08C371DAC34E800D5D4E3 /* ISO8601ExtendedDateTransform.swift in Sources */,
 				4253B6591DBBAC6100A93E98 /* SubscriptionEmptyStateViewModel.swift in Sources */,
 				4275F7101DC18A9800E0FF7B /* PlanProfileHeaderViewModel.swift in Sources */,
+				420741C01DEE10F2006CFCE2 /* NewPlanProfileHeaderCell.swift in Sources */,
 				425013B71DB080E400ED21B1 /* ImportPlansViewController.swift in Sources */,
 				42296D901DE0EF7F00F90818 /* CurrentPlanViewModel.swift in Sources */,
 				4275F7151DC1AD9200E0FF7B /* PlanPaymentDetailsViewModel.swift in Sources */,
@@ -1315,6 +1334,7 @@
 				42F08C3C1DAC5EE600D5D4E3 /* ProfileViewController.swift in Sources */,
 				42F08C2B1DABBDA100D5D4E3 /* ApiManager.swift in Sources */,
 				42330B941DB3D5B5003BDDEC /* PaymentCardViewModel.swift in Sources */,
+				420741BE1DEE109D006CFCE2 /* NewPlanProfileHeaderViewModel.swift in Sources */,
 				4211D8C81DB7F0F60092F7C5 /* BullProfileViewController.swift in Sources */,
 				422537261DB99693004B33D8 /* CancelSubscriptionViewController.swift in Sources */,
 				426841711DA875B100A2BFF8 /* RecentTransactionsCell.swift in Sources */,

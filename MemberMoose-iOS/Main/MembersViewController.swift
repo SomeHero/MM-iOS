@@ -438,7 +438,7 @@ extension MembersViewController: ProfileDelegate {
     func didBackClicked() {
         switch profileType {
         case .calf:
-            navigationController?.popViewController(animated: true)
+            let _ = navigationController?.popViewController(animated: true)
         case .bull:
             dismiss(animated: true, completion: nil)
         }

@@ -63,7 +63,11 @@ class PlanTermsOfServiceCell: UITableViewCell {
     }
     func setupWith(_ viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? PlanTermsOfServiceViewModel {
-            termsOfServiceLabel.text = viewModel.termsOfService
+            if let termsOfService = viewModel.termsOfService {
+                termsOfServiceLabel.text = termsOfService
+            } else {
+                termsOfServiceLabel.text = "Add Terms of Service"
+            }
             TextDecorator.applyTightLineHeight(toLabel: termsOfServiceLabel)
         }
     }

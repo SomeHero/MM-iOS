@@ -62,7 +62,11 @@ class PlanDescriptionCell: UITableViewCell {
     }
     func setupWith(_ viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? PlanDescriptionViewModel {
-            descriptionLabel.text = viewModel.description
+            if let description = viewModel.description {
+                descriptionLabel.text = description
+            } else {
+                descriptionLabel.text = "Add Plan Description"
+            }
             TextDecorator.applyTightLineHeight(toLabel: descriptionLabel)
         }
     }

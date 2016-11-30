@@ -123,7 +123,7 @@ class AddMemberViewController: UIViewController {
         }) 
     }
     func backClicked(_ sender: UIButton) {
-        navigationController?.popViewController(animated: true)
+        let _ = navigationController?.popViewController(animated: true)
     }
     func nextClicked(_ sender: UIButton) {
         guard let firstName = firstNameView.textField.text, let lastName = lastNameView.textField.text, let emailAddress = emailAddressView.textField.text else {
@@ -139,7 +139,7 @@ class AddMemberViewController: UIViewController {
             }
             SVProgressHUD.dismiss()
             
-            _self.navigationController?.popViewController(animated: true)
+            let _ = _self.navigationController?.popViewController(animated: true)
         }) { [weak self] (error, errorDictionary) in
             SVProgressHUD.dismiss()
             

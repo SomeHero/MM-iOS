@@ -18,6 +18,7 @@ import SlackTextViewController
     func viewForHeader() -> UIView?
     func heightForHeader() -> CGFloat
     func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell
+    @objc optional func didSelectItem(viewController: UIViewController) 
 }
 @objc protocol DataSourceTableViewCellProtocol: class {
     func setupWith(_ viewModel: DataSourceItemProtocol)
@@ -451,7 +452,7 @@ class ProfileViewController: UIViewController {
         case .bull:
             toggleMenu(sender)
         case .calf:
-            navigationController?.popViewController(animated: true)
+            let _ = navigationController?.popViewController(animated: true)
         }
     }
     func editProfileClicked(_ button: UIButton) {
@@ -670,9 +671,13 @@ class ProfileViewController: UIViewController {
         }
     }
     func addPlanClicked(_ sender: UIButton) {
-//        let viewController = PlanProfileViewController()
-//        
-//        navigationController?.pushViewController(viewController, animated: true)
+        let plan = Plan()
+        let viewController = PlanProfileViewController(plan: plan)
+        
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.isNavigationBarHidden = false
+        
+        present(navigationController, animated: true, completion: nil)
     }
     func addMemberClicked(_ sender: UIButton) {
         let viewController = SharePlanViewController()
@@ -875,7 +880,7 @@ extension ProfileViewController: CancelSubscriptionDelegate {
         dismiss(animated: true, completion: nil)
     }
     func didConfirmCancelSubscription(_ subscription: Subscription) {
-        ApiManager.sharedInstance.cancelSubscription(subscription.id, success: {
+        ApiManager.sharedInstance.cancelSubscription(user.id, subscription.id, success: {
             self.dismiss(animated: true, completion: nil)
         }) { (error, errorDictionary) in
             print("error occurred")

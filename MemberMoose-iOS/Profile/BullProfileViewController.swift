@@ -133,7 +133,7 @@ class BullProfileViewController: UIViewController {
         subDomainTextField.textField.text = user.account?.subdomain
     }
     func backClicked(_ sender: UIButton) {
-        navigationController?.popViewController(animated: true)
+        let _ = navigationController?.popViewController(animated: true)
     }
     func nextClicked(_ sender: UIButton) {
         guard let companyName = companyNameTextField.textField.text, let subDomain = subDomainTextField.textField.text else {

@@ -228,7 +228,7 @@ class PaymentCardViewController: UIViewController {
                     }
                     _self.user.paymentCards.append(response)
                     
-                    _self.navigationController?.popViewController(animated: true)
+                    let _ =  _self.navigationController?.popViewController(animated: true)
                 }, failure: { [weak self] (error, errorDictionary) in
                     guard let _self = self else {
                         return
@@ -248,7 +248,7 @@ class PaymentCardViewController: UIViewController {
         expirationYearView.textField.text = String(year)
     }
     func backClicked(_ sender: UIButton) {
-        navigationController?.popViewController(animated: true)
+        let _ = navigationController?.popViewController(animated: true)
     }
 }
 extension PaymentCardViewController: UITextFieldDelegate {

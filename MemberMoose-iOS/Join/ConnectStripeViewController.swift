@@ -232,7 +232,7 @@ class ConnectStripeViewController: UIViewController {
         termOfServiceLabel.text = "By connecting your Stripe account you are agreeing to the Terms of Service"
     }
     func backClicked(_ sender: UIButton) {
-        navigationController?.popViewController(animated: true)
+        let _ = navigationController?.popViewController(animated: true)
     }
     func connectStripeClicked(_ sender: UIButton) {
         guard let user = SessionManager.sharedUser else {

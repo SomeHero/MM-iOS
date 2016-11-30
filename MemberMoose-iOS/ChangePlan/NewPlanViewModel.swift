@@ -14,14 +14,18 @@ class NewPlanViewModel: DataSourceItemProtocol {
     var cellClass: UITableViewCell.Type = NewPlanCell.self
     
     let plan: Plan
-    let planName: String
+    let planName: String?
     let planAmount: String
     var selected: Bool
     
     init(plan: Plan) {
         self.plan = plan
         self.planName = plan.name
-        self.planAmount = "\(USD(plan.amount/100).description)/\(plan.interval!)"
+        if let amount = plan.amount, let interval = plan.interval {
+            self.planAmount = "\(USD(amount/100).description)/\(interval)"
+        } else {
+            self.planAmount = "Amount not set"
+        }
         self.selected = false
     }
     @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {

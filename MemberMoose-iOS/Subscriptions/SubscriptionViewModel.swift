@@ -17,15 +17,19 @@ class SubscriptionViewModel:DataSourceItemProtocol {
     var cellID: String = "SubscriptionCell"
     var cellClass: UITableViewCell.Type = SubscriptionCell.self
     
-    let planName: String
-    let planAmount: String
-    let status: String
+    let planName: String?
+    let planAmount: String?
+    let status: String?
     fileprivate let subscription: Subscription
     weak var subscriptionDelegate: SubscriptionDelegate?
     
     init(subscription: Subscription, subscriptionDelegate: SubscriptionDelegate? = nil) {
         self.planName = subscription.plan.name
-        self.planAmount = "\(USD(subscription.plan.amount/100).description)/\(subscription.plan.interval!)"
+        if let amount = subscription.plan.amount, let interval = subscription.plan.interval {
+            self.planAmount = "\(USD(amount/100).description)/\(interval)"
+        } else {
+            self.planAmount = "Amount not set"
+        }
         self.status = subscription.status
         self.subscription = subscription
         

@@ -185,7 +185,7 @@ class MemberDetailViewController: UIViewController {
         subHeadingLabel.text = "Member Since ()"
     }
     func backClicked(_ button: UIButton) {
-        navigationController?.popViewController(animated: true)
+        let _ = navigationController?.popViewController(animated: true)
     }
     func showProfile(_ button: UIButton) {
         let viewController = ProfileViewController(user: user, profileType: .calf)

@@ -9,6 +9,9 @@
 import UIKit
 
 class PlanFeatureCell: UITableViewCell {
+    static let cellID: String = "PlanFeatureCellIdentifier"
+    var cellClass: UITableViewCell.Type = PlanFeatureCell.self
+    
     fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         

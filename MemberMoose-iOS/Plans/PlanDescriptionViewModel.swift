@@ -8,18 +8,19 @@
 
 import Foundation
 
+protocol PlanDescriptionDelegate: class {
+    func didUpdatePlanDescription(text: String)
+}
 class PlanDescriptionViewModel:DataSourceItemProtocol {
+    weak var planDescriptionDelegate: PlanDescriptionDelegate?
+    
     var cellID: String = "PlanDescriptionCellIdentifier"
     var cellClass: UITableViewCell.Type = PlanDescriptionCell.self
     
-    let description: String
+    let description: String?
     
     init(plan: Plan) {
-        if let description = plan.description {
-            self.description = description
-        } else {
-            self.description = "No description provided"
-        }
+        self.description = plan.description
     }
     @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? PlanDescriptionCell else {
@@ -30,6 +31,17 @@ class PlanDescriptionViewModel:DataSourceItemProtocol {
         
         return cell
     }
+    @objc func didSelectItem(viewController: UIViewController) {
+        var text = ""
+        
+        if let description = description {
+            text = description
+        }
+        let textEditorViewController = TextEditorViewController(title: "Plan Description", text: text)
+        textEditorViewController.textEditorDelegate = self
+        
+        viewController.navigationController?.pushViewController(textEditorViewController, animated: true)
+    }
     @objc func viewForHeader() -> UIView? {
         let header = PlanHeaderView()
         header.setup("Description")
@@ -38,5 +50,10 @@ class PlanDescriptionViewModel:DataSourceItemProtocol {
     }
     @objc func heightForHeader() -> CGFloat {
         return 50
+    }
+}
+extension PlanDescriptionViewModel: TextEditorDelegate {
+    func didSubmitText(text: String) {
+        planDescriptionDelegate?.didUpdatePlanDescription(text: text)
     }
 }

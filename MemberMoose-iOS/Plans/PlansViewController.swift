@@ -174,7 +174,7 @@ class PlanDetailViewController: UIViewController {
 //        subHeadingLabel.text = "Member Since ()"
     }
     func backClicked(_ button: UIButton) {
-        navigationController?.popViewController(animated: true)
+        let _ = navigationController?.popViewController(animated: true)
     }
     func showProfile(_ button: UIButton) {
 //        let viewController = PlanProfileViewController(plan: plan, profileType: .calf)

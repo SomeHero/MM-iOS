@@ -14,17 +14,22 @@ class PlanViewModel: DataSourceItemProtocol {
     var cellClass: UITableViewCell.Type = PlanCell.self
     
     let plan: Plan
-    let planId: String
-    let planName: String
-    let planAmount: String
-    let interval: String
+    let planId: String?
+    let planName: String?
+    let planAmount: String?
+    let interval: String?
     let subscribersCount: Int
     
     init(plan: Plan) {
+        
         self.plan = plan
         planId = plan.id
         planName = plan.name
-        planAmount = "\(USD(plan.amount/100).description)"
+        if let amount = plan.amount {
+            self.planAmount = "\(USD(amount/100).description)"
+        } else {
+            self.planAmount = "Amount not set"
+        }
         interval = plan.interval
         subscribersCount = plan.memberCount
     }

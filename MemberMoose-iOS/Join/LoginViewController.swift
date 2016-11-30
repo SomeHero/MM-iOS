@@ -186,7 +186,7 @@ class LoginViewController: UIViewController {
         }
     }
     func backClicked(_ sender: UIButton) {
-        navigationController?.popViewController(animated: true)
+        let _ = navigationController?.popViewController(animated: true)
     }
     func configureTextField(_ textField: UITextField) {
         textField.returnKeyType = .next
