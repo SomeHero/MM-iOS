@@ -13,23 +13,24 @@ enum CurrencyCode: String {
     case USD = "USD"
 }
 open class Plan: Mappable {
-    open var id: String?
-    open var planId: String?
-    open var name: String?
+    var id: String?
+    var planId: String?
+    var name: String?
     var description: String?
+    var features: [String]?
     var oneTimeAmount: Double?
-    open var amount: Double?
+    var amount: Double?
     //public var currency: String!
-    open var interval: String?
-    open var intervalCount: Int = 00
-    open var statementDescriptor: String?
-    open var statementDescription: String?
-    open var trialPeriodDays: Int = 0
+    var interval: String?
+    var intervalCount: Int = 00
+    var statementDescriptor: String?
+    var statementDescription: String?
+    var trialPeriodDays: Int = 0
     var termsOfService: String?
     //public var planCreated: NSDate!
     var memberCount: Int = 0
-    open var createdAt: Date?
-    open var updatedAt: Date?
+    var createdAt: Date?
+    var updatedAt: Date?
     
     init() {
         
@@ -43,6 +44,7 @@ open class Plan: Mappable {
         planId <- map["reference_id"]
         name <- map["name"]
         description <- map["description"]
+        features <- map["features"]
         oneTimeAmount <- map["one_time_amount"]
         amount <- map["amount"]
         //currency <- map["currency"]

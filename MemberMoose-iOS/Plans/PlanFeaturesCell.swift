@@ -73,16 +73,15 @@ class PlanFeaturesCell: UITableViewCell {
     }
     func setupWith(_ viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? PlanFeaturesViewModel {
-            let features = viewModel.features
-            
-            var planFeaturesViewModels: [PlanFeatureViewModel] = []
-            for feature in features {
-                let planFeatureViewModel = PlanFeatureViewModel(feature: feature)
-                
-                planFeaturesViewModels.append(planFeatureViewModel)
+            if let features = viewModel.plan.features {
+                var planFeaturesViewModels: [PlanFeatureViewModel] = []
+                for feature in features {
+                    let planFeatureViewModel = PlanFeatureViewModel(feature: feature)
+                    
+                    planFeaturesViewModels.append(planFeatureViewModel)
+                }
+                dataSource = [planFeaturesViewModels]
             }
-            dataSource = [planFeaturesViewModels]
-            
             planFeaturesCellDelegate = viewModel.planFeaturesDelegate
         }
     }

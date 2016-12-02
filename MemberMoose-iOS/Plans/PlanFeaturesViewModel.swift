@@ -12,11 +12,11 @@ class PlanFeaturesViewModel:DataSourceItemProtocol {
     var cellID: String = "PlanFeaturesCellIdentifier"
     var cellClass: UITableViewCell.Type = PlanFeaturesCell.self
     
-    let features: [String]
+    let plan: Plan
     weak var planFeaturesDelegate: PlanFeaturesCellDelegate?
     
-    init(features: [String]) {
-        self.features = features
+    init(plan: Plan) {
+        self.plan = plan
     }
     @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? PlanFeaturesCell else {

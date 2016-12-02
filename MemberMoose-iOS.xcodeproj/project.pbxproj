@@ -17,6 +17,14 @@
 		420741C21DEE1643006CFCE2 /* PlanFeaturesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741C11DEE1643006CFCE2 /* PlanFeaturesCell.swift */; };
 		420741C41DEE583C006CFCE2 /* PlanFeaturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741C31DEE583C006CFCE2 /* PlanFeaturesViewModel.swift */; };
 		420741C61DEE636A006CFCE2 /* TextEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741C51DEE636A006CFCE2 /* TextEditorViewController.swift */; };
+		420741CE1DF1C053006CFCE2 /* PlanNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741CD1DF1C053006CFCE2 /* PlanNameViewModel.swift */; };
+		420741D01DF1C06B006CFCE2 /* PlanNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741CF1DF1C06B006CFCE2 /* PlanNameCell.swift */; };
+		420741D21DF1C88C006CFCE2 /* PlanSignUpFeeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741D11DF1C88C006CFCE2 /* PlanSignUpFeeViewModel.swift */; };
+		420741D41DF1C8B2006CFCE2 /* PlanAmountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741D31DF1C8B2006CFCE2 /* PlanAmountViewModel.swift */; };
+		420741D61DF1C8EB006CFCE2 /* PlanSignUpFeeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741D51DF1C8EB006CFCE2 /* PlanSignUpFeeCell.swift */; };
+		420741D81DF1C902006CFCE2 /* PlanAmountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741D71DF1C902006CFCE2 /* PlanAmountCell.swift */; };
+		420741DA1DF1D09C006CFCE2 /* PlanAmountEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741D91DF1D09C006CFCE2 /* PlanAmountEditorViewController.swift */; };
+		420741DC1DF1E265006CFCE2 /* OneTimeSignUpFeeEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420741DB1DF1E265006CFCE2 /* OneTimeSignUpFeeEditorViewController.swift */; };
 		4211D8BC1DB7288E0092F7C5 /* Membership.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8BB1DB7288E0092F7C5 /* Membership.swift */; };
 		4211D8C01DB7A96A0092F7C5 /* MenuItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8BF1DB7A96A0092F7C5 /* MenuItemViewModel.swift */; };
 		4211D8C21DB7AA3C0092F7C5 /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211D8C11DB7AA3C0092F7C5 /* MenuItemCell.swift */; };
@@ -203,6 +211,14 @@
 		420741C11DEE1643006CFCE2 /* PlanFeaturesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanFeaturesCell.swift; path = Plans/PlanFeaturesCell.swift; sourceTree = "<group>"; };
 		420741C31DEE583C006CFCE2 /* PlanFeaturesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanFeaturesViewModel.swift; path = Plans/PlanFeaturesViewModel.swift; sourceTree = "<group>"; };
 		420741C51DEE636A006CFCE2 /* TextEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextEditorViewController.swift; path = Plans/TextEditorViewController.swift; sourceTree = "<group>"; };
+		420741CD1DF1C053006CFCE2 /* PlanNameViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanNameViewModel.swift; path = Plans/PlanNameViewModel.swift; sourceTree = "<group>"; };
+		420741CF1DF1C06B006CFCE2 /* PlanNameCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanNameCell.swift; sourceTree = "<group>"; };
+		420741D11DF1C88C006CFCE2 /* PlanSignUpFeeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanSignUpFeeViewModel.swift; path = Plans/PlanSignUpFeeViewModel.swift; sourceTree = "<group>"; };
+		420741D31DF1C8B2006CFCE2 /* PlanAmountViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanAmountViewModel.swift; path = Plans/PlanAmountViewModel.swift; sourceTree = "<group>"; };
+		420741D51DF1C8EB006CFCE2 /* PlanSignUpFeeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanSignUpFeeCell.swift; path = Plans/PlanSignUpFeeCell.swift; sourceTree = "<group>"; };
+		420741D71DF1C902006CFCE2 /* PlanAmountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanAmountCell.swift; sourceTree = "<group>"; };
+		420741D91DF1D09C006CFCE2 /* PlanAmountEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanAmountEditorViewController.swift; path = Plans/PlanAmountEditorViewController.swift; sourceTree = "<group>"; };
+		420741DB1DF1E265006CFCE2 /* OneTimeSignUpFeeEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneTimeSignUpFeeEditorViewController.swift; sourceTree = "<group>"; };
 		4211D8BB1DB7288E0092F7C5 /* Membership.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Membership.swift; path = Models/Membership.swift; sourceTree = "<group>"; };
 		4211D8BF1DB7A96A0092F7C5 /* MenuItemViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuItemViewModel.swift; path = "View Models/MenuItemViewModel.swift"; sourceTree = "<group>"; };
 		4211D8C11DB7AA3C0092F7C5 /* MenuItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuItemCell.swift; path = Menu/MenuItemCell.swift; sourceTree = "<group>"; };
@@ -506,6 +522,8 @@
 				422537251DB99693004B33D8 /* CancelSubscriptionViewController.swift */,
 				4253B67B1DC02A5300A93E98 /* PlansViewController.swift */,
 				420741C51DEE636A006CFCE2 /* TextEditorViewController.swift */,
+				420741D91DF1D09C006CFCE2 /* PlanAmountEditorViewController.swift */,
+				420741DB1DF1E265006CFCE2 /* OneTimeSignUpFeeEditorViewController.swift */,
 			);
 			name = Plans;
 			sourceTree = "<group>";
@@ -735,6 +753,9 @@
 				4275F70D1DC18A6E00E0FF7B /* PlanProfileHeaderCell.swift */,
 				4275F71C1DC27B8100E0FF7B /* PlanTermsOfServiceCell.swift */,
 				4275F7161DC1AE7300E0FF7B /* PlanPaymentDetailsCell.swift */,
+				420741CF1DF1C06B006CFCE2 /* PlanNameCell.swift */,
+				420741D51DF1C8EB006CFCE2 /* PlanSignUpFeeCell.swift */,
+				420741D71DF1C902006CFCE2 /* PlanAmountCell.swift */,
 				4275F71A1DC2775600E0FF7B /* PlanDescriptionCell.swift */,
 				420741C11DEE1643006CFCE2 /* PlanFeaturesCell.swift */,
 				4275F7261DC27EC800E0FF7B /* PlanFeatureCell.swift */,
@@ -751,6 +772,9 @@
 			children = (
 				4275F70F1DC18A9800E0FF7B /* PlanProfileHeaderViewModel.swift */,
 				4275F7141DC1AD9200E0FF7B /* PlanPaymentDetailsViewModel.swift */,
+				420741CD1DF1C053006CFCE2 /* PlanNameViewModel.swift */,
+				420741D11DF1C88C006CFCE2 /* PlanSignUpFeeViewModel.swift */,
+				420741D31DF1C8B2006CFCE2 /* PlanAmountViewModel.swift */,
 				4275F7181DC1AE9800E0FF7B /* PlanDescriptionViewModel.swift */,
 				4275F71E1DC27BA400E0FF7B /* PlanTermsOfServiceViewModel.swift */,
 				420741C31DEE583C006CFCE2 /* PlanFeaturesViewModel.swift */,
@@ -992,7 +1016,7 @@
 					4240B74A1DA44671000D137E = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 5K56Y8ABUA;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0810;
 						SystemCapabilities = {
 							com.apple.SafariKeychain = {
 								enabled = 1;
@@ -1230,6 +1254,7 @@
 				4268416A1DA86D0E00A2BFF8 /* TextDecorator.swift in Sources */,
 				4268416C1DA86D5A00A2BFF8 /* MemberViewModel.swift in Sources */,
 				4275F7301DC2999900E0FF7B /* PlanActivityViewModel.swift in Sources */,
+				420741DC1DF1E265006CFCE2 /* OneTimeSignUpFeeEditorViewController.swift in Sources */,
 				4275F7211DC27BC800E0FF7B /* PlanFeatureViewModel.swift in Sources */,
 				422537281DBA5879004B33D8 /* MemberEmptyStateCell.swift in Sources */,
 				425013B31DAFCA4300ED21B1 /* UIViewController.swift in Sources */,
@@ -1282,11 +1307,13 @@
 				4211D8CC1DB866500092F7C5 /* ProfileHeaderCell.swift in Sources */,
 				429F62EC1DA6DD8800C3F54E /* UIColorTheme.swift in Sources */,
 				426841501DA7A8D400A2BFF8 /* OneTimePaymentViewController.swift in Sources */,
+				420741D81DF1C902006CFCE2 /* PlanAmountCell.swift in Sources */,
 				426841551DA7DDB900A2BFF8 /* MenuViewController.swift in Sources */,
 				422537321DBA8D64004B33D8 /* Account.swift in Sources */,
 				429F63091DA72B6800C3F54E /* CreatePlanViewController.swift in Sources */,
 				4253B65F1DBBCB6E00A93E98 /* PaymentHistoryEmptyStateCell.swift in Sources */,
 				42F08C371DAC34E800D5D4E3 /* ISO8601ExtendedDateTransform.swift in Sources */,
+				420741D61DF1C8EB006CFCE2 /* PlanSignUpFeeCell.swift in Sources */,
 				4253B6591DBBAC6100A93E98 /* SubscriptionEmptyStateViewModel.swift in Sources */,
 				4275F7101DC18A9800E0FF7B /* PlanProfileHeaderViewModel.swift in Sources */,
 				420741C01DEE10F2006CFCE2 /* NewPlanProfileHeaderCell.swift in Sources */,
@@ -1324,6 +1351,7 @@
 				4255B3FC1DAE9AC5008DECAC /* EditProfilePhotoView.swift in Sources */,
 				42F08C401DAC693E00D5D4E3 /* PaymentCard.swift in Sources */,
 				422537131DB9135C004B33D8 /* MessagesViewModel.swift in Sources */,
+				420741CE1DF1C053006CFCE2 /* PlanNameViewModel.swift in Sources */,
 				426841731DA875CB00A2BFF8 /* RecentTransactionViewModel.swift in Sources */,
 				42BD76831DDAAAC40017EC93 /* MessagesApiManager.swift in Sources */,
 				429F62FF1DA6E8E800C3F54E /* LoginViewController.swift in Sources */,
@@ -1332,6 +1360,8 @@
 				422537111DB91347004B33D8 /* MessagesCell.swift in Sources */,
 				42296D8B1DE0EF0800F90818 /* CurrentPlanCell.swift in Sources */,
 				42F08C3C1DAC5EE600D5D4E3 /* ProfileViewController.swift in Sources */,
+				420741DA1DF1D09C006CFCE2 /* PlanAmountEditorViewController.swift in Sources */,
+				420741D41DF1C8B2006CFCE2 /* PlanAmountViewModel.swift in Sources */,
 				42F08C2B1DABBDA100D5D4E3 /* ApiManager.swift in Sources */,
 				42330B941DB3D5B5003BDDEC /* PaymentCardViewModel.swift in Sources */,
 				420741BE1DEE109D006CFCE2 /* NewPlanProfileHeaderViewModel.swift in Sources */,
@@ -1339,6 +1369,8 @@
 				422537261DB99693004B33D8 /* CancelSubscriptionViewController.swift in Sources */,
 				426841711DA875B100A2BFF8 /* RecentTransactionsCell.swift in Sources */,
 				424D97DD1DAD233500C8B674 /* PlanProfileViewController.swift in Sources */,
+				420741D21DF1C88C006CFCE2 /* PlanSignUpFeeViewModel.swift in Sources */,
+				420741D01DF1C06B006CFCE2 /* PlanNameCell.swift in Sources */,
 				424D97DB1DAD198B00C8B674 /* PlanViewModel.swift in Sources */,
 				425013BA1DB08C0D00ED21B1 /* ImportPlanTableViewCell.swift in Sources */,
 			);
@@ -1489,7 +1521,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOS";
 				PRODUCT_NAME = MemberMoose;
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 3.0.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1511,7 +1543,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOS";
 				PRODUCT_NAME = MemberMoose;
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 3.0.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1527,6 +1559,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0.1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MemberMoose.app/MemberMoose";
 			};
 			name = Debug;
@@ -1542,6 +1575,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0.1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MemberMoose.app/MemberMoose";
 			};
 			name = Release;
@@ -1554,6 +1588,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOSUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0.1;
 				TEST_TARGET_NAME = "MemberMoose-iOS";
 			};
 			name = Debug;
@@ -1566,6 +1601,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOSUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0.1;
 				TEST_TARGET_NAME = "MemberMoose-iOS";
 			};
 			name = Release;

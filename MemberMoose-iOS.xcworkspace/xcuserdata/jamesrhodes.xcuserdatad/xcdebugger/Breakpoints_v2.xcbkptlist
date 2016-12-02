@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MemberMoose-iOS/Main/Members/PlanProfileViewController.swift"
-            timestampString = "502209955.557305"
+            timestampString = "502393158.57597"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "426"
-            endingLineNumber = "426"
+            startingLineNumber = "433"
+            endingLineNumber = "433"
             landmarkName = "buildDataSet()"
             landmarkType = "7">
             <Locations>
@@ -90,12 +90,12 @@
                   moduleName = "MemberMoose"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jamesrhodes/Desktop/MemberMoose-iOS/MemberMoose-iOS/Main/Members/PlanProfileViewController.swift"
-                  timestampString = "502211904.106928"
+                  timestampString = "502393366.139426"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "426"
-                  endingLineNumber = "426"
-                  offsetFromSymbolStart = "3448">
+                  startingLineNumber = "433"
+                  endingLineNumber = "433"
+                  offsetFromSymbolStart = "3487">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -105,11 +105,11 @@
                   moduleName = "MemberMoose"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jamesrhodes/Desktop/MemberMoose-iOS/MemberMoose-iOS/Main/Members/PlanProfileViewController.swift"
-                  timestampString = "502211904.108199"
+                  timestampString = "502393366.140671"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "426"
-                  endingLineNumber = "426"
+                  startingLineNumber = "433"
+                  endingLineNumber = "433"
                   offsetFromSymbolStart = "18">
                </Location>
             </Locations>
@@ -138,7 +138,7 @@
                   moduleName = "MemberMoose"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jamesrhodes/Desktop/MemberMoose-iOS/MemberMoose-iOS/Join/ConnectStripeViewController.swift"
-                  timestampString = "502211904.110975"
+                  timestampString = "502393366.144225"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "255"
@@ -153,7 +153,7 @@
                   moduleName = "MemberMoose"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jamesrhodes/Desktop/MemberMoose-iOS/MemberMoose-iOS/Join/ConnectStripeViewController.swift"
-                  timestampString = "502211904.1129"
+                  timestampString = "502393366.145964"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "255"
@@ -186,7 +186,7 @@
                   moduleName = "MemberMoose"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jamesrhodes/Desktop/MemberMoose-iOS/MemberMoose-iOS/Main/MembersViewController.swift"
-                  timestampString = "502211904.115593"
+                  timestampString = "502393366.149175"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "728"
@@ -201,7 +201,7 @@
                   moduleName = "MemberMoose"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jamesrhodes/Desktop/MemberMoose-iOS/MemberMoose-iOS/Main/MembersViewController.swift"
-                  timestampString = "502211904.117086"
+                  timestampString = "502393366.1505"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "729"
@@ -346,11 +346,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MemberMoose-iOS/Main/Members/PlanProfileViewController.swift"
-            timestampString = "502209955.557305"
+            timestampString = "502393347.503988"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "481"
-            endingLineNumber = "481"
+            startingLineNumber = "492"
+            endingLineNumber = "492"
             landmarkName = "addPlanClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -361,13 +361,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MemberMoose-iOS/Main/Members/PlanProfileViewController.swift"
-            timestampString = "502210815.699005"
+            filePath = "MemberMoose-iOS/Managers/ApiManager.swift"
+            timestampString = "502392530.283879"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "641"
-            endingLineNumber = "641"
-            landmarkName = "didUpdatePlanDescription(text:)"
+            startingLineNumber = "696"
+            endingLineNumber = "696"
+            landmarkName = "updatePlan(_:success:failure:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -378,7 +378,39 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MemberMoose-iOS/Managers/ApiManager.swift"
-            timestampString = "502212287.954174"
+            timestampString = "502392530.283879"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
+            landmarkName = "init(plan:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MemberMoose-iOS/Managers/ApiManager.swift"
+            timestampString = "502392530.283879"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
+            landmarkName = "parameterize()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MemberMoose-iOS/Managers/ApiManager.swift"
+            timestampString = "502392530.283879"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "694"
@@ -393,13 +425,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MemberMoose-iOS/Managers/ApiManager.swift"
-            timestampString = "502212287.954174"
+            filePath = "MemberMoose-iOS/Plans/PlanAmountEditorViewController.swift"
+            timestampString = "502391147.793777"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
-            landmarkName = "init(plan:)"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
+            landmarkName = "saveClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -409,29 +441,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MemberMoose-iOS/Managers/ApiManager.swift"
-            timestampString = "502212287.954174"
+            filePath = "MemberMoose-iOS/Main/Members/PlanProfileViewController.swift"
+            timestampString = "502393364.636396"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
-            landmarkName = "parameterize()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MemberMoose-iOS/Managers/ApiManager.swift"
-            timestampString = "502212287.954174"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "692"
-            endingLineNumber = "692"
-            landmarkName = "updatePlan(_:success:failure:)"
+            startingLineNumber = "471"
+            endingLineNumber = "471"
+            landmarkName = "scrollViewDidScroll(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -15,6 +15,9 @@ class PlanProfileViewController: UIViewController {
     fileprivate let profileCellIdentifier           = "PlanProfileHeaderCellIdentifier"
     fileprivate let newProfileCellIdentifier           = "NewPlanProfileHeaderCellIdentifier"
     fileprivate let planPaymentCellIdentifier       = "PlanPaymentDetailsCellIdentifier"
+    fileprivate let planNameCellIdentifier   = "PlanNameCellIdentifier"
+    fileprivate let planSignUpFeeCellIdentifier   = "PlanSignUpFeeCellIdentifier"
+    fileprivate let planAmountCellIdentifier      = "PlanAmountCellIdentifier"
     fileprivate let planDescriptionCellIdentifier   = "PlanDescriptionCellIdentifier"
     fileprivate let planFeaturesCellIdentifier       = "PlanFeaturesCellIdentifier"
     fileprivate let planTermsOfServiceCellIdentifier = "PlanTermsOfServiceCellIdentifier"
@@ -136,7 +139,10 @@ class PlanProfileViewController: UIViewController {
         
         _tableView.register(PlanProfileHeaderCell.self, forCellReuseIdentifier: self.profileCellIdentifier)
         _tableView.register(NewPlanProfileHeaderCell.self, forCellReuseIdentifier: self.newProfileCellIdentifier)
+        _tableView.register(PlanSignUpFeeCell.self, forCellReuseIdentifier: self.planSignUpFeeCellIdentifier)
+        _tableView.register(PlanAmountCell.self, forCellReuseIdentifier: self.planAmountCellIdentifier)
         _tableView.register(PlanPaymentDetailsCell.self, forCellReuseIdentifier: self.planPaymentCellIdentifier)
+        _tableView.register(PlanNameCell.self, forCellReuseIdentifier: self.planNameCellIdentifier)
         _tableView.register(PlanDescriptionCell.self, forCellReuseIdentifier: self.planDescriptionCellIdentifier)
         _tableView.register(PlanFeaturesCell.self, forCellReuseIdentifier: self.planFeaturesCellIdentifier)
         _tableView.register(PlanTermsOfServiceCell.self, forCellReuseIdentifier: self.planTermsOfServiceCellIdentifier)
@@ -382,26 +388,27 @@ class PlanProfileViewController: UIViewController {
         switch planNavigationState {
         case .details:
             
-            let planPaymentDetailsViewModel = PlanPaymentDetailsViewModel(plan: plan)
-            items.append([planPaymentDetailsViewModel])
+            let planNameViewModel = PlanNameViewModel(plan: plan)
+            planNameViewModel.planNameDelegate = self
             
+            items.append([planNameViewModel])
+            
+            let planSignUpFeeViewModel = PlanSignUpFeeViewModel(plan: plan)
+            planSignUpFeeViewModel.planSignUpFeeDelegate = self
+            
+            items.append([planSignUpFeeViewModel])
+            
+            let planAmountView = PlanAmountViewModel(plan: plan)
+            planAmountView.planAmountDelegate = self
+            
+            items.append([planAmountView])
+
             let planDescriptionViewModel = PlanDescriptionViewModel(plan: plan)
             planDescriptionViewModel.planDescriptionDelegate = self
             
             items.append([planDescriptionViewModel])
             
-            let features = ["Meeting room for presentations, group meetings, or just additional space to work",
-                            "Storage areas are available for $15-$25/month",
-                            "Rooftop wifi garden with tables & seating during warm weather",
-                            "Excellent coffee from Blanchard's coffee",
-                            "Phone booth for step in step out privacy",
-                            "Outlets at every seat",
-                            "A variety of classes and events for professional development, education, and collaboration",
-                            "Unlimited high-speed Wi-Fi internet connection",
-                            "Clean, bright, beautiful space designed and built to encourage collaboration",
-                            "Clean, bright, beautiful space designed and built to encourage collaboration"
-            ]
-            let planFeaturesViewModel = PlanFeaturesViewModel(features: features)
+            let planFeaturesViewModel = PlanFeaturesViewModel(plan: plan)
             planFeaturesViewModel.planFeaturesDelegate = self
             
             items.append([planFeaturesViewModel])
@@ -461,6 +468,10 @@ class PlanProfileViewController: UIViewController {
         dataSource = items
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView != tableView {
+            return
+        }
+        
         let yOffset = scrollView.contentOffset.y
         handleNavHeaderScrollingWithOffset(yOffset)
     }
@@ -636,9 +647,36 @@ extension PlanProfileViewController: PlanFeaturesCellDelegate {
         navigationController?.pushViewController(textEditorViewController, animated: true)
     }
 }
+extension PlanProfileViewController: PlanAmountDelegate {
+    func didUpdatePlanAmount(text: String) {
+        plan.amount = Double(text)
+        
+        buildDataSet()
+        
+        savePlan()
+    }
+}
+extension PlanProfileViewController: PlanSignUpFeeDelegate {
+    func didUpdateSignUpFee(text: String) {
+        plan.oneTimeAmount = Double(text)
+        
+        buildDataSet()
+        
+        savePlan()
+    }
+}
 extension PlanProfileViewController: PlanDescriptionDelegate {
     func didUpdatePlanDescription(text: String) {
         plan.description = text
+        
+        buildDataSet()
+        
+        savePlan()
+    }
+}
+extension PlanProfileViewController: PlanNameDelegate {
+    func didUpdatePlanName(text: String) {
+        plan.name = text
         
         buildDataSet()
         

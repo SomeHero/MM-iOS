@@ -123,6 +123,7 @@ public struct CreatePlan {
         let parameters: [String: AnyObject] = [
             "name": plan.name as AnyObject,
             "description": plan.description as AnyObject,
+            "one_time_amount": plan.oneTimeAmount as AnyObject,
             "amount": plan.amount as AnyObject,
             "interval": plan.interval as AnyObject,
             "interval_count": plan.intervalCount as AnyObject,
@@ -146,6 +147,7 @@ public struct UpdatePlan {
             "reference_id": plan.planId as AnyObject,
             "name": plan.name as AnyObject,
             "description": plan.description as AnyObject,
+            "one_time_amount": plan.oneTimeAmount as AnyObject,
             "amount": plan.amount as AnyObject,
             "interval": plan.interval as AnyObject,
             "interval_count": plan.intervalCount as AnyObject,
