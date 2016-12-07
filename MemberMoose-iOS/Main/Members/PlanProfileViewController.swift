@@ -21,6 +21,7 @@ class PlanProfileViewController: UIViewController {
     fileprivate let newProfileCellIdentifier           = "NewPlanProfileHeaderCellIdentifier"
     fileprivate let planPaymentCellIdentifier       = "PlanPaymentDetailsCellIdentifier"
     fileprivate let planNameCellIdentifier   = "PlanNameCellIdentifier"
+    fileprivate let freeTrialPeriodCellIdentifier   = "FreeTrialPeriodCellIdentifier"
     fileprivate let planSignUpFeeCellIdentifier   = "PlanSignUpFeeCellIdentifier"
     fileprivate let planAmountCellIdentifier      = "PlanAmountCellIdentifier"
     fileprivate let planDescriptionCellIdentifier   = "PlanDescriptionCellIdentifier"
@@ -157,6 +158,7 @@ class PlanProfileViewController: UIViewController {
         _tableView.register(PlanPaymentDetailsCell.self, forCellReuseIdentifier: self.planPaymentCellIdentifier)
         _tableView.register(PlanNameCell.self, forCellReuseIdentifier: self.planNameCellIdentifier)
         _tableView.register(PlanDescriptionCell.self, forCellReuseIdentifier: self.planDescriptionCellIdentifier)
+        _tableView.register(FreeTrialPeriodCell.self, forCellReuseIdentifier    : self.freeTrialPeriodCellIdentifier)
         _tableView.register(PlanFeaturesCell.self, forCellReuseIdentifier: self.planFeaturesCellIdentifier)
         _tableView.register(AddPlanFeatureCell.self, forCellReuseIdentifier: self.addPlanFeaturesCellIdentifier)
         _tableView.register(PlanTermsOfServiceCell.self, forCellReuseIdentifier: self.planTermsOfServiceCellIdentifier)
@@ -398,6 +400,11 @@ class PlanProfileViewController: UIViewController {
             
             items.append([planAmountView])
 
+            let planFreeTrialDaysViewModel = FreeTrialPeriodViewModel(plan: plan)
+            planFreeTrialDaysViewModel.freeTrialPeriodDelegate = self
+            
+            items.append([planFreeTrialDaysViewModel])
+            
             let planDescriptionViewModel = PlanDescriptionViewModel(plan: plan)
             planDescriptionViewModel.planDescriptionDelegate = self
               
@@ -751,6 +758,15 @@ extension PlanProfileViewController: AddPlanFeatureDelegate {
 extension PlanProfileViewController: PlanFeatureDelegate {
     func didUpdatePlanFeature(text: String, index: Int) {
         plan.features[index] = text
+        
+        buildDataSet()
+        
+        let _ = navigationController?.popViewController(animated: true)
+    }
+}
+extension PlanProfileViewController: FreeTrialPeriodDelegate {
+    func didUpdateFreeTrialPeriod(days: Int) {
+        plan.trialPeriodDays = days
         
         buildDataSet()
         

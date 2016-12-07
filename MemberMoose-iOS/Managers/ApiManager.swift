@@ -362,7 +362,7 @@ open class ApiManager {
             }
         },
         to: urlString,
-        method: .post,
+        method: .put,
         encodingCompletion: {
             encodingResult in
             

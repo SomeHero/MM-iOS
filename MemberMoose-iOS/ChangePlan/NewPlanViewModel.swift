@@ -22,7 +22,7 @@ class NewPlanViewModel: DataSourceItemProtocol {
         self.plan = plan
         self.planName = plan.name
         if let amount = plan.amount, let interval = plan.interval {
-            self.planAmount = "\(USD(amount/100).description)/\(interval)"
+            self.planAmount = "\(USD(amount).description)/\(interval)"
         } else {
             self.planAmount = "Amount not set"
         }

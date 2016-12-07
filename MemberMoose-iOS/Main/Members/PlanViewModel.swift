@@ -26,7 +26,7 @@ class PlanViewModel: DataSourceItemProtocol {
         planId = plan.id
         planName = plan.name
         if let amount = plan.amount {
-            self.planAmount = "\(USD(amount/100).description)"
+            self.planAmount = "\(USD(amount).description)"
         } else {
             self.planAmount = "Amount not set"
         }

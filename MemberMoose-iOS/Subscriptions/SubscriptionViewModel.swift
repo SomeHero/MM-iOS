@@ -26,7 +26,7 @@ class SubscriptionViewModel:DataSourceItemProtocol {
     init(subscription: Subscription, subscriptionDelegate: SubscriptionDelegate? = nil) {
         self.planName = subscription.plan.name
         if let amount = subscription.plan.amount, let interval = subscription.plan.interval {
-            self.planAmount = "\(USD(amount/100).description)/\(interval)"
+            self.planAmount = "\(USD(amount).description)/\(interval)"
         } else {
             self.planAmount = "Amount not set"
         }
