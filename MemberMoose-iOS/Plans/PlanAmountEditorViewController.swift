@@ -16,9 +16,9 @@ class PlanAmountEditorViewController: UIViewController {
     var activeField: UITextField?
     
     private var amount: Double
-    private var interval: String
+    var interval:RecurringInterval?
     weak var planAmountEditorDelegate: PlanAmountEditorDelegate?
-    
+
     fileprivate lazy var scrollView: UIScrollView = {
         let _scroll = UIScrollView()
         self.view.addSubview(_scroll)
@@ -49,12 +49,21 @@ class PlanAmountEditorViewController: UIViewController {
         _textField.configure("", placeholder: "Recurring Interval", tag: 101)
         _textField.textField.autocorrectionType = .no
         _textField.textField.autocapitalizationType = .none
+        _textField.textField.inputView = self.intervalPicker
+        _textField.textField.clearButtonMode = .never
         self.configureTextField(_textField.textField)
         
         //_textField.textField.addTarget(self, action: #selector(PlanAmountEditorViewController.validateForm), for: UIControlEvents.editingChanged)
         return _textField
     }()
-    init(title: String, amount: Double, interval: String) {
+    fileprivate lazy var intervalPicker: UIPickerView = {
+        let _picker = UIPickerView()
+        _picker.delegate = self
+        _picker.dataSource = self
+        
+        return _picker
+    }()
+    init(title: String, amount: Double, interval: RecurringInterval?) {
         self.amount = amount
         self.interval = interval
         
@@ -70,7 +79,7 @@ class PlanAmountEditorViewController: UIViewController {
         super.viewDidLoad()
         
         amountTextField.textField.text = USD(amount).amount.stringValue
-        intervalTextField.textField.text = interval
+        intervalTextField.textField.text = interval?.description
         
         view.backgroundColor = .white
         
@@ -125,7 +134,10 @@ class PlanAmountEditorViewController: UIViewController {
         let _ = navigationController?.popViewController(animated: true)
     }
     func saveClicked(_ sender: UIButton) {
-        planAmountEditorDelegate?.didSubmitAmount(amount: amountTextField.textField.text!, interval: .month)
+        guard let recurringInterval = interval else {
+            return
+        }
+        planAmountEditorDelegate?.didSubmitAmount(amount: amountTextField.textField.text!, interval: recurringInterval)
     }
 }
 extension PlanAmountEditorViewController: UITextFieldDelegate {
@@ -193,6 +205,29 @@ extension PlanAmountEditorViewController : InputNavigationDelegate {
             let isFirstItem = activeField == amountTextField.textField
             let previousButtonIndex = KeyboardDecorator.previousIndex
             items[previousButtonIndex].isEnabled = !isFirstItem
+        }
+    }
+}
+extension PlanAmountEditorViewController: UIPickerViewDataSource {
+    @available(iOS 2.0, *)
+    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return 4
+    }
+}
+extension PlanAmountEditorViewController: UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return RecurringInterval(rawValue: row)?.description
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if let recurringInterval = RecurringInterval(rawValue: row) {
+            interval = recurringInterval
+            intervalTextField.textField.text = recurringInterval.description
+            
         }
     }
 }

@@ -30,7 +30,7 @@ class PlanViewModel: DataSourceItemProtocol {
         } else {
             self.planAmount = "Amount not set"
         }
-        interval = plan.interval?.rawValue
+        interval = plan.interval?.description
         subscribersCount = plan.memberCount
     }
     

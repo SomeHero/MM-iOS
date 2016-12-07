@@ -19,13 +19,15 @@ class PlanAmountViewModel:DataSourceItemProtocol {
     var cellClass: UITableViewCell.Type = PlanAmountCell.self
     
     var amount: Double?
-    let interval: String?
+    var interval: RecurringInterval?
     
     init(plan: Plan) {
         if let planAmount = plan.amount {
             self.amount = planAmount
         }
-        interval = plan.interval?.rawValue
+        if let recurringInterval = plan.interval {
+            interval = recurringInterval
+        }
     }
     @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? PlanAmountCell else {
@@ -42,7 +44,7 @@ class PlanAmountViewModel:DataSourceItemProtocol {
         if let amount = amount {
             text = amount
         }
-        let planAmountEditorViewController = PlanAmountEditorViewController(title: "Recurring Amount", amount: text, interval: "Monthly")
+        let planAmountEditorViewController = PlanAmountEditorViewController(title: "Recurring Amount", amount: text, interval: interval)
         planAmountEditorViewController.planAmountEditorDelegate = self
         
         viewController.navigationController?.pushViewController(planAmountEditorViewController, animated: true)

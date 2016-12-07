@@ -9,13 +9,26 @@
 import Foundation
 import ObjectMapper
 
-//day, week, month or year
-enum RecurringInterval: String {
-    case day = "day"
-    case week = "weak"
-    case month = "month"
-    case year = "year"
+protocol Printable {
+    var description: String { get }
 }
+//day, week, month or year
+enum RecurringInterval: Int, Printable {
+    case day = 0
+    case week = 1
+    case month = 2
+    case year = 3
+    
+    var description: String {
+        switch self {
+        case .day: return "day"
+        case .week   : return "week"
+        case .month  : return "month"
+        case .year : return "year"
+        }
+    }
+}
+
 enum CurrencyCode: String {
     case USD = "USD"
 }
