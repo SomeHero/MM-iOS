@@ -1,5 +1,5 @@
 //
-//  PlanSignUpFeeCell.swift
+//  AddPlanFeatureCell.swift
 //  MemberMoose-iOS
 //
 //  Created by James Rhodes on 12/2/16.
@@ -7,9 +7,12 @@
 //
 
 import UIKit
-import Money
 
-class PlanSignUpFeeCell: UITableViewCell {
+class AddPlanFeatureCell: UITableViewCell {
+    static let cellID: String = "AddPlanFeaturesCellIdentifier"
+    var cellClass: UITableViewCell.Type = AddPlanFeatureCell.self
+    weak var planFeaturesCell: UITableViewCell?
+    
     fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
@@ -17,7 +20,7 @@ class PlanSignUpFeeCell: UITableViewCell {
         
         return _view
     }()
-    fileprivate lazy var amountLabel: UILabel = {
+    fileprivate lazy var featureLabel: UILabel = {
         let _label = UILabel()
         _label.font = UIFontTheme.Regular(.small)
         _label.textColor = UIColorTheme.PrimaryFont
@@ -64,28 +67,31 @@ class PlanSignUpFeeCell: UITableViewCell {
         containerView.snp.updateConstraints { (make) in
             make.edges.equalTo(contentView).inset(20)
         }
-        amountLabel.snp.updateConstraints { (make) in
+        featureLabel.snp.updateConstraints { (make) in
             make.leading.equalTo(containerView)
             make.top.bottom.equalTo(containerView)
         }
         editButton.snp.updateConstraints { (make) in
-            make.leading.equalTo(amountLabel.snp.trailing)
+            make.leading.equalTo(featureLabel.snp.trailing)
             make.trailing.equalTo(containerView)
             make.top.bottom.equalTo(containerView)
         }
+
+        planFeaturesCell?.updateConstraints()
+        
         super.updateConstraints()
     }
     override class var requiresConstraintBasedLayout : Bool {
         return true
     }
     func setupWith(_ viewModel: DataSourceItemProtocol) {
-        if let viewModel = viewModel as? PlanSignUpFeeViewModel {
-            if let amount = viewModel.signUpFee {
-                amountLabel.text = "\(USD(amount).description)"
-            } else {
-                amountLabel.text = "Set One-Time Signup Fee"
-            }
-            TextDecorator.applyTightLineHeight(toLabel: amountLabel)
+        if let viewModel = viewModel as? AddPlanFeatureViewModel {
+            featureLabel.text = "Add Feature"
+            planFeaturesCell = viewModel.planFeaturesCell
+            
+            viewModel.planFeaturesCell?.updateConstraints()
+            
+            TextDecorator.applyTightLineHeight(toLabel: featureLabel)
         }
     }
 }

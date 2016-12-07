@@ -123,9 +123,10 @@ public struct CreatePlan {
         let parameters: [String: AnyObject] = [
             "name": plan.name as AnyObject,
             "description": plan.description as AnyObject,
+            "features": plan.features as AnyObject,
             "one_time_amount": plan.oneTimeAmount as AnyObject,
             "amount": plan.amount as AnyObject,
-            "interval": plan.interval as AnyObject,
+            "interval": plan.interval?.rawValue as AnyObject,
             "interval_count": plan.intervalCount as AnyObject,
             "statement_descriptor": plan.statementDescriptor as AnyObject,
             "trial_period_days": plan.trialPeriodDays as AnyObject,
@@ -147,9 +148,10 @@ public struct UpdatePlan {
             "reference_id": plan.planId as AnyObject,
             "name": plan.name as AnyObject,
             "description": plan.description as AnyObject,
+            "features": plan.features as AnyObject,
             "one_time_amount": plan.oneTimeAmount as AnyObject,
             "amount": plan.amount as AnyObject,
-            "interval": plan.interval as AnyObject,
+            "interval": plan.interval?.rawValue as AnyObject,
             "interval_count": plan.intervalCount as AnyObject,
             "statement_descriptor": plan.statementDescriptor as AnyObject,
             "trial_period_days": plan.trialPeriodDays as AnyObject,
@@ -693,7 +695,11 @@ open class ApiManager {
     func updatePlan(_ updatePlan: UpdatePlan, success: @escaping (_ response: Plan) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let params = updatePlan.parameterize()
         
-        Alamofire.request(apiBaseUrl + "plans/\(updatePlan.plan.id!)", method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
+        guard let planId = updatePlan.plan.id else {
+            return
+        }
+        
+        Alamofire.request(apiBaseUrl + "plans/\(planId)", method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseObject { (response: DataResponse<Plan>) in
                 if let error = response.result.error {

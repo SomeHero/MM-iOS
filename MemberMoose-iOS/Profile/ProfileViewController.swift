@@ -30,6 +30,10 @@ enum ProfileType {
     case bull
     case calf
 }
+enum PlanProfileDisplayType {
+    case modally
+    case nonmodally
+}
 class ProfileViewController: UIViewController {
     fileprivate let user: User
     fileprivate let profileType: ProfileType
@@ -52,6 +56,7 @@ class ProfileViewController: UIViewController {
     fileprivate var membershipNavigationState: MembershipNavigationState = .members
     fileprivate var memberNavigationState: MemberNavigationState = .profile
     fileprivate let textInputBar = SLKTextInputbar()
+    fileprivate var planProfileDisplayType: PlanProfileDisplayType?
     
     weak var profileDelegate: ProfileDelegate?
     
@@ -673,10 +678,12 @@ class ProfileViewController: UIViewController {
     func addPlanClicked(_ sender: UIButton) {
         let plan = Plan()
         let viewController = PlanProfileViewController(plan: plan)
+        viewController.planProfileDelegate = self
         
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.isNavigationBarHidden = false
         
+        planProfileDisplayType = .modally
         present(navigationController, animated: true, completion: nil)
     }
     func addMemberClicked(_ sender: UIButton) {
@@ -735,7 +742,9 @@ extension ProfileViewController : UITableViewDelegate {
                 }
                 
                 let viewController = PlanProfileViewController(plan: viewModel.plan)
+                viewController.planProfileDelegate = self
                 
+                planProfileDisplayType = .nonmodally
                 navigationController?.pushViewController(viewController, animated: true)
             case .messages:
                 break;
@@ -1023,4 +1032,18 @@ extension ProfileViewController: ChangePlanDelegate {
         
         let _ = self.navigationController?.popViewController(animated: true)
     }
+}
+extension ProfileViewController: PlanProfileDelegate {
+    func didDismissPlanProfile() {
+        guard let planProfileDisplayType = planProfileDisplayType else {
+            return
+        }
+        
+        switch planProfileDisplayType {
+        case .modally:
+            dismiss(animated: true, completion: nil)
+        case .nonmodally:
+            let _ = navigationController?.popViewController(animated: true)
+        }
+   }
 }

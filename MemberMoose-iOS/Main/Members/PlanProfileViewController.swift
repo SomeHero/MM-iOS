@@ -10,7 +10,12 @@ import UIKit
 import SVProgressHUD
 import Presentr
 
+protocol PlanProfileDelegate: class {
+    func didDismissPlanProfile()
+}
 class PlanProfileViewController: UIViewController {
+    weak var planProfileDelegate: PlanProfileDelegate?
+    
     fileprivate let plan: Plan
     fileprivate let profileCellIdentifier           = "PlanProfileHeaderCellIdentifier"
     fileprivate let newProfileCellIdentifier           = "NewPlanProfileHeaderCellIdentifier"
@@ -20,6 +25,7 @@ class PlanProfileViewController: UIViewController {
     fileprivate let planAmountCellIdentifier      = "PlanAmountCellIdentifier"
     fileprivate let planDescriptionCellIdentifier   = "PlanDescriptionCellIdentifier"
     fileprivate let planFeaturesCellIdentifier       = "PlanFeaturesCellIdentifier"
+    fileprivate let addPlanFeaturesCellIdentifier       = "AddPlanFeaturesCellIdentifier"
     fileprivate let planTermsOfServiceCellIdentifier = "PlanTermsOfServiceCellIdentifier"
     fileprivate let planSubscriberEmptyStateCellIdentifier    = "PlanSubscriberEmptyStateCellIdentifier"
     fileprivate let planSubscriberCellIdentifier    = "PlanSubscriberCellIdentifier"
@@ -96,6 +102,17 @@ class PlanProfileViewController: UIViewController {
         
         return _label
     }()
+    fileprivate lazy var saveButton: UIButton = {
+        let _button = UIButton(type: UIButtonType.custom)
+        _button.backgroundColor = UIColorTheme.Primary
+        _button.setTitle("SAVE PLAN", for: UIControlState())
+        _button.setTitleColor(.white, for: UIControlState())
+        _button.addTarget(self, action: #selector(PlanProfileViewController.savePlanClicked(_:)), for: .touchUpInside)
+        
+        self.view.addSubview(_button)
+        
+        return _button
+    }()
     var dataSource: [[DataSourceItemProtocol]] = [] {
         didSet {
             tableView.reloadData()
@@ -103,12 +120,8 @@ class PlanProfileViewController: UIViewController {
     }
     fileprivate lazy var menuButton: UIButton = {
         let _button = UIButton()
-        if let navigationController = self.navigationController , navigationController.viewControllers.count > 1 {
-            _button.setImage(UIImage(named:"Back-Reverse"), for: UIControlState())
-        } else {
-            _button.setImage(UIImage(named:"Menu"), for: UIControlState())
-        }
-        _button.addTarget(self, action: #selector(ProfileViewController.backClicked(_:)), for: .touchUpInside)
+        _button.setImage(UIImage(named:"Back-Reverse"), for: UIControlState())
+        _button.addTarget(self, action: #selector(PlanProfileViewController.backClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
@@ -145,6 +158,7 @@ class PlanProfileViewController: UIViewController {
         _tableView.register(PlanNameCell.self, forCellReuseIdentifier: self.planNameCellIdentifier)
         _tableView.register(PlanDescriptionCell.self, forCellReuseIdentifier: self.planDescriptionCellIdentifier)
         _tableView.register(PlanFeaturesCell.self, forCellReuseIdentifier: self.planFeaturesCellIdentifier)
+        _tableView.register(AddPlanFeatureCell.self, forCellReuseIdentifier: self.addPlanFeaturesCellIdentifier)
         _tableView.register(PlanTermsOfServiceCell.self, forCellReuseIdentifier: self.planTermsOfServiceCellIdentifier)
         _tableView.register(PlanSubscriberCell.self, forCellReuseIdentifier: self.planSubscriberCellIdentifier)
         _tableView.register(PlanSubscriberEmptyStateCell.self, forCellReuseIdentifier: self.planSubscriberEmptyStateCellIdentifier)
@@ -152,28 +166,6 @@ class PlanProfileViewController: UIViewController {
         
         self.view.addSubview(_tableView)
         return _tableView
-    }()
-    fileprivate lazy var addMemberButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.custom)
-        _button.backgroundColor = UIColorTheme.Primary
-        _button.setTitle("ADD MEMBER", for: UIControlState())
-        _button.setTitleColor(.white, for: UIControlState())
-        _button.addTarget(self, action: #selector(ProfileViewController.addMemberClicked(_:)), for: .touchUpInside)
-        
-        self.view.addSubview(_button)
-        
-        return _button
-    }()
-    fileprivate lazy var addPlanButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.custom)
-        _button.backgroundColor = UIColorTheme.Primary
-        _button.setTitle("CREATE PLAN", for: UIControlState())
-        _button.setTitleColor(.white, for: UIControlState())
-        _button.addTarget(self, action: #selector(ProfileViewController.addPlanClicked(_:)), for: .touchUpInside)
-        
-        self.view.addSubview(_button)
-        
-        return _button
     }()
     fileprivate lazy var messageToolbarView: MessageToolbarView = {
         let _view = MessageToolbarView()
@@ -283,7 +275,12 @@ class PlanProfileViewController: UIViewController {
             make.height.width.equalTo(20)
         }
         tableView.snp.updateConstraints { (make) in
-            make.edges.equalTo(view)
+            make.top.leading.trailing.equalTo(view)
+        }
+        saveButton.snp.updateConstraints { (make) in
+            make.top.equalTo(tableView.snp.bottom)
+            make.leading.trailing.bottom.equalTo(view)
+            make.height.equalTo(60)
         }
         navHeader.snp.updateConstraints { (make) in
             make.top.equalTo(self.view)
@@ -304,58 +301,50 @@ class PlanProfileViewController: UIViewController {
             
             make.bottom.equalTo(self.navHeader.snp.bottom)
         }
-        addMemberButton.snp.updateConstraints { (make) in
-            make.leading.trailing.bottom.equalTo(view)
-            make.height.equalTo(60)
-        }
-        addPlanButton.snp.updateConstraints { (make) in
-            make.leading.trailing.bottom.equalTo(view)
-            make.height.equalTo(60)
-        }
-        switch planNavigationState {
-        case .subscribers:
-            var offset = 60
-            var tableViewOffset = 0
-            if hasMembers {
-                offset = 0
-                tableViewOffset = 60
-            }
-            addMemberButton.snp.updateConstraints { (make) in
-                make.bottom.equalTo(view.snp.bottom).offset(offset)
-            }
-            addPlanButton.snp.updateConstraints { (make) in
-                make.bottom.equalTo(view.snp.bottom).offset(60)
-            }
-            tableView.snp.updateConstraints { (make) in
-                make.bottom.equalTo(view).inset(tableViewOffset)
-            }
-        case .details:
-            var offset = 60
-            var tableViewOffset = 0
-            if hasPlans {
-                offset = 0
-                tableViewOffset = 60
-            }
-            addMemberButton.snp.updateConstraints({ (make) in
-                make.bottom.equalTo(view.snp.bottom).offset(60)
-            })
-            addPlanButton.snp.updateConstraints({ (make) in
-                make.bottom.equalTo(view.snp.bottom).offset(offset)
-            })
-            tableView.snp.updateConstraints { (make) in
-                make.bottom.equalTo(view).inset(tableViewOffset)
-            }
-        default:
-            addMemberButton.snp.updateConstraints { (make) in
-                make.bottom.equalTo(view.snp.bottom).offset(60)
-            }
-            addPlanButton.snp.updateConstraints { (make) in
-                make.bottom.equalTo(view.snp.bottom).offset(60)
-            }
-            tableView.snp.updateConstraints { (make) in
-                make.bottom.equalTo(view).inset(0)
-            }
-        }
+//        switch planNavigationState {
+//        case .subscribers:
+//            var offset = 60
+//            var tableViewOffset = 0
+//            if hasMembers {
+//                offset = 0
+//                tableViewOffset = 60
+//            }
+//            addMemberButton.snp.updateConstraints { (make) in
+//                make.bottom.equalTo(view.snp.bottom).offset(offset)
+//            }
+//            addPlanButton.snp.updateConstraints { (make) in
+//                make.bottom.equalTo(view.snp.bottom).offset(60)
+//            }
+//            tableView.snp.updateConstraints { (make) in
+//                make.bottom.equalTo(view).inset(tableViewOffset)
+//            }
+//        case .details:
+//            var offset = 60
+//            var tableViewOffset = 0
+//            if hasPlans {
+//                offset = 0
+//                tableViewOffset = 60
+//            }
+//            addMemberButton.snp.updateConstraints({ (make) in
+//                make.bottom.equalTo(view.snp.bottom).offset(60)
+//            })
+//            addPlanButton.snp.updateConstraints({ (make) in
+//                make.bottom.equalTo(view.snp.bottom).offset(offset)
+//            })
+//            tableView.snp.updateConstraints { (make) in
+//                make.bottom.equalTo(view).inset(tableViewOffset)
+//            }
+//        default:
+//            addMemberButton.snp.updateConstraints { (make) in
+//                make.bottom.equalTo(view.snp.bottom).offset(60)
+//            }
+//            addPlanButton.snp.updateConstraints { (make) in
+//                make.bottom.equalTo(view.snp.bottom).offset(60)
+//            }
+//            tableView.snp.updateConstraints { (make) in
+//                make.bottom.equalTo(view).inset(0)
+//            }
+//        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -369,10 +358,16 @@ class PlanProfileViewController: UIViewController {
         }
     }
     func backClicked(_ sender: UIButton) {
-        let _ = navigationController?.popViewController(animated: true)
+        planProfileDelegate?.didDismissPlanProfile()
     }
-    func editProfileClicked(_ button: UIButton) {
+    func savePlanClicked(_ button: UIButton) {
+        if let _ = plan.id {
+            savePlan()
+        } else {
+            plan.interval = .month
 
+            createPlan()
+        }
     }
     func buildDataSet() {
         var items: [[DataSourceItemProtocol]] = []
@@ -405,11 +400,14 @@ class PlanProfileViewController: UIViewController {
 
             let planDescriptionViewModel = PlanDescriptionViewModel(plan: plan)
             planDescriptionViewModel.planDescriptionDelegate = self
-            
+              
             items.append([planDescriptionViewModel])
             
             let planFeaturesViewModel = PlanFeaturesViewModel(plan: plan)
             planFeaturesViewModel.planFeaturesDelegate = self
+            planFeaturesViewModel.addPlanFeaturesDelegate = self
+            planFeaturesViewModel.planFeatureDelegate = self
+            planFeaturesViewModel.presentingViewController = self
             
             items.append([planFeaturesViewModel])
             
@@ -466,6 +464,35 @@ class PlanProfileViewController: UIViewController {
         }
         
         dataSource = items
+        validateForm()
+    }
+    func validateForm() {
+        guard let planName = plan.name else {
+            disableButton(saveButton)
+            
+            return
+        }
+        let planNameValid = Validator.isValidText(planName)
+        
+        guard let recurringAmount = plan.amount else {
+            disableButton(saveButton)
+            
+            return
+        }
+        let recurringAmountValid = true;// Validator.isValidEmail(emailAddress)
+        
+        guard let recurringInterval = plan.interval else {
+            disableButton(saveButton)
+            
+            return
+        }
+        let recurringIntervalValid = true
+        
+        if planNameValid && recurringAmountValid && recurringIntervalValid {
+            enableButton(saveButton)
+        } else {
+            disableButton(saveButton)
+        }
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView != tableView {
@@ -488,6 +515,7 @@ class PlanProfileViewController: UIViewController {
     }
     func addPlanClicked(_ sender: UIButton) {
         let viewController = PlanProfileViewController(plan: plan)
+        viewController.planProfileDelegate = self
         
         navigationController?.pushViewController(viewController, animated: true)
     }
@@ -495,6 +523,32 @@ class PlanProfileViewController: UIViewController {
         let viewController = SharePlanViewController()
         
         navigationController?.pushViewController(viewController, animated: true)
+    }
+    func createPlan() {
+        let createPlan = CreatePlan(plan: plan)
+        
+        SVProgressHUD.show()
+        
+        ApiManager.sharedInstance.createPlan(createPlan, success: { [weak self] (plan) in
+            SVProgressHUD.dismiss()
+            
+            guard let _self = self else {
+                return
+            }
+            
+            print("plan saved")
+            
+            _self.dismiss(animated: true, completion: nil)
+
+        }) { [weak self] (error, errorDictionary) in
+            SVProgressHUD.dismiss()
+            
+            guard let _self = self else {
+                return
+            }
+            
+            ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+        }
     }
     func savePlan() {
         let updatePlan = UpdatePlan(plan: plan)
@@ -511,6 +565,7 @@ class PlanProfileViewController: UIViewController {
             print("plan saved")
             
             let _ = _self.navigationController?.popViewController(animated: true)
+
         }) { [weak self] (error, errorDictionary) in
             SVProgressHUD.dismiss()
             
@@ -648,12 +703,13 @@ extension PlanProfileViewController: PlanFeaturesCellDelegate {
     }
 }
 extension PlanProfileViewController: PlanAmountDelegate {
-    func didUpdatePlanAmount(text: String) {
+    func didUpdatePlanAmount(text: String, interval: RecurringInterval) {
         plan.amount = Double(text)
+        plan.interval = interval
         
         buildDataSet()
         
-        savePlan()
+        let _ = navigationController?.popViewController(animated: true)
     }
 }
 extension PlanProfileViewController: PlanSignUpFeeDelegate {
@@ -662,7 +718,7 @@ extension PlanProfileViewController: PlanSignUpFeeDelegate {
         
         buildDataSet()
         
-        savePlan()
+        let _ = navigationController?.popViewController(animated: true)
     }
 }
 extension PlanProfileViewController: PlanDescriptionDelegate {
@@ -671,7 +727,7 @@ extension PlanProfileViewController: PlanDescriptionDelegate {
         
         buildDataSet()
         
-        savePlan()
+        let _ = navigationController?.popViewController(animated: true)
     }
 }
 extension PlanProfileViewController: PlanNameDelegate {
@@ -680,7 +736,25 @@ extension PlanProfileViewController: PlanNameDelegate {
         
         buildDataSet()
         
-        savePlan()
+        let _ = navigationController?.popViewController(animated: true)
+    }
+}
+extension PlanProfileViewController: AddPlanFeatureDelegate {
+    func didAddPlanFeature(text: String) {
+        plan.features.append(text)
+        
+        buildDataSet()
+        
+        let _ = navigationController?.popViewController(animated: true)
+    }
+}
+extension PlanProfileViewController: PlanFeatureDelegate {
+    func didUpdatePlanFeature(text: String, index: Int) {
+        plan.features[index] = text
+        
+        buildDataSet()
+        
+        let _ = navigationController?.popViewController(animated: true)
     }
 }
 extension PlanProfileViewController: PlanTermsOfServiceDelegate {
@@ -689,6 +763,11 @@ extension PlanProfileViewController: PlanTermsOfServiceDelegate {
         
         buildDataSet()
         
-        savePlan()
+        let _ = navigationController?.popViewController(animated: true)
+    }
+}
+extension PlanProfileViewController: PlanProfileDelegate {
+    func didDismissPlanProfile() {
+        dismiss(animated: true, completion: nil)
     }
 }

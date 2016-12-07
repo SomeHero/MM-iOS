@@ -13,7 +13,7 @@ class PlanHeaderView: UIView {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
         _label.textAlignment = .left
-        _label.font = UIFontTheme.Regular()
+        _label.font = UIFontTheme.SemiBold()
         
         self.addSubview(_label)
         

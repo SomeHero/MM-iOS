@@ -40,7 +40,7 @@ class PlanSignUpFeeViewModel:DataSourceItemProtocol {
         if let amount = signUpFee {
             text = amount
         }
-        let oneTimeSignUpFeeEditorViewController = OneTimeSignUpFeeEditorViewController(title: "Recurring Amount", amount: text)
+        let oneTimeSignUpFeeEditorViewController = OneTimeSignUpFeeEditorViewController(title: "One-Time Sign Up Fee", amount: text)
         oneTimeSignUpFeeEditorViewController.oneTimeSignUpFeeEditorDelegate = self
         
         viewController.navigationController?.pushViewController(oneTimeSignUpFeeEditorViewController, animated: true)

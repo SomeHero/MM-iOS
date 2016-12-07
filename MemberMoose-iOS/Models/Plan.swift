@@ -9,6 +9,13 @@
 import Foundation
 import ObjectMapper
 
+//day, week, month or year
+enum RecurringInterval: String {
+    case day = "day"
+    case week = "weak"
+    case month = "month"
+    case year = "year"
+}
 enum CurrencyCode: String {
     case USD = "USD"
 }
@@ -17,11 +24,11 @@ open class Plan: Mappable {
     var planId: String?
     var name: String?
     var description: String?
-    var features: [String]?
+    var features: [String] = []
     var oneTimeAmount: Double?
     var amount: Double?
     //public var currency: String!
-    var interval: String?
+    var interval: RecurringInterval?
     var intervalCount: Int = 00
     var statementDescriptor: String?
     var statementDescription: String?
@@ -48,7 +55,7 @@ open class Plan: Mappable {
         oneTimeAmount <- map["one_time_amount"]
         amount <- map["amount"]
         //currency <- map["currency"]
-        interval <- map["interval"]
+        interval <- (map["interval"], EnumTransform<RecurringInterval>())
         intervalCount <- map["interval_count"]
         statementDescriptor <- map["statement_descriptor"]
         statementDescription <- map["statement_description"]

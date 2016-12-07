@@ -14,6 +14,9 @@ class PlanFeaturesViewModel:DataSourceItemProtocol {
     
     let plan: Plan
     weak var planFeaturesDelegate: PlanFeaturesCellDelegate?
+    weak var planFeatureDelegate: PlanFeatureDelegate?
+    weak var addPlanFeaturesDelegate: AddPlanFeatureDelegate?
+    weak var presentingViewController: UIViewController?
     
     init(plan: Plan) {
         self.plan = plan
@@ -28,7 +31,9 @@ class PlanFeaturesViewModel:DataSourceItemProtocol {
         return cell
     }
     @objc func viewForHeader() -> UIView? {
-        let header = PlanHeaderView()
+        let header = PlanFeatureHeaderView()
+        header.addPlanFeatureDelegate = addPlanFeaturesDelegate
+        header.presentingViewController = presentingViewController
         header.setup("Features")
         
         return header

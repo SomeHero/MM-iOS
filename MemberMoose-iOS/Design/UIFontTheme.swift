@@ -19,7 +19,7 @@ struct UIFontTheme {
     }
     enum FontSize: CGFloat {
         case xTiny = 11
-        case tiny = 13
+        case tiny = 14
         case small = 16
         case `default` = 18
         case large = 20
@@ -44,6 +44,9 @@ struct UIFontTheme {
         return UIFont(name: FontName.Light.rawValue, size: size.rawValue)!
     }
     
+    static func SemiBold(_ size: FontSize = defaultSize) -> UIFont {
+        return UIFont(name: FontName.SemiBold.rawValue, size: size.rawValue)!
+    }
     static func Icon(_ size: FontSize = defaultSize) -> UIFont {
         return UIFont(name: FontName.Icon.rawValue, size: size.rawValue)!
     }

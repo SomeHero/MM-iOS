@@ -1,4 +1,4 @@
-//
+    //
 //  PlanFeatureViewModel.swift
 //  MemberMoose-iOS
 //
@@ -8,14 +8,22 @@
 
 import Foundation
 
+protocol PlanFeatureDelegate: class {
+    func didUpdatePlanFeature(text: String, index: Int)
+}
 class PlanFeatureViewModel:DataSourceItemProtocol {
+    weak var planFeatureDelegate: PlanFeatureDelegate?
+    weak var presentingViewController: UIViewController?
+    
     var cellID: String = "PlanFeatureCellIdentifier"
     var cellClass: UITableViewCell.Type = PlanFeatureCell.self
     
     let feature: String
+    let index: Int
     
-    init(feature: String) {
+    init(feature: String, index: Int) {
         self.feature = feature
+        self.index = index
     }
     @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? PlanFeatureCell else {
@@ -26,13 +34,21 @@ class PlanFeatureViewModel:DataSourceItemProtocol {
         
         return cell
     }
-    @objc func viewForHeader() -> UIView? {
-        let header = PlanHeaderView()
-        header.setup("Features")
+    @objc func didSelectItem(viewController: UIViewController) {
+        let textEditorViewController = TextEditorViewController(title: "Feature", text: feature)
+        textEditorViewController.textEditorDelegate = self
         
-        return header
+        viewController.navigationController?.pushViewController(textEditorViewController, animated: true)
+    }
+    @objc func viewForHeader() -> UIView? {
+        return nil
     }
     @objc func heightForHeader() -> CGFloat {
-        return 50
+        return 0
+    }
+}
+extension PlanFeatureViewModel: TextEditorDelegate {
+    func didSubmitText(text: String) {
+        planFeatureDelegate?.didUpdatePlanFeature(text: text, index: index)
     }
 }

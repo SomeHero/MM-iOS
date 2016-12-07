@@ -19,13 +19,26 @@ class PlanTermsOfServiceCell: UITableViewCell {
     }()
     fileprivate lazy var termsOfServiceLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.default)
+        _label.font = UIFontTheme.Regular(.small)
         _label.textColor = UIColorTheme.PrimaryFont
         _label.numberOfLines = 0
         
         self.containerView.addSubview(_label)
         
         return _label
+    }()
+    fileprivate lazy var editButton: UIButton = {
+        let _button = UIButton()
+        _button.titleLabel?.font = UIFont.fontAwesome(ofSize: 18)
+        _button.setTitleColor(UIColorTheme.PrimaryFont, for: .normal)
+        _button.setTitleColor(UIColorTheme.SecondaryFont, for: .highlighted)
+        _button.setTitle(String.fontAwesomeIcon(name: .pencil), for: .normal)
+        _button.backgroundColor = UIColor.clear
+        _button.isUserInteractionEnabled = false
+        
+        self.containerView.addSubview(_button)
+        
+        return _button
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
@@ -52,7 +65,12 @@ class PlanTermsOfServiceCell: UITableViewCell {
             make.edges.equalTo(contentView).inset(20)
         }
         termsOfServiceLabel.snp.updateConstraints { (make) in
-            make.leading.trailing.equalTo(containerView)
+            make.leading.equalTo(containerView)
+            make.top.bottom.equalTo(containerView)
+        }
+        editButton.snp.updateConstraints { (make) in
+            make.leading.equalTo(termsOfServiceLabel.snp.trailing)
+            make.trailing.equalTo(containerView)
             make.top.bottom.equalTo(containerView)
         }
         

@@ -10,7 +10,7 @@ import Foundation
 import Money
 
 protocol PlanAmountDelegate: class {
-    func didUpdatePlanAmount(text: String)
+    func didUpdatePlanAmount(text: String, interval: RecurringInterval)
 }
 class PlanAmountViewModel:DataSourceItemProtocol {
     weak var planAmountDelegate: PlanAmountDelegate?
@@ -25,7 +25,7 @@ class PlanAmountViewModel:DataSourceItemProtocol {
         if let planAmount = plan.amount {
             self.amount = planAmount
         }
-        interval = plan.interval
+        interval = plan.interval?.rawValue
     }
     @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? PlanAmountCell else {
@@ -58,7 +58,7 @@ class PlanAmountViewModel:DataSourceItemProtocol {
     }
 }
 extension PlanAmountViewModel: PlanAmountEditorDelegate {
-    func didSubmitAmount(amount: String, interval: String) {
-        planAmountDelegate?.didUpdatePlanAmount(text: amount)
+    func didSubmitAmount(amount: String, interval: RecurringInterval) {
+        planAmountDelegate?.didUpdatePlanAmount(text: amount, interval: interval)
     }
 }

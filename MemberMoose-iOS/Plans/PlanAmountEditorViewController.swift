@@ -10,7 +10,7 @@ import UIKit
 import Money
 
 protocol PlanAmountEditorDelegate: class {
-    func didSubmitAmount(amount: String, interval: String)
+    func didSubmitAmount(amount: String, interval: RecurringInterval)
 }
 class PlanAmountEditorViewController: UIViewController {
     var activeField: UITextField?
@@ -125,7 +125,7 @@ class PlanAmountEditorViewController: UIViewController {
         let _ = navigationController?.popViewController(animated: true)
     }
     func saveClicked(_ sender: UIButton) {
-        planAmountEditorDelegate?.didSubmitAmount(amount: amountTextField.textField.text!, interval: "Monthly")
+        planAmountEditorDelegate?.didSubmitAmount(amount: amountTextField.textField.text!, interval: .month)
     }
 }
 extension PlanAmountEditorViewController: UITextFieldDelegate {
