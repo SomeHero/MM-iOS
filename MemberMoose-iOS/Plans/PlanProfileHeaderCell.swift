@@ -9,6 +9,10 @@
 import UIKit
 
 class PlanProfileHeaderCell: UITableViewCell {
+    var avatar: UIImage?
+    weak var presentingViewController: UIViewController?
+    weak var planProfileHeaderViewModelDelegate: PlanProfileHeaderViewModelDelegate?
+    
     fileprivate lazy var topBackgroundView: UIView = {
         let _view = UIView()
         
@@ -27,16 +31,13 @@ class PlanProfileHeaderCell: UITableViewCell {
         
         return _view
     }()
-    fileprivate lazy var logo: UIImageView = {
-        let _imageView = UIImageView()
-        _imageView.layer.cornerRadius = 80 / 2
-        _imageView.clipsToBounds = true
-        _imageView.layer.borderColor = UIColor.white.cgColor
-        _imageView.layer.borderWidth = 2.0
+    fileprivate lazy var avatarView: EditProfilePhotoView = {
+        let _photoView = EditProfilePhotoView()
+        //_photoView.buttonTitle = "Upload Avatar"
+        _photoView.editPhotoButton.addTarget(self, action: #selector(PlanProfileHeaderCell.editPhotoClicked), for: .touchUpInside)
         
-        self.containerView.addSubview(_imageView)
-        
-        return _imageView
+        self.contentView.addSubview(_photoView)
+        return _photoView
     }()
     fileprivate lazy var headingLabel: UILabel = {
         let _label = UILabel()
@@ -88,13 +89,13 @@ class PlanProfileHeaderCell: UITableViewCell {
         containerView.snp.updateConstraints { (make) in
             make.edges.equalTo(contentView).inset(20)
         }
-        logo.snp.updateConstraints { (make) in
-            make.top.equalTo(containerView).inset(20)
+        avatarView.snp.updateConstraints { (make) in
+            make.top.equalTo(containerView)
+            make.leading.trailing.equalTo(containerView).inset(20)
             make.centerX.equalTo(containerView)
-            make.height.width.equalTo(80)
         }
         headingLabel.snp.updateConstraints { (make) in
-            make.top.equalTo(logo.snp.bottom).offset(20)
+            make.top.equalTo(avatarView.snp.bottom).offset(20)
             make.centerX.equalTo(containerView)
         }
         subHeadingLabel.snp.updateConstraints { (make) in
@@ -114,19 +115,40 @@ class PlanProfileHeaderCell: UITableViewCell {
     func setupWith(_ viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? PlanProfileHeaderViewModel {
             if let avatarImageUrl = viewModel.avatarImageUrl {
-                logo.kf.setImage(with: URL(string: avatarImageUrl)!,
+                avatarView.profilePhoto.kf.setImage(with: URL(string: avatarImageUrl)!,
                                         placeholder: UIImage(named: viewModel.avatar))
             } else {
-                logo.image = UIImage(named: viewModel.avatar)
+                avatarView.profilePhoto.image = UIImage(named: viewModel.avatar)
             }
             headingLabel.text = viewModel.planName
             subHeadingLabel.text = viewModel.membersCount
             planNavigation.delegate = viewModel.planNavigationDelegate
             planNavigation.setSelectedButton(viewModel.planNavigationState)
             planNavigation.bringSubview(toFront: containerView)
+            presentingViewController = viewModel.presentingViewController
+            planProfileHeaderViewModelDelegate = viewModel.planProfileHeaderViewModelDelegate
+            
+            self.bringSubview(toFront: avatarView)
             
             setNeedsUpdateConstraints()
             updateConstraintsIfNeeded()
         }
+    }
+    func editPhotoClicked() {
+        guard let presentingViewController = presentingViewController else {
+            return
+        }
+        ImagePicker.presentOn(presentingViewController) { [weak self] image in
+            if let image = image {
+                let orientedImage = UIImage.getRotatedImageFromImage(image)
+                
+                self?.addImage(orientedImage)
+            }
+        }
+    }
+    func addImage(_ image: UIImage) {
+        avatarView.profilePhoto.image = image
+        
+        planProfileHeaderViewModelDelegate?.didUpdatePlanAvatar(avatar: image)
     }
 }

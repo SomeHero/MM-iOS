@@ -36,6 +36,7 @@ open class Plan: Mappable {
     var id: String?
     var planId: String?
     var name: String?
+    var avatar: Dictionary<String, String>? = [:]
     var description: String?
     var features: [String] = []
     var oneTimeAmount: Double?
@@ -63,6 +64,7 @@ open class Plan: Mappable {
         id <- map["_id"]
         planId <- map["reference_id"]
         name <- map["name"]
+        avatar <- map["avatar"]
         description <- map["description"]
         features <- map["features"]
         oneTimeAmount <- map["one_time_amount"]

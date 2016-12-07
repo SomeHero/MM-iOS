@@ -15,6 +15,7 @@ protocol PlanProfileDelegate: class {
 }
 class PlanProfileViewController: UIViewController {
     weak var planProfileDelegate: PlanProfileDelegate?
+    var avatar: UIImage?
     
     fileprivate let plan: Plan
     fileprivate let profileCellIdentifier           = "PlanProfileHeaderCellIdentifier"
@@ -376,9 +377,15 @@ class PlanProfileViewController: UIViewController {
         
         if let _ = plan.id {
             let profileHeaderViewModel = PlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
+            profileHeaderViewModel.presentingViewController = self
+            profileHeaderViewModel.planProfileHeaderViewModelDelegate = self
+            
             items.append([profileHeaderViewModel])
         } else {
             let profileHeaderViewModel = NewPlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
+            profileHeaderViewModel.presentingViewController = self
+            profileHeaderViewModel.planProfileHeaderViewModelDelegate = self
+            
             items.append([profileHeaderViewModel])
         }
 
@@ -532,7 +539,7 @@ class PlanProfileViewController: UIViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
     func createPlan() {
-        let createPlan = CreatePlan(plan: plan)
+        let createPlan = CreatePlan(plan: plan, avatar: avatar)
         
         SVProgressHUD.show()
         
@@ -558,7 +565,7 @@ class PlanProfileViewController: UIViewController {
         }
     }
     func savePlan() {
-        let updatePlan = UpdatePlan(plan: plan)
+        let updatePlan = UpdatePlan(plan: plan, avatar: avatar)
         
         SVProgressHUD.show()
         
@@ -785,5 +792,15 @@ extension PlanProfileViewController: PlanTermsOfServiceDelegate {
 extension PlanProfileViewController: PlanProfileDelegate {
     func didDismissPlanProfile() {
         dismiss(animated: true, completion: nil)
+    }
+}
+extension PlanProfileViewController: PlanProfileHeaderViewModelDelegate {
+    func didUpdatePlanAvatar(avatar: UIImage) {
+        self.avatar = avatar
+    }
+}
+extension PlanProfileViewController: NewPlanProfileHeaderViewModelDelegate {
+    func didAddPlanAvatar(avatar: UIImage) {
+        self.avatar = avatar
     }
 }

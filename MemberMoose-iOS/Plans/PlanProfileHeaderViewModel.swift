@@ -8,7 +8,12 @@
 
 import UIKit
 
+protocol PlanProfileHeaderViewModelDelegate: class {
+    func didUpdatePlanAvatar(avatar: UIImage)
+}
 class PlanProfileHeaderViewModel:DataSourceItemProtocol {
+    weak var planProfileHeaderViewModelDelegate: PlanProfileHeaderViewModelDelegate?
+    
     var cellID: String = "PlanProfileHeaderCellIdentifier"
     var cellClass: UITableViewCell.Type = PlanProfileHeaderCell.self
     
@@ -18,9 +23,13 @@ class PlanProfileHeaderViewModel:DataSourceItemProtocol {
     let membersCount: String?
     let planNavigationState: PlanNavigationState
     let planNavigationDelegate: PlanNavigationDelegate?
+    weak var presentingViewController: UIViewController?
     
     init(plan: Plan, planNavigationState: PlanNavigationState, planNavigationDelegate: PlanNavigationDelegate? = nil) {
         self.avatar = "Avatar-Bull"
+        if let avatar = plan.avatar, let avatarImageUrl = avatar["large"] {
+            self.avatarImageUrl = avatarImageUrl
+        }
         self.planName = plan.name
         self.membersCount = "\(plan.memberCount) Members"
         self.planNavigationState = planNavigationState

@@ -786,6 +786,7 @@
 			children = (
 				42531F591DF1FA8A00B71B51 /* AddPlanFeatureViewModel.swift */,
 				42EF412E1DF83FA8005095F1 /* FreeTrialPeriodViewModel.swift */,
+				420741BD1DEE109D006CFCE2 /* NewPlanProfileHeaderViewModel.swift */,
 				4275F70F1DC18A9800E0FF7B /* PlanProfileHeaderViewModel.swift */,
 				4275F7141DC1AD9200E0FF7B /* PlanPaymentDetailsViewModel.swift */,
 				420741CD1DF1C053006CFCE2 /* PlanNameViewModel.swift */,
@@ -798,7 +799,6 @@
 				4275F72B1DC2962A00E0FF7B /* PlanSubscriberViewModel.swift */,
 				42BD767B1DDA75070017EC93 /* PlanSubscriberEmptyStateViewModel.swift */,
 				4275F72F1DC2999900E0FF7B /* PlanActivityViewModel.swift */,
-				420741BD1DEE109D006CFCE2 /* NewPlanProfileHeaderViewModel.swift */,
 			);
 			name = ViewModels;
 			sourceTree = "<group>";

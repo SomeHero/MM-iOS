@@ -115,49 +115,88 @@ public struct ConnectStripe {
 }
 public struct CreatePlan {
     let plan: Plan
+    let avatar: UIImage?
     
-    public init(plan: Plan) {
+    public init(plan: Plan, avatar: UIImage?) {
         self.plan = plan
+        self.avatar = avatar
     }
-    func parameterize() -> [String: AnyObject] {
-        let parameters: [String: AnyObject] = [
-            "name": plan.name as AnyObject,
-            "description": plan.description as AnyObject,
-            "features": plan.features as AnyObject,
-            "one_time_amount": plan.oneTimeAmount as AnyObject,
-            "amount": plan.amount as AnyObject,
-            "interval": plan.interval?.rawValue as AnyObject,
-            "interval_count": plan.intervalCount as AnyObject,
-            "statement_descriptor": plan.statementDescriptor as AnyObject,
-            "trial_period_days": plan.trialPeriodDays as AnyObject,
-            "statement_description": plan.statementDescription as AnyObject,
-            "terms_of_service": plan.termsOfService as AnyObject
-        ]
+    func parameterize() -> [String: String] {
+        var parameters: [String: String] = [:]
+        
+        if let name = plan.name {
+            parameters["name"] = name
+        }
+        if let description = plan.description {
+            parameters["description"] = description
+        }
+        //"features": plan.features as AnyObject,
+        if let oneTimeAmount = plan.oneTimeAmount {
+            parameters["one_time_amount"] = String(oneTimeAmount)
+        }
+        if let amount = plan.amount {
+            parameters["amount"] = String(amount)
+        }
+        if let interval = plan.interval {
+            parameters["interval"] = interval.description
+        }
+        parameters["interval_count"] = String(plan.intervalCount)
+        if let statementDescriptor = plan.statementDescriptor {
+            parameters["statement_descriptor"] = statementDescriptor
+        }
+        parameters["trial_period_days"] = String(plan.trialPeriodDays)
+        if let statementDescription = plan.statementDescription {
+            parameters["statement_description"] = statementDescription
+        }
+        if let termsOfService = plan.termsOfService {
+            parameters["terms_of_service"] = termsOfService
+        }
+
         
         return parameters
     }
 }
 public struct UpdatePlan {
     let plan: Plan
+    let avatar: UIImage?
     
-    public init(plan: Plan) {
+    public init(plan: Plan, avatar: UIImage?) {
         self.plan = plan
+        self.avatar = avatar
     }
-    func parameterize() -> [String: AnyObject] {
-        let parameters: [String: AnyObject] = [
-            "reference_id": plan.planId as AnyObject,
-            "name": plan.name as AnyObject,
-            "description": plan.description as AnyObject,
-            "features": plan.features as AnyObject,
-            "one_time_amount": plan.oneTimeAmount as AnyObject,
-            "amount": plan.amount as AnyObject,
-            "interval": plan.interval?.rawValue as AnyObject,
-            "interval_count": plan.intervalCount as AnyObject,
-            "statement_descriptor": plan.statementDescriptor as AnyObject,
-            "trial_period_days": plan.trialPeriodDays as AnyObject,
-            "statement_description": plan.statementDescription as AnyObject,
-            "terms_of_service": plan.termsOfService as AnyObject
-        ]
+    func parameterize() -> [String: String] {
+        var parameters: [String: String] = [:]
+        
+        if let planId = plan.id {
+            parameters["reference_id"] = planId
+        }
+        if let name = plan.name {
+            parameters["name"] = name
+        }
+        if let description = plan.description {
+            parameters["description"] = description
+        }
+        //"features": plan.features as AnyObject,
+        if let oneTimeAmount = plan.oneTimeAmount {
+            parameters["one_time_amount"] = String(oneTimeAmount)
+        }
+        if let amount = plan.amount {
+            parameters["amount"] = String(amount)
+        }
+        if let interval = plan.interval {
+            parameters["interval"] = interval.description
+        }
+        parameters["interval_count"] = String(plan.intervalCount)
+        if let statementDescriptor = plan.statementDescriptor {
+            parameters["statement_descriptor"] = statementDescriptor
+        }
+        parameters["trial_period_days"] = String(plan.trialPeriodDays)
+        if let statementDescription = plan.statementDescription {
+            parameters["statement_description"] = statementDescription
+        }
+        if let termsOfService = plan.termsOfService {
+            parameters["terms_of_service"] = termsOfService
+        }
         
         return parameters
     }
@@ -320,6 +359,7 @@ open class ApiManager {
                 }
             },
             to: apiBaseUrl + "users",
+            headers: headers,
             encodingCompletion: {
                 encodingResult in
                 
@@ -363,6 +403,7 @@ open class ApiManager {
         },
         to: urlString,
         method: .put,
+        headers: headers,
         encodingCompletion: {
             encodingResult in
             
@@ -668,29 +709,54 @@ open class ApiManager {
     open func createPlan(_ createPlan: CreatePlan, success: @escaping (_ response: Plan) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let params = createPlan.parameterize()
         
-        Alamofire.request(apiBaseUrl + "plans", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
-            .validate()
-            .responseObject { (response: DataResponse<Plan>) in
-                if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        } catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
-                    } else {
-                        failure(error, nil)
+        
+        Alamofire.upload(
+            multipartFormData: {
+                multipartFormData in
+                for (key, value) in params {
+                    multipartFormData.append(value.data(using: .utf8)!, withName: key)
+                }
+                if let avatar = createPlan.avatar, let imageData = UIImageJPEGRepresentation(avatar, 1.0) {
+                    multipartFormData.append(imageData, withName: "file", fileName: "file.png", mimeType: "image/png")
+                }
+        },
+            to: apiBaseUrl + "plans",
+            method: .post,
+            headers: headers,
+            encodingCompletion: {
+                encodingResult in
+                
+                switch encodingResult {
+                case .success(let upload, _, _):
+                    upload
+                        .validate()
+                        .responseObject { (response: DataResponse<Plan>) in
+                            if let error = response.result.error {
+                                var errorResponse: [String: AnyObject]? = [:]
+                                
+                                if let data = response.data {
+                                    do {
+                                        errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
+                                    } catch let error as NSError {
+                                        failure(error, nil)
+                                    } catch let error {
+                                        failure(error, nil)
+                                    }
+                                    failure(error, errorResponse)
+                                } else {
+                                    failure(error, nil)
+                                }
+                            }
+                            if let plan = response.result.value {
+                                success(plan)
+                            } else {
+                                failure(nil, nil)
+                            }
                     }
+                case .failure(let encodingError):
+                    print(encodingError)
                 }
-                if let plan = response.result.value {
-                    success(plan)
-                }
-        }
+        })
     }
     func updatePlan(_ updatePlan: UpdatePlan, success: @escaping (_ response: Plan) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let params = updatePlan.parameterize()
@@ -699,29 +765,54 @@ open class ApiManager {
             return
         }
         
-        Alamofire.request(apiBaseUrl + "plans/\(planId)", method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
-            .validate()
-            .responseObject { (response: DataResponse<Plan>) in
-                if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        } catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
-                    } else {
-                        failure(error, nil)
+        
+        Alamofire.upload(
+            multipartFormData: {
+                multipartFormData in
+                for (key, value) in params {
+                    multipartFormData.append(value.data(using: .utf8)!, withName: key)
+                }
+                if let avatar = updatePlan.avatar, let imageData = UIImageJPEGRepresentation(avatar, 1.0) {
+                    multipartFormData.append(imageData, withName: "file", fileName: "file.png", mimeType: "image/png")
+                }
+        },
+            to: apiBaseUrl + "plans/\(planId)",
+            method: .put,
+            headers: headers,
+            encodingCompletion: {
+                encodingResult in
+                
+                switch encodingResult {
+                case .success(let upload, _, _):
+                    upload
+                        .validate()
+                        .responseObject { (response: DataResponse<Plan>) in
+                            if let error = response.result.error {
+                                var errorResponse: [String: AnyObject]? = [:]
+                                
+                                if let data = response.data {
+                                    do {
+                                        errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
+                                    } catch let error as NSError {
+                                        failure(error, nil)
+                                    } catch let error {
+                                        failure(error, nil)
+                                    }
+                                    failure(error, errorResponse)
+                                } else {
+                                    failure(error, nil)
+                                }
+                            }
+                            if let plan = response.result.value {
+                                success(plan)
+                            } else {
+                                failure(nil, nil)
+                            }
                     }
+                case .failure(let encodingError):
+                    print(encodingError)
                 }
-                if let plan = response.result.value {
-                    success(plan)
-                }
-        }
+        })
     }
     open func createMember(_ createMember: CreateMember, success: @escaping (_ response: User) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let params = createMember.parameterize()
