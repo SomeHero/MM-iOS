@@ -34,7 +34,7 @@ enum PlanProfileDisplayType {
     case modally
     case nonmodally
 }
-class ProfileViewController: UIViewController {
+class ProfileViewController: UICollectionViewController {
     fileprivate let user: User
     fileprivate let profileType: ProfileType
     fileprivate let calfProfileCellIdentifier       = "CalfProfileHeaderCellIdentifier"
@@ -214,6 +214,9 @@ class ProfileViewController: UIViewController {
         
         return _view
     }()
+    fileprivate var stretchyFlowLayout: StretchyHeaderCollectionViewLayout {
+        return self.collectionView!.collectionViewLayout as! StretchyHeaderCollectionViewLayout
+    }
     override var inputAccessoryView: UIView? {
         get {
             switch profileType {
@@ -241,7 +244,11 @@ class ProfileViewController: UIViewController {
         self.user = user
         self.profileType = profileType
         
-        super.init(nibName: nil, bundle: nil)
+        let layout = StretchyHeaderCollectionViewLayout()
+        layout.minimumInteritemSpacing = 50.0
+        layout.sectionInset = UIEdgeInsets(top: 10.0, left: 0.0, bottom: 10.0, right: 0.0)
+        
+        super.init(collectionViewLayout: layout)
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -263,6 +270,12 @@ class ProfileViewController: UIViewController {
         configureRevealControllerGestures(view)
         configureRevealWidth()
         
+        collectionView!.alwaysBounceVertical = true
+        collectionView!.backgroundColor = .white
+//        
+//        collectionView!.registerClass(AuthNotificationsHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: AuthNotificationsHeaderView.reuseID)
+//        collectionView!.registerClass(NonAuthNotificationsHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: NonAuthNotificationsHeaderView.reuseID)
+//        
         self.tableView.infiniteScrollIndicatorStyle = .gray
         
         // Set custom indicator margin
@@ -660,7 +673,7 @@ class ProfileViewController: UIViewController {
         
         dataSource = items
     }
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y
         handleNavHeaderScrollingWithOffset(yOffset)
     }
@@ -713,7 +726,42 @@ extension ProfileViewController : UITableViewDataSource {
         return cell
     }
 }
+extension ProfileViewController {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 2
+    }
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let row = indexPath.row
+        
+        let modelItem = items[row]
+        let modelView = modelItem.modelView
+        
+        collectionView.registerClass(modelView.cellClass, forCellWithReuseIdentifier: modelView.cellID)
+        
+        let cell = modelView.dequeue(collectionView, indexPath: indexPath)
+        cell.presenter = self
+        
+        modelView.setup(cell)
+        
+        return cell
+    }
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 
+        return header
+    }
+}
+
+extension ProfileViewController: UICollectionViewDelegateFlowLayout {
+    
+    private static var cellHeightCache: [String: CGSize] = [:]
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 355, height: 200)
+    }
+}
 extension ProfileViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
