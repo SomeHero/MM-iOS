@@ -112,6 +112,7 @@
 		425D2BC11DFAFC3E0074C3B3 /* PlanMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D2BC01DFAFC3E0074C3B3 /* PlanMenuViewController.swift */; };
 		425D2BC31DFB0D330074C3B3 /* DeletePlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D2BC21DFB0D330074C3B3 /* DeletePlanViewController.swift */; };
 		425D2BC51DFB11E80074C3B3 /* PreviewPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D2BC41DFB11E80074C3B3 /* PreviewPlanViewController.swift */; };
+		425D2BC71DFB25770074C3B3 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D2BC61DFB25770074C3B3 /* TitleView.swift */; };
 		426841471DA7A3EA00A2BFF8 /* ConnectStripeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426841461DA7A3EA00A2BFF8 /* ConnectStripeViewController.swift */; };
 		4268414A1DA7A80300A2BFF8 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426841491DA7A80300A2BFF8 /* MainTabBarViewController.swift */; };
 		4268414C1DA7A8A500A2BFF8 /* RecentTransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4268414B1DA7A8A500A2BFF8 /* RecentTransactionsViewController.swift */; };
@@ -329,6 +330,7 @@
 		425D2BC01DFAFC3E0074C3B3 /* PlanMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanMenuViewController.swift; path = Plans/PlanMenuViewController.swift; sourceTree = "<group>"; };
 		425D2BC21DFB0D330074C3B3 /* DeletePlanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeletePlanViewController.swift; path = Plans/DeletePlanViewController.swift; sourceTree = "<group>"; };
 		425D2BC41DFB11E80074C3B3 /* PreviewPlanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreviewPlanViewController.swift; path = Plans/PreviewPlanViewController.swift; sourceTree = "<group>"; };
+		425D2BC61DFB25770074C3B3 /* TitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		426841461DA7A3EA00A2BFF8 /* ConnectStripeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConnectStripeViewController.swift; path = Join/ConnectStripeViewController.swift; sourceTree = "<group>"; };
 		426841491DA7A80300A2BFF8 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTabBarViewController.swift; path = Main/MainTabBarViewController.swift; sourceTree = "<group>"; };
 		4268414B1DA7A8A500A2BFF8 /* RecentTransactionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecentTransactionsViewController.swift; path = Main/RecentTransactionsViewController.swift; sourceTree = "<group>"; };
@@ -897,6 +899,7 @@
 				426841621DA86CAF00A2BFF8 /* EmptyStateView.swift */,
 				4255B3FB1DAE9AC5008DECAC /* EditProfilePhotoView.swift */,
 				422537211DB987DB004B33D8 /* StackViewLabelField.swift */,
+				425D2BC61DFB25770074C3B3 /* TitleView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1311,6 +1314,7 @@
 				4268415C1DA7EEBD00A2BFF8 /* CalculatorProcessor.swift in Sources */,
 				42F08C3E1DAC68D000D5D4E3 /* Subscription.swift in Sources */,
 				4268416A1DA86D0E00A2BFF8 /* TextDecorator.swift in Sources */,
+				425D2BC71DFB25770074C3B3 /* TitleView.swift in Sources */,
 				4268416C1DA86D5A00A2BFF8 /* MemberViewModel.swift in Sources */,
 				4275F7301DC2999900E0FF7B /* PlanActivityViewModel.swift in Sources */,
 				420741DC1DF1E265006CFCE2 /* OneTimeSignUpFeeEditorViewController.swift in Sources */,

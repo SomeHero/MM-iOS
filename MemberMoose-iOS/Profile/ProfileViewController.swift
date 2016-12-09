@@ -40,7 +40,7 @@ enum PlanProfileDisplayType {
     case modally
     case nonmodally
 }
-class ProfileViewController: UICollectionViewController {
+class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
     fileprivate let user: User
     fileprivate let profileType: ProfileType
     fileprivate let calfProfileCellIdentifier       = "CalfProfileHeaderCellIdentifier"

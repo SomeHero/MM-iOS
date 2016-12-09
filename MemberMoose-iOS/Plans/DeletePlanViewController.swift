@@ -9,7 +9,7 @@
 import UIKit
 import SVProgressHUD
 
-class DeletePlanViewController: UIViewController {
+class DeletePlanViewController: UIViewController, MultilineNavTitlable {
     fileprivate let plan: Plan
     
     fileprivate lazy var scrollView: UIScrollView = {
@@ -121,6 +121,8 @@ class DeletePlanViewController: UIViewController {
         guard let planName = plan.name else {
             return
         }
+        configureMultiLineNavTitle(titleNonEmptyString: "Delete Plan", subtitleNonEmptyString: planName)
+        
         headerLabel.text = "Are you sure you want to delete the plan \(planName)"
         descriptionLabel.text = "If your continue, all plan subscribers will be un-subscribed from this plan and the plan will no longer be visible.  This action cannot be un-done."
     }
