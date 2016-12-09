@@ -27,7 +27,7 @@ class PlanCell: UITableViewCell, DataSourceItemCell {
     }()
     fileprivate lazy var planNameLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.SemiBold(.large)
+        _label.font = UIFontTheme.SemiBold(.default)
         _label.textColor = UIColorTheme.PrimaryFont
         _label.numberOfLines = 0
         

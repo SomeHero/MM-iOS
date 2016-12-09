@@ -814,6 +814,32 @@ open class ApiManager {
                 }
         })
     }
+    open func deletePlan(_ planId: String, success: @escaping ()  -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        
+        Alamofire.request(apiBaseUrl + "plans/\(planId)", method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .response {  response in
+                if let error = response.error {
+                    var errorResponse: [String: AnyObject]? = [:]
+                    
+                    if let data = response.data {
+                        do {
+                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
+                        } catch let error as NSError {
+                            failure(error, nil)
+                        }
+                        catch let error {
+                            failure(error, nil)
+                        }
+                        failure(error, errorResponse)
+                    } else {
+                        failure(error, nil)
+                    }
+                } else {
+                    success()
+                }
+        }
+    }
     open func createMember(_ createMember: CreateMember, success: @escaping (_ response: User) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let params = createMember.parameterize()
         

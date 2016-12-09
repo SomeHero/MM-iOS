@@ -9,9 +9,13 @@
 import UIKit
 import SVProgressHUD
 import Presentr
+import SideMenu
 
 protocol PlanProfileDelegate: class {
     func didDismissPlanProfile()
+}
+protocol PlanMenuDelegate: class {
+    func didClickPlanMenu(sender: UIButton)
 }
 class PlanProfileViewController: UICollectionViewController {
     weak var planProfileDelegate: PlanProfileDelegate?
@@ -20,6 +24,7 @@ class PlanProfileViewController: UICollectionViewController {
     
     fileprivate var planNavigationState: PlanNavigationState = .details
     weak var profileDelegate: ProfileDelegate?
+    weak var planMenuDelegate: PlanMenuDelegate?
     
     fileprivate let offsetNavHeaderHeight: CGFloat = 64.0
     fileprivate let offsetLabelHeaderHeight: CGFloat = 32.0
@@ -34,6 +39,11 @@ class PlanProfileViewController: UICollectionViewController {
     fileprivate var hasMembers = false
     fileprivate var hasPlans = false
     
+    fileprivate lazy var menuViewController: UIViewController = {
+        let _viewController = MenuViewController()
+        
+        return _viewController
+    }()
     fileprivate var pageNumber = 1
     fileprivate var stretchyFlowLayout: StretchyHeaderCollectionViewLayout {
         return self.collectionView!.collectionViewLayout as! StretchyHeaderCollectionViewLayout
@@ -114,8 +124,8 @@ class PlanProfileViewController: UICollectionViewController {
     }()
     fileprivate lazy var settingsButton: UIButton = {
         let _button = UIButton()
-        _button.setImage(UIImage(named:"Edit"), for: UIControlState())
-        _button.addTarget(self, action: #selector(ProfileViewController.editProfileClicked(_:)), for: .touchUpInside)
+        _button.setImage(UIImage(named:"Settings"), for: UIControlState())
+        _button.addTarget(self, action: #selector(PlanProfileViewController.editProfileClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
         
@@ -222,6 +232,13 @@ class PlanProfileViewController: UICollectionViewController {
 //            scrollView.finishInfiniteScroll()
 //        }
         
+        let planMenuViewController = PlanMenuViewController(plan: plan)
+        let menuRightNavigationController = PlanMenuNavigationViewController(rootViewController: planMenuViewController)
+        // UISideMenuNavigationController is a subclass of UINavigationController, so do any additional configuration of it here like setting its viewControllers.
+        SideMenuManager.menuRightNavigationController = menuRightNavigationController
+        SideMenuManager.menuPresentMode = .menuSlideIn
+        SideMenuManager.menuWidth = UIScreen.main.bounds.width * 0.4
+
         pageNumber = 1
         buildDataSet()
         
@@ -322,6 +339,9 @@ class PlanProfileViewController: UICollectionViewController {
     }
     func backClicked(_ sender: UIButton) {
         planProfileDelegate?.didDismissPlanProfile()
+    }
+    func editProfileClicked(_ button: UIButton) {
+        present(SideMenuManager.menuRightNavigationController!, animated: true, completion: nil)
     }
     func savePlanClicked(_ button: UIButton) {
         if let _ = plan.id {
@@ -498,9 +518,9 @@ class PlanProfileViewController: UICollectionViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
     func addMemberClicked(_ sender: UIButton) {
-        let viewController = SharePlanViewController()
+        //let viewController = SharePlanViewController()
         
-        navigationController?.pushViewController(viewController, animated: true)
+        //navigationController?.pushViewController(viewController, animated: true)
     }
     func createPlan() {
         let createPlan = CreatePlan(plan: plan, avatar: avatar)

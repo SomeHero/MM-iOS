@@ -29,7 +29,7 @@ target 'MemberMoose-iOS' do
   pod 'ValueCoding'
   pod 'UIScrollView-InfiniteScroll'
   pod 'SlackTextViewController'
-  
+  pod 'SideMenu'
   
   target 'MemberMoose-iOSTests' do
     inherit! :search_paths

@@ -21,12 +21,20 @@ extension UIViewController {
     func configureRevealWidth() {
         if let delegate = UIApplication.shared.delegate as? AppDelegate, let revealController = delegate.swRevealViewController {
             revealController.rearViewRevealWidth = UIScreen.main.bounds.size.width * 0.85
+            revealController.rightViewRevealWidth = UIScreen.main.bounds.size.width * 0.3
         }
     }
     func toggleMenu(_ sender: UIButton) {
         if let delegate = UIApplication.shared.delegate as? AppDelegate, let swRevealViewController = delegate.swRevealViewController {
             
             swRevealViewController.revealToggle(animated: true)
+        }
+    }
+    func toggleRightMenu(_ viewController: UIViewController) {
+        if let delegate = UIApplication.shared.delegate as? AppDelegate, let swRevealViewController = delegate.swRevealViewController {
+            
+            swRevealViewController.rightViewController = viewController
+            swRevealViewController.rightRevealToggle(animated: true)
         }
     }
     func enableButton(_ button: UIButton) {

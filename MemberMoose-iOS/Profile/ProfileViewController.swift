@@ -643,9 +643,9 @@ class ProfileViewController: UICollectionViewController {
         present(navigationController, animated: true, completion: nil)
     }
     func addMemberClicked(_ sender: UIButton) {
-        let viewController = SharePlanViewController()
+        //let viewController = SharePlanViewController()
         
-        navigationController?.pushViewController(viewController, animated: true)
+        //navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
@@ -891,9 +891,9 @@ extension ProfileViewController: MemberEmptyStateDelegate {
         navigationController?.pushViewController(viewController, animated: true)
     }
     func didSharePlan() {
-        let viewController = SharePlanViewController()
+        //let viewController = SharePlanViewController()
         
-        navigationController?.pushViewController(viewController, animated: true)
+        //navigationController?.pushViewController(viewController, animated: true)
     }
 }
 extension ProfileViewController: PlanEmptyStateDelegate {
