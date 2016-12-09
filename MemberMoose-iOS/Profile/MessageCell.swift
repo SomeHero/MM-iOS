@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MessageCell: UITableViewCell, DataSourceItemProtocol {
+class MessageCell: UITableViewCell {
     static let identifier = "MessageCellIdentifier"
     
     fileprivate lazy var containerView: UIView = {

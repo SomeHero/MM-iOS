@@ -73,38 +73,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MemberMoose-iOS/Profile/ProfileViewController.swift"
-            timestampString = "502924671.97181"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "725"
-            endingLineNumber = "725"
-            landmarkName = "updateFlowLayoutIfNeeded(forceReload:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MemberMoose-iOS/Plans/PlanProfileCollectionViewCell.swift"
-            timestampString = "502946564.31173"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141"
-            landmarkName = "tableView(_:didSelectRowAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "MemberMoose-iOS/Plans/PlanSubscriberViewModel.swift"
             timestampString = "502947036.668667"
             startingColumnNumber = "9223372036854775807"
@@ -121,14 +89,46 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MemberMoose-iOS/Plans/PlanProfileCollectionViewCell.swift"
-            timestampString = "502947229.512362"
+            filePath = "MemberMoose-iOS/Plans/PlanProfileHeaderViewModel.swift"
+            timestampString = "502948326.819538"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
-            landmarkName = "tableView(_:heightForRowAt:)"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "init(plan:planNavigationState:planNavigationDelegate:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MemberMoose.PlanProfileHeaderViewModel.init (plan : MemberMoose.Plan, planNavigationState : MemberMoose.PlanNavigationState, planNavigationDelegate : Swift.Optional&lt;MemberMoose.PlanNavigationDelegate&gt;) -&gt; MemberMoose.PlanProfileHeaderViewModel"
+                  moduleName = "MemberMoose"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jamesrhodes/Desktop/MemberMoose-iOS/MemberMoose-iOS/Plans/PlanProfileHeaderViewModel.swift"
+                  timestampString = "502948440.467022"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "367">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MemberMoose.PlanProfileHeaderViewModel.init (plan : MemberMoose.Plan, planNavigationState : MemberMoose.PlanNavigationState, planNavigationDelegate : Swift.Optional&lt;MemberMoose.PlanNavigationDelegate&gt;) -&gt; MemberMoose.PlanProfileHeaderViewModel"
+                  moduleName = "MemberMoose"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jamesrhodes/Desktop/MemberMoose-iOS/MemberMoose-iOS/Plans/PlanProfileHeaderViewModel.swift"
+                  timestampString = "502948440.468373"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "414">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -137,13 +137,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MemberMoose-iOS/Plans/PlanProfileCollectionViewCell.swift"
-            timestampString = "502947253.525074"
+            filePath = "MemberMoose-iOS/Plans/PlanProfileHeaderView.swift"
+            timestampString = "502948406.644897"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "126"
-            endingLineNumber = "126"
-            landmarkName = "tableView(_:heightForRowAt:)"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
+            landmarkName = "addImage(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

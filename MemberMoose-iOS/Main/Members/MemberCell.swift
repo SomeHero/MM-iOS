@@ -22,7 +22,7 @@ class MemberCell: UITableViewCell, DataSourceItemCell {
         imageView.layer.cornerRadius = 60 / 2
         imageView.clipsToBounds = true
         
-        self.addSubview(imageView)
+        self.contentView.addSubview(imageView)
         
         return imageView
     }()

@@ -14,24 +14,27 @@ class PlanViewModel: DataSourceItemProtocol {
     var cellClass: UITableViewCell.Type = PlanCell.self
     
     let plan: Plan
+    let avatar: String
+    var avatarUrl: String?
     let planId: String?
     let planName: String?
     let planAmount: String?
-    let interval: String?
-    let subscribersCount: Int
+    let subscribersCount: String
     
     init(plan: Plan) {
-        
         self.plan = plan
+        self.avatar = "Avatar-Calf"
+        if let avatar = plan.avatar, let avatarImageUrl = avatar["large"] {
+            avatarUrl = avatarImageUrl
+        }
         planId = plan.id
         planName = plan.name
-        if let amount = plan.amount {
-            self.planAmount = "\(USD(amount).description)"
+        if let amount = plan.amount, let interval = plan.interval {
+            self.planAmount = "\(USD(amount).description)/\(interval.description)"
         } else {
             self.planAmount = "Amount not set"
         }
-        interval = plan.interval?.description
-        subscribersCount = plan.memberCount
+        subscribersCount =  "\(plan.memberCount) Subscribers"
     }
     
     @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) ->  UITableViewCell {

@@ -710,6 +710,8 @@ extension PlanProfileViewController {
     }
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let profileHeaderViewModel = PlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
+        profileHeaderViewModel.presentingViewController = self
+        profileHeaderViewModel.planProfileHeaderViewModelDelegate = self
         
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "PlanProfileHeaderView", for: indexPath) as! PlanProfileHeaderView
         header.setupWith(profileHeaderViewModel)
