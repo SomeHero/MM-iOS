@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PlanFeatureCell: UITableViewCell {
+class PlanFeatureCell: UITableViewCell, DataSourceItemCell {
     static let cellID: String = "PlanFeatureCellIdentifier"
     var cellClass: UITableViewCell.Type = PlanFeatureCell.self
     

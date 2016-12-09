@@ -12,7 +12,7 @@ protocol PlanEmptyStateCellDelegate: class {
     func didCreatePlanClicked()
     func didImportPlanClicked()
 }
-class PlanEmptyStateCell: UITableViewCell {
+class PlanEmptyStateCell: UITableViewCell, DataSourceItemCell {
     weak var planEmptyStateCellDelegate: PlanEmptyStateCellDelegate?
     
     fileprivate lazy var containerView: UIView = {

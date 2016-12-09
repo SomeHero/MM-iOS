@@ -9,7 +9,7 @@
 import UIKit
 import SlackTextViewController
 
-class MessagesCell: UITableViewCell {
+class MessagesCell: UITableViewCell, DataSourceItemCell {
     fileprivate lazy var messageView: MessageView = {
         let _messageViewController = MessageView()
  

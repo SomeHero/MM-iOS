@@ -10,6 +10,8 @@ import Foundation
 import Money
 
 class NewPlanViewModel: DataSourceItemProtocol {
+    internal var cellID: String = "NewPlanCellIdentifier"
+
     static let cellID: String = "NewPlanCellIdentifier"
     var cellClass: UITableViewCell.Type = NewPlanCell.self
     

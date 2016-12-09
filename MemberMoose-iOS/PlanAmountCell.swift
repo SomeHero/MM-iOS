@@ -9,7 +9,7 @@
 import UIKit
 import Money
 
-class PlanAmountCell: UITableViewCell {
+class PlanAmountCell: UITableViewCell, DataSourceItemCell {
     fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         

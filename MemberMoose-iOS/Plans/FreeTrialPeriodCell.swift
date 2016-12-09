@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FreeTrialPeriodCell: UITableViewCell {
+class FreeTrialPeriodCell: UITableViewCell, DataSourceItemCell {
     fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         

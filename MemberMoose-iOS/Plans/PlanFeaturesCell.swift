@@ -11,7 +11,7 @@ import UIKit
 protocol PlanFeaturesCellDelegate: class {
     func didSelectItem(feature: String)
 }
-class PlanFeaturesCell: UITableViewCell {
+class PlanFeaturesCell: UITableViewCell, DataSourceItemCell {
     weak var planFeaturesCellDelegate: PlanFeaturesCellDelegate?
     
     static let cellID: String = "PlanFeaturesCellIdentifier"

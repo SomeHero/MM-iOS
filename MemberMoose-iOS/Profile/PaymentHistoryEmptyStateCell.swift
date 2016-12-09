@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PaymentHistoryEmptyStateCell: UITableViewCell {
+class PaymentHistoryEmptyStateCell: UITableViewCell, DataSourceItemCell {
     fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         

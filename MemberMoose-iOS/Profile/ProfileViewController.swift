@@ -15,10 +15,16 @@ import Money
 import SlackTextViewController
 
 @objc protocol DataSourceItemProtocol {
+    var cellID: String { get set }
+    var cellClass: UITableViewCell.Type { get set }
+
     func viewForHeader() -> UIView?
     func heightForHeader() -> CGFloat
     func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell
     @objc optional func didSelectItem(viewController: UIViewController) 
+}
+@objc protocol DataSourceItemCell {
+    func setupWith(_ viewModel: DataSourceItemProtocol)
 }
 @objc protocol DataSourceTableViewCellProtocol: class {
     func setupWith(_ viewModel: DataSourceItemProtocol)
@@ -74,6 +80,7 @@ class ProfileViewController: UICollectionViewController {
     fileprivate var hasPlans = false
     
     fileprivate var pageNumber = 1
+    fileprivate var dataSource: [[DataSourceItemProtocol]] = []
     
     fileprivate var presenter: Presentr = {
         let _presenter = Presentr(presentationType: .alert)
@@ -87,11 +94,11 @@ class ProfileViewController: UICollectionViewController {
     }
     fileprivate var parallaxHeight: CGFloat {
         //values determined by the top padding of the title in the authed/unauth headers
-        if tableView.visibleCells.count > 0 {
-            return tableView.visibleCells[0].frame.size.height
-        }
+//        if tableView.visibleCells.count > 0 {
+//            return tableView.visibleCells[0].frame.size.height
+//        }
         
-        return 0
+        return 130
     }
     fileprivate lazy var navHeader: UIView = {
         let _view = UIView()
@@ -127,11 +134,6 @@ class ProfileViewController: UICollectionViewController {
         
         return _label
     }()
-    var dataSource: [[DataSourceItemProtocol]] = [] {
-        didSet {
-            tableView.reloadData()
-        }
-    }
     fileprivate lazy var menuButton: UIButton = {
         let _button = UIButton()
         if let navigationController = self.navigationController , navigationController.viewControllers.count > 1 {
@@ -154,39 +156,7 @@ class ProfileViewController: UICollectionViewController {
         
         return _button
     }()
-    fileprivate lazy var tableView: UITableView = {
-        let _tableView                  = UITableView(frame: CGRect.zero, style: .grouped)
-        _tableView.dataSource           = self
-        _tableView.delegate             = self
-        _tableView.backgroundColor      = UIColor.white
-        _tableView.alwaysBounceVertical = true
-        _tableView.separatorInset       = UIEdgeInsets.zero
-        _tableView.layoutMargins        = UIEdgeInsets.zero
-        _tableView.tableFooterView      = UIView()
-        _tableView.estimatedRowHeight   = self.tableCellHeight
-        _tableView.rowHeight = UITableViewAutomaticDimension
-        _tableView.contentInset         = UIEdgeInsets.zero
-        //_tableView.separatorStyle       = .None
-        
-        _tableView.register(ProfileHeaderCell.self, forCellReuseIdentifier: self.profileCellIdentifier)
-        _tableView.register(CalfProfileHeaderCell.self, forCellReuseIdentifier: self.calfProfileCellIdentifier)
-        _tableView.register(SubscriptionCell.self, forCellReuseIdentifier: self.subscriptionCellIdentifier)
-        _tableView.register(SubscriptionEmptyStateCell.self, forCellReuseIdentifier: self.subscriptionEmptyStateCellIdentifier)
-        _tableView.register(PaymentCardTableViewCell.self, forCellReuseIdentifier: self.paymentCardCellIdentifier)
-        _tableView.register(PaymentCardEmptyStateCell.self, forCellReuseIdentifier: self.paymentCardEmptyStateCellIdentifier)
-        _tableView.register(PaymentHistoryTableViewCell.self, forCellReuseIdentifier: self.paymentHistoryCellIdentifier)
-        _tableView.register(PaymentHistoryEmptyStateCell.self, forCellReuseIdentifier: self.paymentHistoryEmptyStateCellIdentifier)
-        _tableView.register(ChargeCell.self, forCellReuseIdentifier: self.chargeCellIdentifier)
-        _tableView.register(MessagesCell.self, forCellReuseIdentifier: self.messagesCellIdentifier)
-        _tableView.register(MessagesEmptyStateCell.self, forCellReuseIdentifier: self.messagesEmptyStateCellIdentifier)
-        _tableView.register(MemberCell.self, forCellReuseIdentifier: self.memberCellIdentifier)
-        _tableView.register(MemberEmptyStateCell.self, forCellReuseIdentifier: self.memberEmptyStateCellIdentifier)
-        _tableView.register(PlanCell.self, forCellReuseIdentifier: self.planCellIdentifier)
-        _tableView.register(PlanEmptyStateCell.self, forCellReuseIdentifier: self.planEmptyStateCellIdentifier)
-        
-        self.view.addSubview(_tableView)
-        return _tableView
-    }()
+    
     fileprivate lazy var addMemberButton: UIButton = {
         let _button = UIButton(type: UIButtonType.custom)
         _button.backgroundColor = UIColorTheme.Primary
@@ -209,33 +179,8 @@ class ProfileViewController: UICollectionViewController {
         
         return _button
     }()
-    fileprivate lazy var messageToolbarView: MessageToolbarView = {
-        let _view = MessageToolbarView()
-        
-        return _view
-    }()
     fileprivate var stretchyFlowLayout: StretchyHeaderCollectionViewLayout {
         return self.collectionView!.collectionViewLayout as! StretchyHeaderCollectionViewLayout
-    }
-    override var inputAccessoryView: UIView? {
-        get {
-            switch profileType {
-            case .bull:
-                switch membershipNavigationState {
-                case .messages:
-                    return textInputBar
-                default:
-                    return nil
-                }
-            case .calf:
-                switch memberNavigationState {
-                case .message:
-                    return textInputBar
-                default:
-                    return nil
-                }
-            }
-        }
     }
     override var canBecomeFirstResponder : Bool {
         return true
@@ -246,7 +191,8 @@ class ProfileViewController: UICollectionViewController {
         
         let layout = StretchyHeaderCollectionViewLayout()
         layout.minimumInteritemSpacing = 50.0
-        layout.sectionInset = UIEdgeInsets(top: 10.0, left: 0.0, bottom: 10.0, right: 0.0)
+        layout.sectionInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+        layout.estimatedItemSize = CGSize(width: 100, height: 100)
         
         super.init(collectionViewLayout: layout)
     }
@@ -272,73 +218,74 @@ class ProfileViewController: UICollectionViewController {
         
         collectionView!.alwaysBounceVertical = true
         collectionView!.backgroundColor = .white
-//        
-//        collectionView!.registerClass(AuthNotificationsHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: AuthNotificationsHeaderView.reuseID)
-//        collectionView!.registerClass(NonAuthNotificationsHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: NonAuthNotificationsHeaderView.reuseID)
-//        
-        self.tableView.infiniteScrollIndicatorStyle = .gray
+        collectionView!.register(ProfileCollectionViewCell.self, forCellWithReuseIdentifier: "ProfileCollectionViewCell")
         
-        // Set custom indicator margin
-        self.tableView.infiniteScrollIndicatorMargin = 40
-        
-        // Add infinite scroll handler
-        self.tableView.addInfiniteScroll { [weak self] (scrollView) -> Void in
-            guard let _self = self else {
-                return
-            }
-            if _self.profileType == .calf {
-                scrollView.finishInfiniteScroll()
-                
-                return
-            }
-            _self.pageNumber += 1
-            
-            switch _self.membershipNavigationState {
-            case .members:
-                ApiManager.sharedInstance.getMembers(_self.pageNumber, success: { (members) in
-                    var viewModels = _self.dataSource[1]
-                    for member in members! {
-                        let viewModel = MemberViewModel(user: member)
-                        
-                        viewModels.append(viewModel)
-                    }
-                    _self.dataSource[1] = viewModels
-                    
-                    _self.tableView.reloadData()
-                    }, failure: {[weak self] (error, errorDictionary) in
-                        SVProgressHUD.dismiss()
-                        
-                        guard let _self = self else {
-                            return
-                        }
-                        
-                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
-                })
-            case .plans:
-                ApiManager.sharedInstance.getPlans(_self.pageNumber, success: { (plans) in
-                    var viewModels = _self.dataSource[1]
-                    for plan in plans {
-                        let viewModel = PlanViewModel(plan: plan)
-                        
-                        viewModels.append(viewModel)
-                    }
-                    _self.dataSource[1] = viewModels
-                    
-                    _self.tableView.reloadData()
-                    }, failure: { [weak self] (error, errorDictionary) in
-                        SVProgressHUD.dismiss()
-                        
-                        guard let _self = self else {
-                            return
-                        }
-                        
-                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
-                })
-            case .messages: break
-            }
-            
-            scrollView.finishInfiniteScroll()
-        }
+        collectionView!.register(BullProfileHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "BullProfileHeaderView")
+        collectionView!.register(CalfProfileHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "CalfProfileHeaderView")
+     
+//        self.tableView.infiniteScrollIndicatorStyle = .gray
+//        
+//        // Set custom indicator margin
+//        self.tableView.infiniteScrollIndicatorMargin = 40
+//        
+//        // Add infinite scroll handler
+//        self.tableView.addInfiniteScroll { [weak self] (scrollView) -> Void in
+//            guard let _self = self else {
+//                return
+//            }
+//            if _self.profileType == .calf {
+//                scrollView.finishInfiniteScroll()
+//                
+//                return
+//            }
+//            _self.pageNumber += 1
+//            
+//            switch _self.membershipNavigationState {
+//            case .members:
+//                ApiManager.sharedInstance.getMembers(_self.pageNumber, success: { (members) in
+//                    var viewModels = _self.dataSource[1]
+//                    for member in members! {
+//                        let viewModel = MemberViewModel(user: member)
+//                        
+//                        viewModels.append(viewModel)
+//                    }
+//                    _self.dataSource[1] = viewModels
+//                    
+//                    _self.tableView.reloadData()
+//                    }, failure: {[weak self] (error, errorDictionary) in
+//                        SVProgressHUD.dismiss()
+//                        
+//                        guard let _self = self else {
+//                            return
+//                        }
+//                        
+//                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+//                })
+//            case .plans:
+//                ApiManager.sharedInstance.getPlans(_self.pageNumber, success: { (plans) in
+//                    var viewModels = _self.dataSource[1]
+//                    for plan in plans {
+//                        let viewModel = PlanViewModel(plan: plan)
+//                        
+//                        viewModels.append(viewModel)
+//                    }
+//                    _self.dataSource[1] = viewModels
+//                    
+//                    _self.tableView.reloadData()
+//                    }, failure: { [weak self] (error, errorDictionary) in
+//                        SVProgressHUD.dismiss()
+//                        
+//                        guard let _self = self else {
+//                            return
+//                        }
+//                        
+//                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+//                })
+//            case .messages: break
+//            }
+//            
+//            scrollView.finishInfiniteScroll()
+//        }
         
         pageNumber = 1
         buildDataSet()
@@ -356,9 +303,9 @@ class ProfileViewController: UICollectionViewController {
             make.trailing.equalTo(view).inset(15)
             make.height.width.equalTo(20)
         }
-        tableView.snp.updateConstraints { (make) in
-            make.edges.equalTo(view)
-        }
+//        tableView.snp.updateConstraints { (make) in
+//            make.edges.equalTo(view)
+//        }
         navHeader.snp.updateConstraints { (make) in
             make.top.equalTo(self.view)
             make.leading.trailing.equalTo(self.view)
@@ -388,63 +335,63 @@ class ProfileViewController: UICollectionViewController {
             make.height.equalTo(60)
             make.bottom.equalTo(view)
         }
-        switch profileType {
-        case .bull:
-            switch membershipNavigationState {
-            case .members:
-                var offset = 60
-                var tableViewOffset = 0
-                if hasMembers {
-                    offset = 0
-                    tableViewOffset = 60
-                }
-                addMemberButton.snp.updateConstraints { (make) in
-                    make.bottom.equalTo(view.snp.bottom).offset(offset)
-                }
-                addPlanButton.snp.updateConstraints { (make) in
-                    make.bottom.equalTo(view.snp.bottom).offset(60)
-                }
-                tableView.snp.updateConstraints { (make) in
-                    make.bottom.equalTo(view).inset(tableViewOffset)
-                }
-            case .plans:
-                var offset = 60
-                var tableViewOffset = 0
-                if hasPlans {
-                    offset = 0
-                    tableViewOffset = 60
-                }
-                addMemberButton.snp.updateConstraints({ (make) in
-                    make.bottom.equalTo(view.snp.bottom).offset(60)
-                })
-                addPlanButton.snp.updateConstraints({ (make) in
-                    make.bottom.equalTo(view.snp.bottom).offset(offset)
-                })
-                tableView.snp.updateConstraints { (make) in
-                    make.bottom.equalTo(view).inset(tableViewOffset)
-                }
-            default:
-                addMemberButton.snp.updateConstraints { (make) in
-                    make.bottom.equalTo(view.snp.bottom).offset(60)
-                }
-                addPlanButton.snp.updateConstraints { (make) in
-                    make.bottom.equalTo(view.snp.bottom).offset(60)
-                }
-                tableView.snp.updateConstraints { (make) in
-                    make.bottom.equalTo(view).inset(0)
-                }
-            }
-        default:
-            addMemberButton.snp.updateConstraints { (make) in
-                make.bottom.equalTo(view.snp.bottom).offset(60)
-            }
-            addPlanButton.snp.updateConstraints { (make) in
-                make.bottom.equalTo(view.snp.bottom).offset(60)
-            }
-            tableView.snp.updateConstraints { (make) in
-                make.bottom.equalTo(view).inset(0)
-            }
-        }
+//        switch profileType {
+//        case .bull:
+//            switch membershipNavigationState {
+//            case .members:
+//                var offset = 60
+//                var tableViewOffset = 0
+//                if hasMembers {
+//                    offset = 0
+//                    tableViewOffset = 60
+//                }
+//                addMemberButton.snp.updateConstraints { (make) in
+//                    make.bottom.equalTo(view.snp.bottom).offset(offset)
+//                }
+//                addPlanButton.snp.updateConstraints { (make) in
+//                    make.bottom.equalTo(view.snp.bottom).offset(60)
+//                }
+//                tableView.snp.updateConstraints { (make) in
+//                    make.bottom.equalTo(view).inset(tableViewOffset)
+//                }
+//            case .plans:
+//                var offset = 60
+//                var tableViewOffset = 0
+//                if hasPlans {
+//                    offset = 0
+//                    tableViewOffset = 60
+//                }
+//                addMemberButton.snp.updateConstraints({ (make) in
+//                    make.bottom.equalTo(view.snp.bottom).offset(60)
+//                })
+//                addPlanButton.snp.updateConstraints({ (make) in
+//                    make.bottom.equalTo(view.snp.bottom).offset(offset)
+//                })
+//                tableView.snp.updateConstraints { (make) in
+//                    make.bottom.equalTo(view).inset(tableViewOffset)
+//                }
+//            default:
+//                addMemberButton.snp.updateConstraints { (make) in
+//                    make.bottom.equalTo(view.snp.bottom).offset(60)
+//                }
+//                addPlanButton.snp.updateConstraints { (make) in
+//                    make.bottom.equalTo(view.snp.bottom).offset(60)
+//                }
+//                tableView.snp.updateConstraints { (make) in
+//                    make.bottom.equalTo(view).inset(0)
+//                }
+//            }
+//        default:
+//            addMemberButton.snp.updateConstraints { (make) in
+//                make.bottom.equalTo(view.snp.bottom).offset(60)
+//            }
+//            addPlanButton.snp.updateConstraints { (make) in
+//                make.bottom.equalTo(view.snp.bottom).offset(60)
+//            }
+//            tableView.snp.updateConstraints { (make) in
+//                make.bottom.equalTo(view).inset(0)
+//            }
+//        }
         
         super.viewDidLayoutSubviews()
         
@@ -465,6 +412,188 @@ class ProfileViewController: UICollectionViewController {
             }
         }
     }
+    func buildDataSet() {
+        var items: [[DataSourceItemProtocol]] = []
+        hasMembers = false
+        hasPlans = false
+
+        switch profileType {
+        case .bull:
+            switch membershipNavigationState {
+            case .members:
+                ApiManager.sharedInstance.getMembers(self.pageNumber, success: { [weak self] (members) in
+                    guard let _self = self else {
+                        return
+                    }
+                    if(members!.count > 0) {
+                        _self.hasMembers = true
+
+                        var viewModels: [MemberViewModel] = []
+                        for member in members! {
+                            let viewModel = MemberViewModel(user: member)
+
+                            viewModels.append(viewModel)
+                        }
+                        items.append(viewModels)
+
+                        _self.dataSource = items
+                        _self.collectionView!.reloadData()
+                        
+                    } else {
+                        guard let account = _self.user.account else {
+                            return
+                        }
+
+                        var viewModels: [MemberEmptyStateViewModel] = []
+                        viewModels.append(MemberEmptyStateViewModel(logo: "Logo-DeadMoose", header: "\(account.companyName!) has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.", memberEmptyStateDelegate: _self))
+
+                        items.append(viewModels)
+                        _self.dataSource = items
+                    }
+                }) { [weak self] (error, errorDictionary) in
+                    SVProgressHUD.dismiss()
+
+                    guard let _self = self else {
+                        return
+                    }
+
+                    ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+                }
+            case .plans:
+                ApiManager.sharedInstance.getPlans(1, success: { [weak self] (plans) in
+                    guard let _self = self else {
+                        return
+                    }
+                    if(plans.count > 0) {
+                        _self.hasPlans = true
+
+                        var viewModels: [PlanViewModel] = []
+                        for plan in plans {
+                            let viewModel = PlanViewModel(plan: plan)
+
+                            viewModels.append(viewModel)
+                        }
+                        items.append(viewModels)
+
+                        _self.dataSource = items
+                        _self.collectionView!.reloadData()
+                    } else {
+                        guard let account = _self.user.account else {
+                            return
+                        }
+                        var viewModels: [PlanEmptyStateViewModel] = []
+                        viewModels.append(PlanEmptyStateViewModel(logo: "Logo-DeadMoose", header: "\(account.companyName!) has no plans!", subHeader: "The best way to add plans to your community is to create a plan manually or import existing plans from your Stripe account.", planEmptyStateDelgate: self))
+
+                        items.append(viewModels)
+                        _self.dataSource = items
+                    }
+                }) { [weak self] (error, errorDictionary) in
+                    SVProgressHUD.dismiss()
+
+                    guard let _self = self else {
+                        return
+                    }
+
+                    ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+                }
+            case .messages:
+                let remainingHeight = view.frame.size.height //- tableView.visibleCells[0].frame.size.height
+
+                var viewModels: [MessagesViewModel] = []
+                viewModels.append(MessagesViewModel(totalCellHeight: remainingHeight, messages: [], messageViewDelegate: self))
+
+                items.append(viewModels)
+                collectionView!.reloadData()
+                
+                break
+            }
+        case .calf:
+            switch memberNavigationState {
+            case .message:
+                let remainingHeight = self.view.frame.size.height //- tableView.visibleCells[0].frame.size.height
+
+                ApiManager.sharedInstance.getMessages(user, self.pageNumber, success: { [weak self] (messages) in
+                    guard let _self = self, let messages = messages else {
+                        return
+                    }
+                    var viewModels: [MessagesViewModel] = []
+                    viewModels.append(MessagesViewModel(totalCellHeight: remainingHeight, messages: messages, messageViewDelegate: self))
+                    items.append(viewModels)
+
+                    _self.dataSource = items
+                    _self.collectionView!.reloadData()
+                }) { [weak self] (error, errorDictionary) in
+                    SVProgressHUD.dismiss()
+
+                    guard let _self = self else {
+                        return
+                    }
+
+                    ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+                }
+            case .profile:
+                if user.memberships.count > 0 {
+                    var subscriptionViewModels: [SubscriptionViewModel] = []
+                    for membership in user.memberships {
+                        if let subscription = membership.subscription {
+                            let subscriptionViewModel = SubscriptionViewModel(subscription: subscription, subscriptionDelegate: self)
+                            subscriptionViewModels.append(subscriptionViewModel)
+                        }
+                    }
+                    items.append(subscriptionViewModels)
+                } else {
+                    var subscriptionEmptyStateViewModels: [SubscriptionEmptyStateViewModel] = []
+                    subscriptionEmptyStateViewModels.append(SubscriptionEmptyStateViewModel(header: "Not Subscribed to Any Plans", subscriptionEmptyStateDelegate: self))
+
+                    items.append(subscriptionEmptyStateViewModels)
+                }
+
+                if user.paymentCards.count > 0 {
+                    var paymentCardViewModels: [PaymentCardViewModel] = []
+                    for paymentCard in user.paymentCards {
+                        let paymentCardViewModel = PaymentCardViewModel(paymentCard: paymentCard, paymentCardDelegate: self)
+
+                        paymentCardViewModels.append(paymentCardViewModel)
+                    }
+                    items.append(paymentCardViewModels)
+                } else {
+                    var paymentCardEmptyStateViewModels: [PaymentCardEmptyStateViewModel] = []
+                    paymentCardEmptyStateViewModels.append(PaymentCardEmptyStateViewModel(header: "No Payment Card on File", paymentCardEmptyStateDelegate: self))
+
+                    items.append(paymentCardEmptyStateViewModels)
+                }
+
+                //
+                if user.charges.count > 0 {
+                    var paymentHistoryViewModels: [PaymentHistoryViewModel] = []
+                    for charge in user.charges {
+                        let paymentHistoryViewModel = PaymentHistoryViewModel(charge: charge)
+
+                        paymentHistoryViewModels.append(paymentHistoryViewModel)
+                    }
+                    items.append(paymentHistoryViewModels)
+                } else {
+                    var paymentHistoryEmptyStateViewModels: [PaymentHistoryEmptyStateViewModel] = []
+                    paymentHistoryEmptyStateViewModels.append(PaymentHistoryEmptyStateViewModel(header: "No Transactions"))
+                    
+                    items.append(paymentHistoryEmptyStateViewModels)
+                }
+                
+            case .charge:
+                let remainingHeight = view.frame.size.height //- tableView.visibleCells[0].frame.size.height
+                
+                let viewModel = ChargeViewModel(totalCellHeight: remainingHeight, chargeCellDelegate: self)
+                
+                items.append([viewModel])  
+            }
+        }
+        
+        dataSource = items
+        updateFlowLayoutIfNeeded()
+        
+        collectionView!.reloadData()
+    }
+
     func backClicked(_ sender: UIButton) {
         switch profileType {
         case .bull:
@@ -490,189 +619,6 @@ class ProfileViewController: UICollectionViewController {
             present(viewController, animated: true, completion: nil)
         }
     }
-    func buildDataSet() {
-        var items: [[DataSourceItemProtocol]] = []
-        hasMembers = false
-        hasPlans = false
-        
-        switch profileType {
-        case .bull:
-            let profileHeaderViewModel = ProfileHeaderViewModel(user: user, membershipNavigationState: membershipNavigationState, membershipNavigationDelegate: self)
-            
-            items.append([profileHeaderViewModel])
-            
-            switch membershipNavigationState {
-            case .members:
-                    ApiManager.sharedInstance.getMembers(self.pageNumber, success: { [weak self] (members) in
-                        guard let _self = self else {
-                            return
-                        }
-                        if(members!.count > 0) {
-                            _self.hasMembers = true
-                            
-                            var viewModels: [MemberViewModel] = []
-                            for member in members! {
-                                let viewModel = MemberViewModel(user: member)
-                                
-                                viewModels.append(viewModel)
-                            }
-                            items.append(viewModels)
-                            
-                            _self.dataSource = items
-                        } else {
-                            guard let account = _self.user.account else {
-                                return
-                            }
-                            
-                            var viewModels: [MemberEmptyStateViewModel] = []
-                            viewModels.append(MemberEmptyStateViewModel(logo: "Logo-DeadMoose", header: "\(account.companyName!) has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.", memberEmptyStateDelegate: _self))
-                            
-                            items.append(viewModels)
-                            _self.dataSource = items
-                        }
-                    }) { [weak self] (error, errorDictionary) in
-                        SVProgressHUD.dismiss()
-                        
-                        guard let _self = self else {
-                            return
-                        }
-                        
-                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
-                }
-            case .plans:
-                ApiManager.sharedInstance.getPlans(1, success: { [weak self] (plans) in
-                    guard let _self = self else {
-                        return
-                    }
-                    if(plans.count > 0) {
-                        _self.hasPlans = true
-                        
-                        var viewModels: [PlanViewModel] = []
-                        for plan in plans {
-                            let viewModel = PlanViewModel(plan: plan)
-                            
-                            viewModels.append(viewModel)
-                        }
-                        items.append(viewModels)
-                        
-                        _self.dataSource = items
-                    } else {
-                        guard let account = _self.user.account else {
-                            return
-                        }
-                        var viewModels: [PlanEmptyStateViewModel] = []
-                        viewModels.append(PlanEmptyStateViewModel(logo: "Logo-DeadMoose", header: "\(account.companyName!) has no plans!", subHeader: "The best way to add plans to your community is to create a plan manually or import existing plans from your Stripe account.", planEmptyStateDelgate: self))
-                        
-                        items.append(viewModels)
-                        _self.dataSource = items
-                    }
-                }) { [weak self] (error, errorDictionary) in
-                    SVProgressHUD.dismiss()
-                    
-                    guard let _self = self else {
-                        return
-                    }
-                    
-                    ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
-                }
-            case .messages:
-                let remainingHeight = view.frame.size.height - tableView.visibleCells[0].frame.size.height
-                
-                var viewModels: [MessagesViewModel] = []
-                viewModels.append(MessagesViewModel(totalCellHeight: remainingHeight, messages: [], messageViewDelegate: self))
-                
-                items.append(viewModels)
-                break
-            }
-        case .calf:
-            let calfProfileHeaderViewModel = CalfProfileHeaderViewModel(user: user, memberNavigationState: memberNavigationState, memberNavigationDelegate: self)
-            
-            items.append([calfProfileHeaderViewModel])
-            
-            switch memberNavigationState {
-            case .message:
-                let remainingHeight = view.frame.size.height - tableView.visibleCells[0].frame.size.height
-
-                ApiManager.sharedInstance.getMessages(user, self.pageNumber, success: { [weak self] (messages) in
-                    guard let _self = self, let messages = messages else {
-                        return
-                    }
-                    var viewModels: [MessagesViewModel] = []
-                    viewModels.append(MessagesViewModel(totalCellHeight: remainingHeight, messages: messages, messageViewDelegate: self))
-                    items.append(viewModels)
-                        
-                    _self.dataSource = items
-                }) { [weak self] (error, errorDictionary) in
-                    SVProgressHUD.dismiss()
-                    
-                    guard let _self = self else {
-                        return
-                    }
-                    
-                    ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
-                }
-            case .profile:
-                if user.memberships.count > 0 {
-                    var subscriptionViewModels: [SubscriptionViewModel] = []
-                    for membership in user.memberships {
-                        if let subscription = membership.subscription {
-                            let subscriptionViewModel = SubscriptionViewModel(subscription: subscription, subscriptionDelegate: self)
-                            subscriptionViewModels.append(subscriptionViewModel)
-                        }
-                    }
-                    items.append(subscriptionViewModels)
-                } else {
-                    var subscriptionEmptyStateViewModels: [SubscriptionEmptyStateViewModel] = []
-                    subscriptionEmptyStateViewModels.append(SubscriptionEmptyStateViewModel(header: "Not Subscribed to Any Plans", subscriptionEmptyStateDelegate: self))
-                    
-                    items.append(subscriptionEmptyStateViewModels)
-                }
-                
-                if user.paymentCards.count > 0 {
-                    var paymentCardViewModels: [PaymentCardViewModel] = []
-                    for paymentCard in user.paymentCards {
-                        let paymentCardViewModel = PaymentCardViewModel(paymentCard: paymentCard, paymentCardDelegate: self)
-                        
-                        paymentCardViewModels.append(paymentCardViewModel)
-                    }
-                    items.append(paymentCardViewModels)
-                } else {
-                    var paymentCardEmptyStateViewModels: [PaymentCardEmptyStateViewModel] = []
-                    paymentCardEmptyStateViewModels.append(PaymentCardEmptyStateViewModel(header: "No Payment Card on File", paymentCardEmptyStateDelegate: self))
-                    
-                    items.append(paymentCardEmptyStateViewModels)
-                }
-                
-                //
-                if user.charges.count > 0 {
-                    var paymentHistoryViewModels: [PaymentHistoryViewModel] = []
-                    for charge in user.charges {
-                        let paymentHistoryViewModel = PaymentHistoryViewModel(charge: charge)
-                        
-                        paymentHistoryViewModels.append(paymentHistoryViewModel)
-                    }
-                    items.append(paymentHistoryViewModels)
-                } else {
-                    var paymentHistoryEmptyStateViewModels: [PaymentHistoryEmptyStateViewModel] = []
-                    paymentHistoryEmptyStateViewModels.append(PaymentHistoryEmptyStateViewModel(header: "No Transactions"))
-                    
-                    items.append(paymentHistoryEmptyStateViewModels)
-                }
-               
-            case .charge:
-                let remainingHeight = view.frame.size.height - tableView.visibleCells[0].frame.size.height
-                
-                let viewModel = ChargeViewModel(totalCellHeight: remainingHeight, chargeCellDelegate: self)
-                
-                items.append([viewModel])
-            default:
-                break
-                
-            }
-        }
-        
-        dataSource = items
-    }
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y
         handleNavHeaderScrollingWithOffset(yOffset)
@@ -683,9 +629,6 @@ class ProfileViewController: UICollectionViewController {
     func handleNavHeaderScrollingWithOffset(_ yOffset: CGFloat) {
         if chromeVisible {
             navHeaderDarkCoverView.alpha = min(1.0, (yOffset * scrollDarkNavDelayFactor - parallaxHeight + offsetLabelHeaderHeight) *  0.01)
-            
-            let labelTransform = CATransform3DMakeTranslation(0, max(0.0, parallaxHeight - yOffset + labelHeaderAdditionalOffset), 0)
-            navHeaderNameLabel.layer.transform = labelTransform
         }
     }
     func addPlanClicked(_ sender: UIButton) {
@@ -705,124 +648,130 @@ class ProfileViewController: UICollectionViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
 }
-extension ProfileViewController : UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return dataSource.count
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let dataItems = dataSource[section]
-        
-        return dataItems.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let dataItems = dataSource[(indexPath as NSIndexPath).section]
-        let viewModel = dataItems[(indexPath as NSIndexPath).row]
-        let cell = viewModel.dequeueAndConfigure(tableView, indexPath: indexPath)
-        
-        cell.layoutIfNeeded()
-        
-        return cell
-    }
-}
+
 extension ProfileViewController {
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 2
+        return 1
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let row = indexPath.row
+
+        //collectionView.registerClass(modelView.cellClass, forCellWithReuseIdentifier: modelView.cellID)
         
-        let modelItem = items[row]
-        let modelView = modelItem.modelView
-        
-        collectionView.registerClass(modelView.cellClass, forCellWithReuseIdentifier: modelView.cellID)
-        
-        let cell = modelView.dequeue(collectionView, indexPath: indexPath)
-        cell.presenter = self
-        
-        modelView.setup(cell)
+        let cell: ProfileCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileCollectionViewCell", for: indexPath) as! ProfileCollectionViewCell
+        cell.dataSource = dataSource
+        cell.profileCollectionViewCellDelegate = self
         
         return cell
     }
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch profileType {
+        case .bull:
+            let profileHeaderViewModel = ProfileHeaderViewModel(user: user, membershipNavigationState: membershipNavigationState, membershipNavigationDelegate: self)
+            
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "BullProfileHeaderView", for: indexPath) as! BullProfileHeaderView
+            header.setupWith(profileHeaderViewModel)
+            
+            return header
+        case .calf:
+            let profileHeaderViewModel = CalfProfileHeaderViewModel(user: user, memberNavigationState: memberNavigationState, memberNavigationDelegate: self)
+            
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CalfProfileHeaderView", for: indexPath) as! CalfProfileHeaderView
+            header.setupWith(profileHeaderViewModel)
+            
+            return header
+        }
 
-        return header
     }
 }
-
 extension ProfileViewController: UICollectionViewDelegateFlowLayout {
     
     private static var cellHeightCache: [String: CGSize] = [:]
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 355, height: 200)
-    }
-}
-extension ProfileViewController : UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+    func updateFlowLayoutIfNeeded(forceReload: Bool = false) {
+        guard let collectionView = collectionView else {
+            return
+        }
         
-        let dataItems = dataSource[(indexPath as NSIndexPath).section]
+        let width = collectionView.bounds.width
+        
+        let headerHeight: CGFloat
         
         switch profileType {
-        case .calf:
-            break
         case .bull:
-            switch membershipNavigationState {
-            case .members:
-                guard let viewModel = dataItems[(indexPath as NSIndexPath).row] as? MemberViewModel else {
-                    return
-                }
-                
-                let viewController = ProfileViewController(user: viewModel.user, profileType: .calf)
-                //viewController.profileDelegate = self
-                
-                navigationController?.pushViewController(viewController, animated: true)
-                
-            //profileType = .calf
-            case .plans:
-                guard let viewModel = dataItems[(indexPath as NSIndexPath).row] as? PlanViewModel else {
-                    return
-                }
-                
-                let viewController = PlanProfileViewController(plan: viewModel.plan)
-                viewController.planProfileDelegate = self
-                
-                planProfileDisplayType = .nonmodally
-                navigationController?.pushViewController(viewController, animated: true)
-            case .messages:
-                break;
-            }
-        }
-    }
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let dataItems = dataSource[section]
-        
-        if dataItems.count > 0 {
-            let view = dataItems[0]
-        
-            return view.viewForHeader()
-        }
-        
-        return nil
-    }
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let dataItems = dataSource[section]
-        
-        if dataItems.count > 0 {
-            let view = dataItems[0]
+            let profileHeaderViewModel = ProfileHeaderViewModel(user: user, membershipNavigationState: membershipNavigationState, membershipNavigationDelegate: self)
             
-            return view.heightForHeader()
+            let header = BullProfileHeaderView.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
+            header.setupWith(profileHeaderViewModel)
+            
+            let height = header.systemLayoutHeightForWidth(width: width)
+            
+            headerHeight = height
+        case .calf:
+            let profileHeaderViewModel = CalfProfileHeaderViewModel(user: user, memberNavigationState: memberNavigationState, memberNavigationDelegate: self)
+            
+            let header = CalfProfileHeaderView.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
+            header.setupWith(profileHeaderViewModel)
+            
+            let height = header.systemLayoutHeightForWidth(width: width)
+            
+            headerHeight = height
         }
         
-        return 0
+        if forceReload || stretchyFlowLayout.headerReferenceSize.height != headerHeight {
+            stretchyFlowLayout.headerReferenceSize = CGSize(width: width, height: headerHeight)
+            stretchyFlowLayout.invalidateLayout()
+            
+            collectionView.reloadData()
+        }
     }
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.leastNormalMagnitude
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        if let referenceSize = ProfileViewController.cellHeightCache["Header"] {
+            return referenceSize
+        }
+        let width = collectionView.bounds.width
+        
+        switch profileType {
+        case .bull:
+            let profileHeaderViewModel = ProfileHeaderViewModel(user: user, membershipNavigationState: membershipNavigationState, membershipNavigationDelegate: self)
+            
+            let header = BullProfileHeaderView.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
+            header.setupWith(profileHeaderViewModel)
+            
+            let height = header.systemLayoutHeightForWidth(width: width)
+            
+            let size = CGSize(width: width, height: ceil(height))
+            
+            ProfileViewController.cellHeightCache["Header"] = size
+
+            return size
+        case .calf:
+            let profileHeaderViewModel = CalfProfileHeaderViewModel(user: user, memberNavigationState: memberNavigationState, memberNavigationDelegate: self)
+            
+            let header = CalfProfileHeaderView.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
+            header.setupWith(profileHeaderViewModel)
+            
+            let height = header.systemLayoutHeightForWidth(width: width)
+            
+            let size = CGSize(width: width, height: ceil(height))
+            
+            ProfileViewController.cellHeightCache["Header"] = size
+            
+            return size
+        }
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.bounds.width
+        let cell = ProfileCollectionViewCell.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
+        cell.dataSource = dataSource
+        
+        let height = cell.getTableViewHeight() + 60
+        
+        let size = CGSize(width: width, height: ceil(height))
+        
+        return size
     }
 }
 extension ProfileViewController: UserProfileDelegate {
@@ -843,9 +792,6 @@ extension ProfileViewController: MemberNavigationDelegate {
         handleNavHeaderScrollingWithOffset(0)
         pageNumber = 1
         buildDataSet()
-        
-        view.becomeFirstResponder()
-        reloadInputViews()
     }
     func profileClicked() {
         memberNavigationState = .profile
@@ -854,9 +800,6 @@ extension ProfileViewController: MemberNavigationDelegate {
         handleNavHeaderScrollingWithOffset(0)
         pageNumber = 1
         buildDataSet()
-        
-        view.resignFirstResponder()
-        reloadInputViews()
     }
     func chargeClicked() {
         memberNavigationState = .charge
@@ -865,9 +808,6 @@ extension ProfileViewController: MemberNavigationDelegate {
         handleNavHeaderScrollingWithOffset(0)
         pageNumber = 1
         buildDataSet()
-        
-        view.resignFirstResponder()
-        reloadInputViews()
     }
 }
 extension ProfileViewController: MembershipNavigationDelegate {
@@ -1006,7 +946,7 @@ extension ProfileViewController: CardCaptureDelegate {
                         }
                         _self.user.paymentCards.append(response)
                         
-                        _self.buildDataSet()
+                        //_self.buildDataSet()
                     }, failure: { [weak self] (error, errorDictionary) in
                         guard let _self = self else {
                             return
@@ -1032,7 +972,7 @@ extension ProfileViewController: ChargeCellDelegate {
             }
             _self.user.charges.append(response)
             
-            _self.buildDataSet()
+            //_self.buildDataSet()
         }) { [weak self] (error, errorDictionary) in
             SVProgressHUD.dismiss()
             
@@ -1046,37 +986,37 @@ extension ProfileViewController: ChargeCellDelegate {
 }
 extension ProfileViewController: MessageViewDelegate {
     func didSubmitMessage(message: String) {
-        switch profileType {
-        case .bull:
-            break
-        case .calf:
-            let createMessage = ApiManager.CreateMessage(recipient: user, content: message)
-            
-            ApiManager.sharedInstance.createMessage(createMessage, success: { [weak self] (message) in
-                guard let _self = self else {
-                    return
-                }
-                guard let dataSourceItems = _self.dataSource[1] as? [MessagesViewModel] else {
-                    return
-                }
-                var items = _self.dataSource
-                
-                let messagesViewModel = dataSourceItems[0]
-                messagesViewModel.messages.append(message)
-                
-                items[1] = [messagesViewModel]
-                
-                _self.dataSource = items
-            }) { (error, errorDictionary) in
-                print("failed")
-            }
-        }
+//        switch profileType {
+//        case .bull:
+//            break
+//        case .calf:
+//            let createMessage = ApiManager.CreateMessage(recipient: user, content: message)
+//            
+//            ApiManager.sharedInstance.createMessage(createMessage, success: { [weak self] (message) in
+//                guard let _self = self else {
+//                    return
+//                }
+//                guard let dataSourceItems = _self.dataSource[1] as? [MessagesViewModel] else {
+//                    return
+//                }
+//                var items = _self.dataSource
+//                
+//                let messagesViewModel = dataSourceItems[0]
+//                messagesViewModel.messages.append(message)
+//                
+//                items[1] = [messagesViewModel]
+//                
+//                _self.dataSource = items
+//            }) { (error, errorDictionary) in
+//                print("failed")
+//            }
+//        }
     }
 }
 extension ProfileViewController: ChangePlanDelegate {
     func didCompleteChangePlan(subscription: Subscription) {
         user.memberships[0].subscription = subscription
-        buildDataSet()
+        //buildDataSet()
         
         let _ = self.navigationController?.popViewController(animated: true)
     }
@@ -1094,4 +1034,20 @@ extension ProfileViewController: PlanProfileDelegate {
             let _ = navigationController?.popViewController(animated: true)
         }
    }
+}
+extension ProfileViewController: ProfileCollectionViewCellDelegate {
+    func didSelectMember(member: User) {
+        let viewController = ProfileViewController(user: member, profileType: .calf)
+        viewController.profileDelegate = profileDelegate
+        
+        planProfileDisplayType = .modally
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    func didSelectPlan(plan: Plan) {
+        let viewController = PlanProfileViewController(plan: plan)
+        viewController.planProfileDelegate = self
+        
+        planProfileDisplayType = .nonmodally
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 }

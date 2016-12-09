@@ -12,7 +12,7 @@ import Money
 protocol ChargeCellDelegate: class {
     func didChargeAmount(_ amount: USD)
 }
-class ChargeCell: UITableViewCell {
+class ChargeCell: UITableViewCell, DataSourceItemCell {
     fileprivate var amount = USD(0.0)
     weak var delegate: ChargeCellDelegate?
     

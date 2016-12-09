@@ -103,7 +103,11 @@
 		4255B3FE1DAEA3BF008DECAC /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255B3FD1DAEA3BF008DECAC /* ImagePicker.swift */; };
 		4255B4001DAEA53D008DECAC /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255B3FF1DAEA53D008DECAC /* UIImage.swift */; };
 		425D2BB11DF9A77A0074C3B3 /* StetchyHeaderLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D2BB01DF9A77A0074C3B3 /* StetchyHeaderLayout.swift */; };
-		425D2BB31DF9AA3B0074C3B3 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D2BB21DF9AA3B0074C3B3 /* HeaderView.swift */; };
+		425D2BB31DF9AA3B0074C3B3 /* BullProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D2BB21DF9AA3B0074C3B3 /* BullProfileHeaderView.swift */; };
+		425D2BB51DF9AE350074C3B3 /* ProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D2BB41DF9AE350074C3B3 /* ProfileCollectionViewCell.swift */; };
+		425D2BB71DF9E73D0074C3B3 /* CalfProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D2BB61DF9E73D0074C3B3 /* CalfProfileHeaderView.swift */; };
+		425D2BB91DF9FECF0074C3B3 /* PlanProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D2BB81DF9FECF0074C3B3 /* PlanProfileCollectionViewCell.swift */; };
+		425D2BBB1DFA03A80074C3B3 /* PlanProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D2BBA1DFA03A80074C3B3 /* PlanProfileHeaderView.swift */; };
 		426841471DA7A3EA00A2BFF8 /* ConnectStripeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426841461DA7A3EA00A2BFF8 /* ConnectStripeViewController.swift */; };
 		4268414A1DA7A80300A2BFF8 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426841491DA7A80300A2BFF8 /* MainTabBarViewController.swift */; };
 		4268414C1DA7A8A500A2BFF8 /* RecentTransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4268414B1DA7A8A500A2BFF8 /* RecentTransactionsViewController.swift */; };
@@ -312,7 +316,11 @@
 		4255B3FF1DAEA53D008DECAC /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIImage.swift; path = Extensions/UIImage.swift; sourceTree = "<group>"; };
 		4255B4011DAF3509008DECAC /* MemberMoose-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "MemberMoose-iOS.entitlements"; sourceTree = "<group>"; };
 		425D2BB01DF9A77A0074C3B3 /* StetchyHeaderLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StetchyHeaderLayout.swift; path = Layouts/StetchyHeaderLayout.swift; sourceTree = "<group>"; };
-		425D2BB21DF9AA3B0074C3B3 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HeaderView.swift; path = Plans/HeaderView.swift; sourceTree = "<group>"; };
+		425D2BB21DF9AA3B0074C3B3 /* BullProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BullProfileHeaderView.swift; path = Plans/BullProfileHeaderView.swift; sourceTree = "<group>"; };
+		425D2BB41DF9AE350074C3B3 /* ProfileCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileCollectionViewCell.swift; path = Profile/ProfileCollectionViewCell.swift; sourceTree = "<group>"; };
+		425D2BB61DF9E73D0074C3B3 /* CalfProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalfProfileHeaderView.swift; path = Profile/CalfProfileHeaderView.swift; sourceTree = "<group>"; };
+		425D2BB81DF9FECF0074C3B3 /* PlanProfileCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanProfileCollectionViewCell.swift; path = Plans/PlanProfileCollectionViewCell.swift; sourceTree = "<group>"; };
+		425D2BBA1DFA03A80074C3B3 /* PlanProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanProfileHeaderView.swift; path = Plans/PlanProfileHeaderView.swift; sourceTree = "<group>"; };
 		426841461DA7A3EA00A2BFF8 /* ConnectStripeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConnectStripeViewController.swift; path = Join/ConnectStripeViewController.swift; sourceTree = "<group>"; };
 		426841491DA7A80300A2BFF8 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTabBarViewController.swift; path = Main/MainTabBarViewController.swift; sourceTree = "<group>"; };
 		4268414B1DA7A8A500A2BFF8 /* RecentTransactionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecentTransactionsViewController.swift; path = Main/RecentTransactionsViewController.swift; sourceTree = "<group>"; };
@@ -680,6 +688,7 @@
 				4211D8CB1DB866500092F7C5 /* ProfileHeaderCell.swift */,
 				42F08C481DACAADA00D5D4E3 /* SubscriptionCell.swift */,
 				4253B6561DBBAC3F00A93E98 /* SubscriptionEmptyStateCell.swift */,
+				425D2BB41DF9AE350074C3B3 /* ProfileCollectionViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -790,6 +799,7 @@
 				42BD76801DDA96190017EC93 /* PlanSubscriberEmptyStateCell.swift */,
 				4275F72D1DC2965800E0FF7B /* PlanSubscriberCell.swift */,
 				4275F7311DC29ACB00E0FF7B /* PlanActivityCell.swift */,
+				425D2BB81DF9FECF0074C3B3 /* PlanProfileCollectionViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -822,6 +832,7 @@
 				4275F7121DC19FBD00E0FF7B /* PlanNavigationView.swift */,
 				4275F7241DC27CDA00E0FF7B /* PlanHeaderView.swift */,
 				42EF412A1DF79CF4005095F1 /* PlanFeatureHeaderView.swift */,
+				425D2BBA1DFA03A80074C3B3 /* PlanProfileHeaderView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -882,7 +893,8 @@
 			isa = PBXGroup;
 			children = (
 				42C2A4611DDDFA7200504C28 /* MessageView.swift */,
-				425D2BB21DF9AA3B0074C3B3 /* HeaderView.swift */,
+				425D2BB21DF9AA3B0074C3B3 /* BullProfileHeaderView.swift */,
+				425D2BB61DF9E73D0074C3B3 /* CalfProfileHeaderView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1269,12 +1281,14 @@
 				42BD767C1DDA75070017EC93 /* PlanSubscriberEmptyStateViewModel.swift in Sources */,
 				4268414A1DA7A80300A2BFF8 /* MainTabBarViewController.swift in Sources */,
 				4275F7191DC1AE9800E0FF7B /* PlanDescriptionViewModel.swift in Sources */,
+				425D2BB71DF9E73D0074C3B3 /* CalfProfileHeaderView.swift in Sources */,
 				4225370D1DB90187004B33D8 /* CalfProfileHeaderCell.swift in Sources */,
 				4245074F1DCF8EE3004F4D16 /* Message.swift in Sources */,
 				426841631DA86CAF00A2BFF8 /* EmptyStateView.swift in Sources */,
 				4253B67C1DC02A5300A93E98 /* PlansViewController.swift in Sources */,
 				4211D8C61DB7AF700092F7C5 /* MenuHeaderViewModel.swift in Sources */,
 				422537201DB96397004B33D8 /* PaymentCardViewController.swift in Sources */,
+				425D2BBB1DFA03A80074C3B3 /* PlanProfileHeaderView.swift in Sources */,
 				42C2A46A1DDE5B2000504C28 /* MessagesEmptyStateCell.swift in Sources */,
 				425013B51DAFCA8100ED21B1 /* Validator.swift in Sources */,
 				42C2A4681DDE5AA200504C28 /* MessagesEmptyStateViewModel.swift in Sources */,
@@ -1358,6 +1372,7 @@
 				42296D901DE0EF7F00F90818 /* CurrentPlanViewModel.swift in Sources */,
 				4275F7151DC1AD9200E0FF7B /* PlanPaymentDetailsViewModel.swift in Sources */,
 				426841681DA86D0E00A2BFF8 /* ButtonDecorator.swift in Sources */,
+				425D2BB51DF9AE350074C3B3 /* ProfileCollectionViewCell.swift in Sources */,
 				42F08C441DAC850B00D5D4E3 /* MemberDetailViewController.swift in Sources */,
 				4268415A1DA7EEBD00A2BFF8 /* CalculatorKeyboard.swift in Sources */,
 				4275F7321DC29ACB00E0FF7B /* PlanActivityCell.swift in Sources */,
@@ -1383,6 +1398,7 @@
 				4253B6661DBC354A00A93E98 /* CALayer.swift in Sources */,
 				4253B6551DBAEF8D00A93E98 /* AddMemberViewController.swift in Sources */,
 				4225370F1DB901A0004B33D8 /* CalfProfileHeaderViewModel.swift in Sources */,
+				425D2BB91DF9FECF0074C3B3 /* PlanProfileCollectionViewCell.swift in Sources */,
 				4240B74F1DA44671000D137E /* AppDelegate.swift in Sources */,
 				42F08C301DAC318F00D5D4E3 /* Plan.swift in Sources */,
 				4275F70A1DC0F9FD00E0FF7B /* Charge.swift in Sources */,
@@ -1403,7 +1419,7 @@
 				420741D41DF1C8B2006CFCE2 /* PlanAmountViewModel.swift in Sources */,
 				42F08C2B1DABBDA100D5D4E3 /* ApiManager.swift in Sources */,
 				42330B941DB3D5B5003BDDEC /* PaymentCardViewModel.swift in Sources */,
-				425D2BB31DF9AA3B0074C3B3 /* HeaderView.swift in Sources */,
+				425D2BB31DF9AA3B0074C3B3 /* BullProfileHeaderView.swift in Sources */,
 				420741BE1DEE109D006CFCE2 /* NewPlanProfileHeaderViewModel.swift in Sources */,
 				4211D8C81DB7F0F60092F7C5 /* BullProfileViewController.swift in Sources */,
 				422537261DB99693004B33D8 /* CancelSubscriptionViewController.swift in Sources */,

@@ -11,7 +11,7 @@ import UIKit
 protocol PaymentCardEmptyStateCellDelegate: class {
     func didAddPaymentCardClicked()
 }
-class PaymentCardEmptyStateCell: UITableViewCell {
+class PaymentCardEmptyStateCell: UITableViewCell, DataSourceItemCell {
     fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         

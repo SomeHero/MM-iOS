@@ -13,7 +13,7 @@ protocol SubscriptionCellDelegate: class {
     func didChangeSubscriptionClicked()
     func didHoldSubscriptionClicked()
 }
-class SubscriptionCell: UITableViewCell {
+class SubscriptionCell: UITableViewCell, DataSourceItemCell {
     
     fileprivate lazy var containerView: UIView = {
         let _view = UIView()

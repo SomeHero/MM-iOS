@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MemberCell: UITableViewCell {
+class MemberCell: UITableViewCell, DataSourceItemCell {
 
     fileprivate lazy var containerView: UIView = {
         let _view = UIView()

@@ -1,33 +1,24 @@
 //
-//  PlanProfileHeaderCell.swift
+//  PlanProfileHeaderView.swift
 //  MemberMoose-iOS
 //
-//  Created by James Rhodes on 10/26/16.
+//  Created by James Rhodes on 12/8/16.
 //  Copyright © 2016 James Rhodes. All rights reserved.
 //
 
 import UIKit
 
-class PlanProfileHeaderCell: UITableViewCell, DataSourceItemCell {
+class PlanProfileHeaderView: UICollectionReusableView {
     var avatar: UIImage?
     weak var presentingViewController: UIViewController?
     weak var planProfileHeaderViewModelDelegate: PlanProfileHeaderViewModelDelegate?
     
-    fileprivate lazy var topBackgroundView: UIView = {
-        let _view = UIView()
-        
-        _view.backgroundColor = UIColorTheme.TopBackgroundColor
-        
-        self.contentView.addSubview(_view)
-        
-        return _view
-    }()
     fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
         _view.backgroundColor = .clear
         
-        self.topBackgroundView.addSubview(_view)
+        self.addSubview(_view)
         
         return _view
     }()
@@ -36,7 +27,7 @@ class PlanProfileHeaderCell: UITableViewCell, DataSourceItemCell {
         //_photoView.buttonTitle = "Upload Avatar"
         _photoView.editPhotoButton.addTarget(self, action: #selector(PlanProfileHeaderCell.editPhotoClicked), for: .touchUpInside)
         
-        self.contentView.addSubview(_photoView)
+        self.addSubview(_photoView)
         return _photoView
     }()
     fileprivate lazy var headingLabel: UILabel = {
@@ -62,35 +53,28 @@ class PlanProfileHeaderCell: UITableViewCell, DataSourceItemCell {
     fileprivate lazy var planNavigation: PlanNavigationView = {
         let _view = PlanNavigationView()
         //_view.delegate = self
-        self.contentView.addSubview(_view)
+        self.containerView.addSubview(_view)
         
         return _view
     }()
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .default, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         backgroundColor = UIColorTheme.TopBackgroundColor
-        separatorInset = UIEdgeInsets.zero
-        layoutMargins = UIEdgeInsets.zero
-        accessoryType = .none
-        selectionStyle = .none
-        //selectedBackgroundView = selectedColorView
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     override func prepareForReuse() {
         super.prepareForReuse()
     }
     
     override func updateConstraints() {
         containerView.snp.updateConstraints { (make) in
-            make.edges.equalTo(contentView).inset(20)
+            make.edges.equalTo(self).inset(20)
         }
         avatarView.snp.updateConstraints { (make) in
-            make.top.equalTo(containerView)
+            make.top.greaterThanOrEqualTo(containerView)
             make.leading.trailing.equalTo(containerView).inset(20)
             make.centerX.equalTo(containerView)
         }
@@ -116,7 +100,7 @@ class PlanProfileHeaderCell: UITableViewCell, DataSourceItemCell {
         if let viewModel = viewModel as? PlanProfileHeaderViewModel {
             if let avatarImageUrl = viewModel.avatarImageUrl {
                 avatarView.profilePhoto.kf.setImage(with: URL(string: avatarImageUrl)!,
-                                        placeholder: UIImage(named: viewModel.avatar))
+                                                    placeholder: UIImage(named: viewModel.avatar))
             } else {
                 avatarView.profilePhoto.image = UIImage(named: viewModel.avatar)
             }

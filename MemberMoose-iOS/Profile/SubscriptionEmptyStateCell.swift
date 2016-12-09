@@ -11,7 +11,7 @@ import UIKit
 protocol SubscriptionEmptyStateCellDelegate: class {
     func didSubscribeClicked()
 }
-class SubscriptionEmptyStateCell: UITableViewCell {
+class SubscriptionEmptyStateCell: UITableViewCell, DataSourceItemCell {
     fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         

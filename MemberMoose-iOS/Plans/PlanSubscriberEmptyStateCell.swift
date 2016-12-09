@@ -12,7 +12,7 @@ protocol PlanSubscriberEmptyStateCellDelegate: class {
     func didCreatePlanSubscriberClicked()
     func didSharePlanToSubscriberClicked()
 }
-class PlanSubscriberEmptyStateCell: UITableViewCell {
+class PlanSubscriberEmptyStateCell: UITableViewCell, DataSourceItemCell {
     weak var planSubscriberEmptyStateCellDelegate: PlanSubscriberEmptyStateCellDelegate?
     
     fileprivate lazy var containerView: UIView = {

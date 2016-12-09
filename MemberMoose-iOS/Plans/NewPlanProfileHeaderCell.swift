@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewPlanProfileHeaderCell: UITableViewCell {
+class NewPlanProfileHeaderCell: UITableViewCell, DataSourceItemCell {
     var avatar: UIImage?
     weak var presentingViewController: UIViewController?
     weak var planProfileHeaderViewModelDelegate: NewPlanProfileHeaderViewModelDelegate?

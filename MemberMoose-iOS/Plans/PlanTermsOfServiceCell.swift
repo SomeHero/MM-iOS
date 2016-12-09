@@ -9,7 +9,7 @@
 import UIKit
 
 
-class PlanTermsOfServiceCell: UITableViewCell {
+class PlanTermsOfServiceCell: UITableViewCell, DataSourceItemCell {
     fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         

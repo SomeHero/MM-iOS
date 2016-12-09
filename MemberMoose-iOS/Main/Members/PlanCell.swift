@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PlanCell: UITableViewCell {
+class PlanCell: UITableViewCell, DataSourceItemCell {
     
     fileprivate lazy var planNameLabel: UILabel = {
         let _label = UILabel()

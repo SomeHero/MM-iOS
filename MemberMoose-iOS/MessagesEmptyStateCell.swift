@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MessagesEmptyStateCell: UITableViewCell {
+class MessagesEmptyStateCell: UITableViewCell, DataSourceItemCell {
     static let identifier = "MessagesEmptyStateCellIdentifier"
     
     fileprivate lazy var containerView: UIView = {
