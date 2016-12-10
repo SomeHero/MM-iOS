@@ -20,7 +20,7 @@ class CardIOViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = UIColor.clear
     }
     
     override func viewWillAppear(_ animated: Bool) {

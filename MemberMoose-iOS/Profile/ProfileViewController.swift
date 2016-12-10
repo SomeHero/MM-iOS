@@ -80,7 +80,11 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
     fileprivate var hasPlans = false
     
     fileprivate var pageNumber = 1
-    fileprivate var dataSource: [[DataSourceItemProtocol]] = []
+    fileprivate var dataSource: [[DataSourceItemProtocol]] = []  {
+        didSet {
+            ProfileViewController.cellHeightCache.removeAll(keepingCapacity: true)
+        }
+    }
     
     fileprivate var presenter: Presentr = {
         let _presenter = Presentr(presentationType: .alert)
@@ -689,7 +693,7 @@ extension ProfileViewController {
 }
 extension ProfileViewController: UICollectionViewDelegateFlowLayout {
     
-    private static var cellHeightCache: [String: CGSize] = [:]
+    fileprivate static var cellHeightCache: [String: CGSize] = [:]
     func updateFlowLayoutIfNeeded(forceReload: Bool = false) {
         guard let collectionView = collectionView else {
             return
@@ -869,7 +873,9 @@ extension ProfileViewController: PaymentCardDelegate {
         let viewController = CardIOViewController()
         viewController.cardCaptureDelegate = self
 
-        navigationController?.pushViewController(viewController, animated: true)
+        present(viewController, animated: true) {
+            viewController.scanCard()
+        }
     }
 }
 extension ProfileViewController: CancelSubscriptionDelegate {
@@ -923,7 +929,7 @@ extension ProfileViewController: PaymentCardEmptyStateDelegate {
 }
 extension ProfileViewController: CardCaptureDelegate {
     func didCancelCardCapture() {
-        navigationController?.popViewController(animated: true)
+        dismiss(animated: true, completion: nil)
     }
     func didCompleteCardCapture(_ stpCard: STPCardParams) {
         dismiss(animated: true, completion: {

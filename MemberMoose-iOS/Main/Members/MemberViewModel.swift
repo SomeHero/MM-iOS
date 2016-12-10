@@ -23,14 +23,10 @@ class MemberViewModel: DataSourceItemProtocol {
     init(user: User) {
         self.user = user
         self.avatar = "Avatar-Calf"
-//        if let avatar = user.avatar, let avatarImageUrl = avatar["large"] {
-//            avatarUrl = avatarImageUrl
-//        }
-        if let avatarImageUrl = user.gravatarUrl {
-            self.avatarUrl = avatarImageUrl
-        } else {
-            self.avatarUrl = nil
+        if let avatar = user.avatar, let avatarImageUrl = avatar["large"] {
+            avatarUrl = avatarImageUrl
         }
+
         userId = user.id
         if let firstName = user.firstName, let lastName = user.lastName {
             memberName = "\(firstName) \(lastName)"

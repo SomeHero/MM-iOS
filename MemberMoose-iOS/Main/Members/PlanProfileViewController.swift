@@ -443,7 +443,7 @@ class PlanProfileViewController: UICollectionViewController {
                 }
                 else {
                     var viewModels: [PlanSubscriberEmptyStateViewModel] = []
-                    viewModels.append(PlanSubscriberEmptyStateViewModel(logo: "Logo-DeadMoose", header: "804RVA has no members!", subHeader: "The best way to add members to your community is to add members manually or send potential members a link to a plan they can subscribe to.", planSubscriberEmptyStateDelegate: _self))
+                    viewModels.append(PlanSubscriberEmptyStateViewModel(plan: _self.plan))
                     
                     items.append(viewModels)
                     _self.dataSource = items
@@ -599,14 +599,6 @@ extension PlanProfileViewController: PlanNavigationDelegate {
         handleNavHeaderScrollingWithOffset(0)
         pageNumber = 1
         buildDataSet()
-    }
-}
-extension PlanProfileViewController: PlanSubscriberEmptyStateDelegate {
-    func didCreatePlanSubscriber() {
-        
-    }
-    func didSharePlanToSubscriber(){
-        
     }
 }
 extension PlanProfileViewController: PlanFeaturesCellDelegate {
