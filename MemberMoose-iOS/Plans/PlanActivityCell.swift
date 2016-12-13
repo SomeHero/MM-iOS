@@ -21,6 +21,7 @@ class PlanActivityCell: UITableViewCell, DataSourceItemCell {
         _label.font = UIFontTheme.Regular(.default)
         _label.textColor = UIColorTheme.PrimaryFont
         _label.numberOfLines = 0
+        _label.lineBreakMode = .byWordWrapping
         
         self.containerView.addSubview(_label)
         
@@ -52,7 +53,7 @@ class PlanActivityCell: UITableViewCell, DataSourceItemCell {
         }
         activityLabel.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(containerView)
-            make.top.bottom.equalTo(containerView)
+            make.centerY.equalTo(containerView)
         }
         
         super.updateConstraints()
@@ -63,7 +64,8 @@ class PlanActivityCell: UITableViewCell, DataSourceItemCell {
     func setupWith(_ viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? PlanActivityViewModel {
             activityLabel.text = viewModel.activity
-            TextDecorator.applyTightLineHeight(toLabel: activityLabel)
+            //TextDecorator.applyTightLineHeight(toLabel: activityLabel)
         }
+        updateConstraintsIfNeeded()
     }
 }

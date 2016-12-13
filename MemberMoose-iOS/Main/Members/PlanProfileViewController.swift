@@ -410,17 +410,41 @@ class PlanProfileViewController: UICollectionViewController {
             
             items.append([planTermOfServiceViewModel])
         case.activity:
-            let activities = ["James Rhodes subscribed!",
-                            "James Rhodes payment failed.",
-                            "James Rhodes paid $25.00",
-                            "James Rhodes unsubscribed :9",
-            ]
-            var activityViewModels: [PlanActivityViewModel] = []
-            for activity in activities {
-                activityViewModels.append(PlanActivityViewModel(activity: activity))
+            ApiManager.sharedInstance.getActivities(plan, success: { [weak self] (activities) in
+                guard let _self = self else {
+                    return
+                }
+                if(activities.count > 0) {
+                    _self.hasMembers = true
+                    
+                    var activityViewModels: [PlanActivityViewModel] = []
+                    for activity in activities {
+                        activityViewModels.append(PlanActivityViewModel(activity: activity))
+                    }
+                    items.append(activityViewModels)
+                    
+                    _self.dataSource = items
+                    _self.collectionView!.reloadData()
+                    
+                }
+                else {
+                    var viewModels: [PlanSubscriberEmptyStateViewModel] = []
+                    viewModels.append(PlanSubscriberEmptyStateViewModel(plan: _self.plan))
+                    
+                    items.append(viewModels)
+                    _self.dataSource = items
+                    _self.collectionView!.reloadData()
+                    
+                }
+            }) { [weak self] (error, errorDictionary) in
+                SVProgressHUD.dismiss()
+                
+                guard let _self = self else {
+                    return
+                }
+                
+                ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
             }
-            items.append(activityViewModels)
-            
         case .subscribers:
             ApiManager.sharedInstance.getMembers(plan, self.pageNumber, success: { [weak self] (members) in
                 guard let _self = self else {

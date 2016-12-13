@@ -181,6 +181,7 @@
 		42EF412B1DF79CF4005095F1 /* PlanFeatureHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EF412A1DF79CF4005095F1 /* PlanFeatureHeaderView.swift */; };
 		42EF412D1DF83F87005095F1 /* FreeTrialPeriodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EF412C1DF83F87005095F1 /* FreeTrialPeriodCell.swift */; };
 		42EF412F1DF83FA8005095F1 /* FreeTrialPeriodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EF412E1DF83FA8005095F1 /* FreeTrialPeriodViewModel.swift */; };
+		42EF4A2A1DFFBDC800F7213D /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EF4A291DFFBDC800F7213D /* Activity.swift */; };
 		42F08C2B1DABBDA100D5D4E3 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C2A1DABBDA100D5D4E3 /* ApiManager.swift */; };
 		42F08C2D1DABC5F100D5D4E3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C2C1DABC5F100D5D4E3 /* Constants.swift */; };
 		42F08C301DAC318F00D5D4E3 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F08C2F1DAC318F00D5D4E3 /* Plan.swift */; };
@@ -403,6 +404,7 @@
 		42EF412A1DF79CF4005095F1 /* PlanFeatureHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanFeatureHeaderView.swift; path = Plans/PlanFeatureHeaderView.swift; sourceTree = "<group>"; };
 		42EF412C1DF83F87005095F1 /* FreeTrialPeriodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FreeTrialPeriodCell.swift; path = Plans/FreeTrialPeriodCell.swift; sourceTree = "<group>"; };
 		42EF412E1DF83FA8005095F1 /* FreeTrialPeriodViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FreeTrialPeriodViewModel.swift; path = Plans/FreeTrialPeriodViewModel.swift; sourceTree = "<group>"; };
+		42EF4A291DFFBDC800F7213D /* Activity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Activity.swift; path = Models/Activity.swift; sourceTree = "<group>"; };
 		42F08C2A1DABBDA100D5D4E3 /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ApiManager.swift; path = Managers/ApiManager.swift; sourceTree = "<group>"; };
 		42F08C2C1DABC5F100D5D4E3 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		42F08C2F1DAC318F00D5D4E3 /* Plan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Plan.swift; path = Models/Plan.swift; sourceTree = "<group>"; };
@@ -929,6 +931,7 @@
 		42F08C2E1DABE1FB00D5D4E3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				42EF4A291DFFBDC800F7213D /* Activity.swift */,
 				422537311DBA8D64004B33D8 /* Account.swift */,
 				4275F7091DC0F9FD00E0FF7B /* Charge.swift */,
 				42F08C311DAC31A300D5D4E3 /* Member.swift */,
@@ -1360,6 +1363,7 @@
 				42330B921DB3D4B9003BDDEC /* PaymentCardTableViewCell.swift in Sources */,
 				420741C41DEE583C006CFCE2 /* PlanFeaturesViewModel.swift in Sources */,
 				4255B3FE1DAEA3BF008DECAC /* ImagePicker.swift in Sources */,
+				42EF4A2A1DFFBDC800F7213D /* Activity.swift in Sources */,
 				420741C21DEE1643006CFCE2 /* PlanFeaturesCell.swift in Sources */,
 				42C2A4661DDE500300504C28 /* MessageViewModel.swift in Sources */,
 				4275F72C1DC2962A00E0FF7B /* PlanSubscriberViewModel.swift in Sources */,
