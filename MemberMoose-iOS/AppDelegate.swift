@@ -39,6 +39,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             ApiManager.sharedInstance.token = token
             
+            if let refreshToken = SessionManager.sharedInstance.getRefreshToken() {
+                ApiManager.sharedInstance.refreshToken = refreshToken
+            }
+            
             let viewController = ProfileViewController(user: user, profileType: .bull)
             let navigationController = UINavigationController(rootViewController: viewController)
             navigationController.isNavigationBarHidden = true

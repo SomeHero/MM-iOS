@@ -29,6 +29,20 @@ public struct AuthenticateUser {
         return parameters as [String : String]
     }
 }
+public struct RefreshToken {
+    let token: String
+    
+    public init(token: String) {
+        self.token = token
+    }
+    func parameterize() -> [String : String] {
+        let parameters = [
+            "refresh_token": token
+        ]
+        
+        return parameters as [String : String]
+    }
+}
 public struct CreateUser {
     let emailAddress: String
     let password: String
@@ -285,6 +299,8 @@ open class ApiManager {
         }
     }
     open var token: String?
+    var refreshToken: String?
+    
     open static let sharedInstance = ApiManager()
     
     fileprivate init() {}
@@ -298,33 +314,44 @@ open class ApiManager {
         
         return headers.count > 0 ? headers : nil;
     }
-    open func authenticate(_ authenticateUser: AuthenticateUser, success: @escaping (_ userId: String, _ token: String) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+    func handleRefreshToken(_ refreshToken: String, _ success: @escaping () -> Void, _ failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        self.refresh(RefreshToken(token: refreshToken), success: { (userId, token, refreshToken) in
+            self.token = token
+            self.refreshToken = refreshToken
+            
+            SessionManager.sharedInstance.setRefreshToken(refreshToken)
+            
+            success()
+        }, failure: failure)
+    }
+    func handleError(_ error: Error?, _ data: Data?, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        var errorResponse: [String: AnyObject]? = [:]
+        
+        if let data = data {
+            do {
+                errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
+            } catch let error as NSError {
+                failure(error, nil)
+            } catch let error {
+                failure(error, nil)
+            }
+            failure(error, errorResponse)
+        } else {
+            failure(error, nil)
+        }
+    }
+    open func authenticate(_ authenticateUser: AuthenticateUser, success: @escaping (_ userId: String, _ token: String, _ refreshToken: String) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let params = authenticateUser.parameterize()
         
         Alamofire.request(apiBaseUrl + "sessions", method: .post, parameters: params, encoding: JSONEncoding.default)
             .validate()
             .responseJSON { response in
                 if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        } catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
-                    } else {
-                        failure(error, nil)
-                    }
+                    self.handleError(error, response.data, failure: failure);
                 }
                 if let result = response.result.value  as? [String:AnyObject] {
-                    if let userId = result["user_id"] as? String, let token = result["token"] as? String {
-                        self.token = token
-                        
-                        success(userId, token)
+                    if let userId = result["user_id"] as? String, let token = result["token"] as? String, let refreshToken = result["refresh_token"] as? String {
+                        success(userId, token, refreshToken)
                     } else {
                         failure(nil, nil)
                     }
@@ -332,6 +359,27 @@ open class ApiManager {
                     failure(nil, nil)
                 }
         }
+    }
+    open func refresh(_ refreshToken: RefreshToken, success: @escaping (_ userId: String, _ token: String, _ refreshToken: String) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        let params = refreshToken.parameterize()
+        
+        Alamofire.request(apiBaseUrl + "sessions/verify", method: .post, parameters: params, encoding: JSONEncoding.default)
+            .validate()
+            .responseJSON { response in
+                if let error = response.result.error {
+                    self.handleError(error, response.data, failure: failure);
+                }
+                if let result = response.result.value  as? [String:AnyObject] {
+                    if let userId = result["user_id"] as? String, let token = result["token"] as? String, let refreshToken = result["refresh_token"] as? String {
+                        success(userId, token, refreshToken)
+                    } else {
+                        failure(nil, nil)
+                    }
+                }  else {
+                    failure(nil, nil)
+                }
+        }
+
     }
     open func validateUserName(_ emailAddress:String, success: @escaping (_ isValid: Bool) -> Void, failure: (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         let urlString = "\(apiBaseUrl)users/\(emailAddress)"
@@ -413,19 +461,14 @@ open class ApiManager {
                     .validate()
                     .responseObject { (response: DataResponse<User>) in
                         if let error = response.result.error {
-                            var errorResponse: [String: AnyObject]? = [:]
-                            
-                            if let data = response.data {
-                                do {
-                                    errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                                } catch let error as NSError {
-                                    failure(error, nil)
-                                } catch let error {
-                                    failure(error, nil)
-                                }
-                                failure(error, errorResponse)
+                            if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                                self.handleRefreshToken(refreshToken, {
+                                    self.updateUser(updateUser, success: success, failure: failure)
+                                }, { (error, errorDictionary) in
+                                    failure(error, errorDictionary)
+                                })
                             } else {
-                                failure(error, nil)
+                                self.handleError(error, response.data, failure: failure);
                             }
                         }
                         if let user = response.result.value {
@@ -463,19 +506,14 @@ open class ApiManager {
                     .validate()
                     .responseObject { (response: DataResponse<Account>) in
                         if let error = response.result.error {
-                            var errorResponse: [String: AnyObject]? = [:]
-                            
-                            if let data = response.data {
-                                do {
-                                    errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                                } catch let error as NSError {
-                                    failure(error, nil)
-                                } catch let error {
-                                    failure(error, nil)
-                                }
-                                failure(error, errorResponse)
+                            if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                                self.handleRefreshToken(refreshToken, {
+                                    self.updateAccount(updateAccount, success: success, failure: failure)
+                                }, { (error, errorDictionary) in
+                                    failure(error, errorDictionary)
+                                })
                             } else {
-                                failure(error, nil)
+                                self.handleError(error, response.data, failure: failure);
                             }
                         }
                         if let account = response.result.value {
@@ -494,25 +532,21 @@ open class ApiManager {
             .validate()
             .responseObject { (response: DataResponse<User>) in
                 if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        } catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.me(success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
                     } else {
-                        failure(error, nil)
+                        self.handleError(error, response.data, failure: failure);
                     }
-                }
-                if let user = response.result.value {
-                    success(user)
                 } else {
-                    failure(nil, nil)
+                    if let user = response.result.value {
+                        success(user)
+                    } else {
+                        failure(nil, nil)
+                    }
                 }
                 
         }
@@ -524,19 +558,14 @@ open class ApiManager {
             .validate()
             .responseObject { (response: DataResponse<User>) in
                 if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        } catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.connectStripe(connectStripe, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
                     } else {
-                        failure(error, nil)
+                        self.handleError(error, response.data, failure: failure);
                     }
                 }
                 if let user = response.result.value {
@@ -552,19 +581,14 @@ open class ApiManager {
             .validate()
             .responseObject { (response: DataResponse<User>) in
                 if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        } catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.importPlans(userId, plansList: plansList, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
                     } else {
-                        failure(error, nil)
+                        self.handleError(error, response.data, failure: failure);
                     }
                 }
                 if let user = response.result.value {
@@ -580,20 +604,14 @@ open class ApiManager {
             .validate()
             .responseArray { (response: DataResponse<[Activity]>) in
                 if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        }
-                        catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.getActivities(plan, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
                     } else {
-                        failure(error, nil)
+                        self.handleError(error, response.data, failure: failure);
                     }
                 }
                 if let activities = response.result.value {
@@ -607,20 +625,20 @@ open class ApiManager {
             .validate()
             .responseArray(keyPath: "results") { (response: DataResponse<[Plan]>) in
                 if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        }
-                        catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.getPlans(page, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
                     } else {
-                        failure(error, nil)
+                        self.handleError(error, response.data, failure: failure);
+                    }
+                } else {
+                    if let user = response.result.value {
+                        success(user)
+                    } else {
+                        failure(nil, nil)
                     }
                 }
                 if let plans = response.result.value {
@@ -634,20 +652,14 @@ open class ApiManager {
             .validate()
             .responseArray(keyPath: "results") { (response: DataResponse<[User]>) in
                 if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        }
-                        catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.getMembers(page, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
                     } else {
-                        failure(error, nil)
+                        self.handleError(error, response.data, failure: failure);
                     }
                 }
                 if let users = response.result.value {
@@ -661,20 +673,14 @@ open class ApiManager {
             .validate()
             .responseArray { (response: DataResponse<[User]>) in
                 if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        }
-                        catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.getMembers(plan, page, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
                     } else {
-                        failure(error, nil)
+                        self.handleError(error, response.data, failure: failure);
                     }
                 }
                 if let users = response.result.value {
@@ -689,20 +695,14 @@ open class ApiManager {
             .validate()
             .response {  response in
                 if let error = response.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        }
-                        catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.cancelSubscription(userId, subscriptionId, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
                     } else {
-                        failure(error, nil)
+                        self.handleError(error, response.data, failure: failure);
                     }
                 } else {
                     success()
@@ -716,19 +716,14 @@ open class ApiManager {
             .validate()
             .responseObject { (response: DataResponse<Subscription>) in
                 if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        } catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.upgradeSubscription(userId, subscriptionId, upgradeSubscription, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
                     } else {
-                        failure(error, nil)
+                        self.handleError(error, response.data, failure: failure);
                     }
                 }
                 if let subscription = response.result.value {
@@ -762,19 +757,14 @@ open class ApiManager {
                         .validate()
                         .responseObject { (response: DataResponse<Plan>) in
                             if let error = response.result.error {
-                                var errorResponse: [String: AnyObject]? = [:]
-                                
-                                if let data = response.data {
-                                    do {
-                                        errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                                    } catch let error as NSError {
-                                        failure(error, nil)
-                                    } catch let error {
-                                        failure(error, nil)
-                                    }
-                                    failure(error, errorResponse)
+                                if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                                    self.handleRefreshToken(refreshToken, {
+                                        self.createPlan(createPlan, success: success, failure: failure)
+                                    }, { (error, errorDictionary) in
+                                        failure(error, errorDictionary)
+                                    })
                                 } else {
-                                    failure(error, nil)
+                                    self.handleError(error, response.data, failure: failure);
                                 }
                             }
                             if let plan = response.result.value {
@@ -818,19 +808,14 @@ open class ApiManager {
                         .validate()
                         .responseObject { (response: DataResponse<Plan>) in
                             if let error = response.result.error {
-                                var errorResponse: [String: AnyObject]? = [:]
-                                
-                                if let data = response.data {
-                                    do {
-                                        errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                                    } catch let error as NSError {
-                                        failure(error, nil)
-                                    } catch let error {
-                                        failure(error, nil)
-                                    }
-                                    failure(error, errorResponse)
+                                if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                                    self.handleRefreshToken(refreshToken, {
+                                        self.updatePlan(updatePlan, success: success, failure: failure)
+                                    }, { (error, errorDictionary) in
+                                        failure(error, errorDictionary)
+                                    })
                                 } else {
-                                    failure(error, nil)
+                                    self.handleError(error, response.data, failure: failure);
                                 }
                             }
                             if let plan = response.result.value {
@@ -850,20 +835,14 @@ open class ApiManager {
             .validate()
             .response {  response in
                 if let error = response.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        }
-                        catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.deletePlan(planId, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
                     } else {
-                        failure(error, nil)
+                        self.handleError(error, response.data, failure: failure);
                     }
                 } else {
                     success()
@@ -877,19 +856,14 @@ open class ApiManager {
             .validate()
             .responseObject { (response: DataResponse<User>) in
                 if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        } catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.createMember(createMember, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
                     } else {
-                        failure(error, nil)
+                        self.handleError(error, response.data, failure: failure);
                     }
                 }
                 if let user = response.result.value {
@@ -904,19 +878,14 @@ open class ApiManager {
             .validate()
             .responseObject { (response: DataResponse<PaymentCard>) in
                 if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        } catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.addPaymentCard(addPaymentCard, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
                     } else {
-                        failure(error, nil)
+                        self.handleError(error, response.data, failure: failure);
                     }
                 }
                 if let paymentCard = response.result.value {
@@ -933,19 +902,14 @@ open class ApiManager {
             .validate()
             .responseObject { (response: DataResponse<Charge>) in
                 if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        } catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.createCharge(createCharge, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
                     } else {
-                        failure(error, nil)
+                        self.handleError(error, response.data, failure: failure);
                     }
                 }
                 if let charge = response.result.value {
@@ -978,19 +942,14 @@ open class ApiManager {
             .validate()
             .responseObject { (response: DataResponse<Message>) in
                 if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        } catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.createMessage(createMessage, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
                     } else {
-                        failure(error, nil)
+                        self.handleError(error, response.data, failure: failure);
                     }
                 }
                 if let message = response.result.value {
@@ -1005,20 +964,14 @@ open class ApiManager {
             .validate()
             .responseArray { (response: DataResponse<[Message]>) in
                 if let error = response.result.error {
-                    var errorResponse: [String: AnyObject]? = [:]
-                    
-                    if let data = response.data {
-                        do {
-                            errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
-                        } catch let error as NSError {
-                            failure(error, nil)
-                        }
-                        catch let error {
-                            failure(error, nil)
-                        }
-                        failure(error, errorResponse)
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.getMessages(recipient, page, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
                     } else {
-                        failure(error, nil)
+                        self.handleError(error, response.data, failure: failure);
                     }
                 }
                 if let messages = response.result.value {

@@ -143,8 +143,9 @@ class LoginViewController: UIViewController {
         
         SVProgressHUD.show()
         
-        ApiManager.sharedInstance.authenticate(authenticateUser, success: { (userId, token) in
+        ApiManager.sharedInstance.authenticate(authenticateUser, success: { (userId, token, refreshToken) in
             SessionManager.sharedInstance.setToken(token)
+            SessionManager.sharedInstance.setRefreshToken(refreshToken)
             
             ApiManager.sharedInstance.me({ (response) in
                 SVProgressHUD.dismiss()

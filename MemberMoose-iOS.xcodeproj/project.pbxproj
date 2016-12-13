@@ -624,11 +624,11 @@
 			isa = PBXGroup;
 			children = (
 				425D2BAF1DF9A7640074C3B3 /* Layouts */,
-				4275F7281DC2864000E0FF7B /* ErrorHandlers */,
 				4255B4011DAF3509008DECAC /* MemberMoose-iOS.entitlements */,
 				42296D871DE0EDDF00F90818 /* ChangePlan */,
 				426841641DA86CD400A2BFF8 /* Decorators */,
 				429F62DB1DA6DD3300C3F54E /* Design */,
+				4275F7281DC2864000E0FF7B /* ErrorHandlers */,
 				42F08C351DAC34C700D5D4E3 /* Extensions */,
 				42330B991DB3DDB8003BDDEC /* Formatters */,
 				4240B77E1DA6C8B3000D137E /* Join */,

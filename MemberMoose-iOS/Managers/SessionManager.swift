@@ -27,10 +27,23 @@ class SessionManager: NSObject {
         
         return userDefaults.string(forKey: "token")
     }
+    func setRefreshToken(_ token: String) {
+        let userDefaults = UserDefaults.standard
+        
+        userDefaults.setValue(token, forKey: "refresh_token")
+        
+        userDefaults.synchronize()
+    }
+    func getRefreshToken() -> String? {
+        let userDefaults = UserDefaults.standard
+        
+        return userDefaults.string(forKey: "refresh_token")
+    }
     func logout() {
         let userDefaults = UserDefaults.standard
         
         userDefaults.removeObject(forKey: "token")
+        userDefaults.removeObject(forKey: "refresh_token")
         
         userDefaults.synchronize()
     }
@@ -38,6 +51,7 @@ class SessionManager: NSObject {
         let userDefaults = UserDefaults.standard
         
         userDefaults.removeObject(forKey: "token")
+        userDefaults.removeObject(forKey: "refresh_token")
         
         userDefaults.synchronize()
     }

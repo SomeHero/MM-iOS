@@ -268,8 +268,25 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
 //            scrollView.finishInfiniteScroll()
 //        }
         
-        pageNumber = 1
-        buildDataSet()
+        ApiManager.sharedInstance.me({[weak self]  (user) in
+            SVProgressHUD.dismiss()
+            
+            guard let _self = self else {
+                return
+            }
+            SessionManager.sharedUser = user
+            SessionManager.persistUser()
+            
+            _self.pageNumber = 1
+            _self.buildDataSet()
+        }, failure: { [weak self] (error, errorDictionary) in
+            guard let _self = self else {
+                return
+            }
+            
+            ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+        })
+
 
         setup()
     }
