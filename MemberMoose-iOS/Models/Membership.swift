@@ -13,7 +13,7 @@ open class Membership: Mappable {
     open var id: String!
     open var reference_id: String!
     open var company_name: String!
-    open var subscription: Subscription?
+    open var subscriptions: [Subscription] = []
     open var planNames: [String] = []
     open var createdAt: Date!
     open var updatedAt: Date?
@@ -26,7 +26,7 @@ open class Membership: Mappable {
         id <- map["id"]
         reference_id <- map["reference_id"]
         company_name <- map["company_name"]
-        subscription <- map["subscription"]
+        subscriptions <- map["subscriptions"]
         planNames <- map["plan_names"]
         //subscriptionDate <- (map["subscription_date"], ISO8601ExtendedDateTransform())
         createdAt <- (map["createdAt"], ISO8601ExtendedDateTransform())

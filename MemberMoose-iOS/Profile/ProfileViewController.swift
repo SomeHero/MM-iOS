@@ -160,29 +160,6 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
         
         return _button
     }()
-    
-    fileprivate lazy var addMemberButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.custom)
-        _button.backgroundColor = UIColorTheme.Primary
-        _button.setTitle("ADD MEMBER", for: UIControlState())
-        _button.setTitleColor(.white, for: UIControlState())
-        _button.addTarget(self, action: #selector(ProfileViewController.addMemberClicked(_:)), for: .touchUpInside)
-        
-        self.view.addSubview(_button)
-        
-        return _button
-    }()
-    fileprivate lazy var addPlanButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.custom)
-        _button.backgroundColor = UIColorTheme.Primary
-        _button.setTitle("CREATE PLAN", for: UIControlState())
-        _button.setTitleColor(.white, for: UIControlState())
-        _button.addTarget(self, action: #selector(ProfileViewController.addPlanClicked(_:)), for: .touchUpInside)
-        
-        self.view.addSubview(_button)
-        
-        return _button
-    }()
     fileprivate var stretchyFlowLayout: StretchyHeaderCollectionViewLayout {
         return self.collectionView!.collectionViewLayout as! StretchyHeaderCollectionViewLayout
     }
@@ -328,16 +305,6 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
             make.height.equalTo(kOnePX*2)
            
             make.bottom.equalTo(self.navHeader.snp.bottom)
-        }
-        addMemberButton.snp.updateConstraints { (make) in
-            make.leading.trailing.equalTo(view)
-            make.height.equalTo(60)
-            make.bottom.equalTo(view)
-        }
-        addPlanButton.snp.updateConstraints { (make) in
-            make.leading.trailing.equalTo(view)
-            make.height.equalTo(60)
-            make.bottom.equalTo(view)
         }
 //        switch profileType {
 //        case .bull:
@@ -539,7 +506,7 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
                 if user.memberships.count > 0 {
                     var subscriptionViewModels: [SubscriptionViewModel] = []
                     for membership in user.memberships {
-                        if let subscription = membership.subscription {
+                        for subscription in membership.subscriptions {
                             let subscriptionViewModel = SubscriptionViewModel(subscription: subscription, subscriptionDelegate: self)
                             subscriptionViewModels.append(subscriptionViewModel)
                         }
@@ -1021,7 +988,7 @@ extension ProfileViewController: MessageViewDelegate {
 }
 extension ProfileViewController: ChangePlanDelegate {
     func didCompleteChangePlan(subscription: Subscription) {
-        user.memberships[0].subscription = subscription
+        //user.memberships[0].subscription = subscription
         //buildDataSet()
         
         let _ = self.navigationController?.popViewController(animated: true)

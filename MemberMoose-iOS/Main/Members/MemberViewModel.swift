@@ -33,7 +33,7 @@ class MemberViewModel: DataSourceItemProtocol {
         } else {
             memberName = user.emailAddress
         }
-        planName = (user.memberships.flatMap { $0.planNames } as [String]).joined(separator: ", ")
+        planName = (user.memberships.flatMap { $0.subscriptions.flatMap { $0.plan.name } }).joined(separator: ", ")
         memberSince = Date()
     }
 
