@@ -68,7 +68,7 @@ class PlanDescriptionCell: UITableViewCell, DataSourceItemCell {
             make.top.bottom.equalTo(containerView)
         }
         editButton.snp.updateConstraints { (make) in
-            make.leading.equalTo(descriptionLabel.snp.trailing)
+            make.leading.greaterThanOrEqualTo(descriptionLabel.snp.trailing)
             make.trailing.equalTo(containerView)
             make.top.bottom.equalTo(containerView)
         }

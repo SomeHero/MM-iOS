@@ -127,6 +127,27 @@ public struct ConnectStripe {
         return parameters as [String : AnyObject]
     }
 }
+public struct RegisterDevice {
+    let userId: String
+    let token: String
+    let deviceIdentifier: String
+    let deviceType: String
+    
+    public init(user: User, token: String, deviceIdentifier: String, deviceType: String) {
+        self.userId = user.id
+        self.token = token
+        self.deviceIdentifier = deviceIdentifier
+        self.deviceType = deviceType
+    }
+    func parameterize() -> [String : String] {
+        let parameters = [
+            "device_token": token,
+            "device_identifier": deviceIdentifier,
+            "device_type": deviceType
+        ]
+        return parameters as [String : String]
+    }
+}
 public struct CreatePlan {
     let plan: Plan
     let avatar: UIImage?
@@ -351,6 +372,9 @@ open class ApiManager {
                 }
                 if let result = response.result.value  as? [String:AnyObject] {
                     if let userId = result["user_id"] as? String, let token = result["token"] as? String, let refreshToken = result["refresh_token"] as? String {
+                        self.token = token
+                        self.refreshToken = refreshToken
+                        
                         success(userId, token, refreshToken)
                     } else {
                         failure(nil, nil)
@@ -595,6 +619,29 @@ open class ApiManager {
                     success(user)
                 }
         }
+    }
+    open func registerDevice(_ registerDevice: RegisterDevice, success: @escaping (_ response: User) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        let params = registerDevice.parameterize()
+        
+        Alamofire.request(apiBaseUrl + "users/\(registerDevice.userId)/devices", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .responseObject { (response: DataResponse<User>) in
+                if let error = response.result.error {
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.registerDevice(registerDevice, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
+                    } else {
+                        self.handleError(error, response.data, failure: failure);
+                    }
+                }
+                if let user = response.result.value {
+                    success(user)
+                }
+        }
+        
     }
     open func getActivities(_ plan: Plan,success: @escaping (_ response: [Activity]) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         guard let planId = plan.id else {

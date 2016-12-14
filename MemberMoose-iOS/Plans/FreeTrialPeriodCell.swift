@@ -68,7 +68,7 @@ class FreeTrialPeriodCell: UITableViewCell, DataSourceItemCell {
             make.top.bottom.equalTo(containerView)
         }
         editButton.snp.updateConstraints { (make) in
-            make.leading.equalTo(freeTrialPeriodLabel.snp.trailing)
+            make.leading.greaterThanOrEqualTo(freeTrialPeriodLabel.snp.trailing)
             make.trailing.equalTo(containerView)
             make.top.bottom.equalTo(containerView)
         }

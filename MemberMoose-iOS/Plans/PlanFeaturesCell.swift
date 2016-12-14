@@ -66,7 +66,7 @@ class PlanFeaturesCell: UITableViewCell, DataSourceItemCell {
     override func updateConstraints() {
         tableView.snp.updateConstraints { (make) in
             make.edges.equalTo(contentView)
-            //make.height.equalTo(tableView.contentSize.height)
+            make.height.equalTo(tableView.contentSize.height)
         }
         super.updateConstraints()
     }          
@@ -131,6 +131,9 @@ extension PlanFeaturesCell: UITableViewDelegate {
         if let viewModel = dataItems[(indexPath as NSIndexPath).row] as? AddPlanFeatureViewModel {
             viewModel.didSelectItem(viewController: viewModel.presentingViewController!)
         }
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0

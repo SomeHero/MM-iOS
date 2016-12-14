@@ -25,6 +25,7 @@ enum PlanMenuItems: Int, Printable {
 }
 class PlanMenuViewController: UIViewController {
     fileprivate let plan: Plan
+    weak var planProfileDelegate: PlanProfileDelegate?
     
     fileprivate let menuHeaderCellIdentifier        = "MenuHeaderCellIdentifier"
     fileprivate let menuItemCellIdentifier          = "MenuItemCellIdentifier"
@@ -139,6 +140,8 @@ extension PlanMenuViewController : UITableViewDelegate {
             present(navigationViewController, animated: true, completion: nil)
         case PlanMenuItems.deletePlan.rawValue:
             let deletePlanViewController = DeletePlanViewController(plan: plan)
+            deletePlanViewController.planProfileDelegate = planProfileDelegate
+            
             let navigationViewController = UINavigationController(rootViewController: deletePlanViewController)
             
             present(navigationViewController, animated: true, completion: nil)

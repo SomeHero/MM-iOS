@@ -121,6 +121,11 @@ extension PlanProfileCollectionViewCell : UITableViewDataSource {
         
         let dataItems = dataSource[(indexPath as NSIndexPath).section]
         let viewModel = dataItems[(indexPath as NSIndexPath).row]
+        
+        if let referenceSize = cellHeightCache["\(viewModel.cellID)\(indexPath.row)"] {
+            return referenceSize.height
+        }
+        
         let cell = viewModel.cellClass.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
         if let cell = cell as? DataSourceItemCell {
             cell.setupWith(viewModel)

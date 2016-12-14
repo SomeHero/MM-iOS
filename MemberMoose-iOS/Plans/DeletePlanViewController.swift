@@ -11,6 +11,7 @@ import SVProgressHUD
 
 class DeletePlanViewController: UIViewController, MultilineNavTitlable {
     fileprivate let plan: Plan
+    weak var planProfileDelegate: PlanProfileDelegate?
     
     fileprivate lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()
@@ -156,8 +157,7 @@ class DeletePlanViewController: UIViewController, MultilineNavTitlable {
                 return
             }
             
-            _self.dismiss(animated: true, completion: nil)
-            
+            _self.planProfileDelegate?.didDeletePlan(plan: _self.plan)
         }) { [weak self] (error, errorDictionary) in
             SVProgressHUD.dismiss()
             

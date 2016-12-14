@@ -13,6 +13,9 @@ import SideMenu
 
 protocol PlanProfileDelegate: class {
     func didDismissPlanProfile()
+    func didAddPlan(plan: Plan)
+    func didUpdatePlan(plan: Plan)
+    func didDeletePlan(plan: Plan)
 }
 protocol PlanMenuDelegate: class {
     func didClickPlanMenu(sender: UIButton)
@@ -100,17 +103,6 @@ class PlanProfileViewController: UICollectionViewController {
         
         return _label
     }()
-    fileprivate lazy var saveButton: UIButton = {
-        let _button = UIButton(type: UIButtonType.custom)
-        _button.backgroundColor = UIColorTheme.Primary
-        _button.setTitle("SAVE PLAN", for: UIControlState())
-        _button.setTitleColor(.white, for: UIControlState())
-        _button.addTarget(self, action: #selector(PlanProfileViewController.savePlanClicked(_:)), for: .touchUpInside)
-        
-        self.view.addSubview(_button)
-        
-        return _button
-    }()
     var dataSource: [[DataSourceItemProtocol]] = []
     
     fileprivate lazy var menuButton: UIButton = {
@@ -142,8 +134,10 @@ class PlanProfileViewController: UICollectionViewController {
         
         let layout = StretchyHeaderCollectionViewLayout()
         layout.minimumInteritemSpacing = 50.0
-        layout.sectionInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 60.0, right: 0.0)
+        layout.sectionInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
         layout.estimatedItemSize = CGSize(width: 100, height: 100)
+        
+        PlanProfileViewController.cellHeightCache.removeAll(keepingCapacity: true)
         
         super.init(collectionViewLayout: layout)
     }
@@ -172,6 +166,7 @@ class PlanProfileViewController: UICollectionViewController {
         collectionView!.register(PlanProfileCollectionViewCell.self, forCellWithReuseIdentifier: "PlanProfileCollectionViewCell")
         
         collectionView!.register(PlanProfileHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "PlanProfileHeaderView")
+        collectionView!.register(NewPlanProfileHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "NewPlanProfileHeaderView")
         
 //        self.tableView.infiniteScrollIndicatorStyle = .gray
 //        
@@ -233,6 +228,8 @@ class PlanProfileViewController: UICollectionViewController {
 //        }
         
         let planMenuViewController = PlanMenuViewController(plan: plan)
+        planMenuViewController.planProfileDelegate = self
+        
         let menuRightNavigationController = PlanMenuNavigationViewController(rootViewController: planMenuViewController)
         // UISideMenuNavigationController is a subclass of UINavigationController, so do any additional configuration of it here like setting its viewControllers.
         SideMenuManager.menuRightNavigationController = menuRightNavigationController
@@ -257,11 +254,6 @@ class PlanProfileViewController: UICollectionViewController {
             make.trailing.equalTo(view).inset(15)
             make.height.width.equalTo(20)
         }
-        saveButton.snp.updateConstraints { (make) in
-            make.bottom.equalTo(view)
-            make.leading.trailing.bottom.equalTo(view)
-            make.height.equalTo(60)
-        }
         navHeader.snp.updateConstraints { (make) in
             make.top.equalTo(self.view)
             make.leading.trailing.equalTo(self.view)
@@ -281,56 +273,18 @@ class PlanProfileViewController: UICollectionViewController {
             
             make.bottom.equalTo(self.navHeader.snp.bottom)
         }
-//        switch planNavigationState {
-//        case .subscribers:
-//            var offset = 60
-//            var tableViewOffset = 0
-//            if hasMembers {
-//                offset = 0
-//                tableViewOffset = 60
-//            }
-//            addMemberButton.snp.updateConstraints { (make) in
-//                make.bottom.equalTo(view.snp.bottom).offset(offset)
-//            }
-//            addPlanButton.snp.updateConstraints { (make) in
-//                make.bottom.equalTo(view.snp.bottom).offset(60)
-//            }
-//            tableView.snp.updateConstraints { (make) in
-//                make.bottom.equalTo(view).inset(tableViewOffset)
-//            }
-//        case .details:
-//            var offset = 60
-//            var tableViewOffset = 0
-//            if hasPlans {
-//                offset = 0
-//                tableViewOffset = 60
-//            }
-//            addMemberButton.snp.updateConstraints({ (make) in
-//                make.bottom.equalTo(view.snp.bottom).offset(60)
-//            })
-//            addPlanButton.snp.updateConstraints({ (make) in
-//                make.bottom.equalTo(view.snp.bottom).offset(offset)
-//            })
-//            tableView.snp.updateConstraints { (make) in
-//                make.bottom.equalTo(view).inset(tableViewOffset)
-//            }
-//        default:
-//            addMemberButton.snp.updateConstraints { (make) in
-//                make.bottom.equalTo(view.snp.bottom).offset(60)
-//            }
-//            addPlanButton.snp.updateConstraints { (make) in
-//                make.bottom.equalTo(view.snp.bottom).offset(60)
-//            }
-//            tableView.snp.updateConstraints { (make) in
-//                make.bottom.equalTo(view).inset(0)
-//            }
-//        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     func setup() {
+        if let _ = plan.id {
+            settingsButton.alpha = 1
+            settingsButton.isUserInteractionEnabled = true
+        } else {
+            settingsButton.alpha = 0
+        }
         if let planName = plan.name {
             navHeaderNameLabel.text = planName
         } else {
@@ -493,32 +447,32 @@ class PlanProfileViewController: UICollectionViewController {
         validateForm()
     }
     func validateForm() {
-        guard let planName = plan.name else {
-            disableButton(saveButton)
-            
-            return
-        }
-        let planNameValid = Validator.isValidText(planName)
-        
-        guard let recurringAmount = plan.amount else {
-            disableButton(saveButton)
-            
-            return
-        }
-        let recurringAmountValid = true;// Validator.isValidEmail(emailAddress)
-        
-        guard let recurringInterval = plan.interval else {
-            disableButton(saveButton)
-            
-            return
-        }
-        let recurringIntervalValid = true
-        
-        if planNameValid && recurringAmountValid && recurringIntervalValid {
-            enableButton(saveButton)
-        } else {
-            disableButton(saveButton)
-        }
+//        guard let planName = plan.name else {
+//            disableButton(saveButton)
+//            
+//            return
+//        }
+//        let planNameValid = Validator.isValidText(planName)
+//        
+//        guard let recurringAmount = plan.amount else {
+//            disableButton(saveButton)
+//            
+//            return
+//        }
+//        let recurringAmountValid = true;// Validator.isValidEmail(emailAddress)
+//        
+//        guard let recurringInterval = plan.interval else {
+//            disableButton(saveButton)
+//            
+//            return
+//        }
+//        let recurringIntervalValid = true
+//        
+//        if planNameValid && recurringAmountValid && recurringIntervalValid {
+//            enableButton(saveButton)
+//        } else {
+//            disableButton(saveButton)
+//        }
     }
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y
@@ -558,10 +512,7 @@ class PlanProfileViewController: UICollectionViewController {
                 return
             }
             
-            print("plan saved")
-            
-            _self.dismiss(animated: true, completion: nil)
-
+            _self.planProfileDelegate?.didAddPlan(plan: plan)
         }) { [weak self] (error, errorDictionary) in
             SVProgressHUD.dismiss()
             
@@ -584,10 +535,7 @@ class PlanProfileViewController: UICollectionViewController {
                 return
             }
             
-            print("plan saved")
-            
-            let _ = _self.navigationController?.popViewController(animated: true)
-
+            _self.planProfileDelegate?.didUpdatePlan(plan: plan)
         }) { [weak self] (error, errorDictionary) in
             SVProgressHUD.dismiss()
             
@@ -708,7 +656,18 @@ extension PlanProfileViewController: PlanTermsOfServiceDelegate {
 }
 extension PlanProfileViewController: PlanProfileDelegate {
     func didDismissPlanProfile() {
-        dismiss(animated: true, completion: nil)
+        planProfileDelegate?.didDismissPlanProfile()
+    }
+    func didAddPlan(plan: Plan) {
+        planProfileDelegate?.didAddPlan(plan: plan)
+    }
+    func didUpdatePlan(plan: Plan) {
+        let _ = navigationController?.popViewController(animated: true)
+        
+        planProfileDelegate?.didUpdatePlan(plan: plan)
+    }
+    func didDeletePlan(plan: Plan) {
+        planProfileDelegate?.didDeletePlan(plan: plan)
     }
 }
 extension PlanProfileViewController: PlanProfileHeaderViewModelDelegate {
@@ -737,7 +696,6 @@ extension PlanProfileViewController {
         let row = indexPath.row
         
         //collectionView.registerClass(modelView.cellClass, forCellWithReuseIdentifier: modelView.cellID)
-        
         let cell: PlanProfileCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PlanProfileCollectionViewCell", for: indexPath) as! PlanProfileCollectionViewCell
         cell.dataSource = dataSource
         cell.delegate = self
@@ -745,19 +703,32 @@ extension PlanProfileViewController {
         return cell
     }
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let profileHeaderViewModel = PlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
-        profileHeaderViewModel.presentingViewController = self
-        profileHeaderViewModel.planProfileHeaderViewModelDelegate = self
-        
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "PlanProfileHeaderView", for: indexPath) as! PlanProfileHeaderView
-        header.setupWith(profileHeaderViewModel)
-        
-        return header
+        if let _ = plan.id {
+            let profileHeaderViewModel = PlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
+            profileHeaderViewModel.presentingViewController = self
+            profileHeaderViewModel.planProfileHeaderViewModelDelegate = self
+            
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "PlanProfileHeaderView", for: indexPath) as! PlanProfileHeaderView
+            header.setupWith(profileHeaderViewModel)
+            
+            return header
+        } else {
+            let profileHeaderViewModel = NewPlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
+            profileHeaderViewModel.presentingViewController = self
+            profileHeaderViewModel.planProfileHeaderViewModelDelegate = self
+            
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "NewPlanProfileHeaderView", for: indexPath) as! NewPlanProfileHeaderView
+            header.setupWith(profileHeaderViewModel)
+            
+            return header
+        }
+
     }
 }
 extension PlanProfileViewController: UICollectionViewDelegateFlowLayout {
     
-    private static var cellHeightCache: [String: CGSize] = [:]
+    fileprivate static var cellHeightCache: [String: CGSize] = [:]
+    
     func updateFlowLayoutIfNeeded(forceReload: Bool = false) {
         guard let collectionView = collectionView else {
             return
@@ -767,11 +738,19 @@ extension PlanProfileViewController: UICollectionViewDelegateFlowLayout {
         
         let headerHeight: CGFloat
         
-        let profileHeaderViewModel = PlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
-        
-        let header = PlanProfileHeaderView.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
-        header.setupWith(profileHeaderViewModel)
-        headerHeight = header.systemLayoutHeightForWidth(width: width)
+        if let _ = plan.id {
+            let profileHeaderViewModel = PlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
+            
+            let header = PlanProfileHeaderView.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
+            header.setupWith(profileHeaderViewModel)
+            headerHeight = header.systemLayoutHeightForWidth(width: width)
+        } else {
+            let profileHeaderViewModel = NewPlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
+            
+            let header = NewPlanProfileHeaderView.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
+            header.setupWith(profileHeaderViewModel)
+            headerHeight = header.systemLayoutHeightForWidth(width: width)
+        }
         
         if forceReload || stretchyFlowLayout.headerReferenceSize.height != headerHeight {
             stretchyFlowLayout.headerReferenceSize = CGSize(width: width, height: headerHeight)
@@ -786,6 +765,7 @@ extension PlanProfileViewController: UICollectionViewDelegateFlowLayout {
         }
         let width = collectionView.bounds.width
         
+        if let _ = plan.id {
         let profileHeaderViewModel = PlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
         
         let header = PlanProfileHeaderView.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
@@ -798,6 +778,20 @@ extension PlanProfileViewController: UICollectionViewDelegateFlowLayout {
         PlanProfileViewController.cellHeightCache["Header"] = size
         
         return size
+        } else {
+            let profileHeaderViewModel = NewPlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
+            
+            let header = NewPlanProfileHeaderView.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
+            header.setupWith(profileHeaderViewModel)
+            
+            let height = header.systemLayoutHeightForWidth(width: width)
+            
+            let size = CGSize(width: width, height: ceil(height))
+            
+            PlanProfileViewController.cellHeightCache["Header"] = size
+            
+            return size
+        }
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.bounds.width

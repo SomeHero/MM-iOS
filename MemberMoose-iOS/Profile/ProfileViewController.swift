@@ -153,7 +153,7 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
     }()
     fileprivate lazy var settingsButton: UIButton = {
         let _button = UIButton()
-        _button.setImage(UIImage(named:"Edit"), for: UIControlState())
+        _button.setImage(UIImage.fontAwesomeIcon(name: .plus, textColor: .white, size: CGSize(width: 30, height: 30)), for: UIControlState())
         _button.addTarget(self, action: #selector(ProfileViewController.editProfileClicked(_:)), for: .touchUpInside)
         
         self.view.addSubview(_button)
@@ -279,6 +279,8 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
             
             _self.pageNumber = 1
             _self.buildDataSet()
+            
+            PushNotificationManager.registerForPushNotifications()
         }, failure: { [weak self] (error, errorDictionary) in
             guard let _self = self else {
                 return
@@ -299,7 +301,7 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
         settingsButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.trailing.equalTo(view).inset(15)
-            make.height.width.equalTo(20)
+            make.height.width.equalTo(30)
         }
 //        tableView.snp.updateConstraints { (make) in
 //            make.edges.equalTo(view)
@@ -593,13 +595,33 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
     func editProfileClicked(_ button: UIButton) {
         switch profileType {
         case .bull:
-            guard let account = user.account else {
-                return
+            switch membershipNavigationState {
+            case .members:
+                let viewController = AddMemberViewController()
+                //viewController.planProfileDelegate = self
+                
+                let navigationController = UINavigationController(rootViewController: viewController)
+                //navigationController.isNavigationBarHidden = false
+                
+                planProfileDisplayType = .modally
+                present(navigationController, animated: true, completion: nil)
+                
+                break
+            case .plans:
+                let plan = Plan()
+                let viewController = PlanProfileViewController(plan: plan)
+                viewController.planProfileDelegate = self
+                
+                let navigationController = UINavigationController(rootViewController: viewController)
+                //navigationController.isNavigationBarHidden = false
+                
+                planProfileDisplayType = .modally
+                present(navigationController, animated: true, completion: nil)
+                break
+            default:
+                break
             }
-            let viewController = AccountProfileViewController(account: account, profileType: .bull)
-            viewController.delegate = self
-            
-            present(viewController, animated: true, completion: nil)
+
         case .calf:
             let viewController = UserProfileViewController(user: user, profileType: .bull)
             viewController.delegate = self
@@ -1023,7 +1045,24 @@ extension ProfileViewController: PlanProfileDelegate {
         case .nonmodally:
             let _ = navigationController?.popViewController(animated: true)
         }
-   }
+    }
+    func didAddPlan(plan: Plan) {
+        buildDataSet()
+        
+        dismiss(animated: true, completion: nil)
+    }
+    func didUpdatePlan(plan: Plan) {
+        buildDataSet()
+        
+        let _ = navigationController?.popViewController(animated: true)
+    }
+    func didDeletePlan(plan: Plan) {
+        buildDataSet()
+        
+        dismiss(animated: true, completion: nil)
+        
+        let _ = navigationController?.popViewController(animated: false)
+    }
 }
 extension ProfileViewController: ProfileCollectionViewCellDelegate {
     func didSelectMember(member: User) {

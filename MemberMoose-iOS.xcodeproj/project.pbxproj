@@ -67,6 +67,9 @@
 		4240B76F1DA44671000D137E /* MemberMoose_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240B76E1DA44671000D137E /* MemberMoose_iOSUITests.swift */; };
 		4240B7821DA6C903000D137E /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240B7811DA6C903000D137E /* JoinViewController.swift */; };
 		4245074F1DCF8EE3004F4D16 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245074E1DCF8EE3004F4D16 /* Message.swift */; };
+		424D090D1E00C9830077C6AE /* NewPlanProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D090C1E00C9830077C6AE /* NewPlanProfileHeaderView.swift */; };
+		424D090F1E00DE610077C6AE /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 424D090E1E00DE610077C6AE /* UserNotifications.framework */; };
+		424D09111E00E07F0077C6AE /* PushNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D09101E00E07F0077C6AE /* PushNotificationManager.swift */; };
 		424D97D91DAD195500C8B674 /* PlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D97D81DAD195500C8B674 /* PlanCell.swift */; };
 		424D97DB1DAD198B00C8B674 /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D97DA1DAD198B00C8B674 /* PlanViewModel.swift */; };
 		424D97DD1DAD233500C8B674 /* PlanProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D97DC1DAD233500C8B674 /* PlanProfileViewController.swift */; };
@@ -285,6 +288,9 @@
 		4240B7701DA44671000D137E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4240B7811DA6C903000D137E /* JoinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JoinViewController.swift; path = Join/JoinViewController.swift; sourceTree = "<group>"; };
 		4245074E1DCF8EE3004F4D16 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = Members/Message.swift; sourceTree = "<group>"; };
+		424D090C1E00C9830077C6AE /* NewPlanProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewPlanProfileHeaderView.swift; path = Plans/NewPlanProfileHeaderView.swift; sourceTree = "<group>"; };
+		424D090E1E00DE610077C6AE /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		424D09101E00E07F0077C6AE /* PushNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushNotificationManager.swift; path = Managers/PushNotificationManager.swift; sourceTree = "<group>"; };
 		424D97D81DAD195500C8B674 /* PlanCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanCell.swift; path = Main/Members/PlanCell.swift; sourceTree = "<group>"; };
 		424D97DA1DAD198B00C8B674 /* PlanViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanViewModel.swift; path = Main/Members/PlanViewModel.swift; sourceTree = "<group>"; };
 		424D97DC1DAD233500C8B674 /* PlanProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlanProfileViewController.swift; path = Main/Members/PlanProfileViewController.swift; sourceTree = "<group>"; };
@@ -438,6 +444,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				424D090F1E00DE610077C6AE /* UserNotifications.framework in Frameworks */,
 				4253B6781DBE6BCE00A93E98 /* UIKit.framework in Frameworks */,
 				4253B6761DBE6BC800A93E98 /* Security.framework in Frameworks */,
 				1A042BF7518EC606A419193D /* QuartzCore.framework in Frameworks */,
@@ -849,6 +856,7 @@
 				425D2BBA1DFA03A80074C3B3 /* PlanProfileHeaderView.swift */,
 				425D2BBE1DFAF83A0074C3B3 /* PlanMenuNavigationViewController.swift */,
 				425D2BC01DFAFC3E0074C3B3 /* PlanMenuViewController.swift */,
+				424D090C1E00C9830077C6AE /* NewPlanProfileHeaderView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -924,6 +932,7 @@
 				4255B3F91DAE89A8008DECAC /* SessionManager.swift */,
 				4255B3FD1DAEA3BF008DECAC /* ImagePicker.swift */,
 				425013B41DAFCA8100ED21B1 /* Validator.swift */,
+				424D09101E00E07F0077C6AE /* PushNotificationManager.swift */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -975,6 +984,7 @@
 		7BC7FB8872E77F1A86CF77A9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				424D090E1E00DE610077C6AE /* UserNotifications.framework */,
 				4253B6771DBE6BCE00A93E98 /* UIKit.framework */,
 				4253B6751DBE6BC800A93E98 /* Security.framework */,
 				4253B6731DBE6BBA00A93E98 /* OpenGLES.framework */,
@@ -1080,6 +1090,9 @@
 						DevelopmentTeam = 5K56Y8ABUA;
 						LastSwiftMigration = 0810;
 						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
 							com.apple.SafariKeychain = {
 								enabled = 1;
 							};
@@ -1294,9 +1307,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				424D09111E00E07F0077C6AE /* PushNotificationManager.swift in Sources */,
 				426841521DA7A8FC00A2BFF8 /* SubscribeViewController.swift in Sources */,
 				4255B4001DAEA53D008DECAC /* UIImage.swift in Sources */,
 				42BD767C1DDA75070017EC93 /* PlanSubscriberEmptyStateViewModel.swift in Sources */,
+				424D090D1E00C9830077C6AE /* NewPlanProfileHeaderView.swift in Sources */,
 				4268414A1DA7A80300A2BFF8 /* MainTabBarViewController.swift in Sources */,
 				4275F7191DC1AE9800E0FF7B /* PlanDescriptionViewModel.swift in Sources */,
 				425D2BB71DF9E73D0074C3B3 /* CalfProfileHeaderView.swift in Sources */,
@@ -1598,7 +1613,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-D\" DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.membermoose;
 				PRODUCT_NAME = MemberMoose;
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
 				SWIFT_VERSION = 3.0.1;
@@ -1620,7 +1635,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-D\" RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.membermoose.MemberMoose-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.membermoose;
 				PRODUCT_NAME = MemberMoose;
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
 				SWIFT_VERSION = 3.0.1;

@@ -11,7 +11,7 @@ import UIKit
 class PlanNameCell: UITableViewCell, DataSourceItemCell {
     fileprivate lazy var containerView: UIView = {
         let _view = UIView()
-        
+
         self.contentView.addSubview(_view)
         
         return _view
@@ -47,6 +47,7 @@ class PlanNameCell: UITableViewCell, DataSourceItemCell {
         layoutMargins = UIEdgeInsets.zero
         accessoryType = .none
         selectionStyle = .none
+        contentMode = .redraw
         
         //selectedBackgroundView = selectedColorView
     }
@@ -68,7 +69,7 @@ class PlanNameCell: UITableViewCell, DataSourceItemCell {
             make.top.bottom.equalTo(containerView)
         }
         editButton.snp.updateConstraints { (make) in
-            make.leading.equalTo(nameLabel.snp.trailing)
+            make.leading.greaterThanOrEqualTo(nameLabel.snp.trailing)
             make.trailing.equalTo(containerView)
             make.top.bottom.equalTo(containerView)
         }

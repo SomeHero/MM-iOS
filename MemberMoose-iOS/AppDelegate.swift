@@ -10,6 +10,7 @@ import UIKit
 import SWRevealViewController
 import SwiftyOAuth
 import Stripe
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -96,6 +97,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        guard let user = SessionManager.sharedUser else {
+            return
+        }
+        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+        let uuid = UUID().uuidString
+        print(deviceTokenString)
+        
+        let registerDevice = RegisterDevice(user: user, token: deviceTokenString, deviceIdentifier: uuid, deviceType: "iPhone")
+        
+        ApiManager.sharedInstance.registerDevice(registerDevice, success: { (user) in
+            print("register device success")
+        }, failure: { (error) in
+            print("failed to register device \(error)")
+        })
+ 
+    }
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Swift.Error) {
+        print("i am not available in simulator \(error)")
     }
 //    func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
 //        guard let url = userActivity.webpageURL else {
