@@ -32,7 +32,7 @@ class PlanNavigationView: UIView {
     }()
     fileprivate lazy var subscribersButton: UIButton = {
         let _button = UIButton()
-        _button.setTitle("SUBSCRIBERS", for: UIControlState())
+        _button.setTitle("ROSTER", for: UIControlState())
         _button.addTarget(self, action: #selector(PlanNavigationView.subscribersClicked(_:)), for: .touchUpInside)
         _button.titleLabel?.font = UIFontTheme.Regular(.small)
         _button.titleLabel?.textColor = .white

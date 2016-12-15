@@ -241,7 +241,7 @@ class MemberNavigationView: UIView {
     }()
     fileprivate lazy var messageButton: UIButton = {
         let _button = UIButton()
-        _button.setTitle("MESSAGE", for: UIControlState())
+        _button.setTitle("PAYMENTS", for: UIControlState())
         _button.addTarget(self, action: #selector(MemberNavigationView.messageClicked(_:)), for: .touchUpInside)
         _button.titleLabel?.font = UIFontTheme.Regular(.small)
         _button.titleLabel?.textColor = .white
@@ -265,7 +265,7 @@ class MemberNavigationView: UIView {
     }()
     fileprivate lazy var chargeButton: UIButton = {
         let _button = UIButton()
-        _button.setTitle("CHARGE", for: UIControlState())
+        _button.setTitle("ACTIVITY", for: UIControlState())
         _button.addTarget(self, action: #selector(MemberNavigationView.chargeClicked(_:)), for: .touchUpInside)
         _button.titleLabel?.font = UIFontTheme.Regular(.small)
         _button.titleLabel?.textColor = .white

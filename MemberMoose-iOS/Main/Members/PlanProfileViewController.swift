@@ -251,11 +251,11 @@ class PlanProfileViewController: UICollectionViewController {
         settingsButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.trailing.equalTo(view).inset(15)
-            if let _ = plan.id {
-                make.height.width.equalTo(20)
-            } else {
+            //if let _ = plan.id {
+            //    make.height.width.equalTo(20)
+            //} else {
                 make.height.width.equalTo(0)
-            }
+            //}
         }
         navHeader.snp.updateConstraints { (make) in
             make.top.equalTo(self.view)

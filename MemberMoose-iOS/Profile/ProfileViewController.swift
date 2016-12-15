@@ -304,9 +304,6 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
             make.trailing.equalTo(view).inset(15)
             make.height.width.equalTo(30)
         }
-//        tableView.snp.updateConstraints { (make) in
-//            make.edges.equalTo(view)
-//        }
         navHeader.snp.updateConstraints { (make) in
             make.top.equalTo(self.view)
             make.leading.trailing.equalTo(self.view)
