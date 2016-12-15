@@ -9,17 +9,19 @@
 import UIKit
 
 enum MemberMenuItems: Int, Printable {
-    case previewPlan = 0
-    case sharePlan = 1
-    case deletePlan = 2
+    case changePassword = 0
+    case message = 1
+    case oneTimePaymentRequest = 2
+    case subscribe = 3
     
-    static let allValues = [previewPlan, sharePlan, deletePlan]
+    static let allValues = [changePassword, message, oneTimePaymentRequest, subscribe]
     
     var description: String {
         switch self {
-        case .previewPlan: return "Preview Plan"
-        case .sharePlan   : return "Share Plan"
-        case .deletePlan  : return "Delete Plan"
+        case .message: return "Message"
+        case .subscribe   : return "Subscribe"
+        case .oneTimePaymentRequest  : return "One Time Payment"
+        case .changePassword  : return "Change Password"
         }
     }
 }
@@ -83,7 +85,7 @@ class MemberMenuViewController: UIViewController {
         //        dataSource.append([headerViewModel])
         //
         var viewModels: [MenuItemViewModel] = []
-        for menuItem in PlanMenuItems.allValues {
+        for menuItem in MemberMenuItems.allValues {
             viewModels.append(MenuItemViewModel(title: menuItem.description))
         }
         dataSource.append(viewModels)
