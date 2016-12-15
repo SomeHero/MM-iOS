@@ -488,14 +488,41 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
                     ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 }
             case .messages:
-                let remainingHeight = view.frame.size.height //- tableView.visibleCells[0].frame.size.height
-
-                var viewModels: [MessagesViewModel] = []
-                viewModels.append(MessagesViewModel(totalCellHeight: remainingHeight, messages: [], messageViewDelegate: self))
-
-                items.append(viewModels)
-                collectionView!.reloadData()
-                
+                ApiManager.sharedInstance.getActivities(success: { [weak self] (activities) in
+                    guard let _self = self else {
+                        return
+                    }
+                    if(activities.count > 0) {
+                        _self.hasMembers = true
+                        
+                        var activityViewModels: [PlanActivityViewModel] = []
+                        for activity in activities {
+                            activityViewModels.append(PlanActivityViewModel(activity: activity))
+                        }
+                        items.append(activityViewModels)
+                        
+                        _self.dataSource = items
+                        _self.collectionView!.reloadData()
+                        
+                    }
+                    else {
+                        var viewModels: [PlanSubscriberEmptyStateViewModel] = []
+                        //viewModels.append(PlanSubscriberEmptyStateViewModel(plan: _self.plan))
+                        
+                        items.append(viewModels)
+                        _self.dataSource = items
+                        _self.collectionView!.reloadData()
+                        
+                    }
+                }) { [weak self] (error, errorDictionary) in
+                    SVProgressHUD.dismiss()
+                    
+                    guard let _self = self else {
+                        return
+                    }
+                    
+                    ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+                }
                 break
             }
         case .calf:

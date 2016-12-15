@@ -37,6 +37,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     fileprivate let memberEmailAddressCellIdentifier  = "MemberEmailAddressCellIdentifier"
     fileprivate let planCellIdentifier              = "PlanCellIdentifier"
     fileprivate let planEmptyStateCellIdentifier    = "PlanEmptyStateCellIdentifier"
+    fileprivate let planActivityCellIdentifier      = "PlanActivityCellIdentifier"
     fileprivate let tableCellHeight: CGFloat        = 120
 
     var dataSource: [[DataSourceItemProtocol]] = [] {
@@ -79,6 +80,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         _tableView.register(MemberEmailAddressCell.self, forCellReuseIdentifier: self.memberEmailAddressCellIdentifier)
         _tableView.register(PlanCell.self, forCellReuseIdentifier: self.planCellIdentifier)
         _tableView.register(PlanEmptyStateCell.self, forCellReuseIdentifier: self.planEmptyStateCellIdentifier)
+        _tableView.register(PlanActivityCell.self, forCellReuseIdentifier: self.planActivityCellIdentifier)
         
         self.addSubview(_tableView)
         return _tableView

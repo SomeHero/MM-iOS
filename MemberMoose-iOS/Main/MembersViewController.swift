@@ -493,7 +493,7 @@ class MembershipNavigationView: UIView {
     }()
     fileprivate lazy var messagesButton: UIButton = {
         let _button = UIButton()
-        _button.setTitle("MESSAGES", for: UIControlState())
+        _button.setTitle("ACTIVITY", for: UIControlState())
         _button.addTarget(self, action: #selector(MembershipNavigationView.messagesClicked(_:)), for: .touchUpInside)
         _button.titleLabel?.font = UIFontTheme.Regular(.small)
         _button.titleLabel?.textColor = .white
