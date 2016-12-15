@@ -221,7 +221,7 @@ class PaymentCardViewController: UIViewController {
             if let error = error {
                 ErrorHandler.presentErrorDialog(_self, error: error)
             } else if let token = token {
-                let addPaymentCard = AddPaymentCard(userId: _self.user.id, stripeToken: token.tokenId)
+                let addPaymentCard = AddPaymentCard(user: _self.user, stripeToken: token.tokenId)
                 ApiManager.sharedInstance.addPaymentCard(addPaymentCard, success: { [weak self] (response) in
                     guard let _self = self else {
                         return

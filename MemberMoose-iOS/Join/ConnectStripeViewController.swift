@@ -244,7 +244,7 @@ class ConnectStripeViewController: UIViewController {
                 SVProgressHUD.show()
                 
                 let stripeParams: [String: AnyObject] = token.dictionary as [String: AnyObject]
-                let connectStripe = ConnectStripe(userId: user.id, stripeParams: stripeParams)
+                let connectStripe = ConnectStripe(user: user, stripeParams: stripeParams)
                 
                 ApiManager.sharedInstance.connectStripe(connectStripe, success: { (response) in
                     SVProgressHUD.dismiss()

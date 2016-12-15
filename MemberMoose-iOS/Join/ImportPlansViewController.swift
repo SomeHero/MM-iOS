@@ -151,7 +151,7 @@ class ImportPlansViewController: UIViewController {
         }
     }
     func nextClicked(_ sender: UIButton) {
-        guard let user = SessionManager.sharedUser else {
+        guard let user = SessionManager.sharedUser, let userId = user.id else {
             return
         }
         SVProgressHUD.show()
@@ -163,7 +163,7 @@ class ImportPlansViewController: UIViewController {
             }
         }
         
-        ApiManager.sharedInstance.importPlans(user.id, plansList: plansList, success: { (response) in
+        ApiManager.sharedInstance.importPlans(userId, plansList: plansList, success: { (response) in
             SVProgressHUD.dismiss()
             
             SessionManager.sharedUser = response

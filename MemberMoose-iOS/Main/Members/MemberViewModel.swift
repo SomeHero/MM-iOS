@@ -15,7 +15,7 @@ class MemberViewModel: DataSourceItemProtocol {
     let user: User
     let avatar: String
     var avatarUrl: String?
-    let userId: String
+    let userId: String?
     var memberName: String?
     let planName: String
     let memberSince: Date
@@ -26,7 +26,6 @@ class MemberViewModel: DataSourceItemProtocol {
         if let avatar = user.avatar, let avatarImageUrl = avatar["large"] {
             avatarUrl = avatarImageUrl
         }
-
         userId = user.id
         if let firstName = user.firstName, let lastName = user.lastName {
             memberName = "\(firstName) \(lastName)"

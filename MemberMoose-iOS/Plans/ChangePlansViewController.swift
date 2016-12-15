@@ -129,11 +129,14 @@ class ChangePlansViewController: UIViewController {
         guard let selectedIndexPath = selectedIndexPath, let selectedPlan = dataSource[selectedIndexPath.section][selectedIndexPath.row] as? NewPlanViewModel, let planId = selectedPlan.plan.id else {
             return
         }
+        guard let userId = user.id else {
+            return
+        }
         let upgradeSubscription = UpgradeSubscription(planId: planId)
         
         SVProgressHUD.show()
         
-        ApiManager.sharedInstance.upgradeSubscription(user.id, subscription.id, upgradeSubscription, success: { [weak self] (new_subscription) in
+        ApiManager.sharedInstance.upgradeSubscription(userId, subscription.id, upgradeSubscription, success: { [weak self] (new_subscription) in
             SVProgressHUD.dismiss()
             
             guard let _self = self else {

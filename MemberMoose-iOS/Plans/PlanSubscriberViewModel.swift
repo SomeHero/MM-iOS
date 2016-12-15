@@ -12,21 +12,17 @@ class PlanSubscriberViewModel: DataSourceItemProtocol {
     var cellID: String = "PlanSubscriberCellIdentifier"
     var cellClass: UITableViewCell.Type = PlanSubscriberCell.self
     
-    let user: User
     let avatar: String
     var avatarUrl: String?
-    let userId: String
     var memberName: String?
     let planName: String
     let memberSince: Date
     
     init(user: User) {
-        self.user = user
         self.avatar = "Avatar-Calf"
         if let avatar = user.avatar, let avatarImageUrl = avatar["large"] {
             avatarUrl = avatarImageUrl
         }
-        userId = user.id
         if let firstName = user.firstName, let lastName = user.lastName {
             memberName = "\(firstName) \(lastName)"
         } else {

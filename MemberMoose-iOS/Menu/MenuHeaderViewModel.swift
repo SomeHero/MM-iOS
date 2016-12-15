@@ -15,7 +15,7 @@ class MenuHeaderViewModel:DataSourceItemProtocol {
     let avatar: String
     var avatarUrl: String?
     var name: String?
-    let emailAddress: String
+    var emailAddress: String?
     var menuHeaderDelegate: MenuHeaderDelegate?
     
     init(user: User, menuHeaderDelegate: MenuHeaderDelegate?) {
@@ -26,7 +26,9 @@ class MenuHeaderViewModel:DataSourceItemProtocol {
         if let firstName = user.firstName, let lastName = user.lastName {
             self.name = "\(firstName) \(lastName)"
         }
-        self.emailAddress = user.emailAddress
+        if let emailAddress = user.emailAddress {
+            self.emailAddress = emailAddress
+        }
         self.menuHeaderDelegate = menuHeaderDelegate
     }
     @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {

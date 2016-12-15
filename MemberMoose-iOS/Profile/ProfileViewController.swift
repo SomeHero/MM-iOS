@@ -63,6 +63,7 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
     fileprivate var memberNavigationState: MemberNavigationState = .profile
     fileprivate let textInputBar = SLKTextInputbar()
     fileprivate var planProfileDisplayType: PlanProfileDisplayType?
+    fileprivate var memberProfileDisplayType: PlanProfileDisplayType?
     
     weak var profileDelegate: ProfileDelegate?
     
@@ -522,6 +523,12 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
                     ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 }
             case .profile:
+                let memberNameViewModel = MemberNameViewModel(member: user)
+                items.append([memberNameViewModel])
+                
+                let memberEmailAddressViewModel = MemberEmailAddressViewModel(member: user)
+                items.append([memberEmailAddressViewModel])
+                
                 if user.memberships.count > 0 {
                     var subscriptionViewModels: [SubscriptionViewModel] = []
                     for membership in user.memberships {
@@ -597,13 +604,14 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
         case .bull:
             switch membershipNavigationState {
             case .members:
-                let viewController = AddMemberViewController()
-                //viewController.planProfileDelegate = self
+                let user = User()
+                let viewController = MemberProfileViewController(user: user, profileType: .calf)
+                viewController.memberProfileDelegate = self
                 
                 let navigationController = UINavigationController(rootViewController: viewController)
                 //navigationController.isNavigationBarHidden = false
                 
-                planProfileDisplayType = .modally
+                memberProfileDisplayType = .modally
                 present(navigationController, animated: true, completion: nil)
                 
                 break
@@ -889,7 +897,10 @@ extension ProfileViewController: CancelSubscriptionDelegate {
         dismiss(animated: true, completion: nil)
     }
     func didConfirmCancelSubscription(_ subscription: Subscription) {
-        ApiManager.sharedInstance.cancelSubscription(user.id, subscription.id, success: {
+        guard let userId = user.id else {
+            return
+        }
+        ApiManager.sharedInstance.cancelSubscription(userId, subscription.id, success: {
             self.dismiss(animated: true, completion: nil)
         }) { (error, errorDictionary) in
             print("error occurred")
@@ -949,7 +960,7 @@ extension ProfileViewController: CardCaptureDelegate {
                     
                     ErrorHandler.presentErrorDialog(_self, error: error)
                 } else if let token = token {
-                    let addPaymentCard = AddPaymentCard(userId: _self.user.id, stripeToken: token.tokenId)
+                    let addPaymentCard = AddPaymentCard(user: _self.user, stripeToken: token.tokenId)
                     ApiManager.sharedInstance.addPaymentCard(addPaymentCard, success: { [weak self] (response) in
                         SVProgressHUD.dismiss()
                     
@@ -974,7 +985,7 @@ extension ProfileViewController: ChargeCellDelegate {
     func didChargeAmount(_ amount: USD) {
         SVProgressHUD.show()
         
-        let createCharge = CreateCharge(userId: user.id, amount: amount.floatValue, description: "Test Charge")
+        let createCharge = CreateCharge(user: user, amount: amount.floatValue, description: "Test Charge")
         
         ApiManager.sharedInstance.createCharge(createCharge, success: { [weak self] (response) in
             SVProgressHUD.dismiss()
@@ -1064,12 +1075,36 @@ extension ProfileViewController: PlanProfileDelegate {
         let _ = navigationController?.popViewController(animated: false)
     }
 }
+extension ProfileViewController: MemberProfileDelegate {
+    func didDismissMemberProfile() {
+        guard let memberProfileDisplayType = memberProfileDisplayType else {
+            return
+        }
+        
+        switch memberProfileDisplayType {
+        case .modally:
+            dismiss(animated: true, completion: nil)
+        case .nonmodally:
+            let _ = navigationController?.popViewController(animated: true)
+        }
+    }
+    func didAddMember(user: User) {
+        
+    }
+    func didUpdateMember(user: User) {
+        
+    }
+    func didDeleteMember(user: User) {
+        
+    }
+}
 extension ProfileViewController: ProfileCollectionViewCellDelegate {
     func didSelectMember(member: User) {
-        let viewController = ProfileViewController(user: member, profileType: .calf)
+        let viewController = MemberProfileViewController(user: member, profileType: .calf)
         viewController.profileDelegate = profileDelegate
+        viewController.memberProfileDelegate = self
         
-        planProfileDisplayType = .modally
+        memberProfileDisplayType = .nonmodally
         navigationController?.pushViewController(viewController, animated: true)
     }
     func didSelectPlan(plan: Plan) {

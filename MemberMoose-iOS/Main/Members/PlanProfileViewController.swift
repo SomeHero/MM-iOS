@@ -231,7 +231,6 @@ class PlanProfileViewController: UICollectionViewController {
         planMenuViewController.planProfileDelegate = self
         
         let menuRightNavigationController = PlanMenuNavigationViewController(rootViewController: planMenuViewController)
-        // UISideMenuNavigationController is a subclass of UINavigationController, so do any additional configuration of it here like setting its viewControllers.
         SideMenuManager.menuRightNavigationController = menuRightNavigationController
         SideMenuManager.menuPresentMode = .menuSlideIn
         SideMenuManager.menuWidth = UIScreen.main.bounds.width * 0.4
@@ -252,7 +251,11 @@ class PlanProfileViewController: UICollectionViewController {
         settingsButton.snp.updateConstraints { (make) in
             make.top.equalTo(view).inset(30)
             make.trailing.equalTo(view).inset(15)
-            make.height.width.equalTo(20)
+            if let _ = plan.id {
+                make.height.width.equalTo(20)
+            } else {
+                make.height.width.equalTo(0)
+            }
         }
         navHeader.snp.updateConstraints { (make) in
             make.top.equalTo(self.view)
@@ -270,7 +273,6 @@ class PlanProfileViewController: UICollectionViewController {
         navHeaderLineView.snp.updateConstraints { (make) in
             make.leading.trailing.equalTo(self.navHeader)
             make.height.equalTo(kOnePX*2)
-            
             make.bottom.equalTo(self.navHeader.snp.bottom)
         }
     }
@@ -279,12 +281,6 @@ class PlanProfileViewController: UICollectionViewController {
         // Dispose of any resources that can be recreated.
     }
     func setup() {
-        if let _ = plan.id {
-            settingsButton.alpha = 1
-            settingsButton.isUserInteractionEnabled = true
-        } else {
-            settingsButton.alpha = 0
-        }
         if let planName = plan.name {
             navHeaderNameLabel.text = planName
         } else {
@@ -766,18 +762,18 @@ extension PlanProfileViewController: UICollectionViewDelegateFlowLayout {
         let width = collectionView.bounds.width
         
         if let _ = plan.id {
-        let profileHeaderViewModel = PlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
-        
-        let header = PlanProfileHeaderView.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
-        header.setupWith(profileHeaderViewModel)
-        
-        let height = header.systemLayoutHeightForWidth(width: width)
-        
-        let size = CGSize(width: width, height: ceil(height))
-        
-        PlanProfileViewController.cellHeightCache["Header"] = size
-        
-        return size
+            let profileHeaderViewModel = PlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
+            
+            let header = PlanProfileHeaderView.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
+            header.setupWith(profileHeaderViewModel)
+            
+            let height = header.systemLayoutHeightForWidth(width: width)
+            
+            let size = CGSize(width: width, height: ceil(height))
+            
+            PlanProfileViewController.cellHeightCache["Header"] = size
+            
+            return size
         } else {
             let profileHeaderViewModel = NewPlanProfileHeaderViewModel(plan: plan, planNavigationState: planNavigationState, planNavigationDelegate: self)
             

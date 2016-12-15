@@ -189,10 +189,10 @@ class UserProfileViewController: UIViewController {
         delegate?.didClickBack()
     }
     func nextClicked(_ sender: UIButton) {
-        guard let firstName = firstNameTextField.textField.text, let lastName = lastNameTextField.textField.text, let emailAddress = emailAddressTextField.textField.text else {
+        guard let userId = user.id, let firstName = firstNameTextField.textField.text, let lastName = lastNameTextField.textField.text, let emailAddress = emailAddressTextField.textField.text else {
             return
         }
-        let updateUser = UpdateUser(userId: user.id, firstName: firstName, lastName: lastName, emailAddress: emailAddress, avatar: avatar)
+        let updateUser = UpdateUser(userId: userId, firstName: firstName, lastName: lastName, emailAddress: emailAddress, avatar: avatar)
         
         SVProgressHUD.show()
 

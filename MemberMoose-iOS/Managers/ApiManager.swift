@@ -112,11 +112,11 @@ public struct UpdateAccount {
     }
 }
 public struct ConnectStripe {
-    let userId: String
+    let user: User
     let stripeParams: [String: AnyObject]
     
-    public init(userId: String, stripeParams: [String: AnyObject]) {
-        self.userId = userId
+    public init(user: User, stripeParams: [String: AnyObject]) {
+        self.user = user
         self.stripeParams = stripeParams
     }
     func parameterize() -> [String: AnyObject] {
@@ -128,13 +128,13 @@ public struct ConnectStripe {
     }
 }
 public struct RegisterDevice {
-    let userId: String
+    let user: User
     let token: String
     let deviceIdentifier: String
     let deviceType: String
     
     public init(user: User, token: String, deviceIdentifier: String, deviceType: String) {
-        self.userId = user.id
+        self.user = user
         self.token = token
         self.deviceIdentifier = deviceIdentifier
         self.deviceType = deviceType
@@ -257,11 +257,11 @@ public struct CreateMember {
     }
 }
 public struct AddPaymentCard {
-    let userId: String
+    let user: User
     let stripeToken: String
     
-    public init(userId: String, stripeToken: String) {
-        self.userId = userId
+    public init(user: User, stripeToken: String) {
+        self.user = user
         self.stripeToken = stripeToken
     }
     func parameterize() -> [String: AnyObject] {
@@ -273,12 +273,12 @@ public struct AddPaymentCard {
     }
 }
 public struct CreateCharge {
-    let userId: String
+    let user: User
     let amount: Double
     let description: String
     
-    public init(userId: String, amount: Double, description: String) {
-        self.userId = userId
+    public init(user: User, amount: Double, description: String) {
+        self.user = user
         self.amount = amount
         self.description = description
     }
@@ -576,9 +576,12 @@ open class ApiManager {
         }
     }
     open func connectStripe(_ connectStripe: ConnectStripe, success: @escaping (_ response: User) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        guard let userId = connectStripe.user.id else {
+            return
+        }
         let params = connectStripe.parameterize()
         
-        Alamofire.request(apiBaseUrl + "users/\(connectStripe.userId)/connect_stripe", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
+        Alamofire.request(apiBaseUrl + "users/\(userId)/connect_stripe", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseObject { (response: DataResponse<User>) in
                 if let error = response.result.error {
@@ -621,9 +624,12 @@ open class ApiManager {
         }
     }
     open func registerDevice(_ registerDevice: RegisterDevice, success: @escaping (_ response: User) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        guard let userId = registerDevice.user.id else {
+            return
+        }
         let params = registerDevice.parameterize()
         
-        Alamofire.request(apiBaseUrl + "users/\(registerDevice.userId)/devices", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
+        Alamofire.request(apiBaseUrl + "users/\(userId)/devices", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseObject { (response: DataResponse<User>) in
                 if let error = response.result.error {
@@ -919,9 +925,12 @@ open class ApiManager {
         }
     }
     open func addPaymentCard(_ addPaymentCard: AddPaymentCard, success: @escaping (_ response: PaymentCard) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        guard let userId = addPaymentCard.user.id else {
+            return
+        }
         let params = addPaymentCard.parameterize()
         
-        Alamofire.request(apiBaseUrl + "/users/\(addPaymentCard.userId)/payment_cards", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
+        Alamofire.request(apiBaseUrl + "/users/\(userId)/payment_cards", method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseObject { (response: DataResponse<PaymentCard>) in
                 if let error = response.result.error {
@@ -943,9 +952,12 @@ open class ApiManager {
         }
     }
     open func createCharge(_ createCharge: CreateCharge, success: @escaping (_ response: Charge) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        guard let userId = createCharge.user.id else {
+            return
+        }
         let params = createCharge.parameterize()
         
-        Alamofire.request(apiBaseUrl + "/users/\(createCharge.userId)/charges", method: .post,  parameters: params, encoding: JSONEncoding.default, headers: headers)
+        Alamofire.request(apiBaseUrl + "/users/\(userId)/charges", method: .post,  parameters: params, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseObject { (response: DataResponse<Charge>) in
                 if let error = response.result.error {

@@ -12,7 +12,7 @@ class MessageViewModel {
 
     let avatar: String
     var avatarUrl: String?
-    let authorName: String
+    let authorName: String?
     let content: String
     let messageSent: String
     let dateFormatter = DateFormatters.timeStampDateFormatter

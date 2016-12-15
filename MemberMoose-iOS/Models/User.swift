@@ -10,11 +10,11 @@ import Foundation
 import ObjectMapper
 
 open class User: Mappable {
-    open var id: String!
+    open var id: String?
     open var firstName: String?
     open var lastName: String?
     //public var companyName: String!
-    open var emailAddress: String!
+    open var emailAddress: String?
     open var avatar: Dictionary<String, String>? = [:]
     open var account: Account?
     open var plans: [Plan] = []
@@ -24,9 +24,12 @@ open class User: Mappable {
     var charges: [Charge] = []
     open var memberCount: Int = 0
     var gravatarUrl: String?
-    open var createdAt: Date!
+    open var createdAt: Date?
     open var updatedAt: Date?
     
+    init() {
+        
+    }
     public init(userDefaults: UserDefaults) {
         self.id = userDefaults.string(forKey: "id")
         self.firstName = userDefaults.string(forKey: "firstName")

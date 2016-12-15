@@ -33,6 +33,8 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     fileprivate let messagesEmptyStateCellIdentifier          = "MessagesEmptyStateCellIdentifier"
     fileprivate let memberCellIdentifier            = "MemberCellIdentifier"
     fileprivate let memberEmptyStateCellIdentifier  = "MemberEmptyStateCellIdentifier"
+    fileprivate let memberNameCellIdentifier  = "MemberNameCellIdentifier"
+    fileprivate let memberEmailAddressCellIdentifier  = "MemberEmailAddressCellIdentifier"
     fileprivate let planCellIdentifier              = "PlanCellIdentifier"
     fileprivate let planEmptyStateCellIdentifier    = "PlanEmptyStateCellIdentifier"
     fileprivate let tableCellHeight: CGFloat        = 120
@@ -73,6 +75,8 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         _tableView.register(MessagesEmptyStateCell.self, forCellReuseIdentifier: self.messagesEmptyStateCellIdentifier)
         _tableView.register(MemberCell.self, forCellReuseIdentifier: self.memberCellIdentifier)
         _tableView.register(MemberEmptyStateCell.self, forCellReuseIdentifier: self.memberEmptyStateCellIdentifier)
+        _tableView.register(MemberNameCell.self, forCellReuseIdentifier: self.memberNameCellIdentifier)
+        _tableView.register(MemberEmailAddressCell.self, forCellReuseIdentifier: self.memberEmailAddressCellIdentifier)
         _tableView.register(PlanCell.self, forCellReuseIdentifier: self.planCellIdentifier)
         _tableView.register(PlanEmptyStateCell.self, forCellReuseIdentifier: self.planEmptyStateCellIdentifier)
         
