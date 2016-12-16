@@ -275,13 +275,17 @@ class MemberProfileViewController: UICollectionViewController, MultilineNavTitla
         case .message:
             let remainingHeight = self.view.frame.size.height //- tableView.visibleCells[0].frame.size.height
             
-            ApiManager.sharedInstance.getMessages(user, self.pageNumber, success: { [weak self] (messages) in
-                guard let _self = self, let messages = messages else {
+            ApiManager.sharedInstance.getCharges(user, success: { [weak self] (charges) in
+                guard let _self = self else {
                     return
                 }
-                var viewModels: [MessagesViewModel] = []
-                viewModels.append(MessagesViewModel(totalCellHeight: remainingHeight, messages: messages, messageViewDelegate: self))
-                items.append(viewModels)
+                var paymentHistoryViewModels: [PaymentHistoryViewModel] = []
+                for charge in charges {
+                    let paymentHistoryViewModel = PaymentHistoryViewModel(charge: charge)
+                    
+                    paymentHistoryViewModels.append(paymentHistoryViewModel)
+                }
+                items.append(paymentHistoryViewModels)
                 
                 _self.dataSource = items
                 _self.collectionView!.reloadData()
@@ -332,28 +336,29 @@ class MemberProfileViewController: UICollectionViewController, MultilineNavTitla
                 items.append(paymentCardEmptyStateViewModels)
             }
             
-            //
-            if user.charges.count > 0 {
-                var paymentHistoryViewModels: [PaymentHistoryViewModel] = []
-                for charge in user.charges {
-                    let paymentHistoryViewModel = PaymentHistoryViewModel(charge: charge)
-                    
-                    paymentHistoryViewModels.append(paymentHistoryViewModel)
-                }
-                items.append(paymentHistoryViewModels)
-            } else {
-                var paymentHistoryEmptyStateViewModels: [PaymentHistoryEmptyStateViewModel] = []
-                paymentHistoryEmptyStateViewModels.append(PaymentHistoryEmptyStateViewModel(header: "No Transactions"))
-                
-                items.append(paymentHistoryEmptyStateViewModels)
-            }
-            
         case .charge:
-            let remainingHeight = view.frame.size.height //- tableView.visibleCells[0].frame.size.height
-            
-            let viewModel = ChargeViewModel(totalCellHeight: remainingHeight, chargeCellDelegate: self)
-            
-            items.append([viewModel])
+            ApiManager.sharedInstance.getActivities(user, success: { [weak self] (activities) in
+                guard let _self = self else {
+                    return
+                }
+                var viewModels: [PlanActivityViewModel] = []
+                for activity in activities {
+                    viewModels.append(PlanActivityViewModel(activity: activity))
+                }
+                items.append(viewModels)
+                
+                
+                _self.dataSource = items
+                _self.collectionView!.reloadData()
+            }) { [weak self] (error, errorDictionary) in
+                SVProgressHUD.dismiss()
+                
+                guard let _self = self else {
+                    return
+                }
+                
+                ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+            }
         }
         
         dataSource = items

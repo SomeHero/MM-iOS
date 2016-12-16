@@ -694,6 +694,31 @@ open class ApiManager {
         }
         
     }
+    open func getActivities(_ user: User, success: @escaping (_ response: [Activity]) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        guard let userId = user.id else {
+            return
+        }
+
+        Alamofire.request(apiBaseUrl + "users/\(userId)/activities", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .responseArray { (response: DataResponse<[Activity]>) in
+                if let error = response.result.error {
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.getActivities(user, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
+                    } else {
+                        self.handleError(error, response.data, failure: failure);
+                    }
+                }
+                if let activities = response.result.value {
+                    success(activities)
+                }
+        }
+        
+    }
     open func getPlans(_ page: Int = 1,success: @escaping (_ response: [Plan]) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         Alamofire.request(apiBaseUrl + "plans?page=\(page)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
             .validate()
@@ -998,6 +1023,31 @@ open class ApiManager {
                     failure(nil, nil)
                 }
         }
+    }
+    open func getCharges(_ user: User, success: @escaping (_ response: [Charge]) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+        guard let userId = user.id else {
+            return
+        }
+        
+        Alamofire.request(apiBaseUrl + "users/\(userId)/charges", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .responseArray { (response: DataResponse<[Charge]>) in
+                if let error = response.result.error {
+                    if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
+                        self.handleRefreshToken(refreshToken, {
+                            self.getCharges(user, success: success, failure: failure)
+                        }, { (error, errorDictionary) in
+                            failure(error, errorDictionary)
+                        })
+                    } else {
+                        self.handleError(error, response.data, failure: failure);
+                    }
+                }
+                if let charges = response.result.value {
+                    success(charges)
+                }
+        }
+        
     }
     public struct CreateMessage {
         let recipient: User
