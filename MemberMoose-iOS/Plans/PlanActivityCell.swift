@@ -49,11 +49,12 @@ class PlanActivityCell: UITableViewCell, DataSourceItemCell {
     
     override func updateConstraints() {
         containerView.snp.updateConstraints { (make) in
-            make.edges.equalTo(contentView).inset(20)
+            make.leading.trailing.equalTo(contentView).inset(20)
+            make.centerY.equalTo(contentView)
+            make.top.bottom.equalTo(contentView).inset(20)
         }
         activityLabel.snp.updateConstraints { (make) in
-            make.leading.trailing.equalTo(containerView)
-            make.centerY.equalTo(containerView)
+            make.leading.trailing.top.bottom.equalTo(containerView)
         }
         
         super.updateConstraints()
@@ -64,8 +65,9 @@ class PlanActivityCell: UITableViewCell, DataSourceItemCell {
     func setupWith(_ viewModel: DataSourceItemProtocol) {
         if let viewModel = viewModel as? PlanActivityViewModel {
             activityLabel.text = viewModel.activity
-            //TextDecorator.applyTightLineHeight(toLabel: activityLabel)
+            TextDecorator.applyTightLineHeight(toLabel: activityLabel)
         }
+        setNeedsUpdateConstraints()
         updateConstraintsIfNeeded()
     }
 }

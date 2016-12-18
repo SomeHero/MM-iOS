@@ -10,7 +10,7 @@ import Foundation
 
 class PlanActivityViewModel:DataSourceItemProtocol {
     var cellID: String = "PlanActivityCellIdentifier"
-    var cellClass: UITableViewCell.Type = PlanFeatureCell.self
+    var cellClass: UITableViewCell.Type = PlanActivityCell.self
     
     let activity: String
     
@@ -27,12 +27,9 @@ class PlanActivityViewModel:DataSourceItemProtocol {
         return cell
     }
     @objc func viewForHeader() -> UIView? {
-        let header = PlanHeaderView()
-        header.setup("Activity")
-        
-        return header
+        return nil
     }
     @objc func heightForHeader() -> CGFloat {
-        return 50
+        return CGFloat.leastNormalMagnitude
     }
 }
