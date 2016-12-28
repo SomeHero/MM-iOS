@@ -502,6 +502,10 @@ extension MemberProfileViewController: UICollectionViewDelegateFlowLayout {
         }
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if let referenceSize = MemberProfileViewController.cellHeightCache["\(indexPath.row)"] {
+            return referenceSize
+        }
+        
         let width = collectionView.bounds.width
         let cell = ProfileCollectionViewCell.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
         cell.dataSource = dataSource
@@ -509,6 +513,8 @@ extension MemberProfileViewController: UICollectionViewDelegateFlowLayout {
         let height = cell.getTableViewHeight() + 60
         
         let size = CGSize(width: width, height: ceil(height))
+        
+        MemberProfileViewController.cellHeightCache["\(indexPath.row)"] = size
         
         return size
     }

@@ -29,7 +29,11 @@ class PaymentHistoryViewModel:DataSourceItemProtocol {
     init(charge: Charge) {
         transactionDate = dateFormatter.string(from: charge.chargeCreated)
         transactionDescription = charge.description
-        cardDescription = charge.cardInfo
+        if let paymentCard = charge.paymentCard {
+            cardDescription = "\(paymentCard.brand!) \(paymentCard.cardLastFour!)"
+        } else {
+            cardDescription = "Unknown Card"
+        }
         amount = USD(charge.amount).description
     }
     @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {

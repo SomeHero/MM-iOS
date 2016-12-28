@@ -19,7 +19,6 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     var memberNavigationState: MemberNavigationState = .profile
     var profileType: ProfileType = .bull
     
-    fileprivate var cellHeightCache: [String: CGSize] = [:]
     fileprivate let calfProfileCellIdentifier       = "CalfProfileHeaderCellIdentifier"
     fileprivate let profileCellIdentifier           = "ProfileHeaderCellIdentifier"
     fileprivate let subscriptionCellIdentifier                  = "SubscriptionCellIdentifier"
@@ -42,6 +41,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
 
     var dataSource: [[DataSourceItemProtocol]] = [] {
         didSet {
+            ProfileCollectionViewCell.cellHeightCache.removeAll(keepingCapacity: true)
             tableView.reloadData()
             
             setNeedsUpdateConstraints()
@@ -106,7 +106,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         tableView.layoutIfNeeded()
 
         var height:CGFloat = 0
-        for (_, value) in cellHeightCache {
+        for (_, value) in ProfileCollectionViewCell.cellHeightCache {
             height += value.height
         }
         return height
@@ -133,10 +133,16 @@ extension ProfileCollectionViewCell : UITableViewDataSource {
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
         let width:CGFloat = UIScreen.main.bounds.width
         
         let dataItems = dataSource[(indexPath as NSIndexPath).section]
         let viewModel = dataItems[(indexPath as NSIndexPath).row]
+        
+        if let referenceSize = ProfileCollectionViewCell.cellHeightCache["\(viewModel.cellID)\(indexPath.row)"] {
+            return referenceSize.height
+        }
+        
         let cell = viewModel.cellClass.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
         if let cell = cell as? DataSourceItemCell {
             cell.setupWith(viewModel)
@@ -147,12 +153,14 @@ extension ProfileCollectionViewCell : UITableViewDataSource {
         
         let size = CGSize(width: width, height: ceil(height))
         
-        cellHeightCache["\(viewModel.cellID)\(indexPath.row)"] = size
+        ProfileCollectionViewCell.cellHeightCache["\(viewModel.cellID)\(indexPath.row)"] = size
         
         return size.height
     }
 }
 extension ProfileCollectionViewCell : UITableViewDelegate {
+    fileprivate static var cellHeightCache: [String: CGSize] = [:]
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -177,12 +185,23 @@ extension ProfileCollectionViewCell : UITableViewDelegate {
         return nil
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if let referenceSize = ProfileCollectionViewCell.cellHeightCache["Header\(section)"]  {
+            return referenceSize.height
+        }
+        
         let dataItems = dataSource[section]
+        let width:CGFloat = UIScreen.main.bounds.width
         
         if dataItems.count > 0 {
             let view = dataItems[0]
             
-            return view.heightForHeader()
+            let height = view.heightForHeader()
+            
+            let size = CGSize(width: width, height: ceil(height))
+            
+            ProfileCollectionViewCell.cellHeightCache["Header\(section)"] = size
+            
+            return size.height
         }
         
         return 0

@@ -31,8 +31,9 @@ open class Charge: Mappable {
     var statementDescriptor: String?
     var status: String!
     var cardInfo: String!
-    open var createdAt: Date!
-    open var updatedAt: Date?
+    var createdAt: Date!
+    var updatedAt: Date?
+    var paymentCard: PaymentCard?
     
     public required init?(map: Map){
         mapping(map: map)
@@ -62,5 +63,6 @@ open class Charge: Mappable {
         cardInfo <- map["card_info"]
         createdAt <- (map["createdAt"], ISO8601ExtendedDateTransform())
         updatedAt <- (map["updatedAt"], ISO8601ExtendedDateTransform())
+        paymentCard <- map["payment_card"]
     }
 }

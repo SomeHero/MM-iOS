@@ -12,7 +12,7 @@ protocol PaymentCardDelegate: class {
     func didUpdatePaymentCard(_ paymentCard: PaymentCard)
 }
 class PaymentCardViewModel:DataSourceItemProtocol {
-    var cellID: String = "PaymentCardCell"
+    var cellID: String = "PaymentCardCellIdentifier"
     var cellClass: UITableViewCell.Type = SubscriptionCell.self
     
     var nameOnCard: String?
@@ -41,8 +41,8 @@ class PaymentCardViewModel:DataSourceItemProtocol {
         return cell
     }
     @objc func viewForHeader() -> UIView? {
-        let header = SubscriptionHeaderView()
-        header.setup("Payment Card")
+        let header = PaymentCardHeaderView()
+        header.setup("Payment Cards")
         
         return header
     }
@@ -60,7 +60,7 @@ class PaymentCardHeaderView: UIView {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
         _label.textAlignment = .left
-        _label.font = UIFontTheme.Regular(.default)
+        _label.font = UIFontTheme.SemiBold(.default)
         
         self.addSubview(_label)
         

@@ -71,7 +71,7 @@ class SubscriptionHeaderView: UIView {
         let _label = UILabel()
         _label.textColor = UIColorTheme.PrimaryFont
         _label.textAlignment = .left
-        _label.font = UIFontTheme.Regular(.default)
+        _label.font = UIFontTheme.SemiBold(.default)
         
         self.addSubview(_label)
         
