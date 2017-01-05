@@ -14,7 +14,6 @@ protocol PlanProfileCollectionViewCellDelegate: class {
 class PlanProfileCollectionViewCell: UICollectionViewCell {
     weak var delegate: PlanProfileCollectionViewCellDelegate?
     
-    fileprivate var cellHeightCache: [String: CGSize] = [:]
     fileprivate let profileCellIdentifier           = "PlanProfileHeaderCellIdentifier"
     fileprivate let newProfileCellIdentifier           = "NewPlanProfileHeaderCellIdentifier"
     fileprivate let planPaymentCellIdentifier       = "PlanPaymentDetailsCellIdentifier"
@@ -90,13 +89,15 @@ class PlanProfileCollectionViewCell: UICollectionViewCell {
         tableView.layoutIfNeeded()
         
         var height:CGFloat = 0
-        for (_, value) in cellHeightCache {
+        for (_, value) in PlanProfileCollectionViewCell.cellHeightCache {
             height += value.height
         }
         return height
     }
 }
 extension PlanProfileCollectionViewCell : UITableViewDataSource {
+    fileprivate static var cellHeightCache: [String: CGSize] = [:]
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return dataSource.count
     }
@@ -122,7 +123,7 @@ extension PlanProfileCollectionViewCell : UITableViewDataSource {
         let dataItems = dataSource[(indexPath as NSIndexPath).section]
         let viewModel = dataItems[(indexPath as NSIndexPath).row]
         
-        if let referenceSize = cellHeightCache["\(viewModel.cellID)\(indexPath.row)"] {
+        if let referenceSize = PlanProfileCollectionViewCell.cellHeightCache["\(viewModel.cellID)\(indexPath.row)"] {
             return referenceSize.height
         }
         
@@ -136,7 +137,7 @@ extension PlanProfileCollectionViewCell : UITableViewDataSource {
         
         let size = CGSize(width: width, height: ceil(height))
         
-        cellHeightCache["\(viewModel.cellID)\(indexPath.row)"] = size
+        PlanProfileCollectionViewCell.cellHeightCache["\(viewModel.cellID)\(indexPath.row)"] = size
         
         return size.height
     }
@@ -179,6 +180,9 @@ extension PlanProfileCollectionViewCell : UITableViewDelegate {
         return nil
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if let referenceSize = PlanProfileCollectionViewCell.cellHeightCache["Header\(section)"]  {
+            return referenceSize.height
+        }
         let width:CGFloat = UIScreen.main.bounds.width
         let dataItems = dataSource[section]
         
@@ -187,7 +191,7 @@ extension PlanProfileCollectionViewCell : UITableViewDelegate {
             let height = view.heightForHeader()
             let size = CGSize(width: width, height: height)
             
-            cellHeightCache["Header\(section)"] = size
+            PlanProfileCollectionViewCell.cellHeightCache["Header\(section)"] = size
         
             return size.height
         }
