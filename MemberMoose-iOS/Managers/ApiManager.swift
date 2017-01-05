@@ -770,7 +770,7 @@ open class ApiManager {
     open func getMembers(_ plan: Plan, _ page: Int = 1, success: @escaping (_ response: [User]?) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         Alamofire.request(apiBaseUrl + "plans/\(plan.id!)/members?page=\(page)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseArray { (response: DataResponse<[User]>) in
+            .responseArray(keyPath: "results") { (response: DataResponse<[User]>) in
                 if let error = response.result.error {
                     if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
                         self.handleRefreshToken(refreshToken, {
