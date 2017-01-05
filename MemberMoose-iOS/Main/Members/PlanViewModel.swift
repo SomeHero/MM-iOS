@@ -50,6 +50,6 @@ class PlanViewModel: DataSourceItemProtocol {
         return nil
     }
     @objc func heightForHeader() -> CGFloat {
-        return CGFloat.leastNormalMagnitude;
+        return 0.0;
     }
 }

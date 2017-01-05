@@ -25,7 +25,7 @@ class ProfileHeaderViewModel:DataSourceItemProtocol {
             self.avatarImageUrl = avatarImageUrl
         }
         self.companyName = user.account?.companyName
-        self.membersCount = "\(user.memberCount) Members"
+        self.membersCount = "\(user.plans.map({ $0.memberCount }).reduce(0, +)) Members"
         self.membershipNavigationState = membershipNavigationState
         self.membershipNavigationDelegate = membershipNavigationDelegate
     }
