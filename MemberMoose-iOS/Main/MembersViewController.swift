@@ -228,17 +228,20 @@ class MembersViewController: UIViewController {
         resetEmptyStates()
         tableView.reloadData()
         
-        ApiManager.sharedInstance.getMembers(1, success: { (members) in
-            if(members!.count > 0) {
+        ApiManager.sharedInstance.getMembers(1, success: { [weak self] (members, accumulator) in
+            guard let _self = self else {
+                return
+            }
+            if(members.count > 0) {
                 var viewModels: [MemberViewModel] = []
-                for member in members! {
+                for member in members {
                     let viewModel = MemberViewModel(user: member)
                     
                     viewModels.append(viewModel)
                 }
-                self.members = viewModels
+                _self.members = viewModels
             } else {
-                self.membersEmptyState.alpha = 1
+                _self.membersEmptyState.alpha = 1
             }
         }) { (error, errorDictionary) in
             print("error")
@@ -255,7 +258,7 @@ class MembersViewController: UIViewController {
         resetEmptyStates()
         tableView.reloadData()
         
-        ApiManager.sharedInstance.getPlans(1, success: { (plans) in
+        ApiManager.sharedInstance.getPlans(1, success: { (plans, accumulator) in
             if(plans.count > 0) {
                 var viewModels: [PlanViewModel] = []
                 for plan in plans {

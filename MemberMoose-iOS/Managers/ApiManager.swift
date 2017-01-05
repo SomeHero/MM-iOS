@@ -719,7 +719,7 @@ open class ApiManager {
         }
         
     }
-    open func getPlans(_ page: Int = 1,success: @escaping (_ response: [Plan]) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+    open func getPlans(_ page: Int = 1, success: @escaping (_ plans: [Plan], _ accumulator: Accumulator?) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         Alamofire.request(apiBaseUrl + "plans?page=\(page)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseArray(keyPath: "results") { (response: DataResponse<[Plan]>) in
@@ -734,19 +734,32 @@ open class ApiManager {
                         self.handleError(error, response.data, failure: failure);
                     }
                 } else {
-                    if let user = response.result.value {
-                        success(user)
+                    if let plans = response.result.value {
+                        if let data = response.data {
+                            do {
+                                if let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:AnyObject] {
+                                    if let maxPages = json["max_pages"]?.integerValue {
+                                        let accumulator = Accumulator.createAccumulator(currentPage: UInt(page), totalPages: UInt(maxPages))
+                                        
+                                        success(plans, accumulator)
+                                    } else {
+                                        success(plans, nil)
+                                    }
+                                }
+                            } catch let error {
+                                print(error)
+                                success(plans, nil)
+                            }
+                        }
+                        
                     } else {
                         failure(nil, nil)
                     }
                 }
-                if let plans = response.result.value {
-                    success(plans)
-                }
         }
         
     }
-    open func getMembers(_ page: Int = 1, success: @escaping (_ response: [User]?) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+    open func getMembers(_ page: Int = 1, success: @escaping (_ users: [User], _ accumulator: Accumulator?) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         Alamofire.request(apiBaseUrl + "members?page=\(page)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseArray(keyPath: "results") { (response: DataResponse<[User]>) in
@@ -762,12 +775,28 @@ open class ApiManager {
                     }
                 }
                 if let users = response.result.value {
-                    success(users)
+                    if let data = response.data {
+                        do {
+                            if let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:AnyObject] {
+                                if let maxPages = json["max_pages"]?.integerValue {
+                                    let accumulator = Accumulator.createAccumulator(currentPage: UInt(page), totalPages: UInt(maxPages))
+                                    
+                                    success(users, accumulator)
+                                } else {
+                                    success(users, nil)
+                                }
+                            }
+                        } catch let error {
+                            print(error)
+                            success(users, nil)
+                        }
+                    }
+                    
                 }
         }
         
     }
-    open func getMembers(_ plan: Plan, _ page: Int = 1, success: @escaping (_ response: [User]?) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+    open func getMembers(_ plan: Plan, _ page: Int = 1, success: @escaping (_ users: [User], _ accumulator: Accumulator?) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         Alamofire.request(apiBaseUrl + "plans/\(plan.id!)/members?page=\(page)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseArray(keyPath: "results") { (response: DataResponse<[User]>) in
@@ -783,7 +812,23 @@ open class ApiManager {
                     }
                 }
                 if let users = response.result.value {
-                    success(users)
+                    if let data = response.data {
+                        do {
+                            if let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:AnyObject] {
+                                if let maxPages = json["max_pages"]?.integerValue {
+                                    let accumulator = Accumulator.createAccumulator(currentPage: UInt(page), totalPages: UInt(maxPages))
+                                    
+                                    success(users, accumulator)
+                                } else {
+                                    success(users, nil)
+                                }
+                            }
+                        } catch let error {
+                            print(error)
+                            success(users, nil)
+                        }
+                    }
+                    
                 }
         }
         

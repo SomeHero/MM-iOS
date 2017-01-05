@@ -396,15 +396,15 @@ class PlanProfileViewController: UICollectionViewController {
                 ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
             }
         case .subscribers:
-            ApiManager.sharedInstance.getMembers(plan, self.pageNumber, success: { [weak self] (members) in
+            ApiManager.sharedInstance.getMembers(plan, self.pageNumber, success: { [weak self] (members, accumulator) in
                 guard let _self = self else {
                     return
                 }
-                if(members!.count > 0) {
+                if(members.count > 0) {
                     _self.hasMembers = true
                     
                     var viewModels: [PlanSubscriberViewModel] = []
-                    for member in members! {
+                    for member in members {
                         let viewModel = PlanSubscriberViewModel(user: member)
                         
                         viewModels.append(viewModel)

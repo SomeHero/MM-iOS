@@ -1,4 +1,4 @@
-//
+        //
 //  ProfileViewController.swift
 //  MemberMoose-iOS
 //
@@ -81,6 +81,9 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
     fileprivate var hasPlans = false
     
     fileprivate var pageNumber = 1
+    fileprivate var accumulator: Accumulator?
+    fileprivate var isRetrievingData = false
+    
     fileprivate var dataSource: [[DataSourceItemProtocol]] = []  {
         didSet {
             ProfileViewController.cellHeightCache.removeAll(keepingCapacity: true)
@@ -409,15 +412,18 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
         case .bull:
             switch membershipNavigationState {
             case .members:
-                ApiManager.sharedInstance.getMembers(self.pageNumber, success: { [weak self] (members) in
+                ApiManager.sharedInstance.getMembers(self.pageNumber, success: { [weak self] (members, accumulator) in
                     guard let _self = self else {
                         return
                     }
-                    if(members!.count > 0) {
+                    _self.accumulator = accumulator
+                    
+                    
+                    if(members.count > 0) {
                         _self.hasMembers = true
 
                         var viewModels: [MemberViewModel] = []
-                        for member in members! {
+                        for member in members {
                             let viewModel = MemberViewModel(user: member)
 
                             viewModels.append(viewModel)
@@ -448,10 +454,12 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
                     ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 }
             case .plans:
-                ApiManager.sharedInstance.getPlans(1, success: { [weak self] (plans) in
+                ApiManager.sharedInstance.getPlans(1, success: { [weak self] (plans, accumulator) in
                     guard let _self = self else {
                         return
                     }
+                    _self.accumulator = accumulator
+                    
                     if(plans.count > 0) {
                         _self.hasPlans = true
 
@@ -664,6 +672,104 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y
         handleNavHeaderScrollingWithOffset(yOffset)
+
+        let actualPosition = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height - UIScreen.main.bounds.height
+        
+
+        if actualPosition >= contentHeight {
+            switch profileType {
+            case .bull:
+                switch membershipNavigationState {
+                case .members:
+                    guard let accumulator = accumulator, accumulator.morePages() else {
+                        return
+                    }
+                    if isRetrievingData {
+                        return
+                    }
+                    
+                    isRetrievingData = true
+                    var items = dataSource
+                    
+                    ApiManager.sharedInstance.getMembers(Int(accumulator.nextPage), success: { [weak self] (members, accumulator) in
+                        guard let _self = self else {
+                            return
+                        }
+                        _self.accumulator = accumulator
+                        
+                        if(members.count > 0) {
+                            for member in members {
+                                let viewModel = MemberViewModel(user: member)
+                                
+                                items[0].append(viewModel)
+                            }
+                            _self.dataSource = items
+                            _self.collectionView!.reloadData()
+                        }
+                        _self.isRetrievingData = false
+                        
+                    }) { [weak self] (error, errorDictionary) in
+                        SVProgressHUD.dismiss()
+                        
+                        guard let _self = self else {
+                            return
+                        }
+                        
+                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+                    }
+                    break
+                case .plans:
+                    guard let accumulator = accumulator, accumulator.morePages() else {
+                        return
+                    }
+                    if isRetrievingData {
+                        return
+                    }
+                    
+                    isRetrievingData = true
+                    
+                    var items = dataSource
+                    
+                    ApiManager.sharedInstance.getPlans(Int(accumulator.nextPage), success: { [weak self] (plans, accumulator) in
+                        guard let _self = self else {
+                            return
+                        }
+                        _self.accumulator = accumulator
+                        
+                        if(plans.count > 0) {
+                            _self.hasPlans = true
+                            
+                            for plan in plans {
+                                let viewModel = PlanViewModel(plan: plan)
+                                
+                                items[0].append(viewModel)
+                            }
+                            
+                            _self.dataSource = items
+                            _self.collectionView!.reloadData()
+                        }
+                        _self.isRetrievingData = false
+                        
+                    }) { [weak self] (error, errorDictionary) in
+                        SVProgressHUD.dismiss()
+                        
+                        guard let _self = self else {
+                            return
+                        }
+                        
+                        ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
+                    }
+                    
+                    break
+                case .messages:
+                    break
+                }
+            case .calf:
+                break
+            }
+
+        }
     }
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent

@@ -71,6 +71,7 @@
 		4240B76F1DA44671000D137E /* MemberMoose_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240B76E1DA44671000D137E /* MemberMoose_iOSUITests.swift */; };
 		4240B7821DA6C903000D137E /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240B7811DA6C903000D137E /* JoinViewController.swift */; };
 		4245074F1DCF8EE3004F4D16 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245074E1DCF8EE3004F4D16 /* Message.swift */; };
+		424929481E1E17370057520D /* Accumulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424929471E1E17370057520D /* Accumulator.swift */; };
 		424D090D1E00C9830077C6AE /* NewPlanProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D090C1E00C9830077C6AE /* NewPlanProfileHeaderView.swift */; };
 		424D090F1E00DE610077C6AE /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 424D090E1E00DE610077C6AE /* UserNotifications.framework */; };
 		424D09111E00E07F0077C6AE /* PushNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D09101E00E07F0077C6AE /* PushNotificationManager.swift */; };
@@ -300,6 +301,7 @@
 		4240B7701DA44671000D137E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4240B7811DA6C903000D137E /* JoinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JoinViewController.swift; path = Join/JoinViewController.swift; sourceTree = "<group>"; };
 		4245074E1DCF8EE3004F4D16 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = Members/Message.swift; sourceTree = "<group>"; };
+		424929471E1E17370057520D /* Accumulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Accumulator.swift; path = Managers/Accumulator.swift; sourceTree = "<group>"; };
 		424D090C1E00C9830077C6AE /* NewPlanProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewPlanProfileHeaderView.swift; path = Plans/NewPlanProfileHeaderView.swift; sourceTree = "<group>"; };
 		424D090E1E00DE610077C6AE /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		424D09101E00E07F0077C6AE /* PushNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushNotificationManager.swift; path = Managers/PushNotificationManager.swift; sourceTree = "<group>"; };
@@ -981,6 +983,7 @@
 				4255B3FD1DAEA3BF008DECAC /* ImagePicker.swift */,
 				425013B41DAFCA8100ED21B1 /* Validator.swift */,
 				424D09101E00E07F0077C6AE /* PushNotificationManager.swift */,
+				424929471E1E17370057520D /* Accumulator.swift */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -1501,6 +1504,7 @@
 				422537131DB9135C004B33D8 /* MessagesViewModel.swift in Sources */,
 				424D09151E0224390077C6AE /* MemberNameViewModel.swift in Sources */,
 				420741CE1DF1C053006CFCE2 /* PlanNameViewModel.swift in Sources */,
+				424929481E1E17370057520D /* Accumulator.swift in Sources */,
 				426841731DA875CB00A2BFF8 /* RecentTransactionViewModel.swift in Sources */,
 				42BD76831DDAAAC40017EC93 /* MessagesApiManager.swift in Sources */,
 				429F62FF1DA6E8E800C3F54E /* LoginViewController.swift in Sources */,

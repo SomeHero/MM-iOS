@@ -79,7 +79,7 @@ class ChangePlansViewController: UIViewController {
         
         navigationItem.leftBarButtonItem = backButton
         
-        ApiManager.sharedInstance.getPlans(success: { [weak self] (plans) in
+        ApiManager.sharedInstance.getPlans(success: { [weak self] (plans, accumulator) in
             guard let _self = self else {
                 return
             }
