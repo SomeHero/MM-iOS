@@ -71,7 +71,7 @@ class NewPlanProfileHeaderView: UICollectionReusableView {
             make.centerX.equalTo(containerView)
         }
         headingLabel.snp.updateConstraints { (make) in
-            make.top.equalTo(avatarView.snp.bottom).offset(20)
+            make.top.equalTo(avatarView.snp.bottom).offset(40)
             make.centerX.equalTo(containerView)
         }
         subHeadingLabel.snp.updateConstraints { (make) in

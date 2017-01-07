@@ -105,10 +105,14 @@ class CalfProfileHeaderView: UICollectionReusableView {
         }
         headingLabel.text = viewModel.name
         subHeadingLabel.text =  viewModel.memberSince
+        presentingViewController = viewModel.presentingViewController
+        //planProfileHeaderViewModelDelegate = viewModel.planProfileHeaderViewModelDelegate
         
         memberNavigation.delegate = viewModel.memberNavigationDelegate
         memberNavigation.setSelectedButton(viewModel.memberNavigationState)
         memberNavigation.bringSubview(toFront: containerView)
+        
+        self.bringSubview(toFront: avatarView)
         
         setNeedsUpdateConstraints()
         updateConstraintsIfNeeded()

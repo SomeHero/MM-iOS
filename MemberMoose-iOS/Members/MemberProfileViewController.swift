@@ -445,6 +445,7 @@ extension MemberProfileViewController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if let _ = user.id {
             let profileHeaderViewModel = CalfProfileHeaderViewModel(user: user, memberNavigationState: memberNavigationState, memberNavigationDelegate: self)
+            profileHeaderViewModel.presentingViewController = self
             
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CalfProfileHeaderView", for: indexPath) as! CalfProfileHeaderView
             header.setupWith(profileHeaderViewModel)
@@ -452,6 +453,7 @@ extension MemberProfileViewController {
             return header
         } else {
             let profileHeaderViewModel = NewMemberProfileHeaderViewModel(user: user)
+            //profileHeaderViewModel.presentingViewController = self
             
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "NewMemberProfileHeaderView", for: indexPath) as! NewMemberProfileHeaderView
             header.setupWith(profileHeaderViewModel)
@@ -473,6 +475,7 @@ extension MemberProfileViewController: UICollectionViewDelegateFlowLayout {
         let headerHeight: CGFloat
         
         let profileHeaderViewModel = CalfProfileHeaderViewModel(user: user, memberNavigationState: memberNavigationState, memberNavigationDelegate: self)
+        profileHeaderViewModel.presentingViewController = self
         
         let header = CalfProfileHeaderView.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
         header.setupWith(profileHeaderViewModel)
@@ -496,6 +499,7 @@ extension MemberProfileViewController: UICollectionViewDelegateFlowLayout {
         
         if let _ = user.id {
             let profileHeaderViewModel = CalfProfileHeaderViewModel(user: user, memberNavigationState: memberNavigationState, memberNavigationDelegate: self)
+            profileHeaderViewModel.presentingViewController = self
             
             let header = CalfProfileHeaderView.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
             header.setupWith(profileHeaderViewModel)

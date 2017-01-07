@@ -27,7 +27,7 @@ class NewMemberProfileHeaderViewModel {
         } else {
             self.name = user.emailAddress
         }
-        self.memberSince = "Member Since Jan 2015"
+        self.memberSince = "New Member"
     }
 }
 

@@ -830,6 +830,7 @@ extension ProfileViewController {
             return header
         case .calf:
             let profileHeaderViewModel = CalfProfileHeaderViewModel(user: user, memberNavigationState: memberNavigationState, memberNavigationDelegate: self)
+            profileHeaderViewModel.presentingViewController = self
             
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CalfProfileHeaderView", for: indexPath) as! CalfProfileHeaderView
             header.setupWith(profileHeaderViewModel)
@@ -863,6 +864,7 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
             headerHeight = height
         case .calf:
             let profileHeaderViewModel = CalfProfileHeaderViewModel(user: user, memberNavigationState: memberNavigationState, memberNavigationDelegate: self)
+            profileHeaderViewModel.presentingViewController = self
             
             let header = CalfProfileHeaderView.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
             header.setupWith(profileHeaderViewModel)
@@ -901,6 +903,7 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
             return size
         case .calf:
             let profileHeaderViewModel = CalfProfileHeaderViewModel(user: user, memberNavigationState: memberNavigationState, memberNavigationDelegate: self)
+            profileHeaderViewModel.presentingViewController = self
             
             let header = CalfProfileHeaderView.init(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 200)))
             header.setupWith(profileHeaderViewModel)

@@ -18,6 +18,7 @@ class CalfProfileHeaderViewModel:DataSourceItemProtocol {
     let memberSince: String
     let memberNavigationState: MemberNavigationState
     let memberNavigationDelegate: MemberNavigationDelegate?
+    weak var presentingViewController: UIViewController?
     
     init(user: User, memberNavigationState: MemberNavigationState, memberNavigationDelegate: MemberNavigationDelegate? = nil) {
         self.avatar = "Avatar-Calf"

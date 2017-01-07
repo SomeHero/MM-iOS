@@ -72,7 +72,7 @@ class NewMemberProfileHeaderView: UICollectionReusableView {
             make.centerX.equalTo(containerView)
         }
         headingLabel.snp.updateConstraints { (make) in
-            make.top.equalTo(avatarView.snp.bottom).offset(20)
+            make.top.equalTo(avatarView.snp.bottom).offset(40)
             make.centerX.equalTo(containerView)
         }
         subHeadingLabel.snp.updateConstraints { (make) in
@@ -92,8 +92,8 @@ class NewMemberProfileHeaderView: UICollectionReusableView {
         } else {
             avatarView.profilePhoto.image = UIImage(named: viewModel.avatar)
         }
-        headingLabel.text = viewModel.name
-        subHeadingLabel.text =  viewModel.memberSince
+        headingLabel.text =  viewModel.memberSince
+        //subHeadingLabel.text =  viewModel.memberSince
         
         setNeedsUpdateConstraints()
         updateConstraintsIfNeeded()

@@ -18,7 +18,7 @@ class PlanActivityCell: UITableViewCell, DataSourceItemCell {
     }()
     fileprivate lazy var activityLabel: UILabel = {
         let _label = UILabel()
-        _label.font = UIFontTheme.Regular(.default)
+        _label.font = UIFontTheme.Regular(.small)
         _label.textColor = UIColorTheme.PrimaryFont
         _label.numberOfLines = 0
         _label.lineBreakMode = .byWordWrapping

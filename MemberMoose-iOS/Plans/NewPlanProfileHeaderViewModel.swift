@@ -30,7 +30,7 @@ class NewPlanProfileHeaderViewModel:DataSourceItemProtocol {
         if let avatar = plan.avatar, let avatarImageUrl = avatar["large"] {
             self.avatarImageUrl = avatarImageUrl
         }
-        self.planName = plan.name
+        self.planName = "New Plan"
         self.membersCount = "\(plan.memberCount) Members"
         self.planNavigationState = planNavigationState
         self.planNavigationDelegate = planNavigationDelegate
