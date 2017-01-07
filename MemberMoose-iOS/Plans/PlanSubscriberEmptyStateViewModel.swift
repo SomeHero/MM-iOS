@@ -35,6 +35,6 @@ class PlanSubscriberEmptyStateViewModel:DataSourceItemProtocol {
         return nil
     }
     @objc func heightForHeader() -> CGFloat {
-        return CGFloat.leastNormalMagnitude;
+        return 0
     }
 }

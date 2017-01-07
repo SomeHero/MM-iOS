@@ -13,9 +13,12 @@ class PlanActivityViewModel:DataSourceItemProtocol {
     var cellClass: UITableViewCell.Type = PlanActivityCell.self
     
     let activity: String
+    let activityDate: Date
+    let dateFormatter = DateFormatters.dateFormatterForLongStyle()
     
     init(activity: Activity) {
         self.activity = activity.messageBull
+        self.activityDate = activity.createdAt
     }
     @objc func dequeueAndConfigure(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? PlanActivityCell else {
@@ -27,9 +30,12 @@ class PlanActivityViewModel:DataSourceItemProtocol {
         return cell
     }
     @objc func viewForHeader() -> UIView? {
-        return nil
+        let header = PlanHeaderView()
+        header.setup(dateFormatter.string(from: activityDate))
+        
+        return header
     }
     @objc func heightForHeader() -> CGFloat {
-        return CGFloat.leastNormalMagnitude
+        return 60
     }
 }

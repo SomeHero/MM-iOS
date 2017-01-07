@@ -63,6 +63,14 @@ class MemberCell: UITableViewCell, DataSourceItemCell {
         
         return _label
     }()
+    fileprivate lazy var lineView: UIView = {
+        let _lineView = UIView()
+        _lineView.backgroundColor = .flatWhite()
+        
+        self.addSubview(_lineView)
+        
+        return _lineView
+    }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
@@ -129,6 +137,11 @@ class MemberCell: UITableViewCell, DataSourceItemCell {
             make.leading.trailing.equalTo(containerView)
             make.top.equalTo(memberSinceLabel.snp.bottom)
             make.bottom.equalTo(containerView)
+        }
+        lineView.snp.makeConstraints { (make) in
+            make.leading.trailing.equalTo(self)
+            make.height.equalTo(kOnePX*2)
+            make.bottom.equalTo(self)
         }
         super.updateConstraints()
     }

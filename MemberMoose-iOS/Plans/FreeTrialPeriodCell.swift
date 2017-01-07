@@ -39,6 +39,14 @@ class FreeTrialPeriodCell: UITableViewCell, DataSourceItemCell {
         
         return _button
     }()
+    fileprivate lazy var lineView: UIView = {
+        let _lineView = UIView()
+        _lineView.backgroundColor = .flatWhite()
+        
+        self.addSubview(_lineView)
+        
+        return _lineView
+    }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
@@ -71,6 +79,11 @@ class FreeTrialPeriodCell: UITableViewCell, DataSourceItemCell {
             make.leading.greaterThanOrEqualTo(freeTrialPeriodLabel.snp.trailing)
             make.trailing.equalTo(containerView)
             make.top.bottom.equalTo(containerView)
+        }
+        lineView.snp.makeConstraints { (make) in
+            make.leading.trailing.equalTo(self)
+            make.height.equalTo(kOnePX*2)
+            make.bottom.equalTo(self)
         }
         super.updateConstraints()
     }

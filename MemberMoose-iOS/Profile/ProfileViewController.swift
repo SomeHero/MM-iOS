@@ -493,20 +493,24 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
                     ErrorHandler.presentErrorDialog(_self, error: error, errorDictionary: errorDictionary)
                 }
             case .messages:
-                ApiManager.sharedInstance.getActivities(success: { [weak self] (activities) in
+                ApiManager.sharedInstance.getActivities(success: { [weak self] (groups) in
                     guard let _self = self else {
                         return
                     }
-                    if(activities.count > 0) {
+                    if(groups.count > 0) {
                         _self.hasMembers = true
                         
-                        var activityViewModels: [PlanActivityViewModel] = []
-                        for activity in activities {
-                            activityViewModels.append(PlanActivityViewModel(activity: activity))
+                        var groupedViewModels: [[DataSourceItemProtocol]] = []
+                        for group in groups {
+                            var activityViewModels: [PlanActivityViewModel] = []
+                            
+                            for activity in group.activities {
+                                activityViewModels.append(PlanActivityViewModel(activity: activity))
+                            }
+                            groupedViewModels.append(activityViewModels)
                         }
-                        items.append(activityViewModels)
-                        
-                        _self.dataSource = items
+                       
+                        _self.dataSource = groupedViewModels
                         _self.collectionView!.reloadData()
                         
                     }
@@ -608,7 +612,7 @@ class ProfileViewController: UICollectionViewController, MultilineNavTitlable {
                     items.append(paymentHistoryEmptyStateViewModels)
                 }
                 
-            case .charge:
+            case .activities:
                 let remainingHeight = view.frame.size.height //- tableView.visibleCells[0].frame.size.height
                 
                 let viewModel = ChargeViewModel(totalCellHeight: remainingHeight, chargeCellDelegate: self)
@@ -950,7 +954,7 @@ extension ProfileViewController: MemberNavigationDelegate {
         buildDataSet()
     }
     func chargeClicked() {
-        memberNavigationState = .charge
+        memberNavigationState = .activities
         //memberNavigation.setSelectedButton(memberNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)

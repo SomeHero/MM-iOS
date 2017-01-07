@@ -360,20 +360,22 @@ class PlanProfileViewController: UICollectionViewController {
             
             items.append([planTermOfServiceViewModel])
         case.activity:
-            ApiManager.sharedInstance.getActivities(plan, success: { [weak self] (activities) in
+            ApiManager.sharedInstance.getActivities(plan, success: { [weak self] (groups) in
                 guard let _self = self else {
                     return
                 }
-                if(activities.count > 0) {
-                    _self.hasMembers = true
-                    
-                    var activityViewModels: [PlanActivityViewModel] = []
-                    for activity in activities {
-                        activityViewModels.append(PlanActivityViewModel(activity: activity))
+                if(groups.count > 0) {
+                    var groupedViewModels: [[DataSourceItemProtocol]] = []
+                    for group in groups {
+                        var activityViewModels: [PlanActivityViewModel] = []
+                        
+                        for activity in group.activities {
+                            activityViewModels.append(PlanActivityViewModel(activity: activity))
+                        }
+                        groupedViewModels.append(activityViewModels)
                     }
-                    items.append(activityViewModels)
                     
-                    _self.dataSource = items
+                    _self.dataSource = groupedViewModels
                     _self.collectionView!.reloadData()
                     
                 }

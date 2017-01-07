@@ -19,12 +19,25 @@ class PlanHeaderView: UIView {
         
         return _label
     }()
+    lazy var lineView: UIView = {
+        let _lineView = UIView()
+        _lineView.backgroundColor = .flatWhite()
+        
+        self.addSubview(_lineView)
+        
+        return _lineView
+    }()
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         titleLabel.snp.makeConstraints { (make) in
             make.leading.trailing.equalTo(self).inset(20)
             make.bottom.equalTo(self).inset(10)
+        }
+        lineView.snp.makeConstraints { (make) in
+            make.leading.trailing.equalTo(self)
+            make.height.equalTo(kOnePX*2)
+            make.bottom.equalTo(self)
         }
     }
     

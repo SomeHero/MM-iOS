@@ -57,6 +57,14 @@ class MessageCell: UITableViewCell {
         
         return _label
     }()
+    fileprivate lazy var lineView: UIView = {
+        let _lineView = UIView()
+        _lineView.backgroundColor = .flatWhite()
+        
+        self.addSubview(_lineView)
+        
+        return _lineView
+    }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
@@ -108,6 +116,11 @@ class MessageCell: UITableViewCell {
             make.top.equalTo(authorLabel.snp.bottom)
             make.leading.trailing.equalTo(containerView)
             make.bottom.equalTo(containerView).inset(10)
+        }
+        lineView.snp.makeConstraints { (make) in
+            make.leading.trailing.equalTo(self)
+            make.height.equalTo(kOnePX*2)
+            make.bottom.equalTo(self)
         }
         super.updateConstraints()
     }

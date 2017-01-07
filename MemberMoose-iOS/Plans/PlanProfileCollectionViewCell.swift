@@ -32,11 +32,15 @@ class PlanProfileCollectionViewCell: UICollectionViewCell {
 
     var dataSource: [[DataSourceItemProtocol]] = [] {
         didSet {
+            PlanProfileCollectionViewCell.cellHeightCache.removeAll(keepingCapacity: true)
             tableView.reloadData()
+            
+            setNeedsUpdateConstraints()
+            updateConstraintsIfNeeded()
         }
     }
     fileprivate lazy var tableView: UITableView = {
-        let _tableView                  = UITableView(frame: CGRect.zero, style: .grouped)
+        let _tableView                  = UITableView(frame: CGRect.zero, style: .plain)
         _tableView.dataSource           = self
         _tableView.delegate             = self
         _tableView.backgroundColor      = UIColor.white
@@ -118,7 +122,7 @@ extension PlanProfileCollectionViewCell : UITableViewDataSource {
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let width:CGFloat = UIScreen.main.bounds.width
+        let width:CGFloat = UIScreen.main.bounds.width - 0
         
         let dataItems = dataSource[(indexPath as NSIndexPath).section]
         let viewModel = dataItems[(indexPath as NSIndexPath).row]
@@ -133,7 +137,7 @@ extension PlanProfileCollectionViewCell : UITableViewDataSource {
         }
         cell.updateConstraints()
         
-        let height = cell.contentView.systemLayoutHeightForWidth(width: width)
+        let height = cell.systemLayoutHeightForWidth(width: width)
         
         let size = CGSize(width: width, height: ceil(height))
         

@@ -72,6 +72,9 @@
 		4240B7821DA6C903000D137E /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240B7811DA6C903000D137E /* JoinViewController.swift */; };
 		4245074F1DCF8EE3004F4D16 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245074E1DCF8EE3004F4D16 /* Message.swift */; };
 		424929481E1E17370057520D /* Accumulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424929471E1E17370057520D /* Accumulator.swift */; };
+		4249294C1E1EA9130057520D /* ActivityGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4249294B1E1EA9130057520D /* ActivityGroup.swift */; };
+		424929501E20A6750057520D /* ActivityEmptyStateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4249294F1E20A6750057520D /* ActivityEmptyStateTableViewCell.swift */; };
+		424929521E20A6CC0057520D /* ActivityEmptyStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424929511E20A6CC0057520D /* ActivityEmptyStateViewModel.swift */; };
 		424D090D1E00C9830077C6AE /* NewPlanProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D090C1E00C9830077C6AE /* NewPlanProfileHeaderView.swift */; };
 		424D090F1E00DE610077C6AE /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 424D090E1E00DE610077C6AE /* UserNotifications.framework */; };
 		424D09111E00E07F0077C6AE /* PushNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D09101E00E07F0077C6AE /* PushNotificationManager.swift */; };
@@ -302,6 +305,9 @@
 		4240B7811DA6C903000D137E /* JoinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JoinViewController.swift; path = Join/JoinViewController.swift; sourceTree = "<group>"; };
 		4245074E1DCF8EE3004F4D16 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = Members/Message.swift; sourceTree = "<group>"; };
 		424929471E1E17370057520D /* Accumulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Accumulator.swift; path = Managers/Accumulator.swift; sourceTree = "<group>"; };
+		4249294B1E1EA9130057520D /* ActivityGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityGroup.swift; path = Models/ActivityGroup.swift; sourceTree = "<group>"; };
+		4249294F1E20A6750057520D /* ActivityEmptyStateTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityEmptyStateTableViewCell.swift; path = Profile/ActivityEmptyStateTableViewCell.swift; sourceTree = "<group>"; };
+		424929511E20A6CC0057520D /* ActivityEmptyStateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityEmptyStateViewModel.swift; path = Profile/ActivityEmptyStateViewModel.swift; sourceTree = "<group>"; };
 		424D090C1E00C9830077C6AE /* NewPlanProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewPlanProfileHeaderView.swift; path = Plans/NewPlanProfileHeaderView.swift; sourceTree = "<group>"; };
 		424D090E1E00DE610077C6AE /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		424D09101E00E07F0077C6AE /* PushNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushNotificationManager.swift; path = Managers/PushNotificationManager.swift; sourceTree = "<group>"; };
@@ -628,6 +634,7 @@
 		42330B901DB3D47F003BDDEC /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				424929511E20A6CC0057520D /* ActivityEmptyStateViewModel.swift */,
 				422537161DB91BDC004B33D8 /* ChargeViewModel.swift */,
 				4268416B1DA86D5A00A2BFF8 /* MemberViewModel.swift */,
 				422537121DB9135C004B33D8 /* MessagesViewModel.swift */,
@@ -738,6 +745,7 @@
 		424D97D51DAD0FAB00C8B674 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				4249294F1E20A6750057520D /* ActivityEmptyStateTableViewCell.swift */,
 				4225370C1DB90187004B33D8 /* CalfProfileHeaderCell.swift */,
 				422537141DB91BCB004B33D8 /* ChargeCell.swift */,
 				422537101DB91347004B33D8 /* MessagesCell.swift */,
@@ -992,6 +1000,7 @@
 			isa = PBXGroup;
 			children = (
 				42EF4A291DFFBDC800F7213D /* Activity.swift */,
+				4249294B1E1EA9130057520D /* ActivityGroup.swift */,
 				422537311DBA8D64004B33D8 /* Account.swift */,
 				4275F7091DC0F9FD00E0FF7B /* Charge.swift */,
 				42F08C311DAC31A300D5D4E3 /* Member.swift */,
@@ -1408,6 +1417,7 @@
 				4211D8CE1DB8674D0092F7C5 /* ProfileHeaderViewModel.swift in Sources */,
 				4275F7131DC19FBD00E0FF7B /* PlanNavigationView.swift in Sources */,
 				4253B6681DBE67A000A93E98 /* CardIOViewController.swift in Sources */,
+				424929501E20A6750057520D /* ActivityEmptyStateTableViewCell.swift in Sources */,
 				4211D8C41DB7AF570092F7C5 /* MenuHeaderCell.swift in Sources */,
 				4268414E1DA7A8BD00A2BFF8 /* MembersViewController.swift in Sources */,
 				4275F72E1DC2965800E0FF7B /* PlanSubscriberCell.swift in Sources */,
@@ -1463,6 +1473,7 @@
 				425D2BC11DFAFC3E0074C3B3 /* PlanMenuViewController.swift in Sources */,
 				4275F7101DC18A9800E0FF7B /* PlanProfileHeaderViewModel.swift in Sources */,
 				420741C01DEE10F2006CFCE2 /* NewPlanProfileHeaderCell.swift in Sources */,
+				424929521E20A6CC0057520D /* ActivityEmptyStateViewModel.swift in Sources */,
 				425013B71DB080E400ED21B1 /* ImportPlansViewController.swift in Sources */,
 				42296D901DE0EF7F00F90818 /* CurrentPlanViewModel.swift in Sources */,
 				4275F7151DC1AD9200E0FF7B /* PlanPaymentDetailsViewModel.swift in Sources */,
@@ -1504,6 +1515,7 @@
 				422537131DB9135C004B33D8 /* MessagesViewModel.swift in Sources */,
 				424D09151E0224390077C6AE /* MemberNameViewModel.swift in Sources */,
 				420741CE1DF1C053006CFCE2 /* PlanNameViewModel.swift in Sources */,
+				4249294C1E1EA9130057520D /* ActivityGroup.swift in Sources */,
 				424929481E1E17370057520D /* Accumulator.swift in Sources */,
 				426841731DA875CB00A2BFF8 /* RecentTransactionViewModel.swift in Sources */,
 				42BD76831DDAAAC40017EC93 /* MessagesApiManager.swift in Sources */,

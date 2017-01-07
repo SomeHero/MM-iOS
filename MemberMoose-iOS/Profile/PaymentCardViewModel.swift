@@ -41,13 +41,13 @@ class PaymentCardViewModel:DataSourceItemProtocol {
         return cell
     }
     @objc func viewForHeader() -> UIView? {
-        let header = PaymentCardHeaderView()
+        let header = PlanHeaderView()
         header.setup("Payment Cards")
         
         return header
     }
     @objc func heightForHeader() -> CGFloat {
-        return 50;
+        return 50
     }
 }
 extension PaymentCardViewModel: PaymentCardCellDelegate {

@@ -1,24 +1,18 @@
 //
-//  PlanSubscriberEmptyStateCell.swift
+//  ActivityTableViewCell.swift
 //  MemberMoose-iOS
 //
-//  Created by James Rhodes on 11/14/16.
-//  Copyright © 2016 James Rhodes. All rights reserved.
+//  Created by James Rhodes on 1/6/17.
+//  Copyright © 2017 James Rhodes. All rights reserved.
 //
 
 import UIKit
 
-protocol PlanSubscriberEmptyStateCellDelegate: class {
-    func didCreatePlanSubscriberClicked()
-    func didSharePlanToSubscriberClicked()
-}
-class PlanSubscriberEmptyStateCell: UITableViewCell, DataSourceItemCell {
-    weak var planSubscriberEmptyStateCellDelegate: PlanSubscriberEmptyStateCellDelegate?
-    
+class ActivityEmptyStateTableViewCell: UITableViewCell, DataSourceItemCell {
     fileprivate lazy var containerView: UIView = {
         let _view = UIView()
         
-        _view.backgroundColor = .white
+        _view.backgroundColor = .clear
         
         self.contentView.addSubview(_view)
         
@@ -27,8 +21,8 @@ class PlanSubscriberEmptyStateCell: UITableViewCell, DataSourceItemCell {
     fileprivate lazy var headerLabel: UILabel = {
         let _label = UILabel()
         _label.textColor = UIColorTheme.Header
-        _label.textAlignment = .center
-        _label.font = UIFontTheme.Bold(.small)
+        _label.textAlignment = .left
+        _label.font = UIFontTheme.Regular(.small)
         _label.lineBreakMode = .byWordWrapping
         _label.numberOfLines = 0
         
@@ -36,7 +30,6 @@ class PlanSubscriberEmptyStateCell: UITableViewCell, DataSourceItemCell {
         
         return _label
     }()
-
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
@@ -58,20 +51,21 @@ class PlanSubscriberEmptyStateCell: UITableViewCell, DataSourceItemCell {
         
     }
     func setupWith(_ viewModel: DataSourceItemProtocol) {
-        guard let viewModel = viewModel as? PlanSubscriberEmptyStateViewModel else {
+        guard let viewModel = viewModel as? ActivityEmptyStateViewModel else {
             return
         }
         headerLabel.text = viewModel.header
     }
     override func updateConstraints() {
         containerView.snp.updateConstraints { (make) in
-            make.edges.equalTo(contentView)
+            make.top.bottom.equalTo(contentView).inset(40)
+            make.leading.trailing.equalTo(contentView).inset(20)
         }
         headerLabel.snp.updateConstraints { (make) in
-            make.top.bottom.equalTo(containerView).inset(20)
-            make.leading.trailing.equalTo(containerView).inset(20)
+            make.centerY.equalTo(containerView)
+            make.leading.trailing.equalTo(containerView)
         }
-
+        
         super.updateConstraints()
     }
     override class var requiresConstraintBasedLayout : Bool {

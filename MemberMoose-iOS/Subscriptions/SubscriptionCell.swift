@@ -80,6 +80,14 @@ class SubscriptionCell: UITableViewCell, DataSourceItemCell {
         
         return _button
     }()
+    fileprivate lazy var lineView: UIView = {
+        let _lineView = UIView()
+        _lineView.backgroundColor = .flatWhite()
+        
+        self.addSubview(_lineView)
+        
+        return _lineView
+    }()
     weak var subscriptionCellDelegate: SubscriptionCellDelegate?
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -124,6 +132,11 @@ class SubscriptionCell: UITableViewCell, DataSourceItemCell {
             make.leading.equalTo(changePlanButton.snp.trailing).offset(10)
             make.top.equalTo(planAmountLabel.snp.bottom).offset(10)
             make.bottom.equalTo(containerView)
+        }
+        lineView.snp.makeConstraints { (make) in
+            make.leading.trailing.equalTo(self)
+            make.height.equalTo(kOnePX*2)
+            make.bottom.equalTo(self)
         }
         super.updateConstraints()
     }

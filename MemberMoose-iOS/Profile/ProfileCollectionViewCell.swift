@@ -21,6 +21,8 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     
     fileprivate let calfProfileCellIdentifier       = "CalfProfileHeaderCellIdentifier"
     fileprivate let profileCellIdentifier           = "ProfileHeaderCellIdentifier"
+    fileprivate let activityHistoryCellIdentifier       = "ActivityCellIdentifier"
+    fileprivate let activityEmptyStateCellIdentifier       = "ActivityEmptyStateCellIdentifier"
     fileprivate let subscriptionCellIdentifier                  = "SubscriptionCellIdentifier"
     fileprivate let subscriptionEmptyStateCellIdentifier        = "SubscriptionEmptyStateCellIdentifier"
     fileprivate let paymentCardCellIdentifier       = "PaymentCardCellIdentifier"
@@ -49,7 +51,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         }
     }
     fileprivate lazy var tableView: UITableView = {
-        let _tableView                  = UITableView(frame: CGRect.zero, style: .grouped)
+        let _tableView                  = UITableView(frame: CGRect.zero, style: .plain)
         _tableView.dataSource           = self
         _tableView.delegate             = self
         _tableView.backgroundColor      = UIColor.white
@@ -60,9 +62,11 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         _tableView.estimatedRowHeight   = self.tableCellHeight
         _tableView.rowHeight = UITableViewAutomaticDimension
         _tableView.contentInset         = UIEdgeInsets.zero
-        //_tableView.separatorStyle       = .None
+        _tableView.separatorStyle       = .none
         _tableView.isScrollEnabled      = false
         
+        _tableView.register(ActivityEmptyStateTableViewCell.self, forCellReuseIdentifier: self.activityEmptyStateCellIdentifier)
+        _tableView.register(PlanActivityCell.self, forCellReuseIdentifier: self.planActivityCellIdentifier)
         _tableView.register(ProfileHeaderCell.self, forCellReuseIdentifier: self.profileCellIdentifier)
         _tableView.register(CalfProfileHeaderCell.self, forCellReuseIdentifier: self.calfProfileCellIdentifier)
         _tableView.register(SubscriptionCell.self, forCellReuseIdentifier: self.subscriptionCellIdentifier)
@@ -80,7 +84,6 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         _tableView.register(MemberEmailAddressCell.self, forCellReuseIdentifier: self.memberEmailAddressCellIdentifier)
         _tableView.register(PlanCell.self, forCellReuseIdentifier: self.planCellIdentifier)
         _tableView.register(PlanEmptyStateCell.self, forCellReuseIdentifier: self.planEmptyStateCellIdentifier)
-        _tableView.register(PlanActivityCell.self, forCellReuseIdentifier: self.planActivityCellIdentifier)
         
         self.addSubview(_tableView)
         return _tableView
@@ -149,7 +152,7 @@ extension ProfileCollectionViewCell : UITableViewDataSource {
         }
         cell.updateConstraints()
 
-        let height = cell.contentView.systemLayoutHeightForWidth(width: width)
+        let height = cell.systemLayoutHeightForWidth(width: width)
         
         let size = CGSize(width: width, height: ceil(height))
         
@@ -207,6 +210,6 @@ extension ProfileCollectionViewCell : UITableViewDelegate {
         return 0
     }
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.leastNormalMagnitude
+        return 0
     }
 }

@@ -210,7 +210,7 @@ extension MemberDetailViewController: MemberNavigationDelegate {
         reloadInputViews()
     }
     func chargeClicked() {
-        memberNavigationState = .charge
+        memberNavigationState = .activities
         memberNavigation.setSelectedButton(memberNavigationState)
         
         reloadInputViews()
@@ -220,7 +220,7 @@ extension MemberDetailViewController: MemberNavigationDelegate {
 enum MemberNavigationState {
     case message
     case profile
-    case charge
+    case activities
 }
 protocol MemberNavigationDelegate: class {
     func messageClicked()
@@ -293,7 +293,7 @@ class MemberNavigationView: UIView {
         case .profile:
             profileButton.backgroundColor = UIColorTheme.Primary
             profileButton.layer.cornerRadius = 40/2
-        case .charge:
+        case .activities:
             chargeButton.backgroundColor = UIColorTheme.Primary
             chargeButton.layer.cornerRadius = 40/2
         }

@@ -58,6 +58,14 @@ class ProfileHeaderCell: UITableViewCell {
         
         return _label
     }()
+    fileprivate lazy var lineView: UIView = {
+        let _lineView = UIView()
+        _lineView.backgroundColor = .flatWhite()
+        
+        self.addSubview(_lineView)
+        
+        return _lineView
+    }()
     fileprivate lazy var membershipNavigation: MembershipNavigationView = {
         let _view = MembershipNavigationView()
         //_view.delegate = self
@@ -105,6 +113,11 @@ class ProfileHeaderCell: UITableViewCell {
             make.top.equalTo(subHeadingLabel.snp.bottom).offset(20)
             make.leading.trailing.equalTo(containerView)
             make.bottom.equalTo(containerView)
+        }
+        lineView.snp.makeConstraints { (make) in
+            make.leading.trailing.equalTo(self)
+            make.height.equalTo(kOnePX*2)
+            make.bottom.equalTo(self)
         }
         super.updateConstraints()
     }

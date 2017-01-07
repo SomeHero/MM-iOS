@@ -28,12 +28,12 @@ class PaymentHistoryEmptyStateViewModel:DataSourceItemProtocol {
         return cell
     }
     @objc func viewForHeader() -> UIView? {
-        let header = PaymentHistoryHeaderView()
+        let header = PlanHeaderView()
         header.setup("Payment History")
         
         return header
     }
     @objc func heightForHeader() -> CGFloat {
-        return 50;
+        return 50
     }
 }

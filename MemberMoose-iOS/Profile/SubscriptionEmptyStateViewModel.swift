@@ -33,13 +33,13 @@ class SubscriptionEmptyStateViewModel:DataSourceItemProtocol {
         return cell
     }
     @objc func viewForHeader() -> UIView? {
-        let header = SubscriptionHeaderView()
+        let header = PlanHeaderView()
         header.setup("Subscriptions")
         
         return header
     }
     @objc func heightForHeader() -> CGFloat {
-        return 50;
+        return 50
     }
 }
 extension SubscriptionEmptyStateViewModel: SubscriptionEmptyStateCellDelegate {

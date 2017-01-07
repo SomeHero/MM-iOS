@@ -28,6 +28,8 @@ class MemberProfileViewController: UICollectionViewController, MultilineNavTitla
     fileprivate let profileType: ProfileType
     fileprivate let calfProfileCellIdentifier       = "CalfProfileHeaderCellIdentifier"
     fileprivate let profileCellIdentifier           = "ProfileHeaderCellIdentifier"
+    fileprivate let activityHistoryCellIdentifier       = "ActivityCellIdentifier"
+    fileprivate let activityEmptyStateCellIdentifier       = "ActivityEmptyStateCellIdentifier"
     fileprivate let subscriptionCellIdentifier                  = "SubscriptionCellIdentifier"
     fileprivate let subscriptionEmptyStateCellIdentifier        = "SubscriptionEmptyStateCellIdentifier"
     fileprivate let paymentCardCellIdentifier       = "PaymentCardCellIdentifier"
@@ -273,22 +275,29 @@ class MemberProfileViewController: UICollectionViewController, MultilineNavTitla
         
         switch memberNavigationState {
         case .message:
-            let remainingHeight = self.view.frame.size.height //- tableView.visibleCells[0].frame.size.height
-            
             ApiManager.sharedInstance.getCharges(user, success: { [weak self] (charges) in
                 guard let _self = self else {
                     return
                 }
-                var paymentHistoryViewModels: [PaymentHistoryViewModel] = []
-                for charge in charges {
-                    let paymentHistoryViewModel = PaymentHistoryViewModel(charge: charge)
+                if(charges.count > 0) {
+                    var paymentHistoryViewModels: [PaymentHistoryViewModel] = []
+                    for charge in charges {
+                        let paymentHistoryViewModel = PaymentHistoryViewModel(charge: charge)
+                        
+                        paymentHistoryViewModels.append(paymentHistoryViewModel)
+                    }
+                    items.append(paymentHistoryViewModels)
                     
-                    paymentHistoryViewModels.append(paymentHistoryViewModel)
+                    _self.dataSource = items
+                    _self.collectionView!.reloadData()
+                } else {
+                    var viewModels: [PaymentHistoryEmptyStateViewModel] = []
+                    viewModels.append(PaymentHistoryEmptyStateViewModel(header: "No Payment History"))
+                    
+                    items.append(viewModels)
+                    _self.dataSource = items
+                    _self.collectionView!.reloadData()
                 }
-                items.append(paymentHistoryViewModels)
-                
-                _self.dataSource = items
-                _self.collectionView!.reloadData()
             }) { [weak self] (error, errorDictionary) in
                 SVProgressHUD.dismiss()
                 
@@ -336,20 +345,32 @@ class MemberProfileViewController: UICollectionViewController, MultilineNavTitla
                 items.append(paymentCardEmptyStateViewModels)
             }
             
-        case .charge:
-            ApiManager.sharedInstance.getActivities(user, success: { [weak self] (activities) in
+        case .activities:
+            ApiManager.sharedInstance.getActivities(user, success: { [weak self] (groups) in
                 guard let _self = self else {
                     return
                 }
-                var viewModels: [PlanActivityViewModel] = []
-                for activity in activities {
-                    viewModels.append(PlanActivityViewModel(activity: activity))
+                if groups.count > 0 {
+                    var viewModels: [PlanActivityViewModel] = []
+                    for group in groups {
+                        for activity in group.activities {
+                            viewModels.append(PlanActivityViewModel(activity: activity))
+                        }
+                    }
+                    items.append(viewModels)
+                    
+                    
+                    _self.dataSource = items
+                    _self.collectionView!.reloadData()
+                } else {
+                    var viewModels: [ActivityEmptyStateViewModel] = []
+                    viewModels.append(ActivityEmptyStateViewModel(header: "No Activity"))
+                    
+                    items.append(viewModels)
+                    _self.dataSource = items
+                    _self.collectionView!.reloadData()
+                    
                 }
-                items.append(viewModels)
-                
-                
-                _self.dataSource = items
-                _self.collectionView!.reloadData()
             }) { [weak self] (error, errorDictionary) in
                 SVProgressHUD.dismiss()
                 
@@ -537,7 +558,7 @@ extension MemberProfileViewController: MemberNavigationDelegate {
         buildDataSet()
     }
     func chargeClicked() {
-        memberNavigationState = .charge
+        memberNavigationState = .activities
         //memberNavigation.setSelectedButton(memberNavigationState)
         
         handleNavHeaderScrollingWithOffset(0)

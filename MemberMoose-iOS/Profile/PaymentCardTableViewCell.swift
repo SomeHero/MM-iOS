@@ -69,6 +69,14 @@ class PaymentCardTableViewCell: UITableViewCell, DataSourceItemCell {
         
         return _button
     }()
+    fileprivate lazy var lineView: UIView = {
+        let _lineView = UIView()
+        _lineView.backgroundColor = .flatWhite()
+        
+        self.addSubview(_lineView)
+        
+        return _lineView
+    }()
     weak var paymentCardCellDelegate: PaymentCardCellDelegate?
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -116,6 +124,11 @@ class PaymentCardTableViewCell: UITableViewCell, DataSourceItemCell {
             make.leading.greaterThanOrEqualTo(cardInfoView.snp.trailing).offset(10)
             make.centerY.equalTo(containerView)
             make.trailing.equalTo(containerView).inset(10)
+        }
+        lineView.snp.makeConstraints { (make) in
+            make.leading.trailing.equalTo(self)
+            make.height.equalTo(kOnePX*2)
+            make.bottom.equalTo(self)
         }
         super.updateConstraints()
     }

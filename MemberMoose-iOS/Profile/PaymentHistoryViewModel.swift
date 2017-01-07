@@ -46,39 +46,12 @@ class PaymentHistoryViewModel:DataSourceItemProtocol {
         return cell
     }
     @objc func viewForHeader() -> UIView? {
-        let header = SubscriptionHeaderView()
+        let header = PlanHeaderView()
         header.setup("Payment History")
         
         return header
     }
     @objc func heightForHeader() -> CGFloat {
-        return 50;
-    }
-}
-class PaymentHistoryHeaderView: UIView {
-    fileprivate lazy var titleLabel: UILabel = {
-        let _label = UILabel()
-        _label.textColor = UIColorTheme.PrimaryFont
-        _label.textAlignment = .left
-        _label.font = UIFontTheme.Regular()
-        
-        self.addSubview(_label)
-        
-        return _label
-    }()
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        titleLabel.snp.makeConstraints { (make) in
-            make.leading.trailing.equalTo(self).inset(20)
-            make.bottom.equalTo(self).inset(10)
-        }
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    func setup(_ title: String) {
-        titleLabel.text = title
+        return 50
     }
 }

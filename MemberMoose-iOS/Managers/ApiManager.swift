@@ -649,10 +649,10 @@ open class ApiManager {
         }
         
     }
-    open func getActivities(success: @escaping (_ response: [Activity]) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+    open func getActivities(success: @escaping (_ response: [ActivityGroup]) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         Alamofire.request(apiBaseUrl + "activities?page=1", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseArray { (response: DataResponse<[Activity]>) in
+            .responseArray { (response: DataResponse<[ActivityGroup]>) in
                 if let error = response.result.error {
                     if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
                         self.handleRefreshToken(refreshToken, {
@@ -670,13 +670,13 @@ open class ApiManager {
         }
         
     }
-    open func getActivities(_ plan: Plan,success: @escaping (_ response: [Activity]) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+    open func getActivities(_ plan: Plan,success: @escaping (_ response: [ActivityGroup]) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         guard let planId = plan.id else {
             return
         }
         Alamofire.request(apiBaseUrl + "plans/\(planId)/activities?page=1", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseArray { (response: DataResponse<[Activity]>) in
+            .responseArray { (response: DataResponse<[ActivityGroup]>) in
                 if let error = response.result.error {
                     if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
                         self.handleRefreshToken(refreshToken, {
@@ -694,14 +694,14 @@ open class ApiManager {
         }
         
     }
-    open func getActivities(_ user: User, success: @escaping (_ response: [Activity]) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
+    open func getActivities(_ user: User, success: @escaping (_ response: [ActivityGroup]) -> Void, failure: @escaping (_ error: Error?, _ errorDictionary: [String: AnyObject]?) -> Void) {
         guard let userId = user.id else {
             return
         }
 
         Alamofire.request(apiBaseUrl + "users/\(userId)/activities", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseArray { (response: DataResponse<[Activity]>) in
+            .responseArray { (response: DataResponse<[ActivityGroup]>) in
                 if let error = response.result.error {
                     if let httpResponse = response.response, let refreshToken = self.refreshToken, httpResponse.statusCode == 401 {
                         self.handleRefreshToken(refreshToken, {

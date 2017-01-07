@@ -27,6 +27,14 @@ class PlanActivityCell: UITableViewCell, DataSourceItemCell {
         
         return _label
     }()
+    lazy var lineView: UIView = {
+        let _lineView = UIView()
+        _lineView.backgroundColor = .flatWhite()
+        
+        self.addSubview(_lineView)
+        
+        return _lineView
+    }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
@@ -55,6 +63,11 @@ class PlanActivityCell: UITableViewCell, DataSourceItemCell {
         }
         activityLabel.snp.updateConstraints { (make) in
             make.leading.trailing.top.bottom.equalTo(containerView)
+        }
+        lineView.snp.makeConstraints { (make) in
+            make.leading.trailing.equalTo(self)
+            make.height.equalTo(kOnePX*2)
+            make.bottom.equalTo(self)
         }
         
         super.updateConstraints()

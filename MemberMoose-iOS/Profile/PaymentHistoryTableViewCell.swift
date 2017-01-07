@@ -53,6 +53,14 @@ class PaymentHistoryTableViewCell: UITableViewCell, DataSourceItemCell {
         
         return _label
     }()
+    fileprivate lazy var lineView: UIView = {
+        let _lineView = UIView()
+        _lineView.backgroundColor = .flatWhite()
+        
+        self.addSubview(_lineView)
+        
+        return _lineView
+    }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
@@ -95,6 +103,11 @@ class PaymentHistoryTableViewCell: UITableViewCell, DataSourceItemCell {
             make.trailing.equalTo(contentView).inset(20)
             make.centerY.equalTo(contentView)
             make.leading.greaterThanOrEqualTo(containerView.snp.trailing).offset(10)
+        }
+        lineView.snp.makeConstraints { (make) in
+            make.leading.trailing.equalTo(self)
+            make.height.equalTo(kOnePX*2)
+            make.bottom.equalTo(self)
         }
         super.updateConstraints()
     }

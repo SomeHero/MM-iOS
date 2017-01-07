@@ -53,7 +53,15 @@ class PlanCell: UITableViewCell, DataSourceItemCell {
         
         return _label
     }()
-    lazy var currencyFormatter: NumberFormatter = {
+    fileprivate lazy var lineView: UIView = {
+        let _lineView = UIView()
+        _lineView.backgroundColor = .flatWhite()
+        
+        self.addSubview(_lineView)
+        
+        return _lineView
+    }()
+    fileprivate lazy var currencyFormatter: NumberFormatter = {
         let _formatter = NumberFormatter()
         _formatter.generatesDecimalNumbers = true
         _formatter.numberStyle = .currency
@@ -117,6 +125,11 @@ class PlanCell: UITableViewCell, DataSourceItemCell {
             make.leading.trailing.equalTo(containerView).inset(10)
             make.top.equalTo(planAmountLabel.snp.bottom)
             make.bottom.equalTo(containerView).inset(10)
+        }
+        lineView.snp.makeConstraints { (make) in
+            make.leading.trailing.equalTo(self)
+            make.height.equalTo(kOnePX*2)
+            make.bottom.equalTo(self)
         }
         super.updateConstraints()
     }
